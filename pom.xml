@@ -9,7 +9,9 @@
   <url>http://maven.apache.org</url>
 
   <properties>
+    <!-- 1. Κωδικοποίηση πηγαίου κώδικα για σωστή εμφάνιση ελληνικών χαρακτήρων -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <!-- 2. Κωδικοποίηση reports maven για σωστή εμφάνιση ελληνικών χαρακτήρων -->
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
 
@@ -20,13 +22,17 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.11.0</version>
         <configuration>
+        <!-- Δήλωση Java Compiler που θα χρησιμοποιείται -->
           <release>17</release>
+        <!-- Κωδικοποίηση compiler ώστε να μεταγλωττίζονται σωστά τα ελληνικά -->
+          <encoding>UTF-8</encoding>
         </configuration>
       </plugin>
     </plugins>
   </build>
 
   <dependencies>
+    <!-- 1. Dependency για Junit: testing -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
@@ -34,18 +40,19 @@
       <scope>test</scope>
     </dependency>
 
+    <!-- 2. Dependency για Tabula: για εξαγωγή δεδομένων από PDF -->
     <dependency>
-    <!-- 1. Dependency για Tabula: για εξαγωγή δεδομένων από PDF -->
-    <groupId>technology.tabula</groupId>
-    <artifactId>tabula</artifactId>
-    <version>1.0.5</version>
-</dependency>
+      <groupId>technology.tabula</groupId>
+      <artifactId>tabula</artifactId>
+      <version>1.0.5</version>
+    </dependency>
 
-<dependency>
-    <groupId>org.apache.pdfbox</groupId>
-    <!-- 2. Dependency για PDFBox: διαχείριση PDF αρχείων -->
-    <artifactId>pdfbox</artifactId>
-    <version>2.0.30</version>
-</dependency>
+     <!-- 3. Dependency για PDFBox: διαχείριση PDF αρχείων -->
+    <dependency>
+      <groupId>org.apache.pdfbox</groupId>
+      <artifactId>pdfbox</artifactId>
+      <version>2.0.30</version>
+    </dependency>
   </dependencies>
+
 </project>
