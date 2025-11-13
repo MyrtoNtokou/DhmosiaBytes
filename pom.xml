@@ -17,17 +17,59 @@
 
   <build>
     <plugins>
+
+      <!-- 1. Java Compiler -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.11.0</version>
         <configuration>
-        <!-- Δήλωση Java Compiler που θα χρησιμοποιείται -->
           <release>17</release>
         <!-- Κωδικοποίηση compiler ώστε να μεταγλωττίζονται σωστά τα ελληνικά -->
           <encoding>UTF-8</encoding>
         </configuration>
       </plugin>
+
+      <!-- 2. SpotBugs -->
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>4.9.8.1</version>
+        <configuration>
+          <!-- Ορισμός encoding για σωστή εμφάνιση ελληνικών -->
+          <encoding>UTF-8</encoding>
+        </configuration>
+        <executions>
+          <execution>
+            <!-- Αυτόματα στη φάση compile -->
+            <phase>compile</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- 3. CheckStyle -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>3.6.0</version>
+        <configuration>
+          <!-- Ορισμός encoding για σωστή εμφάνιση ελληνικών -->
+          <encoding>UTF-8</encoding>
+        </configuration>
+        <executions>
+          <execution>
+            <!-- Αυτόματα στη φάση compile -->
+            <phase>compile</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
     </plugins>
   </build>
 
