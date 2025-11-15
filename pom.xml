@@ -9,29 +9,116 @@
   <url>http://maven.apache.org</url>
 
   <properties>
+    <!-- 1. Κωδικοποίηση πηγαίου κώδικα για σωστή εμφάνιση ελληνικών χαρακτήρων -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <!-- 2. Κωδικοποίηση reports maven για σωστή εμφάνιση ελληνικών χαρακτήρων -->
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
 
   <build>
     <plugins>
+
+      <!-- 1. Java Compiler -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.11.0</version>
         <configuration>
           <release>17</release>
+        <!-- Κωδικοποίηση compiler ώστε να μεταγλωττίζονται σωστά τα ελληνικά -->
+          <encoding>UTF-8</encoding>
         </configuration>
       </plugin>
+
+      <!-- 2. SpotBugs -->
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>4.9.8.1</version>
+        <configuration>
+          <!-- Ορισμός encoding για σωστή εμφάνιση ελληνικών -->
+          <encoding>UTF-8</encoding>
+        </configuration>
+        <executions>
+          <execution>
+            <!-- Αυτόματα στη φάση verify -->
+            <phase>verify</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- 3. CheckStyle -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>3.6.0</version>
+        <configuration>
+          <!-- Ορισμός encoding για σωστή εμφάνιση ελληνικών -->
+          <encoding>UTF-8</encoding>
+        </configuration>
+        <executions>
+          <execution>
+            <!-- Αυτόματα στη φάση verify -->
+            <phase>verify</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- 4. JaCoCo -->
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.8.11</version>
+        <executions>
+          <!-- Ενεργοποίηση JaCoCo agent πριν τρέξουν τα tests -->
+          <execution>
+            <id>prepare-agent</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+          <!-- Δημιουργία report μετά την εκτέλεση των tests -->
+          <execution>
+            <id>report</id>
+            <phase>test</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
     </plugins>
   </build>
 
   <dependencies>
+    <!-- 1. Dependency για Junit: testing -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
       <version>5.9.3</version>
       <scope>test</scope>
     </dependency>
+
+    <!-- 2. Dependency για Tabula: για εξαγωγή δεδομένων από PDF -->
+    <dependency>
+      <groupId>technology.tabula</groupId>
+      <artifactId>tabula</artifactId>
+      <version>1.0.5</version>
+    </dependency>
+
+     <!-- 3. Dependency για PDFBox: διαχείριση PDF αρχείων -->
+    <dependency>
+      <groupId>org.apache.pdfbox</groupId>
+      <artifactId>pdfbox</artifactId>
+      <version>2.0.30</version>
+    </dependency>
   </dependencies>
+
 </project>
