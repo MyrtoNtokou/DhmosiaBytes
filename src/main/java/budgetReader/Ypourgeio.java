@@ -1,4 +1,5 @@
-package gr.ilias;
+package budgetReader;
+
 
 public class Ypourgeio {
      private int kodikos;

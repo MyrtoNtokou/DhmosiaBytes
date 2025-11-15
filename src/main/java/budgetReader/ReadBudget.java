@@ -1,4 +1,4 @@
-package gr.ilias;
+package budgetReader;
 
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReaderBuilder;
@@ -11,40 +11,60 @@ import java.util.List;
 import java.util.Scanner;
 
 public class ReadBudget {
-    public static void main(String[] args) {
+    public static void showBudget() {
+
         Scanner input = new Scanner(System.in);
+        /* Ζητά από τον χρήστη να επιλέξει ποια μορφή προϋπολογισμού θέλει να εμφανιστεί. */
         System.out.println("Give 1 for general list or give 2 for  Ministry list");
         System.out.print("Επιλογή: ");
+        /* Διαβάζει την επιλογή του χρήστη (1 ή 2) */
         int epilogh = input.nextInt();
 
         if (epilogh == 1) {
+
+            /*Δημιουργεί λίστα eggrafes από το proypologismos2025.csv και τις εμφανίζει*/
             List<Eggrafi> eggrafes = readGeneralBudget("/proypologismos2025.csv");
             System.out.println("\n=== ΓΕΝΙΚΟΣ ΠΡΟΫΠΟΛΟΓΙΣΜΟΣ ===");
             eggrafes.forEach(System.out::println);
+
         } else if (epilogh == 2) {
+
+            /* Δημιουργεί λίστα Ypourgeio από το proypologismos2025anaypourgeio.csv και τις εμφανίζει*/
             List<Ypourgeio> ypourg = readByMinistry("/proypologismos2025anaypourgeio.csv");
             System.out.println("\n=== ΠΡΟΫΠΟΛΟΓΙΣΜΟΣ ΑΝΑ ΥΠΟΥΡΓΕΙΟ ===");
             ypourg.forEach(System.out::println);
+
         } else {
+
             System.out.println("Μη έγκυρη επιλογή!");
         }
     }
-        
+
+        /*
+ * Διαβάζει το αρχείο γενικού προϋπολογισμού (proypologismos2025.csv)
+ * από τον φάκελο resources και επιστρέφει όλες τις εγγραφές σε λίστα Eggrafi.
+ */
        private static List<Eggrafi> readGeneralBudget(String path) {
+
         List<Eggrafi> eggrafes = new ArrayList<>();
         try {
+            /* Φορτώνει το αρχείο CSV από το classpath (resources folder) */ 
             InputStream input = ReadBudget.class.getResourceAsStream(path);
+
             if (input == null) {
                 System.err.println("❌ Δεν βρέθηκε το αρχείο: " + path);
                 return eggrafes;
             }
-
+            
+            /* Καθορίζει το διαχωριστικό σε ; αντί για , */
             var parser = new CSVParserBuilder().withSeparator(';').build();
             var reader = new CSVReaderBuilder(new InputStreamReader(input, StandardCharsets.UTF_8))
                     .withCSVParser(parser)
                     .build();
 
             String[] line;
+            
+            /* Διαβάζει κάθε γραμμή του αρχείου και δημιουργεί ένα νέο αντικείμενο Eggrafi για κάθε γραμμή */
             while ((line = reader.readNext()) != null) {
                 if (line.length < 3) continue;
                 String kodikos = line[0].trim();
@@ -62,18 +82,22 @@ public class ReadBudget {
     private static List<Ypourgeio> readByMinistry(String path) {
         List<Ypourgeio> ypourg = new ArrayList<>();
         try {
+            /* Φορτώνει το αρχείο CSV από το classpath (resources folder) */
             InputStream input = ReadBudget.class.getResourceAsStream(path);
             if (input == null) {
                 System.err.println("❌ Δεν βρέθηκε το αρχείο: " + path);
                 return ypourg;
             }
 
+            /* Καθορίζει το διαχωριστικό σε ; αντί για , */
             var parser = new CSVParserBuilder().withSeparator(';').build();
             var reader = new CSVReaderBuilder(new InputStreamReader(input, StandardCharsets.UTF_8))
                     .withCSVParser(parser)
                     .build();
 
             String[] line;
+
+            /* Διαβάζει κάθε γραμμή του αρχείου και δημιουργεί ένα νέο αντικείμενο Ypourgeio για κάθε γραμμή */
             while ((line = reader.readNext()) != null) {
                 if (line.length < 5) continue;
                 try {
