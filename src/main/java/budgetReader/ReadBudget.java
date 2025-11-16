@@ -108,7 +108,8 @@ public class ReadBudget {
                     double synolo = parseNumber(line[4]);
                     ypourg.add(new Ypourgeio(kodikos, onoma, taktikos, ependyseis, synolo));
                 } catch (Exception e) {
-                    // Αγνόησε λανθασμένες γραμμές
+                        System.err.println("Skipped invalid CSV line: " + e.getMessage());
+
                 }
             }
         } catch (Exception e) {
