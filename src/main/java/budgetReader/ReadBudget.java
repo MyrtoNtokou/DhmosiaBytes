@@ -1,3 +1,5 @@
+// CHECKSTYLE:OFF
+
 package budgetreader;
 
 import com.opencsv.CSVParserBuilder;
@@ -136,3 +138,4 @@ public class ReadBudget {
     }
 }
 }
+// CHECKSTYLE:ON

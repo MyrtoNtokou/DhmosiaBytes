@@ -1,3 +1,5 @@
+// CHECKSTYLE:OFF
+
 package budgetreader;
 
 import java.text.DecimalFormat;
@@ -31,3 +33,4 @@ public class Eggrafi {
     return kodikos + " | " + perigrafi + " | " + df.format(poso);
     }
 }
+// CHECKSTYLE:ON

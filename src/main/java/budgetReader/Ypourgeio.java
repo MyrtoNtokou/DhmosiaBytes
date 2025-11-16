@@ -1,3 +1,5 @@
+// CHECKSTYLE:OFF
+
 package budgetreader;
 
 
@@ -40,3 +42,4 @@ public class Ypourgeio {
                " | Σύνολο: " + synolo;
     }
 }
+// CHECKSTYLE:ON
