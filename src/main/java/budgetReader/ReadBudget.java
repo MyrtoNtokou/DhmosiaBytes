@@ -13,7 +13,7 @@ import java.util.Scanner;
 public class ReadBudget {
     public static void showBudget() {
 
-        Scanner input = new Scanner(System.in);
+        Scanner input = new Scanner(System.in, "UTF-8");
         /* Ζητά από τον χρήστη να επιλέξει ποια μορφή προϋπολογισμού θέλει να εμφανιστεί. */
         System.out.println("Give 1 for general list or give 2 for  Ministry list");
         System.out.print("Επιλογή: ");
