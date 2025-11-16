@@ -1,4 +1,4 @@
-package budgetReader;
+package budgetreader;
 
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReaderBuilder;

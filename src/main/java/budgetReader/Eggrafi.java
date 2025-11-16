@@ -1,4 +1,4 @@
-package budgetReader;
+package budgetreader;
 
 import java.text.DecimalFormat;
 
