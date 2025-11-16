@@ -1,13 +1,20 @@
-// CHECKSTYLE:OFF
-
 package budgetreader;
 
 
 public class Ypourgeio {
-     private int kodikos;
+    /* Κωδικός Υπουργείου */
+    private int kodikos;
+
+    /* Όνομα Υπουργείου */
     private String onoma;
+
+    /* Ποσό Τακτικού Προϋπολογισμού */
     private double taktikos;
+
+    /* Ποσό επενδύσεων */
     private double ependyseis;
+
+    /*συνολικό ποσό */
     private double synolo;
 
     public Ypourgeio(int kodikos, String onoma, double taktikos, double ependyseis, double synolo) {
@@ -42,4 +49,3 @@ public class Ypourgeio {
                " | Σύνολο: " + synolo;
     }
 }
-// CHECKSTYLE:ON

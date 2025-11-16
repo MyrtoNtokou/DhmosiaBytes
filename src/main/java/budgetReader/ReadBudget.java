@@ -1,4 +1,3 @@
-// CHECKSTYLE:OFF
 
 package budgetreader;
 
@@ -138,4 +137,4 @@ public class ReadBudget {
     }
 }
 }
-// CHECKSTYLE:ON
+
