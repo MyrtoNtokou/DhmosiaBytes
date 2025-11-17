@@ -54,10 +54,8 @@ public final class BudgetUrlFinder {
                 // Σύνδεση στην ιστοσελίδα του υπουργείου
                 Document doc = Jsoup.connect("https://minfin.gov.gr/"
                 + "kratikos-proypologismos/").get();
-                // Επιλογή των links που περιλαμβάνουν την χρονιά
-                // και τελειώνουν με .pdf
-                Elements links = doc.select("a[href*=" + year + "]"
-                    + "[href$=.pdf]");
+                // Επιλογή των links που τελειώνουν σε χρονιά.pdf
+                Elements links = doc.select("a[href$=" + year + ".pdf]");
                 // Επιστροφή μόνο του link που περιέχει και την φράση
                 // Κρατικός Προϋπολογισμός
                 for (Element link : links) {
