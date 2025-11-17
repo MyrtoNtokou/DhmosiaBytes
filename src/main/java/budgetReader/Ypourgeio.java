@@ -1,20 +1,19 @@
 package budgetreader;
 
-
 public class Ypourgeio {
-    /* Κωδικός Υπουργείου */
+    /* Ministry code */
     private int kodikos;
 
-    /* Όνομα Υπουργείου */
+    /* Ministry name */
     private String onoma;
 
-    /* Ποσό Τακτικού Προϋπολογισμού */
+    /* Regular budget amount */
     private double taktikos;
 
-    /* Ποσό επενδύσεων */
+    /* Public investment amount */
     private double ependyseis;
 
-    /*συνολικό ποσό */
+    /* Total budget amount */
     private double synolo;
 
     public Ypourgeio(int kodikos, String onoma, double taktikos, double ependyseis, double synolo) {
@@ -26,26 +25,30 @@ public class Ypourgeio {
     }
 
     public int getKodikos() {
-         return kodikos; 
-        }
+        return kodikos;
+    }
+
     public String getOnoma() { 
         return onoma; 
     }
+
     public double getTaktikos() { 
         return taktikos; 
     }
+
     public double getEpendysewn() { 
         return ependyseis;
     }
+
     public double getSynolo() { 
         return synolo; 
     }
 
     @Override
     public String toString() {
-        return kodikos + " | " + onoma + 
-               " | Τακτικός Προϋπολογισμός: " + taktikos + 
-               " | Προϋπολογισμός Δημοσίων Επενδύσεων: " + ependyseis + 
-               " | Σύνολο: " + synolo;
+        return kodikos + " | " + onoma +
+               " | Regular Budget: " + taktikos +
+               " | Public Investment Budget: " + ependyseis +
+               " | Total: " + synolo;
     }
 }

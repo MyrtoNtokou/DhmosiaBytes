@@ -1,10 +1,7 @@
-
-
 /**
- * Περιγραφή του πακέτου budgetReader.
- * Αυτό το πακέτο περιέχει κλάσεις που αφορούν την ανάγνωση
- * και αναπαράσταση δεδομένων προϋπολογισμού.
+ * Description of the budgetReader package.
+ * This package contains classes related to reading and representing
+ * budget data.
  */
 
-
-package budgetReader;
+package budgetreader;

@@ -4,11 +4,11 @@ package budgetreader;
 import java.text.DecimalFormat;
 
 public final class  Eggrafi {
-    /*Κωδικός εγγραφής */
+    /* kodikos of Eggrafi instance */
     private String kodikos;
-    /*Περιγραφή εγγραφής */
+    /*perigrafi  of Eggrafi instance */
     private String perigrafi;
-    /*Ποσό εγγραφής */
+    /*poso  of Eggrafi instance */
     private double poso;
 
     public Eggrafi(final String kodikosValue, final String perigrafiValue, final double posoValue) {
@@ -17,22 +17,22 @@ public final class  Eggrafi {
         this.poso = posoValue;
     }
 
-    /* Μέθοδος επιστροφής Κωδικού */
+    /* method that returns kodikos */
     public String getKodikos() { 
         return kodikos; 
     }
 
-    /* Μέθοδος επσιτροφής περιγραφής */
+    /* method that returns perigrafi */
     public String getPerigrafi() { 
         return perigrafi; 
     }
 
-    /* Μέθοδος επιστορφής ποσού */
+    /* method that returns poso */
     public double getPoso() { 
         return poso; 
     }
 
-    /* Μέθοδος που επιστρέφει κωδικό | περιγραφή | ποσό */
+    /* toString method */
     @Override
     public String toString() {
          DecimalFormat df = new DecimalFormat("#,###");
