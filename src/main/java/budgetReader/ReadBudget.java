@@ -1,6 +1,9 @@
 
 package budgetreader;
 
+/**Utility class that reads budget data from CSV files and processes
+ * them according to the application's requirements.*/
+
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReaderBuilder;
 
@@ -12,11 +15,20 @@ import java.util.List;
 import java.util.Scanner;
 
 public class ReadBudget {
+    /**
+     * Private constructor to prevent instantiation.
+     */
+    private ReadBudget() {
+        throw new AssertionError("Utility class should not be instantiated.");
+    }
+    
     public static void showBudget() {
 
         Scanner input = new Scanner(System.in, "UTF-8");
-        /* demands by user to choose budget form  */
-        System.out.println("Give 1 for general list or give 2 for  Ministry list");
+        /* demands by user 
+        * to choose budget form  */
+        System.out.println(
+            "Give 1 for general list or give 2 for  Ministry list");
         System.out.print("User's choice ");
         int epilogh = input.nextInt();
 
@@ -52,15 +64,17 @@ public class ReadBudget {
 
         List<Eggrafi> eggrafes = new ArrayList<>();
         try {
-            /* Loads file CSV from classpath (resources folder) */ 
+            /* Loads CSV file
+            * from classpath (resources folder) */
             InputStream input = ReadBudget.class.getResourceAsStream(path);
 
             if (input == null) {
                 System.err.println("❌ Δεν βρέθηκε το αρχείο: " + path);
                 return eggrafes;
             }
-            
-            /* Sets delimiter to ; instead of , */
+
+            /* Sets delimiter 
+            * to ; instead of , */
             var parser = new CSVParserBuilder().withSeparator(';').build();
             var reader = new CSVReaderBuilder(new InputStreamReader(
                 input, StandardCharsets.UTF_8))
@@ -68,8 +82,9 @@ public class ReadBudget {
                     .build();
 
             String[] line;
-            
-            /* Creates new instances Eggrafi for each line */
+
+            /* Creates new instances 
+            * Eggrafi for each line */
             while ((line = reader.readNext()) != null) {
                 if (line.length < 3) continue;
                 String kodikos = line[0].trim();
@@ -87,14 +102,16 @@ public class ReadBudget {
     private static List<Ypourgeio> readByMinistry(String path) {
         List<Ypourgeio> ypourg = new ArrayList<>();
         try {
-            /* Loads file CSV from classpath (resources folder) */
+            /* Loads  CSV file 
+            * from classpath (resources folder) */
             InputStream input = ReadBudget.class.getResourceAsStream(path);
             if (input == null) {
                 System.err.println("❌ Δεν βρέθηκε το αρχείο: " + path);
                 return ypourg;
             }
 
-            /* Sets delimiter to ; instead of , */
+            /* Sets delimiter
+            * to ; instead of , */
             var parser = new CSVParserBuilder().withSeparator(';').build();
             var reader = new CSVReaderBuilder(new InputStreamReader
             (input, StandardCharsets.UTF_8))
@@ -103,7 +120,8 @@ public class ReadBudget {
 
             String[] line;
 
-            /* Creates new instances Ypourgeio for each line */
+            /* Creates new instances
+            * Ypourgeio for each line */
             while ((line = reader.readNext()) != null) {
                 if (line.length < 5) continue;
                 try {
@@ -115,7 +133,8 @@ public class ReadBudget {
                     ypourg.add(new Ypourgeio(
                         kodikos, onoma, taktikos, ependyseis, synolo));
                 } catch (Exception e) {
-                        System.err.println("Skipped invalid CSV line: " + e.getMessage());
+                        System.err.println("Skipped invalid CSV line: " 
+                        + e.getMessage());
 
                 }
             }
@@ -129,9 +148,11 @@ public class ReadBudget {
 
     s = s.trim();
 
-    /* Removes the trailing thousands separator */  
+    /* Removes
+    * the trailing thousands separator */  
     s = s.replace(".", "");
-    /* Converts commas to dots for proper numeric formatting. */
+    /* Converts commas to dots
+    * for proper numeric formatting. */
     s = s.replace(",", ".");
 
     try {
@@ -142,4 +163,3 @@ public class ReadBudget {
     }
 }
 }
-

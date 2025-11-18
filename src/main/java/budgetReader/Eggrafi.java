@@ -1,38 +1,55 @@
 
 package budgetreader;
 
+/** Represents a single budget record (Eggrafi).
+ * Each record contains a code, a description and an amount.
+ * This class is immutable except for the provided getter methods.
+ * It also provides a formatted string representation of the entry.*/
 import java.text.DecimalFormat;
 
 public final class  Eggrafi {
-    /* kodikos of Eggrafi instance */
+    /** kodikos of
+     * Eggrafi instance */
     private String kodikos;
-    /*perigrafi  of Eggrafi instance */
+
+    /**perigrafi  of
+     * Eggrafi instance */
     private String perigrafi;
-    /*poso  of Eggrafi instance */
+    
+    /**poso  of
+     * Eggrafi instance */
     private double poso;
 
-    public Eggrafi(final String kodikosValue, final String perigrafiValue, final double posoValue) {
+    /** constructor
+     * that creates new Eggrafi instance*/
+    public Eggrafi(final String kodikosValue, final String perigrafiValue, 
+    final double posoValue) {
         this.kodikos = kodikosValue;
         this.perigrafi = perigrafiValue;
         this.poso = posoValue;
     }
 
-    /* method that returns kodikos */
-    public String getKodikos() { 
-        return kodikos; 
+    /* method that
+    *returns kodikos */
+    public String getKodikos() {
+        return kodikos;
     }
 
-    /* method that returns perigrafi */
+    /* method that
+    *returns perigrafi */
     public String getPerigrafi() { 
-        return perigrafi; 
+        return perigrafi;
     }
 
-    /* method that returns poso */
-    public double getPoso() { 
-        return poso; 
+    /* method that
+     *returns poso */
+    public double getPoso() {
+        return poso;
     }
 
-    /* toString method */
+    /* toString method
+     * for a specific format
+    */
     @Override
     public String toString() {
          DecimalFormat df = new DecimalFormat("#,###");
@@ -40,4 +57,3 @@ public final class  Eggrafi {
     return kodikos + " | " + perigrafi + " | " + df.format(poso);
     }
 }
-
