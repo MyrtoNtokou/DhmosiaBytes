@@ -20,13 +20,13 @@ public final class PdfDownloader {
     }
 
     /**
-     * Η μέθοδος βρίσκει κατεβάζει το pdf του κρατικού προϋπολογισμού.
+     * Η μέθοδος κατεβάζει το pdf του κρατικού προϋπολογισμού.
      *
      * @param year το έτος
      * @throws IOException αν υπάρξει σφάλμα κατά την λήψη ή αποθήκευση
      */
     public static void downloadPdf(final int year) throws IOException {
-        // Καλεί την finfUrl για να κρατήσει σε μία μεταβλητή το url
+        // Καλεί την findUrl για να κρατήσει σε μία μεταβλητή το link
         // της χρονίας που ψάχνουμε
         String fileUrl = BudgetUrlFinder.findUrl(year);
         // Έλεγχος ότι το url δεν είναι κενό
@@ -36,6 +36,7 @@ public final class PdfDownloader {
         }
         // Αποθήκευση του url σε ένα αντικείμενο τύπου url
         URL url = new URL(fileUrl);
+        // Ορισμός του ονόματος του αρχείου που θα κατεβάσουμε
         String fileName = "budget-" + year + ".pdf";
         // Δημιουργία του path του φακέλου που θα αποθηκευτούν τα pdf
         Path budgetsDir = Path.of("budgetsInPdf");
@@ -57,17 +58,14 @@ public final class PdfDownloader {
      * Όταν αυτό δεν χρειάζεται πια
      *
      * @param year το έτος
+     * @throws IOException αν υπάρξει σφάλμα κατά την διαγραφή
      */
-    public static void deletePdf(final int year) {
+    public static void deletePdf(final int year) throws IOException {
         // Δημιουργία του path όπου είναι αποθηκευμένα τα pdf
         Path budgetsDir = Path.of("budgetsInPdf");
         // Δημιουργία του τελικού path με το αρχείο που θα διαγραφεί
         Path pdfFile = budgetsDir.resolve("budget-" + year + ".pdf");
         // Διαγραφή του αρχείου
-        try {
-            Files.deleteIfExists(pdfFile);
-        } catch (IOException e) {
-            System.out.println("Σφάλμα κατά τη διαγραφή: " + e.getMessage());
-        }
+        Files.deleteIfExists(pdfFile);
     }
 }
