@@ -17,6 +17,7 @@ final class TxtToCsv {
     private TxtToCsv() {
    
 }
+    public static void convertTxtToCsv() {
         String inputFile = "output.txt";
         String outputFile = "output.csv";
 
@@ -29,7 +30,7 @@ final class TxtToCsv {
          new OutputStreamWriter(
              new FileOutputStream(outputFile),
              StandardCharsets.UTF_8
-         ))) {
+         ))); {
 
 
             String line;
@@ -72,7 +73,7 @@ final class TxtToCsv {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    
+    }
 
     // Αφαιρεί κόμμα ανάμεσα σε ελληνικές λέξεις
     private static String fixGreekComma(final String line) {
