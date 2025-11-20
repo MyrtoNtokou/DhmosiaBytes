@@ -22,7 +22,9 @@ public final class BudgetUrlFinder {
         2024, "https://minfin.gov.gr/wp-content/uploads/2023/11/"
                 + "ΚΡΑΤΙΚΟΣ-ΠΡΟΥΠΟΛΟΓΙΣΜΟΣ-2024.pdf",
         2025, "https://minfin.gov.gr/wp-content/uploads/2024/11/"
-                + "Κρατικός-Προϋπολογισμός-2025_ΟΕ.pdf");
+                + "Κρατικός-Προϋπολογισμός-2025_ΟΕ.pdf",
+        2026, "https://minfin.gov.gr/wp-content/uploads/2025/11/"
+                + "Κρατικός-Προϋπολογισμός-2026.pdf");
 
     // Constructor
     private BudgetUrlFinder() {
