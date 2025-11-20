@@ -17,7 +17,6 @@ public class TxtToCsv {
     private TxtToCsv() {
    
 }
-    public static void main(final String[] args) {
         String inputFile = "output.txt";
         String outputFile = "output.csv";
 
@@ -73,7 +72,7 @@ public class TxtToCsv {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    
 
     // Αφαιρεί κόμμα ανάμεσα σε ελληνικές λέξεις
     private static String fixGreekComma(final String line) {

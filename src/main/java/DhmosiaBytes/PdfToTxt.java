@@ -12,7 +12,6 @@ public class PdfToTxt {
     private PdfToTxt() {
     
 }
-    public static void main(final String[] args) {
         String pdfPath = "pr1.pdf";
         String txtPath = "output.txt";
 
@@ -28,5 +27,5 @@ public class PdfToTxt {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    
 }
