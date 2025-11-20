@@ -6,22 +6,34 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TxtToCsv {
+     private TxtToCsv() {
+        throw new UnsupportedOperationException("Utility class");
+    }
 
     public static void main(String[] args) {
         String inputFile = "output.txt";
         String outputFile = "output.csv";
 
         try (BufferedReader input = new BufferedReader(
-                    new InputStreamReader(new FileInputStream(inputFile), StandardCharsets.UTF_8));
-             BufferedWriter output = new BufferedWriter(
-                    new OutputStreamWriter(new FileOutputStream(outputFile), StandardCharsets.UTF_8))) {
+         new InputStreamReader(
+             new FileInputStream(inputFile),
+             StandardCharsets.UTF_8
+         ));
+     BufferedWriter output = new BufferedWriter(
+         new OutputStreamWriter(
+             new FileOutputStream(outputFile),
+             StandardCharsets.UTF_8
+         ))) {
+
 
             String line;
             StringBuilder mergedLine = new StringBuilder();
 
             while ((line = input.readLine()) != null) {
                 line = line.trim();
-                if (line.isEmpty()) continue;
+                if (line.isEmpty()) {
+                    continue;
+                } 
 
                 // Ένωση πολυγραμμικών εγγραφών (όσο δεν τελειώνουν σε αριθμό)
                 if (!line.matches(".*\\d$")) {
@@ -49,7 +61,7 @@ public class TxtToCsv {
                 output.newLine();
             }
 
-            System.out.println("Η μετατροπή ολοκληρώθηκε: δημιουργήθηκε UTF-8 CSV αρχείο.");
+            System.out.println("οκ");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -90,7 +102,8 @@ public class TxtToCsv {
         }
 
         // Αφαίρεση τελευταίου κόμματος
-        if (csvLine.length() > 0 && csvLine.charAt(csvLine.length() - 1) == ',') {
+        if (csvLine.length() > 0 
+        && csvLine.charAt(csvLine.length() - 1) == ',') {
             csvLine.setLength(csvLine.length() - 1);
         }
 

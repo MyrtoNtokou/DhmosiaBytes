@@ -9,7 +9,10 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 
 public class PdfToTxt {
-    public static void main(String[] args) {
+    private PdfToTxt() {
+        throw new UnsupportedOperationException("Utility class");
+    }
+    public static void main(final String[] args) {
         String pdfPath = "pr1.pdf";
         String txtPath = "output.txt";
 
