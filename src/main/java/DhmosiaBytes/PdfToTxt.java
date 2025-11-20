@@ -3,12 +3,11 @@ package dhmosiabytes;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 /**
- * This class takes a pdf file and converts it into a txt file
+ * This class takes a pdf file and converts it into a txt file.
  */
 final class PdfToTxt {
     private PdfToTxt() {

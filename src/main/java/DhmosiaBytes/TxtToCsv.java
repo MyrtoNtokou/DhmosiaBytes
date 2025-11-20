@@ -11,11 +11,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 /**
- * This class takes a txt file and converts it into a csv file
+ * This class takes a txt file and converts it into a csv file.
  */
-final class TxtToCsv {  
+final class TxtToCsv {
     private TxtToCsv() {
-   
+
     }
     public static void convertTxtToCsv() {
         String inputFile = "output.txt";
@@ -108,7 +108,7 @@ final class TxtToCsv {
             }
         }
         // Αφαίρεση τελευταίου κόμματος
-        if (csvLine.length() > 0 
+        if (csvLine.length() > 0
         && csvLine.charAt(csvLine.length() - 1) == ',') {
             csvLine.setLength(csvLine.length() - 1);
         }
