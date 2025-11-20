@@ -6,9 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TxtToCsv {
-     private TxtToCsv() {
-        throw new UnsupportedOperationException("Utility class");
-    }
+     
 
     public static void main(String[] args) {
         String inputFile = "output.txt";
