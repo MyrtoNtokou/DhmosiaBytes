@@ -10,7 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
 /**
- * Utility class για αποθήκευση των pdf των κρατικών προϋπολογισμών.
+ * Utility class that downloads the state budget pdfs.
  */
 public final class PdfDownloader {
 
@@ -20,33 +20,31 @@ public final class PdfDownloader {
     }
 
     /**
-     * Η μέθοδος κατεβάζει το pdf του κρατικού προϋπολογισμού.
+     * Downloads the state budget pdf of a specific year.
      *
-     * @param year το έτος
-     * @throws IOException αν υπάρξει σφάλμα κατά την λήψη ή αποθήκευση
+     * @param year
+     * @throws IOException for error during download or save
      */
     public static void downloadPdf(final int year) throws IOException {
-        // Καλεί την findUrl για να κρατήσει σε μία μεταβλητή το link
-        // της χρονίας που ψάχνουμε
+        // Saves the link of the pdf
         String fileUrl = BudgetUrlFinder.findUrl(year);
-        // Έλεγχος ότι το url δεν είναι κενό
+        // Checks that the url is not null
         if (fileUrl == null) {
             System.out.println("Δεν βρέθηκε URL για το έτος " + year);
             return;
         }
-        // Αποθήκευση του url σε ένα αντικείμενο τύπου url
+        // Saves the link in a URL object
         URL url = new URL(fileUrl);
-        // Ορισμός του ονόματος του αρχείου που θα κατεβάσουμε
+        // Sets the name of the pdf that will be downloaded
         String fileName = "budget-" + year + ".pdf";
-        // Δημιουργία του path του φακέλου που θα αποθηκευτούν τα pdf
+        // Creates the path of the folder where the pdfs will be saved
         Path budgetsDir = Path.of("budgetsInPdf");
-        // Δημιουργία φακέλου για αποθήκευση των pdf αν αυτός δεν υπαρχεί
+        // Creates the folder if it does not exist
         if (!Files.exists(budgetsDir)) {
             Files.createDirectories(budgetsDir);
         }
-        // Δημιουργία του τελικού path με το αρχείο
+        // Creates the full path of the pdf
         Path destinationPath = budgetsDir.resolve(fileName);
-
         try (InputStream in = url.openStream()) {
             Files.copy(in, destinationPath,
                 StandardCopyOption.REPLACE_EXISTING);
@@ -54,18 +52,17 @@ public final class PdfDownloader {
     }
 
     /**
-     * Η μέθοδος διαγράφει το pdf του κρατικού προϋπολογισμού.
-     * Όταν αυτό δεν χρειάζεται πια
+     * Deletes the pdf of the state budget.
      *
-     * @param year το έτος
-     * @throws IOException αν υπάρξει σφάλμα κατά την διαγραφή
+     * @param year
+     * @throws IOException for error during delete
      */
     public static void deletePdf(final int year) throws IOException {
-        // Δημιουργία του path όπου είναι αποθηκευμένα τα pdf
+        // Creates the path of the folder with the pdfs
         Path budgetsDir = Path.of("budgetsInPdf");
-        // Δημιουργία του τελικού path με το αρχείο που θα διαγραφεί
+        // Creates the path with the pdf that will be deleted
         Path pdfFile = budgetsDir.resolve("budget-" + year + ".pdf");
-        // Διαγραφή του αρχείου
+        // Deletes the pdf
         Files.deleteIfExists(pdfFile);
     }
 }

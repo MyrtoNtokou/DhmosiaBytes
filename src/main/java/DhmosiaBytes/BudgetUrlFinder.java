@@ -3,11 +3,11 @@ package dhmosiabytes;
 import java.util.Map;
 
 /**
- * Utility class για εύρεση URLs κρατικών προϋπολογισμών.
+ * Utility class that finds the urls of the state budget pdfs.
  */
 public final class BudgetUrlFinder {
 
-    /** Map με τα γνωστά URLs κρατικών προϋπολογισμών. */
+    /** Map with the known urls of the state budget. */
     private static final Map<Integer, String> KNOWN_URL = Map.of(
         2019, "https://minfin.gov.gr/wp-content/uploads/2023/11/"
                 + "ΚΡΑΤΙΚΟΣ-ΠΡΟΥΠΟΛΟΓΙΣΜΟΣ-2019.pdf",
@@ -30,10 +30,10 @@ public final class BudgetUrlFinder {
     }
 
     /**
-     * Η μέθοδος βρίσκει το url που έχει το pdf του κρατικού προϋπολογισμού.
+     * Finds the url of the given year.
      *
-     * @param year το έτος
-     * @return το URL ή null αν δεν βρεθεί
+     * @param year
+     * @return url or null
      */
     public static String findUrl(final int year) {
         return KNOWN_URL.get(year);
