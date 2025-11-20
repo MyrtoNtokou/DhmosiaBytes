@@ -3,7 +3,6 @@ package budgetreader;
 /**Utility class that reads budget data from CSV files and processes
  * them according to the application's requirements.*/
 
-import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReaderBuilder;
 
 import java.io.InputStream;
@@ -20,45 +19,12 @@ public class ReadBudget {
     private ReadBudget() {
         throw new AssertionError("Utility class should not be instantiated.");
     }
-    
-    public static void showBudget() {
-
-        Scanner input = new Scanner(System.in, "UTF-8");
-        /* demands by user to choose budget form  */
-        System.out.println(
-            "Give 1 for general list or give 2 for  Ministry list");
-        System.out.print("User's choice ");
-        int epilogh = input.nextInt();
-
-        if (epilogh == 1) {
-
-            /* Creates list Eggrafi from proypologismos2025.csv 
-            and desplays it*/
-            List<Eggrafi> eggrafes = readGeneralBudget(
-                "/proypologismos2025.csv");
-            System.out.println("\n=== ΓΕΝΙΚΟΣ ΠΡΟΫΠΟΛΟΓΙΣΜΟΣ ===");
-            eggrafes.forEach(System.out::println);
-
-        } else if (epilogh == 2) {
-
-            /* Creates list Ypourgeio from proypologismos2025anaypourgeio.csv 
-            and desplays it*/
-            List<Ypourgeio> ypourg = readByMinistry(
-                "/proypologismos2025anaypourgeio.csv");
-            System.out.println("\n=== ΠΡΟΫΠΟΛΟΓΙΣΜΟΣ ΑΝΑ ΥΠΟΥΡΓΕΙΟ ===");
-            ypourg.forEach(System.out::println);
-
-        } else {
-
-            System.out.println("Μη έγκυρη επιλογή!");
-        }
-    }
 
     /**
-     * Reads (proypologismos2025.csv)
-     * from folder resources and returns all fields from list Eggrafi.
-     */
-        private static List<Eggrafi> readGeneralBudget(String path) {
+    * Reads (proypologismos2025.csv)
+    * from folder resources and returns all fields from list Eggrafi.
+    */
+        public static List<Eggrafi> readGeneralBudget(String path) {
 
         List<Eggrafi> eggrafes = new ArrayList<>();
         try {
@@ -70,12 +36,9 @@ public class ReadBudget {
                 return eggrafes;
             }
 
-            /* Sets delimiter to ; instead of , */
-            var parser = new CSVParserBuilder().withSeparator(';').build();
+            /* Default delimiter ',' */
             var reader = new CSVReaderBuilder(new InputStreamReader(
-                input, StandardCharsets.UTF_8))
-                    .withCSVParser(parser)
-                    .build();
+                input, StandardCharsets.UTF_8)).build();
 
             String[] line;
 
@@ -96,7 +59,7 @@ public class ReadBudget {
     /** Reads proypologismos2025anaypourgeio.csv 
      * from folder resources and returns all fields from list Ypourgeio 
      */ 
-    private static List<Ypourgeio> readByMinistry(String path) {
+    public static List<Ypourgeio> readByMinistry(String path) {
         List<Ypourgeio> ypourg = new ArrayList<>();
         try {
             /* Loads  CSV file from classpath (resources folder) */
@@ -106,12 +69,9 @@ public class ReadBudget {
                 return ypourg;
             }
 
-            /* Sets delimiter to ; instead of , */
-            var parser = new CSVParserBuilder().withSeparator(';').build();
+            /* Default delimiter ',' */
             var reader = new CSVReaderBuilder(new InputStreamReader
-            (input, StandardCharsets.UTF_8))
-                    .withCSVParser(parser)
-                    .build();
+            (input, StandardCharsets.UTF_8)).build();
 
             String[] line;
 
@@ -137,10 +97,11 @@ public class ReadBudget {
         }
         return ypourg;
     }
+
     /** Converts a number written as a string into a double. 
      * by trimming the input and chainging commas to dots
      */
-    private static double parseNumber(String s) {
+    public static double parseNumber(String s) {
     if (s == null || s.isEmpty()) return 0.0;
 
     s = s.trim();
@@ -150,11 +111,11 @@ public class ReadBudget {
     /* Converts commas to dots for proper numeric formatting. */
     s = s.replace(",", ".");
 
-    try {
-        return Double.parseDouble(s);
-    } catch (Exception e) {
-        System.err.println("ΣΦΑΛΜΑ ΣΤΟΝ ΑΡΙΘΜΟ: [" + s + "]");
-        return 0.0;
+        try {
+            return Double.parseDouble(s);
+        } catch (Exception e) {
+            System.err.println("ΣΦΑΛΜΑ ΣΤΟΝ ΑΡΙΘΜΟ: [" + s + "]");
+            return 0.0;
+        }
     }
-}
 }
