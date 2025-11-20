@@ -13,19 +13,17 @@ import org.apache.pdfbox.text.PDFTextStripper;
 final class PdfToTxt {
     private PdfToTxt() {
 }
+       public static void convertPdfToTxt() {
         String pdfPath = "pr1.pdf";
         String txtPath = "output.txt";
 
         try (PDDocument document = PDDocument.load(new File(pdfPath))) {
             PDFTextStripper stripper = new PDFTextStripper();
             String text = stripper.getText(document);
-
-            File file = new File(txtPath);
-            Path path = file.toPath();
-            Files.writeString(path, text);
-
+            Files.writeString(new File(txtPath).toPath(), text);
             System.out.println("Conversion complete: " + txtPath);
         } catch (IOException e) {
             e.printStackTrace();
+        }
         }
 }
