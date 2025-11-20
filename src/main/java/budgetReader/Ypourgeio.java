@@ -23,12 +23,6 @@ public class Ypourgeio {
 
     /**
      * Constructs a new {@code Ypourgeio} instance with the given attributes.
-     *
-     * @param kodikos      the ministry code
-     * @param onoma        the ministry name
-     * @param taktikos     the regular budget amount
-     * @param ependyseis   the public investment budget amount
-     * @param synolo       the total budget amount
      */
     public Ypourgeio(final int kodikos, final String onoma,
                      final double taktikos, final double ependyseis,

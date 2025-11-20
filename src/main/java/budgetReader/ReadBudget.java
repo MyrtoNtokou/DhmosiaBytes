@@ -1,4 +1,3 @@
-
 package budgetreader;
 
 /**Utility class that reads budget data from CSV files and processes
@@ -16,8 +15,8 @@ import java.util.Scanner;
 
 public class ReadBudget {
     /**
-     * Private constructor to prevent instantiation.
-     */
+    * Private constructor to prevent instantiation.
+    */
     private ReadBudget() {
         throw new AssertionError("Utility class should not be instantiated.");
     }
@@ -25,8 +24,7 @@ public class ReadBudget {
     public static void showBudget() {
 
         Scanner input = new Scanner(System.in, "UTF-8");
-        /* demands by user 
-        * to choose budget form  */
+        /* demands by user to choose budget form  */
         System.out.println(
             "Give 1 for general list or give 2 for  Ministry list");
         System.out.print("User's choice ");
@@ -35,7 +33,7 @@ public class ReadBudget {
         if (epilogh == 1) {
 
             /* Creates list Eggrafi from proypologismos2025.csv 
-            *and desplays it*/
+            and desplays it*/
             List<Eggrafi> eggrafes = readGeneralBudget(
                 "/proypologismos2025.csv");
             System.out.println("\n=== ΓΕΝΙΚΟΣ ΠΡΟΫΠΟΛΟΓΙΣΜΟΣ ===");
@@ -44,7 +42,7 @@ public class ReadBudget {
         } else if (epilogh == 2) {
 
             /* Creates list Ypourgeio from proypologismos2025anaypourgeio.csv 
-            *and desplays it*/
+            and desplays it*/
             List<Ypourgeio> ypourg = readByMinistry(
                 "/proypologismos2025anaypourgeio.csv");
             System.out.println("\n=== ΠΡΟΫΠΟΛΟΓΙΣΜΟΣ ΑΝΑ ΥΠΟΥΡΓΕΙΟ ===");
@@ -56,16 +54,15 @@ public class ReadBudget {
         }
     }
 
-        /*
- * Reads (proypologismos2025.csv)
- * from folder resources and returns all fields from list Eggrafi.
- */
-       private static List<Eggrafi> readGeneralBudget(String path) {
+    /**
+     * Reads (proypologismos2025.csv)
+     * from folder resources and returns all fields from list Eggrafi.
+     */
+        private static List<Eggrafi> readGeneralBudget(String path) {
 
         List<Eggrafi> eggrafes = new ArrayList<>();
         try {
-            /* Loads CSV file
-            * from classpath (resources folder) */
+            /* Loads CSV file from classpath (resources folder) */
             InputStream input = ReadBudget.class.getResourceAsStream(path);
 
             if (input == null) {
@@ -73,8 +70,7 @@ public class ReadBudget {
                 return eggrafes;
             }
 
-            /* Sets delimiter 
-            * to ; instead of , */
+            /* Sets delimiter to ; instead of , */
             var parser = new CSVParserBuilder().withSeparator(';').build();
             var reader = new CSVReaderBuilder(new InputStreamReader(
                 input, StandardCharsets.UTF_8))
@@ -83,8 +79,7 @@ public class ReadBudget {
 
             String[] line;
 
-            /* Creates new instances 
-            * Eggrafi for each line */
+            /* Creates new instances Eggrafi for each line */
             while ((line = reader.readNext()) != null) {
                 if (line.length < 3) continue;
                 String kodikos = line[0].trim();
@@ -98,20 +93,20 @@ public class ReadBudget {
         return eggrafes;
     }
 
-    /* Reads proypologismos2025anaypourgeio.csv */ 
+    /** Reads proypologismos2025anaypourgeio.csv 
+     * from folder resources and returns all fields from list Ypourgeio 
+     */ 
     private static List<Ypourgeio> readByMinistry(String path) {
         List<Ypourgeio> ypourg = new ArrayList<>();
         try {
-            /* Loads  CSV file 
-            * from classpath (resources folder) */
+            /* Loads  CSV file from classpath (resources folder) */
             InputStream input = ReadBudget.class.getResourceAsStream(path);
             if (input == null) {
                 System.err.println("❌ Δεν βρέθηκε το αρχείο: " + path);
                 return ypourg;
             }
 
-            /* Sets delimiter
-            * to ; instead of , */
+            /* Sets delimiter to ; instead of , */
             var parser = new CSVParserBuilder().withSeparator(';').build();
             var reader = new CSVReaderBuilder(new InputStreamReader
             (input, StandardCharsets.UTF_8))
@@ -120,8 +115,7 @@ public class ReadBudget {
 
             String[] line;
 
-            /* Creates new instances
-            * Ypourgeio for each line */
+            /* Creates new instances Ypourgeio for each line */
             while ((line = reader.readNext()) != null) {
                 if (line.length < 5) continue;
                 try {
@@ -143,16 +137,17 @@ public class ReadBudget {
         }
         return ypourg;
     }
+    /** Converts a number written as a string into a double. 
+     * by trimming the input and chainging commas to dots
+     */
     private static double parseNumber(String s) {
     if (s == null || s.isEmpty()) return 0.0;
 
     s = s.trim();
 
-    /* Removes
-    * the trailing thousands separator */  
+    /* Removes the trailing thousands separator */  
     s = s.replace(".", "");
-    /* Converts commas to dots
-    * for proper numeric formatting. */
+    /* Converts commas to dots for proper numeric formatting. */
     s = s.replace(",", ".");
 
     try {
