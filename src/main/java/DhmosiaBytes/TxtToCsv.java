@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 final class TxtToCsv {  
     private TxtToCsv() {
    
-}
+    }
     public static void convertTxtToCsv() {
         String inputFile = "output.txt";
         String outputFile = "output.csv";
@@ -26,11 +26,11 @@ final class TxtToCsv {
              new FileInputStream(inputFile),
              StandardCharsets.UTF_8
          ));
-     BufferedWriter output = new BufferedWriter(
+            BufferedWriter output = new BufferedWriter(
          new OutputStreamWriter(
              new FileOutputStream(outputFile),
              StandardCharsets.UTF_8
-         ))); {
+         ))) {
 
 
             String line;
