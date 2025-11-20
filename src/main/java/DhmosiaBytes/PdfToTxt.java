@@ -9,7 +9,9 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 
 public class PdfToTxt {
+    private PdfToTxt() {
     
+}
     public static void main(final String[] args) {
         String pdfPath = "pr1.pdf";
         String txtPath = "output.txt";

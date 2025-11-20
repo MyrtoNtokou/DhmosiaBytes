@@ -1,14 +1,23 @@
 package dhmosiabytes;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class TxtToCsv {
-     
-
-    public static void main(String[] args) {
+public class TxtToCsv {  
+    private TxtToCsv() {
+   
+}
+    public static void main(final String[] args) {
         String inputFile = "output.txt";
         String outputFile = "output.csv";
 
@@ -31,7 +40,7 @@ public class TxtToCsv {
                 line = line.trim();
                 if (line.isEmpty()) {
                     continue;
-                } 
+                }
 
                 // Ένωση πολυγραμμικών εγγραφών (όσο δεν τελειώνουν σε αριθμό)
                 if (!line.matches(".*\\d$")) {
@@ -67,12 +76,12 @@ public class TxtToCsv {
     }
 
     // Αφαιρεί κόμμα ανάμεσα σε ελληνικές λέξεις
-    private static String fixGreekComma(String line) {
+    private static String fixGreekComma(final String line) {
         return line.replaceAll("([\\p{IsGreek}]+),([\\p{IsGreek}]+)", "$1 $2");
     }
 
     // Δημιουργεί CSV γραμμή από αναμεμειγμένο κείμενο και αριθμούς
-    private static String createCsvLine(String line) {
+    private static String createCsvLine(final String line) {
         Pattern pattern = Pattern.compile("(\\d[\\d\\.,]*)");
         Matcher matcher = pattern.matcher(line);
 
@@ -109,7 +118,7 @@ public class TxtToCsv {
     }
 
     // Αν χρειάζεται, περικλείει field σε quotes
-    private static String quoteIfNeeded(String field) {
+    private static String quoteIfNeeded(final String field) {
         if (field.contains(",") || field.contains(" ")) {
             return "\"" + field.replace("\"", "\"\"") + "\"";
         }
