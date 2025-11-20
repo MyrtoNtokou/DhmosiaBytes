@@ -7,10 +7,11 @@ import java.nio.file.Path;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
-
-public class PdfToTxt {
+/**
+ * This class takes a pdf file and converts it into a txt file
+ */
+final class PdfToTxt {
     private PdfToTxt() {
-    
 }
         String pdfPath = "pr1.pdf";
         String txtPath = "output.txt";
@@ -27,5 +28,4 @@ public class PdfToTxt {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    
 }

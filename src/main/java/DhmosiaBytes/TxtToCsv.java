@@ -2,18 +2,18 @@ package dhmosiabytes;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-public class TxtToCsv {  
+/**
+ * This class takes a txt file and converts it into a csv file
+ */
+final class TxtToCsv {  
     private TxtToCsv() {
    
 }
@@ -106,13 +106,11 @@ public class TxtToCsv {
                 csvLine.append(quoteIfNeeded(remaining));
             }
         }
-
         // Αφαίρεση τελευταίου κόμματος
         if (csvLine.length() > 0 
         && csvLine.charAt(csvLine.length() - 1) == ',') {
             csvLine.setLength(csvLine.length() - 1);
         }
-
         return csvLine.toString();
     }
 
