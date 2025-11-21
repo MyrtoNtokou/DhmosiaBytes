@@ -5,12 +5,11 @@ package budgetreader;
 
 import com.opencsv.CSVReaderBuilder;
 
-import java.io.InputStream;
+import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class ReadBudget {
     /**
@@ -20,25 +19,18 @@ public class ReadBudget {
         throw new AssertionError("Utility class should not be instantiated.");
     }
 
-    /**
-    * Reads (proypologismos2025.csv)
-    * from folder resources and returns all fields from list Eggrafi.
-    */
-        public static List<Eggrafi> readGeneralBudget(String path) {
+    /** Reads output.csv from local file system
+     *  and converts each row into an @Eggrafi object 
+     */ 
+        public static List<Eggrafi> readGeneralBudget(String filePath) {
 
         List<Eggrafi> eggrafes = new ArrayList<>();
-        try {
-            /* Loads CSV file from classpath (resources folder) */
-            InputStream input = ReadBudget.class.getResourceAsStream(path);
 
-            if (input == null) {
-                System.err.println("❌ Δεν βρέθηκε το αρχείο: " + path);
-                return eggrafes;
-            }
-
-            /* Default delimiter ',' */
-            var reader = new CSVReaderBuilder(new InputStreamReader(
-                input, StandardCharsets.UTF_8)).build();
+        try (var reader = new CSVReaderBuilder(
+            new InputStreamReader(
+                new java.io.FileInputStream(filePath),
+                StandardCharsets.UTF_8
+            )).build()) {
 
             String[] line;
 
@@ -48,31 +40,29 @@ public class ReadBudget {
                 String kodikos = line[0].trim();
                 String perigrafi = line[1].trim();
                 double poso = parseNumber(line[2].trim());
+
                 eggrafes.add(new Eggrafi(kodikos, perigrafi, poso));
             }
         } catch (Exception e) {
+            System.err.println("Δεν μπόρεσα να διαβάσω το αρχείο: " 
+                + filePath);
             e.printStackTrace();
         }
         return eggrafes;
     }
 
-    /** Reads proypologismos2025anaypourgeio.csv 
-     * from folder resources and returns all fields from list Ypourgeio 
+    /** Reads output.csv from local file system
+     *  and converts each row into an @Ypourgeio object 
      */ 
-    public static List<Ypourgeio> readByMinistry(String path) {
+    public static List<Ypourgeio> readByMinistry(String filePath) {
+
         List<Ypourgeio> ypourg = new ArrayList<>();
-        try {
-            /* Loads  CSV file from classpath (resources folder) */
-            InputStream input = ReadBudget.class.getResourceAsStream(path);
-            if (input == null) {
-                System.err.println("❌ Δεν βρέθηκε το αρχείο: " + path);
-                return ypourg;
-            }
-
-            /* Default delimiter ',' */
-            var reader = new CSVReaderBuilder(new InputStreamReader
-            (input, StandardCharsets.UTF_8)).build();
-
+        try (var reader = new CSVReaderBuilder(
+        new InputStreamReader(
+            new FileInputStream(filePath),
+            StandardCharsets.UTF_8
+        )).build()) {
+            
             String[] line;
 
             /* Creates new instances Ypourgeio for each line */
@@ -93,6 +83,8 @@ public class ReadBudget {
                 }
             }
         } catch (Exception e) {
+            System.err.println("Δεν μπόρεσα να διαβάσω το αρχείο: " 
+                + filePath);
             e.printStackTrace();
         }
         return ypourg;
@@ -106,7 +98,7 @@ public class ReadBudget {
 
     s = s.trim();
 
-    /* Removes the trailing thousands separator */  
+    /* Removes the trailing thousands separator */
     s = s.replace(".", "");
     /* Converts commas to dots for proper numeric formatting. */
     s = s.replace(",", ".");
