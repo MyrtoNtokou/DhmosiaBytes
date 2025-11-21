@@ -45,17 +45,7 @@ public final class PdfDownloader {
         // Sets the name of the pdf that will be downloaded
         String fileName = "budget-" + year + ".pdf";
         // Creates the path of the folder where the pdfs will be saved
-        Path budgetsDir = Path.of("budgetsInPdf");
-        // Creates the folder if it does not exist
-        if (!Files.exists(budgetsDir)) {
-            try {
-                Files.createDirectories(budgetsDir);
-            } catch (IOException e) {
-                System.err.println("Δεν ήταν δυνατή η δημιουργία του φακέλου.");
-            }
-        }
-        // Creates the full path of the pdf
-        Path destinationPath = budgetsDir.resolve(fileName);
+        Path destinationPath = Path.of("budget-" + year + ".pdf");
         try (InputStream in = url.openStream()) {
             Files.copy(in, destinationPath,
                 StandardCopyOption.REPLACE_EXISTING);
@@ -72,12 +62,10 @@ public final class PdfDownloader {
      */
     public static void deletePdf(final int year) {
         // Creates the path of the folder with the pdfs
-        Path budgetsDir = Path.of("budgetsInPdf");
-        // Creates the path with the pdf that will be deleted
-        Path pdfFile = budgetsDir.resolve("budget-" + year + ".pdf");
+        Path destinationPath = Path.of("budget-" + year + ".pdf");
         // Deletes the pdf
         try {
-            Files.deleteIfExists(pdfFile);
+            Files.deleteIfExists(destinationPath);
         } catch (IOException e) {
             System.err.println("Σφάλμα κατά την διαγραφή του αρχείου");
         }
