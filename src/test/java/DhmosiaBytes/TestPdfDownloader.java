@@ -19,19 +19,10 @@ public class TestPdfDownloader {
     private static final int TEST_YEAR = 2025;
     private static Path budgetsDir;
 
-    @BeforeAll
-    // Create the folder where the pdf will be saved if it does not exist
-    public static void setup() throws IOException {
-        budgetsDir = Path.of("budgetsInPdf");
-        if (!Files.exists(budgetsDir)) {
-            Files.createDirectories(budgetsDir);
-        }
-    }
-
     @AfterEach
     // Delete the file after every test
     public void cleanUp() throws IOException {
-        Path pdfFile = budgetsDir.resolve("budget-" + TEST_YEAR + ".pdf");
+        Path pdfFile = Path.of("budget-" + TEST_YEAR + ".pdf");
         Files.deleteIfExists(pdfFile);
     }
 
@@ -42,7 +33,7 @@ public class TestPdfDownloader {
             mocked.when(() -> BudgetUrlFinder.findUrl(TEST_YEAR))
                   .thenReturn("https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf");
             PdfDownloader.downloadPdf(TEST_YEAR);
-            Path pdfFile = budgetsDir.resolve("budget-" + TEST_YEAR + ".pdf");
+            Path pdfFile = Path.of("budget-" + TEST_YEAR + ".pdf");
             assertTrue(Files.exists(pdfFile), "Το PDF δεν έχει δημιουργηθεί");
         }
     }
@@ -53,7 +44,7 @@ public class TestPdfDownloader {
             mocked.when(() -> BudgetUrlFinder.findUrl(TEST_YEAR))
               .thenReturn("https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf");
             PdfDownloader.downloadPdf(TEST_YEAR);
-            Path pdfFile = budgetsDir.resolve("budget-" + TEST_YEAR + ".pdf");
+            Path pdfFile = Path.of("budget-" + TEST_YEAR + ".pdf");
             assertTrue(Files.exists(pdfFile));
             PdfDownloader.deletePdf(TEST_YEAR);
             assertFalse(Files.exists(pdfFile), "Το PDF δεν έχει διαγραφεί");
@@ -65,7 +56,7 @@ public class TestPdfDownloader {
         try (MockedStatic<BudgetUrlFinder> mocked = mockStatic(BudgetUrlFinder.class)) {
             mocked.when(() -> BudgetUrlFinder.findUrl(TEST_YEAR)).thenReturn(null);
             PdfDownloader.downloadPdf(TEST_YEAR);
-            Path pdfFile = budgetsDir.resolve("budget-" + TEST_YEAR + ".pdf");
+            Path pdfFile = Path.of("budget-" + TEST_YEAR + ".pdf");
             assertFalse(Files.exists(pdfFile), "Δημιουργήθηκε αρχείο ενώ το URL είναι null");
         }
     }
