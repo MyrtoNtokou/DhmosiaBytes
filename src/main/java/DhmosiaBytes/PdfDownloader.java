@@ -42,8 +42,6 @@ public final class PdfDownloader {
             System.err.println("Σφάλμα κατά τον εντοπισμό του αρχείου");
             return;
         }
-        // Sets the name of the pdf that will be downloaded
-        String fileName = "budget-" + year + ".pdf";
         // Creates the path of the folder where the pdfs will be saved
         Path destinationPath = Path.of("budget-" + year + ".pdf");
         try (InputStream in = url.openStream()) {
