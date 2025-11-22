@@ -1,27 +1,32 @@
 
 package budgetreader;
 
+import java.text.DecimalFormat;
+
 /** Represents a single budget record (Eggrafi).
  * Each record contains a code, a description and an amount.
  * This class is immutable except for the provided getter methods.
  * It also provides a formatted string representation of the entry.*/
-import java.text.DecimalFormat;
-
 public final class  Eggrafi {
     /** kodikos of
-     * Eggrafi instance */
+     * Eggrafi instance.*/
     private String kodikos;
 
     /**perigrafi  of
-     * Eggrafi instance */
+     * Eggrafi instance. */
     private String perigrafi;
-    
+
     /**poso  of
-     * Eggrafi instance */
+     * Eggrafi instance. */
     private double poso;
 
     /** constructor
-     * that creates new Eggrafi instance*/
+     * that creates new Eggrafi instance.
+     
+    * @param kodikosValue the code value
+     * @param perigrafiValue the description value
+     * @param posoValue the amount value 
+     */
     public Eggrafi(final String kodikosValue, final String perigrafiValue, 
     final double posoValue) {
         this.kodikos = kodikosValue;
@@ -29,26 +34,26 @@ public final class  Eggrafi {
         this.poso = posoValue;
     }
 
-    /* method that
-    *returns kodikos */
+    /** method that
+    * returns kodikos. */
     public String getKodikos() {
         return kodikos;
     }
 
-    /* method that
-    *returns perigrafi */
+    /** method that
+    *returns perigrafi. */
     public String getPerigrafi() { 
         return perigrafi;
     }
 
-    /* method that
-     *returns poso */
+    /** method that
+     *returns poso. */
     public double getPoso() {
         return poso;
     }
 
     /* toString method
-     * for a specific format
+     * for a specific format.
     */
     @Override
     public String toString() {

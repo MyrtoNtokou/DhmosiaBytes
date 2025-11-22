@@ -23,20 +23,28 @@ public class Ypourgeio {
 
     /**
      * Constructs a new {@code Ypourgeio} instance with the given attributes.
+     * 
+     * @param kodikosValue is the kodikos of Ministry
+     * @param onomaValue is the name of the Ministry
+     * @param taktikosValue is the amount of Ministry's General Budget
+     * @param ependyseisValue is the amount of Ministry's investments
+     * @param synoloValue is the total amount of Ministry's Budget
      */
-    public Ypourgeio(final int kodikos, final String onoma,
-                     final double taktikos, final double ependyseis,
-                     final double synolo) {
+    public Ypourgeio(final int kodikosValue, final String onomaValue,
+                     final double taktikosValue, final double ependyseisValue,
+                     final double synoloValue) {
 
-        this.kodikos = kodikos;
-        this.onoma = onoma;
-        this.taktikos = taktikos;
-        this.ependyseis = ependyseis;
-        this.synolo = synolo;
+        kodikos = kodikosValue;
+        onoma = onomaValue;
+        taktikos = taktikosValue;
+        ependyseis = ependyseisValue;
+        synolo = synoloValue;
     }
 
     /**
      * Returns the ministry code.
+     *
+     * @return kodikos
      */
     public int getKodikos() {
         return kodikos;
@@ -44,34 +52,44 @@ public class Ypourgeio {
 
     /**
      * Returns the ministry name.
+     *
+     * @return onoma
      */
     public String getOnoma() { 
-        return onoma; 
+        return onoma;
     }
 
     /**
      * Returns the regular budget amount.
+     *
+     * @return taktikos (General Ministry's Budget)
      */
-    public double getTaktikos() { 
-        return taktikos; 
+    public double getTaktikos() {
+        return taktikos;
     }
 
     /**
      * Returns the public investment budget amount.
+     *
+     * @return investments budget
      */
-    public double getEpendysewn() { 
+    public double getEpendysewn() {
         return ependyseis;
     }
 
     /**
      * Returns the total ministry budget.
+     *
+     * @return total budget
      */
     public double getSynolo() { 
-        return synolo; 
+        return synolo;
     }
 
     /**
      * Returns a formatted string representation of this ministry entry.
+     *
+     * @return the formatted string representation
      */
     @Override
     public String toString() {
