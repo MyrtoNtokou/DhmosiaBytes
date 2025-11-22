@@ -23,7 +23,7 @@ public class Ypourgeio {
 
     /**
      * Constructs a new {@code Ypourgeio} instance with the given attributes.
-     * 
+     *
      * @param kodikosValue is the kodikos of Ministry
      * @param onomaValue is the name of the Ministry
      * @param taktikosValue is the amount of Ministry's General Budget
@@ -55,7 +55,7 @@ public class Ypourgeio {
      *
      * @return onoma
      */
-    public String getOnoma() { 
+    public String getOnoma() {
         return onoma;
     }
 
@@ -82,7 +82,7 @@ public class Ypourgeio {
      *
      * @return total budget
      */
-    public double getSynolo() { 
+    public double getSynolo() {
         return synolo;
     }
 

@@ -13,7 +13,7 @@ public final class DisplayBudget {
     private DisplayBudget() { }
 
     /** Prints the General Budget List on the screen.
-     *  
+     *
      * @param eggrafes the list of budget entries to print
      */
     public static void showGeneral(final List<Eggrafi> eggrafes) {
@@ -26,10 +26,10 @@ public final class DisplayBudget {
     }
 
     /** Prints the Ministry Budget List on the screen.
-     * 
+     *
      * @param ypourg the list of budget entries to print
      */
-    public static void showMinistry(List<Ypourgeio> ypourg) {
+    public static void showMinistry(final List<Ypourgeio> ypourg) {
         System.out.println("\n=== ΠΡΟΫΠΟΛΟΓΙΣΜΟΣ ΑΝΑ ΥΠΟΥΡΓΕΙΟ ===");
 
         /* Print each record in the list*/

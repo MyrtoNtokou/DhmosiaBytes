@@ -18,22 +18,30 @@ public final class ReadBudget {
     * Private constructor to prevent instantiation.
     */
     private ReadBudget() { }
-
+    /** Minimum number of columns required for the general budget CSV. */
     private static final int MIN_GENERAL_COLUMNS = 3;
+
+    /** Minimum number of columns required for the ministry budget CSV. */
     private static final int MIN_MINISTRY_COLUMNS = 5;
 
+    /** CSV column index for the regular budget value. */
     private static final int COLUMN_TAKTIKOS = 2;
+
+    /** CSV column index for the public investment budget value. */
     private static final int COLUMN_EPENDYSEIS = 3;
+
+    /** CSV column index for the total budget value. */
     private static final int COLUMN_SYNOLO = 4;
-    
+
     /** Reads the proper csv file
-    * from folder resources 
+    * from folder resources
     * and converts each row into an {@link Eggrafi} object.
     *
     * @param resourceName the CSV filename to load
     * @return a list of Eggrafi objects read from the file
     */
-        public static List<Eggrafi> readGeneralBudget(final String resourceName) {
+        public static List<Eggrafi> readGeneralBudget(
+            final String resourceName) {
 
         List<Eggrafi> eggrafes = new ArrayList<>();
         try {
@@ -47,7 +55,7 @@ public final class ReadBudget {
                     return eggrafes;
                 }
 
-            /*Converts delimiter to ";" instead of ","  */   
+            /*Converts delimiter to ";" instead of ","  */
             CSVParser parser = new CSVParserBuilder()
                 .withSeparator(';')
                     .build();
@@ -142,21 +150,23 @@ public final class ReadBudget {
 
     /** Converts a number written as a string into a double
      * by trimming the input and chainging commas to dots.
-     * 
+     *
      * @param s the numeric string to convert
      * @return the parsed double value, or 0.0 if conversion fails
      */
-    public static double parseNumber(String s) {
-    if (s == null || s.isEmpty()) {
+    public static double parseNumber(final String s) {
+
+        String value = s;
+    if (value == null || value.isEmpty()) {
         return 0.0;
     }
 
-    s = s.trim();
+    value = value.trim();
 
     /* Removes the trailing thousands separator */
-    s = s.replace(".", "");
+    value = value.replace(".", "");
     /* Converts commas to dots for proper numeric formatting. */
-    s = s.replace(",", ".");
+    value = value.replace(",", ".");
 
         try {
             return Double.parseDouble(s);

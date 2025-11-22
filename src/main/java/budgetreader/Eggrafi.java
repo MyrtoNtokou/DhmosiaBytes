@@ -22,38 +22,42 @@ public final class  Eggrafi {
 
     /** constructor
      * that creates new Eggrafi instance.
-     
+
     * @param kodikosValue the code value
      * @param perigrafiValue the description value
-     * @param posoValue the amount value 
+     * @param posoValue the amount value
      */
-    public Eggrafi(final String kodikosValue, final String perigrafiValue, 
+    public Eggrafi(final String kodikosValue, final String perigrafiValue,
     final double posoValue) {
         this.kodikos = kodikosValue;
         this.perigrafi = perigrafiValue;
         this.poso = posoValue;
     }
 
-    /** method that
-    * returns kodikos. */
+    /** method that return kodikos.
+    * @return kodikos.
+    */
     public String getKodikos() {
         return kodikos;
     }
 
-    /** method that
-    *returns perigrafi. */
-    public String getPerigrafi() { 
+    /** method that return perigrafi.
+    *@return perigrafi
+    */
+    public String getPerigrafi() {
         return perigrafi;
     }
 
-    /** method that
-     *returns poso. */
+    /** method that return poso.
+     * @return poso
+     */
     public double getPoso() {
         return poso;
     }
 
-    /* toString method
-     * for a specific format.
+    /** toString method.
+    *
+    * @return the formatted string representation
     */
     @Override
     public String toString() {
