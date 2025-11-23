@@ -2,16 +2,16 @@
  * Enum containing the options of the application's main menu.
  */
 public enum MenuOptions {
-    
+
     /** Option to display the national budget. */
     SHOW_BUDGET(1, "Εμφάνιση Κρατικού Προϋπολογισμού"),
-    
+
     /** Option to edit budget details. */
     EDIT_BUDGET(2, "Αλλαγή στοιχείων"),
-    
+
     /** Option to summarize data. */
-    SUMMARY(3, "Κατηγοριοποίηση στοιχείων"), //εδώ μπορεί να μπει έξτρα επιλογή ανά έτη, ανά χώρα, ανά υπουργείο
-    
+    SUMMARY(3, "Κατηγοριοποίηση στοιχείων"),
+
     /** Option to display charts. */
     GRAPHS(4, "Γραφήματα"),
 
@@ -27,12 +27,12 @@ public enum MenuOptions {
     /**
      * Creates a MenuOptions object with a code and description.
      *
-     * @param code the numeric code of the option
-     * @param description the description of the option
+     * @param givenCode the numeric code of the option
+     * @param givenDescription the description of the option
      */
-    private MenuOptions(int code, String description) {
-        this.code = code;
-        this.description = description;
+    MenuOptions(final int givenCode, final String givenDescription) {
+        this.code = givenCode;
+        this.description = givenDescription;
     }
 
     /**
@@ -59,7 +59,7 @@ public enum MenuOptions {
      * @param code the option code
      * @return the corresponding MenuOptions or null if not found
      */
-    public static MenuOptions fromCode(int code) {
+    public static MenuOptions fromCode(final int code) {
         for (MenuOptions opt : MenuOptions.values()) {
             if (opt.getCode() == code) {
                 return opt;

@@ -1,35 +1,42 @@
 import java.util.Scanner;
 
 /**
- * Class that displays the application's main menu 
+ * Class that displays the application's main menu
  * and executes the corresponding user actions.
  */
-public class MainMenuOptions {
+public final class MainMenuOptions {
+
+    /**
+     * Private constractor to prevent object creation.
+     */
+    private MainMenuOptions() { }
 
     /**
      * Main method to run the MenuOptions.
      * Shows the menu options and executes the action chosen by the user.
-     * 
+     *
      * @param args command line arguments
      */
-    public static void main( final String[] args) {
+    public static void main(final String[] args) {
         MenuOptions choice;
         Scanner input = new Scanner(System.in, "UTF-8");
         do {
-            /** Display menu options */
+            // Display menu options
             for (MenuOptions opt : MenuOptions.values()) {
                 System.out.println(opt.getCode() + ". " + opt.getDescription());
             }
 
             System.out.println("Επιλογή: ");
             choice = MenuOptions.fromCode(input.nextInt());
-        
-            switch(choice) {
+
+            switch (choice) {
                 case SHOW_BUDGET -> showBudget();
                 case EDIT_BUDGET -> editBudget();
                 case SUMMARY -> summary();
                 case GRAPHS -> graphs();
                 case EXIT -> System.out.println("Έξοδος από εφαρμογή");
+                default -> System.out.println("Μη έγκυρη επιλογή. "
+                + "Παρακαλώ δοκιμάστε ξανά.");
             }
         } while (choice != MenuOptions.EXIT);
     }

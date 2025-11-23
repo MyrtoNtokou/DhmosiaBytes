@@ -7,30 +7,30 @@ import java.io.Serializable;
 public class User implements Serializable {
     /** The role of the user. */
     private Role role;
-    
+
     /** The username of the user. */
     private String username;
-    
+
     /** The password of the user. */
     private String password;
-    
+
     /**
      * Creates a user with a specific role, username, and password.
-     * 
-     * @param role the role of the user
-     * @param username the username of the user
-     * @param password the password of the user
+     *
+     * @param currentRole the role of the user
+     * @param currentUsername the username of the user
+     * @param currentPassword the password of the user
      */
-    public User(final Role role, final String username, 
-    final String password) {
-        this.role = role;
-        this.username = username;
-        this.password = password;
+    public User(final Role currentRole, final String currentUsername,
+    final String currentPassword) {
+        this.role = currentRole;
+        this.username = currentUsername;
+        this.password = currentPassword;
     }
 
     /**
      * Returns the role of the user.
-     * 
+     *
      * @return the user's role
      */
     public Role getRole() {
@@ -39,7 +39,7 @@ public class User implements Serializable {
 
     /**
      * Returns the username of the user.
-     * 
+     *
      * @return the user's username
      */
     public String getUsername() {
@@ -48,7 +48,7 @@ public class User implements Serializable {
 
     /**
      * Returns the password of the user.
-     * 
+     *
      * @return the user's password
      */
     public String getPassword() {
@@ -56,9 +56,9 @@ public class User implements Serializable {
     }
 
    /**
-     * Returns a string representation of the user, including username 
+     * Returns a string representation of the user, including username
      * and role.
-     * 
+     *
      * @return the username and role of the user
      */
     @Override

@@ -15,7 +15,7 @@ import java.util.Collections;
  * saving, and loading users.
  */
 public final class UserDatabase implements Serializable {
-    
+
     /** The single shared instance of the database (Singleton pattern). */
     private static final UserDatabase DB = new UserDatabase();
 
@@ -35,22 +35,22 @@ public final class UserDatabase implements Serializable {
     }
 
     /**
-     * Returns the single shared instance of the UserDatabase.
+     * Returns a copy of the instance of the UserDatabase.
      *
      * @return the singleton instance
      */
     public static UserDatabase getDB() {
-        return DB;
+        return new UserDatabase();
     }
 
     /**
      * Adds a new user to the database.
-     * 
+     *
      * @param newUser the user to be added
      * @return true if the user was successfully added,
      *         false if the user already exists
      */
-    public boolean addUser(User newUser) {
+    public boolean addUser(final User newUser) {
         if (!users.containsKey(newUser.getUsername())) {
             users.put(newUser.getUsername(), newUser);
             save();
@@ -62,18 +62,18 @@ public final class UserDatabase implements Serializable {
 
     /**
      * Returns the user with the given username, if it exists.
-     * 
+     *
      * @param username the username to search for
      * @return the User object or null if not found
      */
-    public User findUser(String username) {
+    public User findUser(final String username) {
         return users.get(username);
     }
 
-    /** 
+    /**
      * Displays the list of users.
      * You can't edit this list.
-     * 
+     *
      * @return all the users
      */
     public Map<String, User> getUsers() {
@@ -84,7 +84,7 @@ public final class UserDatabase implements Serializable {
      * Saves all users to the file "users.db".
      */
     private void save() {
-        try (ObjectOutputStream out = 
+        try (ObjectOutputStream out =
         new ObjectOutputStream(new FileOutputStream("users.db"))) {
             out.writeObject(users);
         } catch (IOException e) {
@@ -99,9 +99,11 @@ public final class UserDatabase implements Serializable {
     @SuppressWarnings("unchecked")
     private void load() {
         File file = new File("users.db");
-        if (!file.exists()) return;
+        if (!file.exists()) {
+            return;
+        }
 
-        try (ObjectInputStream in = 
+        try (ObjectInputStream in =
         new ObjectInputStream(new FileInputStream(file))) {
             users = (Map<String, User>) in.readObject();
         } catch (IOException | ClassNotFoundException e) {
@@ -111,8 +113,10 @@ public final class UserDatabase implements Serializable {
 
     /**
      * Ensures that after deserialization, the Singleton property is preserved.
+     *
+     * @return the singleton instance of UserDatabase
      */
     private Object readResolve() {
-    return DB;
-}
+        return getDB();
+    }
 }

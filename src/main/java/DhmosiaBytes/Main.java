@@ -1,30 +1,39 @@
 import java.util.InputMismatchException;
-import java.io.IOException;
-import java.util.Scanner; 
+import java.util.Scanner;
 
 /**
  * Main class to start the application for user management.
  */
-public class Main{
-    
-    /** Minimum and maximum code values for user roles */
+public final class Main {
+
+    /** Minimum code value for user roles. */
     private static final int MIN_CODE = 1;
+
+    /** Maximum code value for user roles. */
     private static final int MAX_CODE = Role.values().length;
+
+    /** Maximum times a user can enter a password. */
+    private static final int MAX_TIMES_CODE = 3;
+
+    /**
+     * Private constractor so no objects will be created.
+     */
+    private Main() { }
 
    /**
      * Allows the user to select their role.
-     * 
+     *
      * @param input Scanner object for reading input
      * @return the selected Role
      */
-    private static Role selectRole(Scanner input) {
+    private static Role selectRole(final Scanner input) {
         for (Role r : Role.values()) {
             System.out.println(r.getCode() + ". " + r.getUsersRole());
         }
         System.out.println("Επιλέξτε την ιδιότητά σας: ");
         int roleCode = input.nextInt();
         while (roleCode < MIN_CODE || roleCode > MAX_CODE) {
-            System.out.println("Πρέπει να επιλέξετε μία από τις " 
+            System.out.println("Πρέπει να επιλέξετε μία από τις "
             + "παραπάνω ιδιότητες (1-" + MAX_CODE + ")");
             roleCode = input.nextInt();
         }
@@ -33,14 +42,13 @@ public class Main{
 
     /**
      * Main method to execute the application.
-     * 
+     *
      * @param args command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         Scanner input = new Scanner(System.in, "UTF-8");
         LoginService log = new LoginService();
-        
-        /** User picks their Role */
+
         Role currentRole = selectRole(input);
 
         int choice = 0;
@@ -49,7 +57,7 @@ public class Main{
             System.out.println("2. Σύνδεση σε λογαριασμό");
             try {
                 choice = input.nextInt();
-                if(choice != 1 && choice != 2) {
+                if (choice != 1 && choice != 2) {
                     System.out.println("Πρέπει να επιλέξετε 1 ή 2");
                 }
             } catch (InputMismatchException e) {
@@ -57,37 +65,35 @@ public class Main{
                 input.next();
             }
         }
-        
+
         if (choice == 1) {
-            /** Register */
             String currentUsername = InputReader.enterValidUsername(input);
             if (UserDatabase.getDB().findUser(currentUsername) != null) {
-                System.out.println("Υπάρχει ήδη λογαριασμός " 
+                System.out.println("Υπάρχει ήδη λογαριασμός "
                 + "με αυτό το username");
             } else {
                 String currentPassword = InputReader.enterValidPassword(input);
-                User currentUser = log.register(currentRole, 
+                User currentUser = log.register(currentRole,
                 currentUsername, currentPassword);
                 if (currentUser != null) {
                     System.out.println("Επιτυχής δημιουργία λογαριασμού");
                 } else {
-                    System.out.println("Υπάρχει ήδη λογαριασμός " 
+                    System.out.println("Υπάρχει ήδη λογαριασμός "
                     + "με αυτό το username");
                 }
             }
         } else {
-            /** Login */
             System.out.println("Παρακαλώ εισάγετε το username σας: ");
             String currentUsername = input.next();
-            
+
             User currentUser;
             String currentPassword;
             boolean iAmIn = false;
-            int counter = 3;
+            int counter = MAX_TIMES_CODE;
             while (counter > 0 && !iAmIn) {
                 System.out.println("Παρακαλώ εισάγετε το password σας: ");
                 currentPassword = input.next();
-                currentUser = log.login(currentUsername, 
+                currentUser = log.login(currentUsername,
                 currentPassword);
                 if (currentUser != null) {
                     System.out.println("Επιτυχής είσοδος");
@@ -95,8 +101,8 @@ public class Main{
                 } else {
                     System.out.println("Λανθασμένος κωδικός πρόσβασης.");
                     counter--;
-                    System.out.println("Σας απομένουν " + counter + 
-                    " προσπάθειες.");
+                    System.out.println("Σας απομένουν " + counter
+                    + " προσπάθειες.");
                 }
             }
         }

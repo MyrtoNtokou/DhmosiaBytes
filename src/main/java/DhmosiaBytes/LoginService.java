@@ -8,16 +8,14 @@ public class LoginService {
 
     /**
      * Creates a LoginService object.
-     * 
-     * @param db the database of users for the application
      */
     public LoginService() {
         this.db = UserDatabase.getDB();
     }
-    
+
     /**
      * Logs a user into the application.
-     * 
+     *
      * @param username the username entered by the user
      * @param password the password entered by the user
      * @return the User object if login is successful, or null if login failed
@@ -35,14 +33,14 @@ public class LoginService {
 
     /**
      * Registers a new account for a user with the specified details.
-     * 
+     *
      * @param role the role of the user
      * @param username the username of the user
      * @param password the password of the user
-     * @return the newly created User object, 
+     * @return the newly created User object,
      * or null if the username already exists
      */
-    public User register(final Role role, final String username, 
+    public User register(final Role role, final String username,
     final String password) {
         if (db.findUser(username) == null) {
             User newUser = new User(role, username, password);

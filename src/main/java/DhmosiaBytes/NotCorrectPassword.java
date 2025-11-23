@@ -1,5 +1,14 @@
+/** Exception for invalid password.
+ *
+ */
 public class NotCorrectPassword extends Exception {
-    public NotCorrectPassword(String message) {
+
+    /**
+     * Creates a NotCorrectPassword object.
+     *
+     * @param message the explanation message that will be displayed
+     */
+    public NotCorrectPassword(final String message) {
         super(message);
     }
 }
