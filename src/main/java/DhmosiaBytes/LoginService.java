@@ -1,3 +1,5 @@
+package dhmosiabytes;
+
 /**
  * Class that provides user login and registration services.
  * Uses UserDatabase for storing and retrieving users.

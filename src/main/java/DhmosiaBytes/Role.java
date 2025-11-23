@@ -1,3 +1,5 @@
+package dhmosiabytes;
+
 /**
  * Enum representing the roles of users.
  * Each role has specific access rights.

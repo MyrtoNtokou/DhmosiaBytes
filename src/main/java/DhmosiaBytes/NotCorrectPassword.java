@@ -1,3 +1,5 @@
+package dhmosiabytes;
+
 /** Exception for invalid password.
  *
  */

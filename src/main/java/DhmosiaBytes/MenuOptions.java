@@ -1,3 +1,5 @@
+package dhmosiabytes;
+
 /**
  * Enum containing the options of the application's main menu.
  */

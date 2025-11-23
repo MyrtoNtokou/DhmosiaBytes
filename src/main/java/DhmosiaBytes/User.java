@@ -1,3 +1,5 @@
+package dhmosiabytes;
+
 import java.io.Serializable;
 
 /**
