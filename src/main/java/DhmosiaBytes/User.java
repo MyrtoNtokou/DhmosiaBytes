@@ -6,7 +6,7 @@ import java.io.Serializable;
  */
 public class User implements Serializable {
     /** The role of the user. */
-    private Role role;
+    private final Role role;
 
     /** The username of the user. */
     private String username;

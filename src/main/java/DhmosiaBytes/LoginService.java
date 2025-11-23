@@ -16,16 +16,20 @@ public class LoginService {
     /**
      * Logs a user into the application.
      *
+     * @param role the user's role
      * @param username the username entered by the user
      * @param password the password entered by the user
      * @return the User object if login is successful, or null if login failed
      */
-    public User login(final String username, final String password) {
+    public User login(final Role role, final String username,
+    final String password) {
         User currentUser = db.findUser(username);
         if (currentUser == null) {
             return null;
         }
-        if (!currentUser.getPassword().equals(password)) {
+        if (!currentUser.getPassword().equals(password)
+        || !currentUser.getRole().equals(role)) {
+            System.out.println("Λανθασμένος κωδικός πρόσβασης.");
             return null;
         }
         return currentUser;

@@ -143,4 +143,19 @@ public enum Role {
     public String toString() {
         return usersRole;
     }
+
+    /**
+     * Decides if this role has access to a specific menu option.
+     *
+     * @param option the menu option
+     * @return true if this role has access to the given option
+     * or false if not
+     */
+    public boolean canAccess(final MenuOptions option) {
+        return switch (option) {
+            case SHOW_BUDGET, SUMMARY, GRAPHS -> canView;
+            case EDIT_BUDGET -> canEdit;
+            case EXIT -> true;
+        };
+    }
 }

@@ -1,44 +1,57 @@
 import java.util.Scanner;
 
 /**
- * Class that displays the application's main menu
- * and executes the corresponding user actions.
+ * Class that displays the application's main menu.
+ *
  */
-public final class MainMenuOptions {
+public final class ShowMenuOptions {
 
     /**
      * Private constractor to prevent object creation.
      */
-    private MainMenuOptions() { }
+    private ShowMenuOptions() { }
 
     /**
-     * Main method to run the MenuOptions.
-     * Shows the menu options and executes the action chosen by the user.
+     * Displays the menu options depending on the role's access rights.
      *
-     * @param args command line arguments
+     * @param currentRole the user's role
+     * @param input Scanner for user's input
+     * @return true if user wants to exit, false if not
      */
-    public static void main(final String[] args) {
+    public static boolean showMenu(final Role currentRole,
+    final Scanner input) {
         MenuOptions choice;
-        Scanner input = new Scanner(System.in, "UTF-8");
         do {
             // Display menu options
             for (MenuOptions opt : MenuOptions.values()) {
-                System.out.println(opt.getCode() + ". " + opt.getDescription());
+                if (currentRole.canAccess(opt)) {
+                    System.out.println(opt.getCode() + ". "
+                    + opt.getDescription());
+                }
             }
 
-            System.out.println("Επιλογή: ");
+            System.out.print("Επιλογή: ");
             choice = MenuOptions.fromCode(input.nextInt());
+
+            if (!currentRole.canAccess(choice)) {
+                System.out.println("Δεν έχετε πρόσβαση σε αυτήν την επιλογή.");
+                continue;
+            }
 
             switch (choice) {
                 case SHOW_BUDGET -> showBudget();
                 case EDIT_BUDGET -> editBudget();
                 case SUMMARY -> summary();
                 case GRAPHS -> graphs();
-                case EXIT -> System.out.println("Έξοδος από εφαρμογή");
+                case EXIT -> {
+                    System.out.println("Έξοδος από εφαρμογή");
+                    return true;
+                }
                 default -> System.out.println("Μη έγκυρη επιλογή. "
                 + "Παρακαλώ δοκιμάστε ξανά.");
             }
         } while (choice != MenuOptions.EXIT);
+        return false;
     }
 
     /** Displays the national budget. */
