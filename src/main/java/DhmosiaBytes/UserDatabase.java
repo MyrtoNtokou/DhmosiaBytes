@@ -8,7 +8,6 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Collections;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
  * Singleton final class that stores and manages all registered users.
