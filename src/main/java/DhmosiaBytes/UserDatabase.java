@@ -7,9 +7,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Collections;
 
 /**
  * Singleton final class that stores and manages all registered users.
@@ -79,7 +79,7 @@ public final class UserDatabase implements Serializable {
      * @return all the users
      */
     public Map<String, User> getUsers() {
-        return Collections.unmodifiableMap(users);
+        return Collections.unmodifiableMap(new HashMap<>(users));
     }
 
     /**
@@ -120,5 +120,12 @@ public final class UserDatabase implements Serializable {
      */
     private Object readResolve() {
         return getDB();
+    }
+
+    /**
+     * Cleans users.db only for testing.
+     */
+    public void clearUsersForTest() {   
+        users.clear();
     }
 }
