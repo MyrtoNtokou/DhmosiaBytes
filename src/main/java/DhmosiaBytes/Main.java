@@ -17,6 +17,9 @@ public final class Main {
     /** Maximum times a user can enter a password. */
     private static final int MAX_TIMES_CODE = 3;
 
+    /** Code to exit the program. */
+    private static final int CODE_FOR_EXIT = 3;
+
     /**
      * Private constractor so no objects will be created.
      */
@@ -58,22 +61,35 @@ public final class Main {
         Scanner input = new Scanner(System.in, "UTF-8");
         LoginService log = new LoginService();
 
-        while (true) {
+        boolean running = true;
+        while (running) {
             Role currentRole = selectRole(input);
 
             int choice = 0;
-            while (choice != 1 && choice != 2) {
-                System.out.println("1. Δημιουργία λογαριασμού");
+            while (true) {
+                System.out.println("\n1. Δημιουργία λογαριασμού");
                 System.out.println("2. Σύνδεση σε λογαριασμό");
+                System.out.println("3. Έξοδος");
+                System.out.printf("Επιλογή: ");
                 try {
                     choice = input.nextInt();
-                    if (choice != 1 && choice != 2) {
-                        System.out.println("Πρέπει να επιλέξετε 1 ή 2");
+                    if (choice == CODE_FOR_EXIT) {
+                        System.out.println("Έξοδος από την εφαρμογή");
+                        running = false;
+                        break;
+                    } else if (choice == 1 || choice == 2) {
+                        break;
+                    } else {
+                        System.out.println("Πρέπει να επιλέξετε 1, 2 ή 3");
                     }
                 } catch (InputMismatchException e) {
-                    System.out.println("Παρακαλώ εισάγετε αριθμό:");
+                    System.out.print("Παρακαλώ εισάγετε αριθμό:");
                     input.next();
                 }
+            }
+
+            if (!running) {
+                break;
             }
 
             boolean iAmIn = false;
@@ -98,7 +114,7 @@ public final class Main {
                 }
             } else {
                 // Login
-                System.out.println("Παρακαλώ εισάγετε το username σας: ");
+                System.out.println("\nΠαρακαλώ εισάγετε το username σας: ");
                 String currentUsername = input.next();
 
                 User currentUser;
@@ -113,7 +129,6 @@ public final class Main {
                         System.out.println("Επιτυχής είσοδος");
                         iAmIn = true;
                     } else {
-                        System.out.println("Λανθασμένος κωδικός πρόσβασης.");
                         counter--;
                         System.out.println("Σας απομένουν " + counter
                         + " προσπάθειες.");

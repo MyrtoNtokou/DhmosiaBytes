@@ -94,8 +94,8 @@ public class Ypourgeio {
     @Override
     public String toString() {
         return kodikos + " | " + onoma
-               + " | Τακτικός Προϋπολογισμός: " + taktikos
-               + " | Προϋπολογισμός Δημοσίων Επενδύσεων: " + ependyseis
-               + " | Σύνολο: " + synolo;
+               + " | " + taktikos
+               + " | " + ependyseis
+               + " | " + synolo;
     }
 }

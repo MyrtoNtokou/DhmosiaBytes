@@ -1,11 +1,12 @@
 package dhmosiabytes;
 
+import java.util.List;
 import java.util.Scanner;
+
 import budgetreader.DisplayBudget;
 import budgetreader.Eggrafi;
 import budgetreader.ReadBudget;
 import budgetreader.Ypourgeio;
-import java.util.List;
 
 /**
  * Class that displays the application's main menu.
@@ -51,7 +52,6 @@ public final class ShowMenuOptions {
                 case SUMMARY -> summary();
                 case GRAPHS -> graphs();
                 case EXIT -> {
-                    System.out.println("Έξοδος από εφαρμογή");
                     return true;
                 }
                 default -> System.out.println("Μη έγκυρη επιλογή. "
@@ -63,7 +63,6 @@ public final class ShowMenuOptions {
 
     /** Displays the national budget. */
     public static void showBudget() {
-        System.out.println("Βλέπεις τον Κρατικό Προϋπολογισμό");
         List<Eggrafi> g =
         ReadBudget.readGeneralBudget("proypologismos2025.csv");
         DisplayBudget.showGeneral(g);
@@ -76,7 +75,6 @@ public final class ShowMenuOptions {
 
     /** Shows summarized data. */
     public static void summary() {
-        System.out.println("Εμφάνιση στοιχείων ανά Υπουργείο");
         List<Ypourgeio> y =
         ReadBudget.readByMinistry("proypologismos2025anaypourgeio.csv");
         DisplayBudget.showMinistry(y);
