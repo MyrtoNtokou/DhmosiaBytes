@@ -169,7 +169,7 @@ public final class ReadBudget {
     value = value.replace(",", ".");
 
         try {
-            return Double.parseDouble(s);
+            return Double.parseDouble(value);
         } catch (Exception e) {
             System.err.println("ΣΦΑΛΜΑ ΣΤΟΝ ΑΡΙΘΜΟ: [" + s + "]");
             return 0.0;
