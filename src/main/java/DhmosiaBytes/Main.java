@@ -126,7 +126,6 @@ public final class Main {
 
                 if (exit) {
                     System.out.println("Αποσύνδεση");
-                    continue;
                 }
             }
         }
