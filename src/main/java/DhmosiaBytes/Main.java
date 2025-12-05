@@ -62,6 +62,7 @@ public final class Main {
      * @param args command line arguments
      */
     public static void main(final String[] args) {
+
         Scanner input = new Scanner(System.in, "UTF-8");
         LoginService log = new LoginService();
 

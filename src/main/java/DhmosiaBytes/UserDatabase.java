@@ -155,4 +155,20 @@ public final class UserDatabase implements Serializable {
         users.clear();
         save();
     }
+
+    /**
+     * Removes a user from the database by their username.
+     *
+     * @param username the username of the user who will be removed
+     * @return true if the user was removed
+     * or false if no user with the given username was found
+     */
+    public boolean removeUser(final String username) {
+        if (users.containsKey(username)) {
+            users.remove(username);
+            save();
+            return true;
+        }
+        return false;
+    }
 }

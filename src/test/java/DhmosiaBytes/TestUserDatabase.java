@@ -3,6 +3,7 @@ package dhmosiabytes;
 import java.io.File;
 import java.util.Map;
 
+import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -14,13 +15,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class TestUserDatabase {
-
-    @BeforeEach
-    void setup() {
-        File file = new File("users.db");
-        if (file.exists()) file.delete();
-        UserDatabase.getDB().clearUsersForTest();
-    }
 
     static class TestUser extends User {
         public TestUser(String username) {
@@ -88,5 +82,14 @@ public class TestUserDatabase {
         User loaded = db2.findUser("alice");
         assertNotNull(loaded);
         assertEquals("alice", loaded.getUsername());
+    }
+
+    @AfterEach
+    void cleanup() {
+        UserDatabase db = UserDatabase.getDB();
+        String[] testUsers = {"john", "alice", "mary"};
+        for (String username : testUsers) {
+            db.removeUser(username);
+        }
     }
 }
