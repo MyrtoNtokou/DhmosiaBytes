@@ -1,7 +1,5 @@
 package dhmosiabytes;
 
-import static org.mockito.Answers.values;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +39,6 @@ public final class Barcharts {
         List<Eggrafi> eggrafes =
         ReadBudget.readGeneralBudget("proypologismos2025.csv");
 
-        // Εκτύπωση μόνο των εσόδων
         chartesoda(eggrafes);
 
         chartexoda(eggrafes);
