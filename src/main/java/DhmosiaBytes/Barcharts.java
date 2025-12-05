@@ -8,7 +8,7 @@ import org.knowm.xchart.CategoryChartBuilder;
 import org.knowm.xchart.SwingWrapper;
 
 import budgetreader.Eggrafi;
-import budgetreader.ReadBudget;
+import budgetreader.Ypourgeio;
 
 public final class Barcharts {
      /** Width of the chart in pixels. */
@@ -29,66 +29,51 @@ public final class Barcharts {
      /** Private constructor to prevent instantiation of this utility class. */
     private Barcharts() {
     }
-
-    /**
-     * Main method of the application.
-     *
-     * @param args Command-line arguments
-     */
-    public static void main(final String[] args) {
-        List<Eggrafi> eggrafes =
-        ReadBudget.readGeneralBudget("proypologismos2025.csv");
-
-        chartesoda(eggrafes);
-
-        chartexoda(eggrafes);
-    }
-
      /**
      * Creates and displays the income bar chart.
      *
      * @param eggrafes List of budget records
      */
-    public static void chartesoda(final List<Eggrafi> eggrafes) {
-    // Φιλτράρισμα εσόδων
-    List<Eggrafi> esoda = new ArrayList<>();
-    for (Eggrafi e : eggrafes) {
-        if (e.getKodikos().startsWith("1,")) {
-            esoda.add(e);
+    public static void chartEsoda(final List<Eggrafi> eggrafes) {
+        // Filter income records (code starts with "1,")
+        List<Eggrafi> esoda = new ArrayList<>();
+        for (Eggrafi e : eggrafes) {
+            if (e.getKodikos().startsWith("1,")) {
+                esoda.add(e);
+            }
         }
+
+        // Prepare data for the chart
+        List<String> categories = new ArrayList<>();
+        List<Double> values = new ArrayList<>();
+        for (Eggrafi e : esoda) {
+            categories.add(e.getPerigrafi());
+            values.add(e.getPoso());
+        }
+
+        // Build the chart
+        CategoryChart chart = new CategoryChartBuilder()
+                .width(CHART_WIDTH)
+                .height(CHART_HEIGHT)
+                .title("Έσοδα")
+                .xAxisTitle("Κατηγορία")
+                .yAxisTitle("Ποσό")
+                .build();
+
+        // Styling
+        chart.getStyler().setLegendVisible(false);
+        chart.getStyler().setToolTipsEnabled(true);
+
+        chart.getStyler().setXAxisLabelRotation(X_AXIS_LABEL_ROTATION);
+
+
+        chart.getStyler().setAvailableSpaceFill(AVAILABLE_SPACE_FILL);
+        chart.getStyler().setPlotContentSize(PLOT_CONTENT_SIZE);
+
+    // Add series and display chart
+        chart.addSeries("Έσοδα", categories, values);
+        new SwingWrapper<>(chart).displayChart();
     }
-
-    // Prepare data for the chart
-    List<String> categories = new ArrayList<>();
-    List<Double> values = new ArrayList<>();
-    for (Eggrafi e : esoda) {
-        categories.add(e.getPerigrafi());
-        values.add(e.getPoso());
-    }
-
-    // Build the chart
-    CategoryChart chart = new CategoryChartBuilder()
-            .width(CHART_WIDTH)
-            .height(CHART_HEIGHT)
-            .title("Έσοδα")
-            .xAxisTitle("Κατηγορία")
-            .yAxisTitle("Ποσό")
-            .build();
-
-    // Styling
-    chart.getStyler().setLegendVisible(false);
-    chart.getStyler().setToolTipsEnabled(true);
-
-    chart.getStyler().setXAxisLabelRotation(X_AXIS_LABEL_ROTATION);
-
-
-    chart.getStyler().setAvailableSpaceFill(AVAILABLE_SPACE_FILL);
-    chart.getStyler().setPlotContentSize(PLOT_CONTENT_SIZE);
-
-   // Add series and display chart
-    chart.addSeries("Έσοδα", categories, values);
-    new SwingWrapper<>(chart).displayChart();
-}
 
 
     /**
@@ -96,57 +81,87 @@ public final class Barcharts {
      *
      * @param eggrafes List of budget records
      */
-     public static void chartexoda(final List<Eggrafi> eggrafes) {
-    // Filter expense records (code starts with "2,")
-    List<Eggrafi> exoda = new ArrayList<>();
-    for (Eggrafi e : eggrafes) {
-        if (e.getKodikos().startsWith("2,")) {
-            exoda.add(e);
+     public static void chartExoda(final List<Eggrafi> eggrafes) {
+        // Filter expense records (code starts with "2,")
+        List<Eggrafi> exoda = new ArrayList<>();
+        for (Eggrafi e : eggrafes) {
+            if (e.getKodikos().startsWith("2,")) {
+                exoda.add(e);
+            }
         }
+
+        // Prepare data for the chart
+        List<String> categories = new ArrayList<>();
+        List<Double> values = new ArrayList<>();
+        for (Eggrafi e : exoda) {
+            categories.add(e.getPerigrafi());
+            values.add(e.getPoso());
+        }
+
+        // Build the chart
+        CategoryChart chart = new CategoryChartBuilder()
+                .width(CHART_WIDTH)
+                .height(CHART_HEIGHT)
+                .title("Έξοδα")
+                .xAxisTitle("Κατηγορία")
+                .yAxisTitle("Ποσό")
+                .build();
+
+        // Styling
+        chart.getStyler().setLegendVisible(false);
+        chart.getStyler().setToolTipsEnabled(true);
+
+
+        chart.getStyler().setXAxisLabelRotation(X_AXIS_LABEL_ROTATION);
+
+
+        chart.getStyler().setAvailableSpaceFill(AVAILABLE_SPACE_FILL);
+        chart.getStyler().setPlotContentSize(PLOT_CONTENT_SIZE);
+
+        // Add series and display chart
+        chart.addSeries("Έξοδα", categories, values);
+
+
+        new SwingWrapper<>(chart).displayChart();
     }
 
-    // Prepare data for the chart
-    List<String> categories = new ArrayList<>();
-    List<Double> values = new ArrayList<>();
-    for (Eggrafi e : exoda) {
-        categories.add(e.getPerigrafi());
-        values.add(e.getPoso());
+    /**
+     * Creates and displays a bar chart for ministries showing their budget.
+     *
+     * @param ministry List of Ypourgeio objects containing ministry data
+     */
+    public static void chartMinistry(final List<Ypourgeio> ministry) {
+        // Filter only ministries (exclude other entries)
+        List<Ypourgeio> ministries = new ArrayList<>();
+        for (Ypourgeio m: ministry) {
+            if (m.getOnoma().contains("Υπουργείο")) {
+                ministries.add(m);
+            }
+        }
+
+        // Prepare data for the chart
+        List<String> names = new ArrayList<>();
+        List<Double> values = new ArrayList<>();
+        for (Ypourgeio m : ministries) {
+            names.add(m.getOnoma());
+            values.add(m.getSynolo());
+        }
+
+        // Build the chart
+       CategoryChart chart = new CategoryChartBuilder()
+                .width(CHART_WIDTH)
+                .height(CHART_HEIGHT)
+                .title("Δαπάνες Υπουργείων")
+                .xAxisTitle("Υπουργείο")
+                .yAxisTitle("Συνολική Δαπάνη")
+                .build();
+
+        // Styling
+        chart.getStyler().setLegendVisible(false);
+        chart.getStyler().setXAxisLabelRotation(X_AXIS_LABEL_ROTATION);
+
+        // Add series and display chart
+        chart.addSeries("Δαπάνες", names, values);
+        new SwingWrapper<>(chart).displayChart();
     }
-
-    // Build the chart
-    CategoryChart chart = new CategoryChartBuilder()
-            .width(CHART_WIDTH)
-            .height(CHART_HEIGHT)
-            .title("Έξοδα")
-            .xAxisTitle("Κατηγορία")
-            .yAxisTitle("Ποσό")
-            .build();
-
-    // Styling
-    chart.getStyler().setLegendVisible(false);
-    chart.getStyler().setToolTipsEnabled(true);
-
-
-    chart.getStyler().setXAxisLabelRotation(X_AXIS_LABEL_ROTATION);
-
-
-    chart.getStyler().setAvailableSpaceFill(AVAILABLE_SPACE_FILL);
-    chart.getStyler().setPlotContentSize(PLOT_CONTENT_SIZE);
-
-    // Add series and display chart
-    chart.addSeries("Έξοδα", categories, values);
-
-
-    new SwingWrapper<>(chart).displayChart();
-}
-
-
-
-    //dorotheas
-    // public static void summary() {
-     //   List<Ypourgeio> y =
-     //   ReadBudget.readByMinistry("proypologismos2025anaypourgeio.csv");
-     //   DisplayBudget.showMinistry(y);
-   // }
-//}
 }
