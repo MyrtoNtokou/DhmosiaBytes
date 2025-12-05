@@ -3,6 +3,11 @@ package dhmosiabytes;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
+import java.util.List;
+
+import budgetreader.Eggrafi;
+import budgetreader.Ypourgeio;
+import budgetreader.ReadBudget;
 
 import budgetcharts.Barcharts;
 import budgetcharts.MoreCharts;
@@ -103,15 +108,23 @@ public class Graphs {
     /**
      * Displays the correct graph depending on the given code.
      *
+<<<<<<< HEAD
      * @param input the Scanner for user input
      */
     public void runGraphs(final Scanner input) {
         List<Eggrafi> eggra =
+=======
+     * @param code the numeric code referring to the graph
+     */
+    public void runGraphs(final int code) {
+        List<Eggrafi> eggrafes =
+>>>>>>> a3c6744 (Add runGraphs)
         ReadBudget.readGeneralBudget("proypologismos2025.csv");
         List<Ypourgeio> y =
         ReadBudget.readByMinistry("proypologismos2025anaypourgeio.csv");
         CutLists cut = new CutLists();
 
+<<<<<<< HEAD
         int code;
         do {
             code = chooseGraph(input);
@@ -145,5 +158,15 @@ public class Graphs {
                 default -> System.out.println("Μη έγκυρη επιλογή.");
             }
         } while (code != 0);
+=======
+        switch (code) {
+            case 1 -> MoreCharts.pieChartEsodaExoda(eggrafes);
+            case 2 -> MoreCharts.pieChartElleimma(eggrafes);
+            case 3 -> barcharts.chartEsoda(eggrafes);
+            case 4 -> barcharts.chartExoda(eggrafes);
+            case 5 -> chartMinistry(y);
+            case default -> System.out.println("Μη έγκυρη επιλογή.");
+        }
+>>>>>>> a3c6744 (Add runGraphs)
     }
 }
