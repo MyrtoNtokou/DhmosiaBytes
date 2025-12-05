@@ -74,10 +74,10 @@ public class Graphs {
         switch (code) {
             case 1 -> MoreCharts.pieChartEsodaExoda(eggrafes);
             case 2 -> MoreCharts.pieChartElleimma(eggrafes);
-            case 3 -> barcharts.chartEsoda(eggrafes);
-            case 4 -> barcharts.chartExoda(eggrafes);
-            case 5 -> chartMinistry(y);
-            case default -> System.out.println("Μη έγκυρη επιλογή.");
+            case 3 -> Barcharts.chartEsoda(eggrafes);
+            case 4 -> Barcharts.chartExoda(eggrafes);
+            case 5 -> Barcharts.chartMinistry(y);
+            default -> System.out.println("Μη έγκυρη επιλογή.");
         }
     }
 }
