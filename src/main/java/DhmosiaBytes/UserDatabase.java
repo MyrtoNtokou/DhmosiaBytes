@@ -11,11 +11,18 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 /**
  * Singleton final class that stores and manages all registered users.
  * Maintains a map of users and allows adding, searching,
  * saving, and loading users.
  */
+@SuppressFBWarnings(
+    value = "SING_SINGLETON_IMPLEMENTS_SERIALIZABLE",
+    justification = "Singleton is intentionally Serializable"
+    + " with readResolve()"
+)
 public final class UserDatabase implements Serializable {
 
     /** The single shared instance of the database (Singleton pattern). */
@@ -37,12 +44,14 @@ public final class UserDatabase implements Serializable {
     }
 
     /**
-     * Returns a copy of the instance of the UserDatabase.
+     * Returns the instance of the UserDatabase.
      *
      * @return the singleton instance
      */
+    @SuppressFBWarnings(value = "MS_EXPOSE_REP",
+    justification = "Singleton instance intentionally exposed")
     public static UserDatabase getDB() {
-        return new UserDatabase();
+        return DB;
     }
 
     /**
@@ -79,7 +88,7 @@ public final class UserDatabase implements Serializable {
      * @return all the users
      */
     public Map<String, User> getUsers() {
-        return Collections.unmodifiableMap(new HashMap<>(users));
+        return Collections.unmodifiableMap(users);
     }
 
     /**
@@ -119,13 +128,14 @@ public final class UserDatabase implements Serializable {
      * @return the singleton instance of UserDatabase
      */
     private Object readResolve() {
-        return getDB();
+        return DB;
     }
 
     /**
      * Cleans users.db only for testing.
      */
-    public void clearUsersForTest() {   
+    public void clearUsersForTest() {
         users.clear();
+        save();
     }
 }

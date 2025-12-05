@@ -33,7 +33,8 @@ public class TestUserDatabase {
         UserDatabase db1 = UserDatabase.getDB();
         UserDatabase db2 = UserDatabase.getDB();
 
-        assertSame(db1, db2, "getDB() πρέπει να επιστρέφει το ίδιο singleton instance");
+        assertSame(db1, db2, "getDB() πρέπει να επιστρέφει"
+        + " το ίδιο singleton instance");
     }
 
     @Test
