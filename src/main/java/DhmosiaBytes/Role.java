@@ -35,13 +35,7 @@ public enum Role {
      * Represents other Ministry employees.
      * Can view and comment, but cannot edit.
      */
-    OTHER_MINISTRY(5, "Άλλο Υπουργείο", true, true, false),
-
-    /**
-     * Represents a regular Citizen.
-     * Can view content only, cannot comment or edit.
-     */
-    CITIZEN(6, "Πολίτης", true, false, false);
+    OTHER_MINISTRY(5, "Άλλο Υπουργείο", true, true, false);
 
     /** The numeric code identifying the user role. */
     private final int code;

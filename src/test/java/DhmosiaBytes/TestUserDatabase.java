@@ -24,7 +24,7 @@ public class TestUserDatabase {
 
     static class TestUser extends User {
         public TestUser(String username) {
-            super(Role.CITIZEN, username, "password");
+            super(Role.PRIME_MINISTER, username, "password");
         }
     }
 

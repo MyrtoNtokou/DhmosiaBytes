@@ -18,7 +18,7 @@ public final class Main {
     private static final int MAX_TIMES_CODE = 3;
 
     /** Code to exit the program. */
-    private static final int CODE_FOR_EXIT = 3;
+    private static final int CODE_FOR_EXIT = 0;
 
     /**
      * Private constractor so no objects will be created.
@@ -33,15 +33,19 @@ public final class Main {
      */
     private static Role selectRole(final Scanner input) {
         while (true) {
+            System.out.println("\nΕπιλέξτε μία από τις παρακάτω ιδιότητες:");
             for (Role r : Role.values()) {
                 System.out.println(r.getCode() + ". " + r.getUsersRole());
             }
-            System.out.print("Επιλέξτε την ιδιότητά σας: ");
+            System.out.println("0. Έξοδος");
+            System.out.print("Επιλογή: ");
 
             try {
                 int roleCode = input.nextInt();
                 if (roleCode >= MIN_CODE && roleCode <= MAX_CODE) {
                     return Role.fromCode(roleCode);
+                } else if (roleCode == 0) {
+                    return null;
                 }
                 System.out.println("Πρέπει να επιλέξετε μία από τις "
                 + "παραπάνω ιδιότητες (1-" + MAX_CODE + ")");
@@ -64,12 +68,16 @@ public final class Main {
         boolean running = true;
         while (running) {
             Role currentRole = selectRole(input);
+            if (currentRole == null) {
+                System.out.println("Έξοδος από την εφαρμογή");
+                break;
+            }
 
-            int choice = 0;
+            int choice;
             while (true) {
                 System.out.println("\n1. Δημιουργία λογαριασμού");
                 System.out.println("2. Σύνδεση σε λογαριασμό");
-                System.out.println("3. Έξοδος");
+                System.out.println("0. Έξοδος");
                 System.out.printf("Επιλογή: ");
                 try {
                     choice = input.nextInt();
@@ -80,7 +88,7 @@ public final class Main {
                     } else if (choice == 1 || choice == 2) {
                         break;
                     } else {
-                        System.out.println("Πρέπει να επιλέξετε 1, 2 ή 3");
+                        System.out.println("Πρέπει να επιλέξετε 1, 2 ή 0");
                     }
                 } catch (InputMismatchException e) {
                     System.out.print("Παρακαλώ εισάγετε αριθμό:");
@@ -116,6 +124,12 @@ public final class Main {
                 // Login
                 System.out.println("\nΠαρακαλώ εισάγετε το username σας: ");
                 String currentUsername = input.next();
+
+                if (UserDatabase.getDB().findUser(currentUsername) == null) {
+                    System.out.println("Δεν υπάρχει χρήστης"
+                    + " με αυτό το username.");
+                    continue;
+                }
 
                 User currentUser;
                 String currentPassword;

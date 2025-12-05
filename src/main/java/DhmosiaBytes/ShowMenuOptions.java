@@ -1,5 +1,6 @@
 package dhmosiabytes;
 
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -28,7 +29,7 @@ public final class ShowMenuOptions {
      */
     public static boolean showMenu(final Role currentRole,
     final Scanner input) {
-        MenuOptions choice;
+        MenuOptions choice = null;
         do {
             // Display menu options
             for (MenuOptions opt : MenuOptions.values()) {
@@ -39,7 +40,22 @@ public final class ShowMenuOptions {
             }
 
             System.out.print("Επιλογή: ");
-            choice = MenuOptions.fromCode(input.nextInt());
+
+            try {
+                int code = input.nextInt();
+                choice = MenuOptions.fromCode(code);
+            } catch (InputMismatchException e) {
+                System.out.println("Παρακαλώ εισάγετε αριθμό.");
+                input.next();
+                continue;
+            }
+
+            if (choice == null) {
+                System.out.println("Μη έγκυρη επιλογή.");
+                System.out.println(" Δώστε έναν αριθμό από το 1 έως το "
+                + MenuOptions.values().length);
+                continue;
+            }
 
             if (!currentRole.canAccess(choice)) {
                 System.out.println("Δεν έχετε πρόσβαση σε αυτήν την επιλογή.");

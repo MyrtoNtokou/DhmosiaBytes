@@ -111,6 +111,7 @@ public final class UserDatabase implements Serializable {
     private void load() {
         File file = new File("users.db");
         if (!file.exists()) {
+            users = new HashMap<>();
             return;
         }
 
@@ -118,7 +119,7 @@ public final class UserDatabase implements Serializable {
         new ObjectInputStream(new FileInputStream(file))) {
             users = (Map<String, User>) in.readObject();
         } catch (IOException | ClassNotFoundException e) {
-            System.out.println("Σφάλμα κατά την φόρτωση.");
+            users = new HashMap<>();
         }
     }
 

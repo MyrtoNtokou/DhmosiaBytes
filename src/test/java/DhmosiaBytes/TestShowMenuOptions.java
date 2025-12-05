@@ -8,14 +8,15 @@ import org.junit.jupiter.api.Test;
 public class TestShowMenuOptions {
 
     @Test
-    void testExitReturnsTrue() {
+    void testExitImmediately() {
         Scanner scanner = new Scanner("5");
-        boolean result = ShowMenuOptions.showMenu(Role.CITIZEN, scanner);
+        boolean result = ShowMenuOptions.showMenu(Role.FINANCE_MINISTER,
+        scanner);
         assertTrue(result);
     }
 
     @Test
-    void testNonExitThenExitStillReturnsTrue() {
+    void testChooseValidOptionThenExit() {
         Scanner scanner = new Scanner("1\n5");
         boolean result = ShowMenuOptions.showMenu(Role.FINANCE_MINISTER,
         scanner);
@@ -23,16 +24,16 @@ public class TestShowMenuOptions {
     }
 
     @Test
-    void testRoleWithoutEditCannotExitImmediately() {
-        Scanner scanner = new Scanner("2\n5");
-        boolean result = ShowMenuOptions.showMenu(Role.CITIZEN, scanner);
+    void testRoleWithoutEditCannotAccessEdit() {
+        Scanner scanner = new Scanner("3\n5");
+        boolean result = ShowMenuOptions.showMenu(Role.PARLIAMENT, scanner);
         assertTrue(result);
     }
 
     @Test
-    void testLoopDoesNotReturnFalse() {
-        Scanner scanner = new Scanner("5");
-        boolean result = ShowMenuOptions.showMenu(Role.PRIME_MINISTER,
+    void testInvalidInputHandledGracefully() {
+        Scanner scanner = new Scanner("99\n5");
+        boolean result = ShowMenuOptions.showMenu(Role.FINANCE_MINISTER,
         scanner);
         assertTrue(result);
     }

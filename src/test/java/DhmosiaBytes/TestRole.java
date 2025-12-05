@@ -26,7 +26,7 @@ public class TestRole {
 
     @Test
     void testFromCodeValid() {
-        assertEquals(Role.CITIZEN, Role.fromCode(6));
+        assertEquals(Role.PRIME_MINISTER, Role.fromCode(1));
         assertEquals(Role.FINANCE_MINISTRY_EMPLOYEE, Role.fromCode(4));
     }
 
