@@ -3,13 +3,19 @@ package dhmosiabytes;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
@@ -92,33 +98,43 @@ public final class UserDatabase implements Serializable {
     }
 
     /**
-     * Saves all users to the file "users.db".
+     * Saves all users to "users.json" in JSON format.
      */
     private void save() {
-        try (ObjectOutputStream out =
-        new ObjectOutputStream(new FileOutputStream("users.db"))) {
-            out.writeObject(users);
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        try (OutputStreamWriter writer = new OutputStreamWriter(new
+        FileOutputStream("users.json"), StandardCharsets.UTF_8)) {
+            gson.toJson(users, writer);
         } catch (IOException e) {
             System.out.println("Σφάλμα κατά την αποθήκευση.");
         }
     }
 
     /**
-     * Loads all users from "users.db" if the file exists,
+     * Loads all users from "users.json" if the file exists,
      * so they are available in the next program execution.
      */
     @SuppressWarnings("unchecked")
     private void load() {
-        File file = new File("users.db");
+        File file = new File("users.json");
         if (!file.exists()) {
             users = new HashMap<>();
             return;
         }
 
-        try (ObjectInputStream in =
-        new ObjectInputStream(new FileInputStream(file))) {
-            users = (Map<String, User>) in.readObject();
-        } catch (IOException | ClassNotFoundException e) {
+        Gson gson = new Gson();
+        try (InputStreamReader reader = new
+        InputStreamReader(new FileInputStream(file),
+        StandardCharsets.UTF_8)) {
+            Type type = new TypeToken<Map<String, User>>() { }.getType();
+            users = gson.fromJson(reader, type);
+
+            if (users == null) {
+                users = new HashMap<>();
+            }
+
+        } catch (IOException e) {
+            System.out.println("Σφάλμα κατά την φόρτωση.");
             users = new HashMap<>();
         }
     }
