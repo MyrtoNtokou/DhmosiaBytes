@@ -104,6 +104,17 @@ public final class Main {
             if (choice == 1) {
                 //Register
                 String currentUsername = InputReader.enterValidUsername(input);
+
+                if (currentRole.getThereIsOnlyOne()) {
+                    boolean exists =
+                    UserDatabase.getDB().getUsers().values().stream()
+                    .anyMatch(u -> u.getRole() == currentRole);
+                    if (exists) {
+                        System.out.println("Υπάρχει ήδη χρήστης με τον ρόλο: "
+                        + currentRole);
+                        continue; // Επιστροφή στην αρχή του loop
+                    }
+                }
                 if (UserDatabase.getDB().findUser(currentUsername) != null) {
                     System.out.println("Υπάρχει ήδη λογαριασμός "
                     + "με αυτό το username");

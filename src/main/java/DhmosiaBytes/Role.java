@@ -9,33 +9,38 @@ public enum Role {
     /**
      * Represents the Prime Minister role.
      * Can view and comment, but cannot edit.
+     * Only one Prime Minister exists.
      */
-    PRIME_MINISTER(1, "Πρωθυπουργός", true, true, false),
+    PRIME_MINISTER(1, "Πρωθυπουργός", true, true, false, true),
 
     /**
      * Represents the Parliament role.
      * Can view and comment, but cannot edit.
+     * There is only one account as Parliament.
      */
-    PARLIAMENT(2, "Κοινοβούλιο", true, true, false),
+    PARLIAMENT(2, "Κοινοβούλιο", true, true, false, true),
 
     /**
      * Represents the Finance Minister role.
      * Can view, comment, and edit content.
+     * Only one Finance Minister exists.
      */
-    FINANCE_MINISTER(3, "Υπουργός Οικονομικών", true, true, true),
+    FINANCE_MINISTER(3, "Υπουργός Οικονομικών", true, true, true, true),
 
     /**
      * Represents a Finance Ministry Employee.
      * Can view and comment, but cannot edit.
+     * There are many employees in the Finance Ministry.
      */
     FINANCE_MINISTRY_EMPLOYEE(4, "Υπάλληλος Υπουργείου Οικονομικών",
-    true, true, false),
+    true, true, false, false),
 
     /**
      * Represents other Ministry employees.
      * Can view and comment, but cannot edit.
+     * There are many other Ministries.
      */
-    OTHER_MINISTER(5, "Υπουργός άλλου Υπουργείου", true, true, false);
+    OTHER_MINISTER(5, "Υπουργός άλλου Υπουργείου", true, true, false, false);
 
     /** The numeric code identifying the user role. */
     private final int code;
@@ -52,6 +57,9 @@ public enum Role {
     /** Flag indicating whether the user can edit content. */
     private final boolean canEdit;
 
+    /** Flag indicating whether there is only one user whith this role. */
+    private final boolean thereIsOnlyOne;
+
     /**
      * Creates the constant objects of the Role enum.
      *
@@ -60,14 +68,17 @@ public enum Role {
      * @param view whether the user has view access
      * @param comment whether the user can comment
      * @param edit whether the user can edit
+     * @param onlyOne whether there is only one user with this role or not
      */
     Role(final int roleCode, final String userRole,
-    final boolean view, final boolean comment, final boolean edit) {
+    final boolean view, final boolean comment, final boolean edit,
+    final boolean onlyOne) {
         this.code = roleCode;
         this.usersRole = userRole;
         this.canView = view;
         this.canComment = comment;
         this.canEdit = edit;
+        this.thereIsOnlyOne = onlyOne;
     }
 
     /**
@@ -113,6 +124,15 @@ public enum Role {
      */
     public boolean getCanEdit() {
         return canEdit;
+    }
+
+    /**
+     * Checks if there can be only one user with this role.
+     *
+     * @return true if there can be only one user with this role
+     */
+    public boolean getThereIsOnlyOne() {
+        return thereIsOnlyOne;
     }
 
     /**

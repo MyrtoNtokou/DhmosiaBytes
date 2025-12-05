@@ -23,8 +23,14 @@ public class TestMenuOptions {
         assertEquals("Γραφήματα", MenuOptions.GRAPHS.getDescription());
         assertEquals(MenuOptions.GRAPHS, MenuOptions.fromCode(4));
 
-        assertEquals(5, MenuOptions.EXIT.getCode());
+        assertEquals(0, MenuOptions.EXIT.getCode());
         assertEquals("Έξοδος", MenuOptions.EXIT.getDescription());
-        assertEquals(MenuOptions.EXIT, MenuOptions.fromCode(5));
+        assertEquals(MenuOptions.EXIT, MenuOptions.fromCode(0));
+    }
+
+    @Test
+    public void testFromCodeInvalid() {
+        assertNull(MenuOptions.fromCode(-1));
+        assertNull(MenuOptions.fromCode(999));
     }
 }

@@ -9,7 +9,7 @@ public class TestShowMenuOptions {
 
     @Test
     void testExitImmediately() {
-        Scanner scanner = new Scanner("5");
+        Scanner scanner = new Scanner("0");
         boolean result = ShowMenuOptions.showMenu(Role.FINANCE_MINISTER,
         scanner);
         assertTrue(result);
@@ -17,7 +17,7 @@ public class TestShowMenuOptions {
 
     @Test
     void testChooseValidOptionThenExit() {
-        Scanner scanner = new Scanner("1\n5");
+        Scanner scanner = new Scanner("1\n0");
         boolean result = ShowMenuOptions.showMenu(Role.FINANCE_MINISTER,
         scanner);
         assertTrue(result);
@@ -25,14 +25,14 @@ public class TestShowMenuOptions {
 
     @Test
     void testRoleWithoutEditCannotAccessEdit() {
-        Scanner scanner = new Scanner("3\n5");
+        Scanner scanner = new Scanner("3\n0");
         boolean result = ShowMenuOptions.showMenu(Role.PARLIAMENT, scanner);
         assertTrue(result);
     }
 
     @Test
     void testInvalidInputHandledGracefully() {
-        Scanner scanner = new Scanner("99\n5");
+        Scanner scanner = new Scanner("99\n0");
         boolean result = ShowMenuOptions.showMenu(Role.FINANCE_MINISTER,
         scanner);
         assertTrue(result);

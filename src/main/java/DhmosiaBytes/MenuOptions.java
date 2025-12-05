@@ -18,7 +18,7 @@ public enum MenuOptions {
     GRAPHS(4, "Γραφήματα"),
 
     /** Option to exit the application. */
-    EXIT(5, "Έξοδος");
+    EXIT(0, "Έξοδος");
 
     /** Code of the menu option. */
     private final int code;
