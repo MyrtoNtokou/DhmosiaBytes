@@ -29,6 +29,7 @@ public final class ShowMenuOptions {
      */
     public static boolean showMenu(final Role currentRole,
     final Scanner input) {
+        Graphs graph = new Graphs();
         MenuOptions choice = null;
         do {
             // Display menu options
@@ -66,7 +67,7 @@ public final class ShowMenuOptions {
                 case SHOW_BUDGET -> showBudget();
                 case EDIT_BUDGET -> editBudget();
                 case SUMMARY -> summary();
-                case GRAPHS -> graphs();
+                case GRAPHS -> graph.chooseGraph(input);
                 case EXIT -> {
                     return true;
                 }
@@ -94,10 +95,5 @@ public final class ShowMenuOptions {
         List<Ypourgeio> y =
         ReadBudget.readByMinistry("proypologismos2025anaypourgeio.csv");
         DisplayBudget.showMinistry(y);
-    }
-
-    /** Displays charts for the user. */
-    public static void graphs() {
-        System.out.println("Τώρα βλέπεις τα γραφήματα");
     }
 }
