@@ -2,11 +2,14 @@ package dhmosiabytes;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
+<<<<<<< HEAD
 import java.util.List;
 
 import budgetreader.Eggrafi;
 import budgetreader.Ypourgeio;
 import budgetreader.ReadBudget;
+=======
+>>>>>>> 4c325714782d7b86ebd31f5f3e58469d2644717b
 
 /**
  * Displays a menu of graph options and
@@ -58,6 +61,7 @@ public class Graphs {
         }
         return code;
     }
+<<<<<<< HEAD
 
     /**
      * Displays the correct graph depending on the given code.
@@ -80,4 +84,6 @@ public class Graphs {
             default -> System.out.println("Μη έγκυρη επιλογή.");
         }
     }
+=======
+>>>>>>> 4c325714782d7b86ebd31f5f3e58469d2644717b
 }
