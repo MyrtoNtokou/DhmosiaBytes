@@ -61,7 +61,9 @@ public class Graphs {
 
             try {
                 code = input.nextInt();
-                if (code > MAX_CODE || code < MIN_CODE) {
+                if (code == 0) {
+                    break;
+                } else if (code < MIN_CODE || code > MAX_CODE) {
                     System.out.println("Παρακαλώ επιλέξτε αριθμό από το "
                     + MIN_CODE + " έως το " + MAX_CODE);
                 } else {
