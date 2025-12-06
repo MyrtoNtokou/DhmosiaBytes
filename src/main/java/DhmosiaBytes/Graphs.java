@@ -61,7 +61,6 @@ public class Graphs {
         }
         return code;
     }
-<<<<<<< HEAD
 
     /**
      * Displays the correct graph depending on the given code.
@@ -84,6 +83,4 @@ public class Graphs {
             default -> System.out.println("Μη έγκυρη επιλογή.");
         }
     }
-=======
->>>>>>> 4c325714782d7b86ebd31f5f3e58469d2644717b
 }
