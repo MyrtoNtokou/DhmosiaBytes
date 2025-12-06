@@ -1,15 +1,12 @@
 package dhmosiabytes;
 
 import java.util.InputMismatchException;
-import java.util.Scanner;
-<<<<<<< HEAD
 import java.util.List;
+import java.util.Scanner;
 
 import budgetreader.Eggrafi;
-import budgetreader.Ypourgeio;
 import budgetreader.ReadBudget;
-=======
->>>>>>> 4c325714782d7b86ebd31f5f3e58469d2644717b
+import budgetreader.Ypourgeio;
 
 /**
  * Displays a menu of graph options and
