@@ -19,6 +19,21 @@ public class Graphs {
     /** The minimum valid option number. */
     private static final int MIN_CODE = 1;
 
+    /** Numerical code for pie chart of revenues and expenditures. */
+    private static final int PIE_ESODA_EXODA = 1;
+
+    /** Numerical code for pie chart of deficit. */
+    private static final int PIE_ELLEIMMA = 2;
+
+    /** Numerical code for chart of revenue. */
+    private static final int CHART_ESODA = 3;
+
+    /** Numerical code for chart of expenditure. */
+    private static final int CHART_EXODA = 4;
+
+    /** Numerical code for chart per ministry. */
+    private static final int CHART_MINISTRY = 5;
+
     /**
      * Creates a Graph object.
      */
@@ -41,6 +56,7 @@ public class Graphs {
             System.out.println("3. Ιστόγραμμα Εσόδων");
             System.out.println("4. Ιστόγραμμα Εξόδων");
             System.out.println("5. Ιστόγραμμα Προϋπολογισμού ανά Υπουργείο");
+            System.out.println("0. Έξοδος");
             System.out.print("Επιλογή: ");
 
             try {
@@ -62,22 +78,27 @@ public class Graphs {
     /**
      * Displays the correct graph depending on the given code.
      *
-     * @param code the numeric code referring to the graph
+     * @param input the Scanner for user input
      */
-    public void runGraphs(final int code) {
-        List<Eggrafi> eggrafes =
+    public void runGraphs(final Scanner input) {
+        List<Eggrafi> eggra =
         ReadBudget.readGeneralBudget("proypologismos2025.csv");
 
         List<Ypourgeio> y =
         ReadBudget.readByMinistry("proypologismos2025anaypourgeio.csv");
 
-        switch (code) {
-            case 1 -> MoreCharts.pieChartEsodaExoda(eggrafes);
-            case 2 -> MoreCharts.pieChartElleimma(eggrafes);
-            case 3 -> Barcharts.chartEsoda(eggrafes);
-            case 4 -> Barcharts.chartExoda(eggrafes);
-            case 5 -> Barcharts.chartMinistry(y);
-            default -> System.out.println("Μη έγκυρη επιλογή.");
-        }
+        int code;
+        do {
+            code = chooseGraph(input);
+            switch (code) {
+                case PIE_ESODA_EXODA -> MoreCharts.pieChartEsodaExoda(eggra);
+                case PIE_ELLEIMMA -> MoreCharts.pieChartElleimma(eggra);
+                case CHART_ESODA -> Barcharts.chartEsoda(eggra);
+                case CHART_EXODA -> Barcharts.chartExoda(eggra);
+                case CHART_MINISTRY -> Barcharts.chartMinistry(y);
+                case 0 -> System.out.println("Επιστροφή στο μενού επιλογών");
+                default -> System.out.println("Μη έγκυρη επιλογή.");
+            }
+        } while (code != 0);
     }
 }
