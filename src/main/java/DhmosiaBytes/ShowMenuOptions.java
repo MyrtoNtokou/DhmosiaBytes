@@ -67,7 +67,10 @@ public final class ShowMenuOptions {
                 case SHOW_BUDGET -> showBudget();
                 case EDIT_BUDGET -> editBudget();
                 case SUMMARY -> summary();
-                case GRAPHS -> graph.chooseGraph(input);
+                case GRAPHS -> {
+                    int code = graph.chooseGraph(input);
+                    graph.runGraphs(input);
+                }
                 case EXIT -> {
                     return true;
                 }
