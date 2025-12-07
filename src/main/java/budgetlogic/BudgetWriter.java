@@ -8,7 +8,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
- * Απλός writer που γράφει lists σε CSV με τη μορφή που μοιράστηκες.
+ * SIMPLE CSV WRITER
  */
 public final class BudgetWriter {
 

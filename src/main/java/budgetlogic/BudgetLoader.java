@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Απλός CSV loader — φορτώνει το general CSV (έσοδα) και το ministries CSV.
+ * CSV LOADER
  */
 public final class BudgetLoader {
 

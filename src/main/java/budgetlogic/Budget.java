@@ -1,4 +1,3 @@
-
 package budgetlogic;
 
 import java.math.BigDecimal;
@@ -6,7 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Κεντρικό μοντέλο προϋπολογισμού.
+ * simple budget model
  */
 public class Budget {
 

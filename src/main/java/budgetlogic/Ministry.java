@@ -5,7 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Απλό μοντέλο Υπουργείου.
+ * simple ministry model
  */
 public class Ministry {
 
