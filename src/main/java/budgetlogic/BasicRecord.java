@@ -22,7 +22,7 @@ public class BasicRecord {
     public String getKodikos() {
         return kodikos;
     }
-
+    
     public String getPerigrafi() {
         return perigrafi;
     }
@@ -35,4 +35,3 @@ public class BasicRecord {
         this.poso = poso;
     }
 }
-
