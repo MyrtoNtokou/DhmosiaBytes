@@ -9,14 +9,14 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * BudgetService που δουλεύει με τα μοντέλα σου:
+ * BudgetService works with 
  * - Budget: getRevenues(), getExpenses() -> Map<String,BasicRecord>
  * - Budget: getMinistries() -> Map<Integer,Ministry>
  * - BasicRecord: getKodikos(), getPerigrafi(), getPoso(), setPoso(BigDecimal)
  * - Ministry: getKodikos(), getOnoma(), getTaktikos(), getPde(), getSynolo(),
  *            setTaktikos(BigDecimal), setPde(BigDecimal), setSynolo(BigDecimal)
  *
- * Επιπλέον δέχεται optional mapping για πιο ακριβή προώθηση αλλαγών σε expenses:
+ *  optional mapping from ministries to expenses:
  *   Map<Integer, Map<String, BigDecimal>>
  * όπου key = ministryKodikos, inner map: expenseKodikos -> percent (0..1)
  */
@@ -26,7 +26,7 @@ public class BudgetService {
     private static final String EXPENSES_KEYWORD = "ΕΞΟΔΑ";
     private static final String RESULT_KEYWORD = "ΑΠΟΤΕΛΕΣΜΑ";
     private static final String MINISTRY_PREFIX = "Υπουργείο";
-    private static final String DECENTRALIZED_PREFIX = "Αποκεντρω";
+    private static final String DECENTRALIZED_PREFIX = "Αποκεντρωμένη";
     private static final String TOTAL_EXPENDITURE_KEYWORD = "Σύνολο εξόδων";
 
     private final Budget budget;
@@ -46,8 +46,6 @@ for (var e : mapping.entrySet()) {
 
     }
 
-    /* ================= Public entry points ================= */
-
     /**
      * Change a general amount (proypologismos general table). kodikos is the BasicRecord kodikos (String).
      * After change it recomputes header totals (ΕΣΟΔΑ, ΕΞΟΔΑ, ΑΠΟΤΕΛΕΣΜΑ).
@@ -61,7 +59,7 @@ for (var e : mapping.entrySet()) {
             target = expenses.get(kodikos);
         }
         if (target == null) {
-            throw new IllegalArgumentException("No general record with kodikos=" + kodikos);
+            throw new IllegalArgumentException("Δεν υπάρχει εγγραφή με κωδικό" + kodikos);
         }
         target.setPoso(normalize(newAmount));
 
@@ -69,33 +67,32 @@ for (var e : mapping.entrySet()) {
     }
 
     /**
-     * Change a ministry value. column must be "taktikos" or "pde" or "synolo".
+     * Change a ministry value. column must be "τακτικός" or "ΠΔΕ".
      * ministryKodikos is the integer code stored in Ministry.kodikos.
      */
     public void changeMinistryAmount(final int ministryKodikos, final String column, final BigDecimal newValue) {
         final Map<Integer, Ministry> ministries = budget.getMinistries();
         final Ministry m = ministries.get(ministryKodikos);
         if (m == null) {
-            throw new IllegalArgumentException("No ministry with kodikos=" + ministryKodikos);
+            throw new IllegalArgumentException("Δεν υπάρχει υπουργείο με κωδικό" + ministryKodikos);
         }
 
         final BigDecimal nv = normalize(newValue);
         final BigDecimal oldTotal = normalize(m.getSynolo() == null ? BigDecimal.ZERO : m.getSynolo());
 
         switch (column.toLowerCase(Locale.ROOT)) {
-            case "taktikos":
-            case "taktiko":
+            case "Τακτικός":
+            case "τακτικός":
                 m.setTaktikos(nv);
                 break;
-            case "pde":
+            case "ΠΔΕ":
+            case "πδε":
+            case "Προϋπολογισμός Δημοσίων Επενδύσεων":
+            case "προϋπολογισμός δημοσίων επενδύσεων":            
                 m.setPde(nv);
                 break;
-            case "synolo":
-            case "total":
-                m.setSynolo(nv);
-                break;
             default:
-                throw new IllegalArgumentException("Unknown ministry column: " + column);
+                throw new IllegalArgumentException("Άγνωστη κατηγορία Υπουργείου " + column);
         }
 
         // ensure ministry internal consistency when taktiko/pde changed:
@@ -108,7 +105,6 @@ for (var e : mapping.entrySet()) {
         recomputeMinistriesAggregates();
     }
 
-    /* ================= General aggregates (proypologismos2025) ================= */
 
     /**
      * Recompute ΕΣΟΔΑ, ΕΞΟΔΑ, ΑΠΟΤΕΛΕΣΜΑ header rows inside the general tables.
@@ -116,7 +112,6 @@ for (var e : mapping.entrySet()) {
      */
     public void recomputeGeneralAggregates() {
         // Combine revenues + expenses into a single list order - but we need original order.
-        // We assume loader preserved ordering in the Map insertion order (Budget uses LinkedHashMap).
         // We'll scan revenue map then expense map to find headers and parts.
         final Map<String, BasicRecord> revs = budget.getRevenues();
         final Map<String, BasicRecord> exps = budget.getExpenses();
@@ -168,12 +163,10 @@ for (var e : mapping.entrySet()) {
         // write back into maps (they're same objects so no extra action needed)
     }
 
-    /* ================= Ministries aggregates (proypologismos2025anaypourgeio) ================= */
-
     /**
      * Recompute ministries aggregated rows:
      * - 'Υπουργεία Συνολικά' = sum of rows that start with 'Υπουργείο'
-     * - 'Αποκεντρωμένες Διοικήσεις' = sum of rows that start with 'Αποκεντρωμένη' / 'Αποκεντρωμένες'
+     * - 'Αποκεντρωμένες Διοικήσεις' = sum of rows that start with 'Αποκεντρωμένη'
      * - 'Σύνολο εξόδων' (33) = 1 + 2 + 3 + ministriesTotal + kodikos(25)  (it reads 1/2/3 from general table)
      */
     public void recomputeMinistriesAggregates() {
@@ -215,26 +208,22 @@ for (var e : mapping.entrySet()) {
         BigDecimal sumDecPde = BigDecimal.ZERO;
         for (Ministry m : ministries.values()) {
             final String name = safe(m.getOnoma());
-            if (name.startsWith(DECENTRALIZED_PREFIX) || name.startsWith("Αποκεντρωμένη") || name.startsWith("Αποκεντρωμένες")) {
+            if (name.startsWith(DECENTRALIZED_PREFIX)) {
                 sumDec = sumDec.add(nonNull(m.getSynolo()));
                 sumDecTakt = sumDecTakt.add(nonNull(m.getTaktikos()));
                 sumDecPde = sumDecPde.add(nonNull(m.getPde()));
             }
         }
 
-        // find decentralised total row (by name contains 'Αποκεντρωμένες') or fallback to kodikos 35
+        // find decentralised total row (by name contains 'Αποκεντρωμένες') or fallback to kodikos 25
         Ministry decentralisedTotalRow = null;
         for (Ministry m : ministries.values()) {
-            if (safe(m.getOnoma()).toUpperCase(Locale.ROOT).contains("ΑΠΟΚΕΝΤΡ")) {
-                // pick the aggregated one if it looks like aggregated phrase
-                if (safe(m.getOnoma()).toUpperCase(Locale.ROOT).contains("ΔΙΟΙΚ") || safe(m.getOnoma()).toUpperCase(Locale.ROOT).contains("ΣΥΝΟΛ")) {
-                    decentralisedTotalRow = m;
-                    break;
-                }
+            if (safe(m.getOnoma()).toUpperCase(Locale.ROOT).contains("ΑΠΟΚΕΝΤΡΩΜΕΝΕΣ")) {
+                decentralisedTotalRow = m;
             }
         }
-        if (decentralisedTotalRow == null && ministries.containsKey(35)) {
-            decentralisedTotalRow = ministries.get(35);
+        if (decentralisedTotalRow == null && ministries.containsKey(25)) {
+            decentralisedTotalRow = ministries.get(25);
         }
         if (decentralisedTotalRow != null) {
             decentralisedTotalRow.setTaktikos(normalize(sumDecTakt));
@@ -244,42 +233,60 @@ for (var e : mapping.entrySet()) {
 
         // Compute overall total expenditures row 33 = 1 + 2 + 3 + ministriesTotal + kodikos(25)
         BigDecimal g1 = BigDecimal.ZERO, g2 = BigDecimal.ZERO, g3 = BigDecimal.ZERO;
+        BigDecimal gt1 = BigDecimal.ZERO, gt2 = BigDecimal.ZERO, gt3 = BigDecimal.ZERO;
+        BigDecimal gp1 = BigDecimal.ZERO, gp2 = BigDecimal.ZERO, gp3 = BigDecimal.ZERO;
         // read from general table: kodikos "1","2","3"
-        final Map<String, BasicRecord> genRev = budget.getRevenues();
-        final Map<String, BasicRecord> genExp = budget.getExpenses();
-        BasicRecord r1 = genRev.get("1");
-        if (r1 == null) r1 = genExp.get("1");
-        BasicRecord r2 = genRev.get("2");
-        if (r2 == null) r2 = genExp.get("2");
-        BasicRecord r3 = genRev.get("3");
-        if (r3 == null) r3 = genExp.get("3");
-        if (r1 != null) g1 = nonNull(r1.getPoso());
-        if (r2 != null) g2 = nonNull(r2.getPoso());
-        if (r3 != null) g3 = nonNull(r3.getPoso());
+        final Map<Integer, Ministry> minMap = budget.getMinistries();
+        Ministry m1 = minMap.get(1);
+        Ministry m2 = minMap.get(2);
+        Ministry m3 = minMap.get(3);
+        if (m1 != null) {
+            g1 = nonNull(m1.getSynolo());
+            gt1 = nonNull(m1.getTaktikos());
+            gp1 = nonNull(m1.getPde());
+        }    
+        if (m2 != null) {
+            g2 = nonNull(m2.getSynolo());
+            gt2 = nonNull(m2.getTaktikos());
+            gp2 = nonNull(m2.getPde());
+        }    
+        if (m3 != null) {
+            g3 = nonNull(m3.getSynolo());
+            gt3 = nonNull(m3.getTaktikos());
+            gp3 = nonNull(m3.getPde());
+        }
 
         BigDecimal ministriesTotal = nonNull(ministriesTotalRow == null ? BigDecimal.ZERO : ministriesTotalRow.getSynolo());
-        BigDecimal kod25 = BigDecimal.ZERO;
+        BigDecimal ministriesTotaltakt = nonNull(ministriesTotalRow == null ? BigDecimal.ZERO : ministriesTotalRow.getTaktikos());
+        BigDecimal ministriesTotalpde = nonNull(ministriesTotalRow == null ? BigDecimal.ZERO : ministriesTotalRow.getPde());
+        BigDecimal kod25 = BigDecimal.ZERO, kod25t = BigDecimal.ZERO, kod25p = BigDecimal.ZERO;
         if (ministries.containsKey(25)) {
             kod25 = nonNull(ministries.get(25).getSynolo());
+            kod25t = nonNull(ministries.get(25).getTaktikos());
+            kod25p = nonNull(ministries.get(25).getPde());
         }
 
         final BigDecimal overall = normalize(g1.add(g2).add(g3).add(ministriesTotal).add(kod25));
+        final BigDecimal overallt = normalize(gt1.add(gt2).add(gt3).add(ministriesTotaltakt).add(kod25t));
+        final BigDecimal overrallp = normalize(gp1.add(gp2).add(gp3).add(ministriesTotalpde).add(kod25p));
 
         // find row with TOTAL_EXPENDITURE_KEYWORD and set its synolo (otherwise try kodikos 33)
         boolean setOverall = false;
         for (Ministry m : ministries.values()) {
             if (safe(m.getOnoma()).toUpperCase(Locale.ROOT).contains(TOTAL_EXPENDITURE_KEYWORD.toUpperCase(Locale.ROOT))) {
                 m.setSynolo(overall);
+                m.setTaktikos(overallt);
+                m.setPde(overrallp);
                 setOverall = true;
                 break;
             }
         }
         if (!setOverall && ministries.containsKey(33)) {
             ministries.get(33).setSynolo(overall);
+            ministries.get(33).setTaktikos(overallt);
+            ministries.get(33).setPde(overrallp);
         }
     }
-
-    /* ================= Mapping propagation ================= */
 
     /**
      * Propagate change of a ministry total to expense BasicRecord entries.
@@ -295,16 +302,17 @@ for (var e : mapping.entrySet()) {
         }
         final BigDecimal oldT = nonNull(oldTotal);
         final BigDecimal nw = nonNull(newTotal);
+        final BigDecimal diff = nw.subtract(oldT);
 
         if (mapping != null && mapping.containsKey(ministryKodikos)) {
             final Map<String, BigDecimal> map = mapping.get(ministryKodikos);
-            // map gives percentages; set expense = nw * percent
+            // map gives percentages, poso changes accordingly
             for (Map.Entry<String, BigDecimal> e : map.entrySet()) {
                 final String expenseKodikos = e.getKey();
                 final BigDecimal percent = nonNull(e.getValue());
                 final BasicRecord expenseRec = expenses.get(expenseKodikos);
                 if (expenseRec != null) {
-                    final BigDecimal newVal = normalize(nw.multiply(percent));
+                    final BigDecimal newVal = normalize(expenseRec.getPoso().add(diff.multiply(percent)));
                     expenseRec.setPoso(newVal);
                 }
             }
@@ -336,8 +344,6 @@ for (var e : mapping.entrySet()) {
             }
         }
     }
-
-    /* ================= Helpers & validation ================= */
 
     /** ensures ministry synolo = taktiko + pde when taktiko/pde are set */
     private void reconcileMinistryParts(final Ministry m) {
@@ -373,7 +379,6 @@ for (var e : mapping.entrySet()) {
         return validateGeneral() && validateMinistries();
     }
 
-    /* ================= Utilities ================= */
 
     private static String safe(final String s) {
         return s == null ? "" : s;

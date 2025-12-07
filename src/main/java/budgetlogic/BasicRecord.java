@@ -1,10 +1,9 @@
-
 package budgetlogic;
 
 import java.math.BigDecimal;
 
 /**
- * Απλό record για γενικές εγγραφές (π.χ. έσοδα ή κατηγορίες εξόδων).
+ * basic model for general budget componets
  */
 public class BasicRecord {
 
