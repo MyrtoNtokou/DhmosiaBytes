@@ -2,7 +2,6 @@ package budgetlogic;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
@@ -17,13 +16,20 @@ public final class BudgetLoader {
 
     private BudgetLoader() { }
 
+    private static String stripBOM(String s) {
+        if (s != null && !s.isEmpty() && s.charAt(0) == '\uFEFF') {
+            return s.substring(1);
+        }
+        return s;
+    }
+
     public static List<BasicRecord> loadGeneral(final String path) throws IOException {
 
         final List<BasicRecord> list = new ArrayList<>();
 
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(path),
-         StandardCharsets.UTF_8)
-)) {
+        try (BufferedReader br = new BufferedReader(
+                new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8)
+        )) {
             String line;
 
             while ((line = br.readLine()) != null) {
@@ -36,7 +42,7 @@ public final class BudgetLoader {
                     continue;
                 }
 
-                final String kod = p[0].trim();
+                final String kod = stripBOM(p[0].trim());
                 final String desc = p[1].trim();
                 final BigDecimal amount = parseAmount(p[2]);
 
@@ -51,9 +57,9 @@ public final class BudgetLoader {
 
         final List<Ministry> list = new ArrayList<>();
 
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(path), 
-        StandardCharsets.UTF_8)
-)) {
+        try (BufferedReader br = new BufferedReader(
+                new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8)
+        )) {
             String line;
 
             while ((line = br.readLine()) != null) {
@@ -66,7 +72,10 @@ public final class BudgetLoader {
                     continue;
                 }
 
-                final int kod = Integer.parseInt(p[0].trim());
+                // BOM fix applied HERE!
+                final String kodStr = stripBOM(p[0].trim());
+                final int kod = Integer.parseInt(kodStr);
+
                 final String name = p[1].trim();
                 final BigDecimal tak = parseAmount(p[2]);
                 final BigDecimal pde = parseAmount(p[3]);
@@ -87,4 +96,3 @@ public final class BudgetLoader {
         return new BigDecimal(clean);
     }
 }
-
