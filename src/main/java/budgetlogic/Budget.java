@@ -18,6 +18,13 @@ public class Budget {
         this.expenses = new LinkedHashMap<>();
         this.ministries = new LinkedHashMap<>();
     }
+    public Budget(Map<String, BasicRecord> revenues,
+              Map<String, BasicRecord> expenses,
+              Map<Integer, Ministry> ministries) {
+    this.revenues = revenues;
+    this.expenses = expenses;
+    this.ministries = ministries; // or whatever your field name is!
+}
     public Budget(Budget other) {
     this.revenues = new LinkedHashMap<>();
     this.expenses = new LinkedHashMap<>();
@@ -91,5 +98,3 @@ public class Budget {
     }
 
 }
-
-
