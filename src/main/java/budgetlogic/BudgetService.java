@@ -138,6 +138,7 @@ private static final String TOTAL_EXPENDITURE_KEYWORD = "Σύνολο εξόδω
                 normalize(m.getSynolo() == null ? BigDecimal.ZERO
                 : m.getSynolo()));
         recomputeMinistriesAggregates();
+        recomputeGeneralAggregates();
     }
 
     /**
