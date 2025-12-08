@@ -4,6 +4,9 @@ import org.knowm.xchart.PieChart;
 import org.knowm.xchart.PieChartBuilder;
 import org.knowm.xchart.SwingWrapper;
 
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
+
 import java.awt.Color;
 import java.util.List;
 import budgetreader.Eggrafi;
@@ -64,7 +67,8 @@ public final class MoreCharts {
 
         // Display PieChart in a swing window
         SwingWrapper<PieChart> window = new SwingWrapper<>(chart);
-        window.displayChart();
+        JFrame frame = window.displayChart();
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     }
 
     /**
@@ -106,6 +110,7 @@ public final class MoreCharts {
 
         // Display PieChart in a swing window
         SwingWrapper<PieChart> window = new SwingWrapper<>(chart);
-        window.displayChart();
+        JFrame frame = window.displayChart();
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     }
 }
