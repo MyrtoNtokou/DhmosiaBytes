@@ -9,48 +9,79 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * BudgetService works with 
- * - Budget: getRevenues(), getExpenses() -> Map<String,BasicRecord>
- * - Budget: getMinistries() -> Map<Integer,Ministry>
- * - BasicRecord: getKodikos(), getPerigrafi(), getPoso(), setPoso(BigDecimal)
- * - Ministry: getKodikos(), getOnoma(), getTaktikos(), getPde(), getSynolo(),
- *            setTaktikos(BigDecimal), setPde(BigDecimal), setSynolo(BigDecimal)
+ * Service class for managing and updating budget information.
  *
- *  optional mapping from ministries to expenses:
- *   Map<Integer, Map<String, BigDecimal>>
- * όπου key = ministryKodikos, inner map: expenseKodikos -> percent (0..1)
+ * <p>This class coordinates interactions with:
+ * <ul>
+ *   <li>{@code Budget}: revenues, expenses, ministries</li>
+ *   <li>{@code BasicRecord}: general table records</li>
+ *   <li>{@code Ministry}: ministry-level budget entries</li>
+ * </ul>
+ *
+ * <p>Optional mapping provides allocation percentages:
+ * {@code Map<ministryKodikos, Map<expenseKodikos, percent>>}.
  */
-public class BudgetService {
+public final class BudgetService {
 
-    private static final String REVENUES_KEYWORD = "ΕΣΟΔΑ";
-    private static final String EXPENSES_KEYWORD = "ΕΞΟΔΑ";
-    private static final String RESULT_KEYWORD = "ΑΠΟΤΕΛΕΣΜΑ";
-    private static final String MINISTRY_PREFIX = "Υπουργείο";
-    private static final String DECENTRALIZED_PREFIX = "Αποκεντρωμένη";
-    private static final String TOTAL_EXPENDITURE_KEYWORD = "Σύνολο εξόδων";
+    /** Keyword used to detect the revenues header row. */
+private static final String REVENUES_KEYWORD = "ΕΣΟΔΑ";
 
+/** Keyword used to detect the expenses header row. */
+private static final String EXPENSES_KEYWORD = "ΕΞΟΔΑ";
+
+/** Keyword used to detect the results row. */
+private static final String RESULT_KEYWORD = "ΑΠΟΤΕΛΕΣΜΑ";
+
+/** Prefix for ministry rows. */
+private static final String MINISTRY_PREFIX = "Υπουργείο";
+
+/** Prefix for decentralized administration rows. */
+private static final String DECENTRALIZED_PREFIX = "Αποκεντρωμένη";
+
+/** Keyword for total expenditure row. */
+private static final String TOTAL_EXPENDITURE_KEYWORD = "Σύνολο εξόδων";
+
+    /** Underlying budget model. */
     private final Budget budget;
+
     /**
-     * Optional mapping: ministryKodikos -> (expenseKodikos -> percent(0..1))
-     * If null, fallback proportional scaling heuristic is used.
+     * Optional mapping:
+     * ministryKodikos -> (expenseKodikos -> percent(0..1)).
      */
     private final Map<Integer, Map<String, BigDecimal>> mapping;
 
-    public BudgetService(final Budget budget,
-                         final Map<Integer, Map<String, BigDecimal>> mapping) {
-        this.budget = Objects.requireNonNull(budget, "budget");
-        this.mapping = new LinkedHashMap<>();
-for (var e : mapping.entrySet()) {
-    this.mapping.put(e.getKey(), new LinkedHashMap<>(e.getValue()));
-}
+    /**
+     * Constructor.
+     *
+     * @param initBudget Budget instance
+     * @param initMapping mapping definition (may be null)
+     */
+    public BudgetService(final Budget initBudget,
+                         final Map<Integer, Map<String,
+                         BigDecimal>> initMapping) {
 
+        this.budget = Objects.requireNonNull(initBudget, "budget");
+        this.mapping = new LinkedHashMap<>();
+
+        if (initMapping != null) {
+            for (var e : initMapping.entrySet()) {
+                this.mapping.put(e.getKey(),
+                new LinkedHashMap<>(e.getValue()));
+            }
+        }
     }
 
     /**
-     * Change a general amount (proypologismos general table). kodikos is the BasicRecord kodikos (String).
-     * After change it recomputes header totals (ΕΣΟΔΑ, ΕΞΟΔΑ, ΑΠΟΤΕΛΕΣΜΑ).
+     * Changes a general table amount. Kodikos identifies the
+     * {@code BasicRecord}.
+     * Automatically updates the header totals: ΕΣΟΔΑ,
+     * ΕΞΟΔΑ, ΑΠΟΤΕΛΕΣΜΑ.
+     *
+     * @param kodikos identifier of the record
+     * @param newAmount new value to set
      */
-    public void changeGeneralAmount(final String kodikos, final BigDecimal newAmount) {
+    public void changeGeneralAmount(final String kodikos,
+        final BigDecimal newAmount) {
         final Map<String, BasicRecord> revenues = budget.getRevenues();
         final Map<String, BasicRecord> expenses = budget.getExpenses();
 
@@ -59,71 +90,76 @@ for (var e : mapping.entrySet()) {
             target = expenses.get(kodikos);
         }
         if (target == null) {
-            throw new IllegalArgumentException("Δεν υπάρχει εγγραφή με κωδικό" + kodikos);
+            throw new IllegalArgumentException("Δεν υπάρχει εγγραφή με κωδικό "
+            + kodikos);
         }
-        target.setPoso(normalize(newAmount));
 
+        target.setPoso(normalize(newAmount));
         recomputeGeneralAggregates();
     }
 
     /**
-     * Change a ministry value. column must be "τακτικός" or "ΠΔΕ".
-     * ministryKodikos is the integer code stored in Ministry.kodikos.
+     * Changes a ministry amount in either "τακτικός" or "ΠΔΕ".
+     *
+     * @param ministryKodikos ministry ID
+     * @param column either "τακτικός" or "ΠΔΕ"
+     * @param newValue new value
      */
-    public void changeMinistryAmount(final int ministryKodikos, final String column, final BigDecimal newValue) {
-        final Map<Integer, Ministry> ministries = budget.getMinistries();
-        final Ministry m = ministries.get(ministryKodikos);
+    public void changeMinistryAmount(final int ministryKodikos,
+                                     final String column,
+                                     final BigDecimal newValue) {
+
+        final Ministry m = budget.getMinistries().get(ministryKodikos);
         if (m == null) {
-            throw new IllegalArgumentException("Δεν υπάρχει υπουργείο με κωδικό" + ministryKodikos);
+            throw new IllegalArgumentException("Δεν υπάρχει υπουργείο με κωδικό"
+            + ministryKodikos);
         }
 
         final BigDecimal nv = normalize(newValue);
-        final BigDecimal oldTotal = normalize(m.getSynolo() == null ? BigDecimal.ZERO : m.getSynolo());
+        final BigDecimal oldTotal =
+            normalize(m.getSynolo() == null ? BigDecimal.ZERO
+            : m.getSynolo());
 
         switch (column.toLowerCase(Locale.ROOT)) {
-            case "Τακτικός":
             case "τακτικός":
                 m.setTaktikos(nv);
                 break;
-            case "ΠΔΕ":
             case "πδε":
-            case "Προϋπολογισμός Δημοσίων Επενδύσεων":
-            case "προϋπολογισμός δημοσίων επενδύσεων":            
+            case "προϋπολογισμός δημοσίων επενδύσεων":
                 m.setPde(nv);
                 break;
             default:
-                throw new IllegalArgumentException("Άγνωστη κατηγορία Υπουργείου " + column);
+                throw new IllegalArgumentException(
+                    "Άγνωστη κατηγορία Υπουργείου" + column);
         }
 
-        // ensure ministry internal consistency when taktiko/pde changed:
         reconcileMinistryParts(m);
-
-        // propagate change to expenses (using mapping if available)
-        propagateChangeToExpenses(ministryKodikos, oldTotal, normalize(m.getSynolo() == null ? BigDecimal.ZERO : m.getSynolo()));
-
-        // recompute ministries-level aggregates and overall totals
+        propagateChangeToExpenses(ministryKodikos, oldTotal,
+                normalize(m.getSynolo() == null ? BigDecimal.ZERO
+                : m.getSynolo()));
         recomputeMinistriesAggregates();
     }
 
-
     /**
-     * Recompute ΕΣΟΔΑ, ΕΞΟΔΑ, ΑΠΟΤΕΛΕΣΜΑ header rows inside the general tables.
-     * It finds indices by scanning perigrafi for keywords.
+     * Recomputes the aggregate general table rows (ΕΣΟΔΑ/ΕΞΟΔΑ/ΑΠΟΤΕΛΕΣΜΑ).
+     * Scans the table to locate these rows dynamically.
      */
     public void recomputeGeneralAggregates() {
-        // Combine revenues + expenses into a single list order - but we need original order.
-        // We'll scan revenue map then expense map to find headers and parts.
         final Map<String, BasicRecord> revs = budget.getRevenues();
         final Map<String, BasicRecord> exps = budget.getExpenses();
 
-        // Create an ordered array of records as they appear in CSV (first revenues then expenses).
         final List<BasicRecord> ordered = new java.util.ArrayList<>();
         ordered.addAll(revs.values());
         ordered.addAll(exps.values());
 
-        int revHeader = -1, expHeader = -1, resultRow = -1;
+        int revHeader = -1;
+        int expHeader = -1;
+        int resultRow = -1;
+
         for (int i = 0; i < ordered.size(); i++) {
-            final String p = safe(ordered.get(i).getPerigrafi()).toUpperCase(Locale.ROOT);
+            final String p = safe(ordered.get(i).getPerigrafi())
+                    .toUpperCase(Locale.ROOT);
+
             if (revHeader < 0 && p.contains(REVENUES_KEYWORD)) {
                 revHeader = i;
             }
@@ -134,48 +170,49 @@ for (var e : mapping.entrySet()) {
                 resultRow = i;
             }
         }
+
         if (revHeader < 0 || expHeader < 0 || resultRow < 0) {
-            // Could not find the special rows; nothing to do
             return;
         }
 
-        // Sum revenues: records between revHeader+1 .. expHeader-1
         BigDecimal revSum = BigDecimal.ZERO;
         for (int i = revHeader + 1; i < expHeader; i++) {
             revSum = revSum.add(nonNull(ordered.get(i).getPoso()));
         }
 
-        // Sum expenses: records between expHeader+1 .. resultRow-1
         BigDecimal expSum = BigDecimal.ZERO;
         for (int i = expHeader + 1; i < resultRow; i++) {
             expSum = expSum.add(nonNull(ordered.get(i).getPoso()));
         }
 
-        // Update header rows (they may belong to revenues map or expenses map)
-        BasicRecord revHeaderRec = ordered.get(revHeader);
-        revHeaderRec.setPoso(normalize(revSum));
-        BasicRecord expHeaderRec = ordered.get(expHeader);
-        expHeaderRec.setPoso(normalize(expSum));
-
-        BasicRecord resultRec = ordered.get(resultRow);
-        resultRec.setPoso(normalize(revSum.subtract(expSum)));
-
-        // write back into maps (they're same objects so no extra action needed)
+        ordered.get(revHeader).setPoso(normalize(revSum));
+        ordered.get(expHeader).setPoso(normalize(expSum));
+        ordered.get(resultRow).setPoso(normalize(revSum.subtract(expSum)));
     }
 
+    /** ministries total row code. */
+    private static final int MINISTRY_TOTAL_CODE = 4;
+
+    /** decentralized total row code. */
+    private static final int DEC_TOTAL_CODE = 25;
+
+    /** total expenses row code. */
+    private static final int SYN_TOTAL_CODE = 33;
     /**
-     * Recompute ministries aggregated rows:
-     * - 'Υπουργεία Συνολικά' = sum of rows that start with 'Υπουργείο'
-     * - 'Αποκεντρωμένες Διοικήσεις' = sum of rows that start with 'Αποκεντρωμένη'
-     * - 'Σύνολο εξόδων' (33) = 1 + 2 + 3 + ministriesTotal + kodikos(25)  (it reads 1/2/3 from general table)
+     * Recomputes all ministry-level aggregate totals including:
+     * <ul>
+     *   <li>Total ministries</li>
+     *   <li>Decentralized administrations</li>
+     *   <li>Row 33 (Σύνολο εξόδων)</li>
+     * </ul>.
      */
     public void recomputeMinistriesAggregates() {
         final Map<Integer, Ministry> ministries = budget.getMinistries();
 
-        // sum individual ministries (rows that start with MINISTRY_PREFIX)
         BigDecimal sumMin = BigDecimal.ZERO;
         BigDecimal sumMinTakt = BigDecimal.ZERO;
         BigDecimal sumMinPde = BigDecimal.ZERO;
+
         for (Ministry m : ministries.values()) {
             final String name = safe(m.getOnoma());
             if (name.startsWith(MINISTRY_PREFIX)) {
@@ -185,27 +222,29 @@ for (var e : mapping.entrySet()) {
             }
         }
 
-        // find and set ministries total row (attempt by name contains "ΥΠΟΥΡΓΕΙΑ" otherwise fallback to kodikos==4)
         Ministry ministriesTotalRow = null;
         for (Ministry m : ministries.values()) {
-            if (safe(m.getOnoma()).toUpperCase(Locale.ROOT).contains("ΥΠΟΥΡΓΕΙΑ")) {
+            if (safe(m.getOnoma()).toUpperCase(Locale.ROOT)
+                .contains("ΥΠΟΥΡΓΕΙΑ")) {
                 ministriesTotalRow = m;
                 break;
             }
         }
-        if (ministriesTotalRow == null && ministries.containsKey(4)) {
-            ministriesTotalRow = ministries.get(4);
+        if (ministriesTotalRow == null && ministries.containsKey(
+            MINISTRY_TOTAL_CODE)) {
+            ministriesTotalRow = ministries.get(MINISTRY_TOTAL_CODE);
         }
+
         if (ministriesTotalRow != null) {
             ministriesTotalRow.setTaktikos(normalize(sumMinTakt));
             ministriesTotalRow.setPde(normalize(sumMinPde));
             ministriesTotalRow.setSynolo(normalize(sumMin));
         }
 
-        // sum decentralized rows (name starts with DECENTRALIZED_PREFIX)
         BigDecimal sumDec = BigDecimal.ZERO;
         BigDecimal sumDecTakt = BigDecimal.ZERO;
         BigDecimal sumDecPde = BigDecimal.ZERO;
+
         for (Ministry m : ministries.values()) {
             final String name = safe(m.getOnoma());
             if (name.startsWith(DECENTRALIZED_PREFIX)) {
@@ -215,170 +254,227 @@ for (var e : mapping.entrySet()) {
             }
         }
 
-        // find decentralised total row (by name contains 'Αποκεντρωμένες') or fallback to kodikos 25
-        Ministry decentralisedTotalRow = null;
+        Ministry decentralizedTotalRow = null;
         for (Ministry m : ministries.values()) {
-            if (safe(m.getOnoma()).toUpperCase(Locale.ROOT).contains("ΑΠΟΚΕΝΤΡΩΜΕΝΕΣ")) {
-                decentralisedTotalRow = m;
+            if (safe(m.getOnoma()).toUpperCase(Locale.ROOT)
+                    .contains("ΑΠΟΚΕΝΤΡΩΜΕΝΕΣ")) {
+                decentralizedTotalRow = m;
             }
         }
-        if (decentralisedTotalRow == null && ministries.containsKey(25)) {
-            decentralisedTotalRow = ministries.get(25);
-        }
-        if (decentralisedTotalRow != null) {
-            decentralisedTotalRow.setTaktikos(normalize(sumDecTakt));
-            decentralisedTotalRow.setPde(normalize(sumDecPde));
-            decentralisedTotalRow.setSynolo(normalize(sumDec));
+
+        if (decentralizedTotalRow == null && ministries
+            .containsKey(DEC_TOTAL_CODE)) {
+            decentralizedTotalRow = ministries.get(DEC_TOTAL_CODE);
         }
 
-        // Compute overall total expenditures row 33 = 1 + 2 + 3 + ministriesTotal + kodikos(25)
-        BigDecimal g1 = BigDecimal.ZERO, g2 = BigDecimal.ZERO, g3 = BigDecimal.ZERO;
-        BigDecimal gt1 = BigDecimal.ZERO, gt2 = BigDecimal.ZERO, gt3 = BigDecimal.ZERO;
-        BigDecimal gp1 = BigDecimal.ZERO, gp2 = BigDecimal.ZERO, gp3 = BigDecimal.ZERO;
-        // read from general table: kodikos "1","2","3"
-        final Map<Integer, Ministry> minMap = budget.getMinistries();
-        Ministry m1 = minMap.get(1);
-        Ministry m2 = minMap.get(2);
-        Ministry m3 = minMap.get(3);
-        if (m1 != null) {
-            g1 = nonNull(m1.getSynolo());
-            gt1 = nonNull(m1.getTaktikos());
-            gp1 = nonNull(m1.getPde());
-        }    
-        if (m2 != null) {
-            g2 = nonNull(m2.getSynolo());
-            gt2 = nonNull(m2.getTaktikos());
-            gp2 = nonNull(m2.getPde());
-        }    
-        if (m3 != null) {
-            g3 = nonNull(m3.getSynolo());
-            gt3 = nonNull(m3.getTaktikos());
-            gp3 = nonNull(m3.getPde());
+        if (decentralizedTotalRow != null) {
+            decentralizedTotalRow.setTaktikos(normalize(sumDecTakt));
+            decentralizedTotalRow.setPde(normalize(sumDecPde));
+            decentralizedTotalRow.setSynolo(normalize(sumDec));
         }
 
-        BigDecimal ministriesTotal = nonNull(ministriesTotalRow == null ? BigDecimal.ZERO : ministriesTotalRow.getSynolo());
-        BigDecimal ministriesTotaltakt = nonNull(ministriesTotalRow == null ? BigDecimal.ZERO : ministriesTotalRow.getTaktikos());
-        BigDecimal ministriesTotalpde = nonNull(ministriesTotalRow == null ? BigDecimal.ZERO : ministriesTotalRow.getPde());
-        BigDecimal kod25 = BigDecimal.ZERO, kod25t = BigDecimal.ZERO, kod25p = BigDecimal.ZERO;
-        if (ministries.containsKey(25)) {
-            kod25 = nonNull(ministries.get(25).getSynolo());
-            kod25t = nonNull(ministries.get(25).getTaktikos());
-            kod25p = nonNull(ministries.get(25).getPde());
+        final Ministry m1 = ministries.get(1);
+        final Ministry m2 = ministries.get(2);
+        final Ministry m3 = ministries.get(3);
+
+        BigDecimal g1 = m1 == null ? BigDecimal.ZERO
+        : nonNull(m1.getSynolo());
+        BigDecimal gt1 = m1 == null ? BigDecimal.ZERO
+        : nonNull(m1.getTaktikos());
+        BigDecimal gp1 = m1 == null ? BigDecimal.ZERO
+        : nonNull(m1.getPde());
+
+        BigDecimal g2 = m2 == null ? BigDecimal.ZERO
+        : nonNull(m2.getSynolo());
+        BigDecimal gt2 = m2 == null ? BigDecimal.ZERO
+        : nonNull(m2.getTaktikos());
+        BigDecimal gp2 = m2 == null ? BigDecimal.ZERO
+        : nonNull(m2.getPde());
+
+        BigDecimal g3 = m3 == null ? BigDecimal.ZERO
+        : nonNull(m3.getSynolo());
+        BigDecimal gt3 = m3 == null ? BigDecimal.ZERO
+        : nonNull(m3.getTaktikos());
+        BigDecimal gp3 = m3 == null ? BigDecimal.ZERO
+        : nonNull(m3.getPde());
+
+        BigDecimal ministriesTotal =
+            nonNull(ministriesTotalRow == null ? BigDecimal.ZERO
+                : ministriesTotalRow.getSynolo());
+        BigDecimal ministriesTakt =
+            nonNull(ministriesTotalRow == null ? BigDecimal.ZERO
+                : ministriesTotalRow.getTaktikos());
+        BigDecimal ministriesPde =
+            nonNull(ministriesTotalRow == null ? BigDecimal.ZERO
+                : ministriesTotalRow.getPde());
+
+        BigDecimal kod25 = BigDecimal.ZERO;
+        BigDecimal kod25t = BigDecimal.ZERO;
+        BigDecimal kod25p = BigDecimal.ZERO;
+
+        if (ministries.containsKey(DEC_TOTAL_CODE)) {
+            kod25 = nonNull(ministries.get(DEC_TOTAL_CODE).getSynolo());
+            kod25t = nonNull(ministries.get(DEC_TOTAL_CODE).getTaktikos());
+            kod25p = nonNull(ministries.get(DEC_TOTAL_CODE).getPde());
         }
 
-        final BigDecimal overall = normalize(g1.add(g2).add(g3).add(ministriesTotal).add(kod25));
-        final BigDecimal overallt = normalize(gt1.add(gt2).add(gt3).add(ministriesTotaltakt).add(kod25t));
-        final BigDecimal overrallp = normalize(gp1.add(gp2).add(gp3).add(ministriesTotalpde).add(kod25p));
+        final BigDecimal overall = normalize(
+                g1.add(g2).add(g3).add(ministriesTotal).add(kod25));
+        final BigDecimal overallT = normalize(
+                gt1.add(gt2).add(gt3).add(ministriesTakt).add(kod25t));
+        final BigDecimal overallP = normalize(
+                gp1.add(gp2).add(gp3).add(ministriesPde).add(kod25p));
 
-        // find row with TOTAL_EXPENDITURE_KEYWORD and set its synolo (otherwise try kodikos 33)
-        boolean setOverall = false;
+        boolean updated = false;
+
         for (Ministry m : ministries.values()) {
-            if (safe(m.getOnoma()).toUpperCase(Locale.ROOT).contains(TOTAL_EXPENDITURE_KEYWORD.toUpperCase(Locale.ROOT))) {
+            if (safe(m.getOnoma()).toUpperCase(Locale.ROOT)
+                    .contains(TOTAL_EXPENDITURE_KEYWORD
+                .toUpperCase(Locale.ROOT))) {
                 m.setSynolo(overall);
-                m.setTaktikos(overallt);
-                m.setPde(overrallp);
-                setOverall = true;
+                m.setTaktikos(overallT);
+                m.setPde(overallP);
+                updated = true;
                 break;
             }
         }
-        if (!setOverall && ministries.containsKey(33)) {
-            ministries.get(33).setSynolo(overall);
-            ministries.get(33).setTaktikos(overallt);
-            ministries.get(33).setPde(overrallp);
+
+        if (!updated && ministries.containsKey(SYN_TOTAL_CODE)) {
+            final Ministry r = ministries.get(SYN_TOTAL_CODE);
+            r.setSynolo(overall);
+            r.setTaktikos(overallT);
+            r.setPde(overallP);
         }
     }
 
     /**
-     * Propagate change of a ministry total to expense BasicRecord entries.
-     * If mapping is provided it uses it (expenseKodikos -> percent (0..1)).
-     * Otherwise it attempts a fallback: scale all expense entries whose kodikos startsWith ministryKodikos (string).
+     * Propagates ministry total changes to expense entries.
+     *
+     * @param ministryKodikos ministry ID
+     * @param oldTotal previous total
+     * @param newTotal updated total
      */
     private void propagateChangeToExpenses(final int ministryKodikos,
                                            final BigDecimal oldTotal,
                                            final BigDecimal newTotal) {
+
         final Map<String, BasicRecord> expenses = budget.getExpenses();
         if (expenses == null || expenses.isEmpty()) {
             return;
         }
+
         final BigDecimal oldT = nonNull(oldTotal);
         final BigDecimal nw = nonNull(newTotal);
         final BigDecimal diff = nw.subtract(oldT);
 
         if (mapping != null && mapping.containsKey(ministryKodikos)) {
-            final Map<String, BigDecimal> map = mapping.get(ministryKodikos);
-            // map gives percentages, poso changes accordingly
+            final Map<String, BigDecimal> map = mapping
+            .get(ministryKodikos);
             for (Map.Entry<String, BigDecimal> e : map.entrySet()) {
-                final String expenseKodikos = e.getKey();
-                final BigDecimal percent = nonNull(e.getValue());
-                final BasicRecord expenseRec = expenses.get(expenseKodikos);
+                final BasicRecord expenseRec = expenses.get(e.getKey());
                 if (expenseRec != null) {
-                    final BigDecimal newVal = normalize(expenseRec.getPoso().add(diff.multiply(percent)));
+                    final BigDecimal percent = nonNull(e.getValue());
+                    final BigDecimal newVal =
+                        normalize(expenseRec.getPoso()
+                        .add(diff.multiply(percent)));
                     expenseRec.setPoso(newVal);
                 }
             }
             return;
         }
 
-        // Fallback proportional scaling for expenses whose kodikos starts with the ministryKodikos string
         final String prefix = String.valueOf(ministryKodikos);
+
         if (oldT.compareTo(BigDecimal.ZERO) == 0) {
-            // if old was zero: distribute equally among matching expense rows
             int count = 0;
             for (String k : expenses.keySet()) {
-                if (k.startsWith(prefix)) count++;
+                if (k.startsWith(prefix)) {
+                    count++;
+                }
             }
-            if (count == 0) return;
-            final BigDecimal each = nw.divide(BigDecimal.valueOf(count), 2, RoundingMode.HALF_EVEN);
-            for (Map.Entry<String, BasicRecord> en : expenses.entrySet()) {
+            if (count == 0) {
+                return;
+            }
+            final BigDecimal each =
+                nw.divide(BigDecimal.valueOf(count),
+                2, RoundingMode.HALF_EVEN);
+
+            for (Map.Entry<String, BasicRecord> en
+                : expenses.entrySet()) {
                 if (en.getKey().startsWith(prefix)) {
                     en.getValue().setPoso(each);
                 }
             }
         } else {
-            final BigDecimal ratio = nw.divide(oldT, 10, RoundingMode.HALF_EVEN);
+            final BigDecimal ratio =
+                nw.divide(oldT, 10, RoundingMode.HALF_EVEN);
+
             for (Map.Entry<String, BasicRecord> en : expenses.entrySet()) {
                 if (en.getKey().startsWith(prefix)) {
-                    final BigDecimal old = nonNull(en.getValue().getPoso());
-                    en.getValue().setPoso(normalize(old.multiply(ratio)));
+                    final BigDecimal oldVal = nonNull(en.getValue()
+                    .getPoso());
+                    en.getValue().setPoso(normalize(oldVal
+                        .multiply(ratio)));
                 }
             }
         }
     }
 
-    /** ensures ministry synolo = taktiko + pde when taktiko/pde are set */
+    /**
+     * Ensures {@code synolo = taktikos + pde}.
+     *
+     * @param m ministry to reconcile
+     */
     private void reconcileMinistryParts(final Ministry m) {
         final BigDecimal takt = nonNull(m.getTaktikos());
         final BigDecimal pde = nonNull(m.getPde());
-        // If synolo doesn't equal takt+pde, set synolo = takt + pde
         final BigDecimal sum = takt.add(pde);
+
         if (m.getSynolo() == null || m.getSynolo().compareTo(sum) != 0) {
             m.setSynolo(normalize(sum));
         }
     }
 
+    /**
+     * Validates that for every ministry:
+     * {@code synolo == taktikos + pde}.
+     *
+     * @return true if consistent
+     */
     public boolean validateMinistries() {
         for (Ministry m : budget.getMinistries().values()) {
             final BigDecimal takt = nonNull(m.getTaktikos());
             final BigDecimal pde = nonNull(m.getPde());
             final BigDecimal syn = nonNull(m.getSynolo());
-            if (takt.add(pde).setScale(2, RoundingMode.HALF_EVEN).compareTo(syn.setScale(2, RoundingMode.HALF_EVEN)) != 0) {
+
+            if (takt.add(pde)
+                    .setScale(2, RoundingMode.HALF_EVEN)
+                    .compareTo(syn.setScale(2,
+                        RoundingMode.HALF_EVEN)) != 0) {
                 return false;
             }
         }
         return true;
     }
 
-    /** basic validation for general: ensures headers are present (no exhaustive check) */
+    /**
+     * Performs a basic validation for the general table.
+     *
+     * @return always true (state is recomputed)
+     */
     public boolean validateGeneral() {
-        // recompute aggregates to ensure consistent state
         recomputeGeneralAggregates();
         return true;
     }
 
+    /**
+     * Validates both general and ministry tables.
+     *
+     * @return true if all validations pass
+     */
     public boolean validateAll() {
         return validateGeneral() && validateMinistries();
     }
-
 
     private static String safe(final String s) {
         return s == null ? "" : s;
@@ -389,10 +485,18 @@ for (var e : mapping.entrySet()) {
     }
 
     private static BigDecimal normalize(final BigDecimal x) {
-        if (x == null) return BigDecimal.ZERO.setScale(2, RoundingMode.HALF_EVEN);
+        if (x == null) {
+            return BigDecimal.ZERO.setScale(2,
+                RoundingMode.HALF_EVEN);
+        }
         return x.setScale(2, RoundingMode.HALF_EVEN);
     }
 
+    /**
+     * Returns a defensive copy of the budget.
+     *
+     * @return new Budget instance
+     */
     public Budget getBudget() {
         return new Budget(this.budget);
     }
