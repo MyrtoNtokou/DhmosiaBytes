@@ -72,7 +72,11 @@ public final class Barcharts {
 
     // Add series and display chart
         chart.addSeries("Έσοδα", categories, values);
-        new SwingWrapper<>(chart).displayChart();
+        SwingWrapper<CategoryChart> sw = new SwingWrapper<>(chart);
+        javax.swing.JFrame frame = sw.displayChart();
+        frame.setDefaultCloseOperation(
+            javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
     }
 
 
@@ -121,8 +125,10 @@ public final class Barcharts {
         // Add series and display chart
         chart.addSeries("Έξοδα", categories, values);
 
-
-        new SwingWrapper<>(chart).displayChart();
+        SwingWrapper<CategoryChart> sw = new SwingWrapper<>(chart);
+        javax.swing.JFrame frame = sw.displayChart();
+        frame.setDefaultCloseOperation(
+            javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     }
 
     /**
@@ -162,6 +168,9 @@ public final class Barcharts {
 
         // Add series and display chart
         chart.addSeries("Δαπάνες", names, values);
-        new SwingWrapper<>(chart).displayChart();
+        SwingWrapper<CategoryChart> sw = new SwingWrapper<>(chart);
+        javax.swing.JFrame frame = sw.displayChart();
+        frame.setDefaultCloseOperation(
+            javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     }
 }
