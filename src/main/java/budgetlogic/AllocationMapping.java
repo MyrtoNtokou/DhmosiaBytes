@@ -31,6 +31,17 @@ public final class AllocationMapping {
         final Function<String, BigDecimal> p =
                 s -> new BigDecimal(s).setScale(2);
 
+                putGovermentBodies(all, p);
+                putMinistries(all, p);
+                putRegions(all, p);
+
+                return all;
+    }
+
+    private static void putGovermentBodies(
+       final Map<String, Map<String, BigDecimal>> all,
+       final Function<String, BigDecimal> p) {
+
         all.put("Προεδρία της Δημοκρατίας", Map.of(
             "Παροχές σε εργαζόμενους", p.apply("0.60"),
             "Αγορές αγαθών και υπηρεσιών", p.apply("0.40")
@@ -47,8 +58,13 @@ public final class AllocationMapping {
             "Αγορές αγαθών και υπηρεσιών", p.apply("0.40"),
             "Λοιπές δαπάνες", p.apply("0.10")
         ));
+    }
 
-        all.put("Υπουργείο Εσωτερικών", Map.of(
+    private static void putMinistries(
+        final Map<String, Map<String, BigDecimal>> all,
+        final Function<String, BigDecimal> p) {
+
+            all.put("Υπουργείο Εσωτερικών", Map.of(
             "Παροχές σε εργαζόμενους", p.apply("0.45"),
             "Μεταβιβάσεις", p.apply("0.35"),
             "Αγορές αγαθών και υπηρεσιών", p.apply("0.15"),
@@ -168,7 +184,11 @@ public final class AllocationMapping {
             "Λοιπές δαπάνες", p.apply("0.25"),
             "Πάγια περιουσιακά στοιχεία", p.apply("0.25")
         ));
+    }
 
+    private static void putRegions(
+        final Map<String, Map<String, BigDecimal>> all,
+        final Function<String, BigDecimal> p) {
         final String[] regions = {
             "Αποκεντρωμένη Διοίκηση Αιγαίου",
             "Αποκεντρωμένη Διοίκηση Θεσσαλίας – Στερεάς Ελλάδας",
@@ -189,7 +209,5 @@ public final class AllocationMapping {
         for (String r : regions) {
             all.put(r, new HashMap<>(regionMap));
         }
-
-        return all;
     }
 }
