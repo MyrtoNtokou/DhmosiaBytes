@@ -3,5 +3,10 @@
     "role": "PRIME_MINISTER",
     "username": "test_1",
     "password": "Test1"
+  },
+  "test4": {
+    "role": "FINANCE_MINISTRY_EMPLOYEE",
+    "username": "test4",
+    "password": "Test4"
   }
 }
