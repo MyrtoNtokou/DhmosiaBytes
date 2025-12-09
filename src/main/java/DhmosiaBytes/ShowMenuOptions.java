@@ -44,10 +44,11 @@ public final class ShowMenuOptions {
 
             try {
                 int code = input.nextInt();
+                input.nextLine();
                 choice = MenuOptions.fromCode(code);
             } catch (InputMismatchException e) {
                 System.out.println("Παρακαλώ εισάγετε αριθμό.");
-                input.next();
+                input.nextLine();
                 continue;
             }
 
