@@ -51,7 +51,7 @@ public final class ReadBudget {
 
                 if (input == null) {
                     System.err.println(
-                        "❌ Δεν βρέθηκε το αρχείο: " + resourceName);
+                        "Δεν βρέθηκε το αρχείο: " + resourceName);
                     return eggrafes;
                 }
 
@@ -98,7 +98,7 @@ public final class ReadBudget {
             InputStream input = ReadBudget.class.getResourceAsStream(
                 "/" + resourceName);
             if (input == null) {
-                System.err.println("❌ Δεν βρέθηκε το αρχείο: " + resourceName);
+                System.err.println("Δεν βρέθηκε το αρχείο: " + resourceName);
                 return ypourg;
             }
             /*Converts delimiter to ";" instead of "," */
