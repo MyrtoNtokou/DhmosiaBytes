@@ -42,7 +42,6 @@ public final class Main {
 
             try {
                 int roleCode = input.nextInt();
-                input.nextLine();
                 if (roleCode >= MIN_CODE && roleCode <= MAX_CODE) {
                     return Role.fromCode(roleCode);
                 } else if (roleCode == 0) {
@@ -52,7 +51,7 @@ public final class Main {
                 + "παραπάνω ιδιότητες (1-" + MAX_CODE + ")");
             } catch (InputMismatchException e) {
                 System.out.println("Παρακαλώ εισάγετε αριθμό.");
-                input.nextLine();
+                input.next();
             }
         }
     }
@@ -83,7 +82,6 @@ public final class Main {
                 System.out.printf("Επιλογή: ");
                 try {
                     choice = input.nextInt();
-                    input.nextLine();
                     if (choice == CODE_FOR_EXIT) {
                         System.out.println("Έξοδος από την εφαρμογή");
                         running = false;
@@ -95,7 +93,7 @@ public final class Main {
                     }
                 } catch (InputMismatchException e) {
                     System.out.print("Παρακαλώ εισάγετε αριθμό:");
-                    input.nextLine();
+                    input.next();
                 }
             }
 
@@ -137,7 +135,7 @@ public final class Main {
             } else {
                 // Login
                 System.out.println("\nΠαρακαλώ εισάγετε το username σας: ");
-                String currentUsername = input.nextLine();
+                String currentUsername = input.next();
 
                 if (UserDatabase.getDB().findUser(currentUsername) == null) {
                     System.out.println("Δεν υπάρχει χρήστης"
@@ -150,7 +148,7 @@ public final class Main {
                 int counter = MAX_TIMES_CODE;
                 while (counter > 0 && !iAmIn) {
                     System.out.println("Παρακαλώ εισάγετε το password σας: ");
-                    currentPassword = input.nextLine();
+                    currentPassword = input.next();
                     currentUser = log.login(currentRole, currentUsername,
                     currentPassword);
                     if (currentUser != null) {

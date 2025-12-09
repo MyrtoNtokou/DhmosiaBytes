@@ -61,7 +61,6 @@ public class Graphs {
 
             try {
                 code = input.nextInt();
-                input.nextLine();
                 if (code == 0) {
                     break;
                 } else if (code < MIN_CODE || code > MAX_CODE) {
@@ -72,7 +71,7 @@ public class Graphs {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Παρακαλώ εισάγετε αριθμό.");
-                input.nextLine();
+                input.next();
             }
         }
         return code;
