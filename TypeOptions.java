@@ -1,5 +1,5 @@
-package.dhmosiabytes;
-    
+package dhmosiabytes;
+
     public enum TypeOptions{
         TAKTIKOS(1 ,"Τακτικός Προυπολογισμός"),
         DHMOSION_EPENDYSEON(2,"Προϋπολογισμός Δημοσίων Επενδύσεων");

@@ -1,5 +1,5 @@
-package.dhmosiabytes;
-    
+package dhmosiabytes;
+
     public enum  ChangeOptions{
         INCOME(1 ,"Έσοδα Προϋπολογισμού"),
         EXPENSE(2,"Έξοδα Προϋπολογισμού");
