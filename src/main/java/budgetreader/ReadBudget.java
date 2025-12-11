@@ -155,7 +155,8 @@ public final class ReadBudget {
      * @param s the numeric string to convert
      * @return the parsed double value, or 0.0 if conversion fails
      */
-    public static BigDecimal parseNumber(final String s) {
+
+    private static BigDecimal parseNumber(final String s) {
 
         String value = s;
     if (value == null || value.isEmpty()) {
