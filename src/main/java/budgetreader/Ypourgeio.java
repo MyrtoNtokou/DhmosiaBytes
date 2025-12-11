@@ -1,5 +1,7 @@
 package budgetreader;
 
+import java.math.BigDecimal;
+
 /**
  * Represents a Ministry entry containing its code, name, and associated
  * budget values (regular budget, public investment budget, and total budget).
@@ -13,13 +15,13 @@ public class Ypourgeio {
     private String onoma;
 
     /** Regular budget amount (taktikos). */
-    private double taktikos;
+    private BigDecimal taktikos;
 
     /** Public investment budget amount. */
-    private double ependyseis;
+    private BigDecimal ependyseis;
 
     /** Total ministry budget amount. */
-    private double synolo;
+    private BigDecimal synolo;
 
     /**
      * Constructs a new {@code Ypourgeio} instance with the given attributes.
@@ -31,8 +33,8 @@ public class Ypourgeio {
      * @param synoloValue is the total amount of Ministry's Budget
      */
     public Ypourgeio(final int kodikosValue, final String onomaValue,
-                     final double taktikosValue, final double ependyseisValue,
-                     final double synoloValue) {
+                     final BigDecimal taktikosValue, final BigDecimal ependyseisValue,
+                     final BigDecimal synoloValue) {
 
         kodikos = kodikosValue;
         onoma = onomaValue;
@@ -64,7 +66,7 @@ public class Ypourgeio {
      *
      * @return taktikos (General Ministry's Budget)
      */
-    public double getTaktikos() {
+    public BigDecimal getTaktikos() {
         return taktikos;
     }
 
@@ -73,7 +75,7 @@ public class Ypourgeio {
      *
      * @return investments budget
      */
-    public double getEpendysewn() {
+    public BigDecimal getEpendyseis() {
         return ependyseis;
     }
 
@@ -82,8 +84,33 @@ public class Ypourgeio {
      *
      * @return total budget
      */
-    public double getSynolo() {
+    public BigDecimal getSynolo() {
         return synolo;
+    }
+
+    /** method that sets new value to kodikos variable */
+    public void setKodikos(final int kodikosNew) {
+        kodikos = kodikosNew;
+    }
+
+    /** method that sets new value to onoma variable */
+    public void setOnoma(final String onomaNew) {
+        onoma = onomaNew;
+    }
+
+    /** method that sets new value to taktikos variable */
+    public void setTaktikos(final BigDecimal taktikosNew) {
+        taktikos = taktikosNew;
+    }
+    
+    /** method that sets new value to kodikos variable */
+    public void setEpendysewn(final BigDecimal ependyseisNew) {
+        ependyseis = ependyseisNew;
+    }
+
+    /** method that sets new value to kodikos variable */
+    public void setSynolo(final BigDecimal synoloNew) {
+        synolo = synoloNew;
     }
 
     /**
