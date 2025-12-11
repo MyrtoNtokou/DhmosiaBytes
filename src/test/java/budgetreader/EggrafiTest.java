@@ -2,6 +2,8 @@ package budgetreader;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.math.BigDecimal;
+
 import org.junit.jupiter.api.Test;
 
 /**
@@ -15,7 +17,7 @@ public class EggrafiTest {
      */
     @Test
     public void testConstructorAndGetters() {
-        Eggrafi e = new Eggrafi("001", "Test entry", 100.5);
+        Eggrafi e = new Eggrafi("001", "Test entry", new BigDecimal("100.5"));
 
         assertEquals("001", e.getKodikos());
         assertEquals("Test entry", e.getPerigrafi());
@@ -27,7 +29,7 @@ public class EggrafiTest {
      */
     @Test
     public void testToString() {
-        Eggrafi e = new Eggrafi("002", "Example", 50.0);
+        Eggrafi e = new Eggrafi("002", "Example", new BigDecimal(50.0));
 
         String text = e.toString();
 
