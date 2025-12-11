@@ -54,6 +54,21 @@ public final class  Eggrafi {
         return poso;
     }
 
+    /** method that sets new value to Kodikos variable */
+    public void setKodikos(final String kodikosNew) {
+        kodikos = kodikosNew;
+    }
+
+    /** method that sets new value to perigrafi variable*/
+    public void setPerigrafi(final String perigrafiNew) {
+        perigrafi = perigrafiNew;
+    }
+
+    /**method that set new value to poso variable */
+    public void setPoso(final double posoNew) {
+        poso = posoNew;
+    }
+
     /** toString method.
     *
     * @return the formatted string representation
