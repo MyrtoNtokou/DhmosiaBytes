@@ -1,6 +1,8 @@
 package budgetreader;
 
 import java.math.BigDecimal;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Represents a Ministry entry containing its code, name, and associated
@@ -41,6 +43,19 @@ public class Ypourgeio {
         taktikos = taktikosValue;
         ependyseis = ependyseisValue;
         synolo = synoloValue;
+        this.allocation = new LinkedHashMap<>();
+    }
+
+    /** Allocation categories mapped to their percentage. */
+    private final Map<String, BigDecimal> allocation;
+
+    /**
+     * Gets a copy of the allocation map.
+     *
+     * @return a copy of the allocation map
+     */
+    public Map<String, BigDecimal> getAllocation() {
+        return new LinkedHashMap<>(allocation);
     }
 
     /**
@@ -101,11 +116,13 @@ public class Ypourgeio {
     /** method that sets new value to taktikos variable */
     public void setTaktikos(final BigDecimal taktikosNew) {
         taktikos = taktikosNew;
+        recalcSynolo();
     }
     
     /** method that sets new value to kodikos variable */
-    public void setEpendysewn(final BigDecimal ependyseisNew) {
+    public void setEpendyseis(final BigDecimal ependyseisNew) {
         ependyseis = ependyseisNew;
+        recalcSynolo();
     }
 
     /** method that sets new value to kodikos variable */
@@ -125,4 +142,28 @@ public class Ypourgeio {
                + " | " + ependyseis
                + " | " + synolo;
     }
+
+    /**
+     * Sets or updates an allocation percentage for a category.
+     *
+     * @param cat the allocation category
+     * @param percent the percentage assigned to the category
+     */
+    public void setAllocationEntry(final String cat, final BigDecimal percent) {
+        allocation.put(cat, percent);
+    }
+
+        /**
+     * Recalculates the total budget based on taktikos and pde.
+     */
+    private void recalcSynolo() {
+        if (taktikos == null) {
+            taktikos = BigDecimal.ZERO;
+        }
+        if (ependyseis == null) {
+            ependyseis = BigDecimal.ZERO;
+        }
+        this.synolo = taktikos.add(ependyseis);
+    }
+
 }
