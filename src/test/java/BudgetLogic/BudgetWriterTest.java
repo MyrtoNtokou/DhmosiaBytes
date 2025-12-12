@@ -1,79 +1,65 @@
 package budgetlogic;
 
+import budgetreader.Eggrafi;
+import budgetreader.Ypourgeio;
+
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.math.BigDecimal;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import budgetreader.*;
-
-class BudgetWriterTest {
+public class BudgetWriterTest {
 
     @Test
-    void testWriteGeneralAndReload() throws IOException {
+    void testWriteGeneral() throws IOException {
+        // Δημιουργία προσωρινού αρχείου
+        Path tempFile = Files.createTempFile("general-test", ".csv");
 
-        // TEMP FILE IN TARGET/
-        Path temp = Files.createTempFile("src/test/resources/general-test", ".csv");
-
-        List<Eggrafi> original = List.of(
-                new Eggrafi("001", "Test Revenue A", new BigDecimal("1000")),
-                new Eggrafi("002", "Test Revenue B", new BigDecimal("2500"))
+        // Sample data
+        List<Eggrafi> list = List.of(
+                new Eggrafi("001", "Test Description 1", new BigDecimal("123.45")),
+                new Eggrafi("002", "Test Description 2", new BigDecimal("678.90"))
         );
 
-        // WRITE CSV
-        BudgetWriter.writeGeneral(temp.toString(), original);
+        // Κλήση του writer
+        BudgetWriter.writeGeneral(tempFile.toString(), list);
 
-        // READ BACK USING THE LOADER
-        List<Eggrafi> loaded = ReadBudget.readGeneralBudget(temp.toString());
+        // Read output
+        List<String> lines = Files.readAllLines(tempFile);
 
-        assertEquals(original.size(), loaded.size());
-
-        assertEquals("001", loaded.get(0).getKodikos());
-        assertEquals("Test Revenue A", loaded.get(0).getPerigrafi());
-        assertEquals(new BigDecimal("1000"), loaded.get(0).getPoso());
-
-        assertEquals("002", loaded.get(1).getKodikos());
-        assertEquals("Test Revenue B", loaded.get(1).getPerigrafi());
-        assertEquals(new BigDecimal("2500"), loaded.get(1).getPoso());
+        // Assertions
+        assertEquals(2, lines.size());
+        assertEquals("001;Test Description 1;123.45", lines.get(0));
+        assertEquals("002;Test Description 2;678.90", lines.get(1));
     }
 
     @Test
-    void testWriteMinistriesAndReload() throws IOException {
+    void testWriteMinistries() throws IOException {
+        // TEMP file
+        Path tempFile = Files.createTempFile("ministries-test", ".csv");
 
-        // TEMP FILE IN TARGET/
-        Path temp = Files.createTempFile("src/test/resources/ministry-test", ".csv");
-
-        List<Ypourgeio> original = List.of(
-                new Ypourgeio(10, "Min A",
-                        new BigDecimal("500"),
-                        new BigDecimal("300"),
-                        new BigDecimal("800")),
-                new Ypourgeio(20, "Min B",
+        List<Ypourgeio> list = List.of(
+                new Ypourgeio(10, "Υπ. Παιδείας",
                         new BigDecimal("1000"),
-                        new BigDecimal("2000"),
-                        new BigDecimal("3000"))
+                        new BigDecimal("200"),
+                        new BigDecimal("1200")),
+                new Ypourgeio(20, "Υπ. Υγείας",
+                        new BigDecimal("1500"),
+                        new BigDecimal("500"),
+                        new BigDecimal("2000"))
         );
 
-        // WRITE CSV
-        BudgetWriter.writeMinistries(temp.toString(), original);
+        BudgetWriter.writeMinistries(tempFile.toString(), list);
 
-        // READ BACK USING THE LOADER
-        List<Ypourgeio> loaded = ReadBudget.readByMinistry(temp.toString());
+        List<String> lines = Files.readAllLines(tempFile);
 
-        assertEquals(original.size(), loaded.size());
-
-        assertEquals(10, loaded.get(0).getKodikos());
-        assertEquals("Min A", loaded.get(0).getOnoma());
-        assertEquals(new BigDecimal("500"), loaded.get(0).getTaktikos());
-        assertEquals(new BigDecimal("300"), loaded.get(0).getEpendyseis());
-        assertEquals(new BigDecimal("800"), loaded.get(0).getSynolo());
-
-        assertEquals(20, loaded.get(1).getKodikos());
-        assertEquals("Min B", loaded.get(1).getOnoma());
-        assertEquals(new BigDecimal("1000"), loaded.get(1).getTaktikos());
-        assertEquals(new BigDecimal("2000"), loaded.get(1).getEpendyseis());
-        assertEquals(new BigDecimal("3000"), loaded.get(1).getSynolo());
+        assertEquals(2, lines.size());
+        assertEquals("10;Υπ. Παιδείας;1000;200;1200", lines.get(0));
+        assertEquals("20;Υπ. Υγείας;1500;500;2000", lines.get(1));
     }
 }
+
