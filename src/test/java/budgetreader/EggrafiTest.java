@@ -21,7 +21,7 @@ public class EggrafiTest {
 
         assertEquals("001", e.getKodikos());
         assertEquals("Test entry", e.getPerigrafi());
-        assertEquals(100.5, e.getPoso());
+        assertEquals(new BigDecimal("100.5"), e.getPoso());
     }
 
     /**
