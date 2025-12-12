@@ -3,7 +3,9 @@ package budgetlogic;
 import java.math.BigDecimal;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import budgetreader.*;
+import budgetreader.Eggrafi;
+import budgetreader.Ypourgeio;
+
 
 /**
  * Represents a complete budget containing revenues, expenses and ministries.
