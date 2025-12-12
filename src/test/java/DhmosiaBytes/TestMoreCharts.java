@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Assumptions;
 import java.awt.GraphicsEnvironment;
+import java.math.BigDecimal;
 
 import budgetreader.Eggrafi;
 
@@ -20,10 +21,10 @@ public class TestMoreCharts {
     @BeforeEach
     void setUp() {
         mockEggrafes = new ArrayList<>();
-        mockEggrafes.add(new Eggrafi("01", "ΕΣΟΔΑ", 10000.0));
-        mockEggrafes.add(new Eggrafi("02", "ΕΞΟΔΑ", 8000.0));
-        mockEggrafes.add(new Eggrafi("03", "ΑΠΟΤΕΛΕΣΜΑ ΚΡΑΤΙΚΟΥ ΠΡΟΫΠΟΛΟΓΙΣΜΟΥ (ΕΣΟΔΑ - ΕΞΟΔΑ)", 2000.0));
-        mockEggrafes.add(new Eggrafi("04", "ΆΛΛΟ", 500.0));
+        mockEggrafes.add(new Eggrafi("01", "ΕΣΟΔΑ", BigDecimal.valueOf(10000.0)));
+        mockEggrafes.add(new Eggrafi("02", "ΕΞΟΔΑ", BigDecimal.valueOf(8000.0)));
+        mockEggrafes.add(new Eggrafi("03", "ΑΠΟΤΕΛΕΣΜΑ ΚΡΑΤΙΚΟΥ ΠΡΟΫΠΟΛΟΓΙΣΜΟΥ (ΕΣΟΔΑ - ΕΞΟΔΑ)", BigDecimal.valueOf(2000.0)));
+        mockEggrafes.add(new Eggrafi("04", "ΆΛΛΟ", BigDecimal.valueOf(500.0)));
     }
 
     @Test
