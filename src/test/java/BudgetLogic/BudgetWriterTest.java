@@ -17,7 +17,7 @@ class BudgetWriterTest {
     void testWriteGeneralAndReload() throws IOException {
 
         // TEMP FILE IN TARGET/
-        Path temp = Files.createTempFile("general-test-", ".csv");
+        Path temp = Files.createTempFile("src/main/resources/general-test", ".csv");
 
         List<Eggrafi> original = List.of(
                 new Eggrafi("001", "Test Revenue A", new BigDecimal("1000")),
@@ -45,7 +45,7 @@ class BudgetWriterTest {
     void testWriteMinistriesAndReload() throws IOException {
 
         // TEMP FILE IN TARGET/
-        Path temp = Files.createTempFile("ministries-test-", ".csv");
+        Path temp = Files.createTempFile("src/main/resources/ministry-test", ".csv");
 
         List<Ypourgeio> original = List.of(
                 new Ypourgeio(10, "Min A",
