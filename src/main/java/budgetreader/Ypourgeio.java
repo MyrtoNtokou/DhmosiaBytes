@@ -105,38 +105,38 @@ public class Ypourgeio {
         return synolo;
     }
 
-    /** method that sets new value to kodikos variable
-     * new value @param kodikosNew to set.
+    /** method that sets new value to kodikos variable.
+     * @param kodikosNew to set.
      */
     public void setKodikos(final int kodikosNew) {
         kodikos = kodikosNew;
     }
 
-    /** method that sets new value to onoma variable 
-     * new value @param onomaNew to set. 
+    /** method that sets new value to onoma variable.
+     * @param onomaNew to set.
     */
     public void setOnoma(final String onomaNew) {
         onoma = onomaNew;
     }
 
-    /** method that sets new value to taktikos variable 
-     * new value @param taktikosNew to set.
+    /** method that sets new value to taktikos variable.
+     * @param taktikosNew to set.
     */
     public void setTaktikos(final BigDecimal taktikosNew) {
         taktikos = taktikosNew;
         recalcSynolo();
     }
 
-    /** method that sets new value to ependyseis variable
-     * new value @param ependyseisNew to set.
+    /** method that sets new value to ependyseis variable.
+     * @param ependyseisNew to set.
      */
     public void setEpendyseis(final BigDecimal ependyseisNew) {
         ependyseis = ependyseisNew;
         recalcSynolo();
     }
 
-    /** method that sets new value to synolo variable
-     * new value @param synoloNew to set.
+    /** method that sets new value to synolo variable.
+     * @param synoloNew to set.
      */
     public void setSynolo(final BigDecimal synoloNew) {
         synolo = synoloNew;
@@ -165,7 +165,7 @@ public class Ypourgeio {
         allocation.put(cat, percent);
     }
 
-        /**
+    /**
      * Recalculates the total budget based on taktikos and pde.
      */
     private void recalcSynolo() {
