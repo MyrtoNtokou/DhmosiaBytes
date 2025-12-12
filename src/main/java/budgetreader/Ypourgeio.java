@@ -34,9 +34,11 @@ public class Ypourgeio {
      * @param ependyseisValue is the amount of Ministry's investments
      * @param synoloValue is the total amount of Ministry's Budget
      */
-    public Ypourgeio(final int kodikosValue, final String onomaValue,
-                     final BigDecimal taktikosValue, final BigDecimal ependyseisValue,
-                     final BigDecimal synoloValue) {
+    public Ypourgeio(final int kodikosValue,
+                    final String onomaValue,
+                    final BigDecimal taktikosValue,
+                    final BigDecimal ependyseisValue,
+                    final BigDecimal synoloValue) {
 
         kodikos = kodikosValue;
         onoma = onomaValue;
@@ -103,29 +105,39 @@ public class Ypourgeio {
         return synolo;
     }
 
-    /** method that sets new value to kodikos variable */
+    /** method that sets new value to kodikos variable
+     * new value @param kodikosNew to set.
+     */
     public void setKodikos(final int kodikosNew) {
         kodikos = kodikosNew;
     }
 
-    /** method that sets new value to onoma variable */
+    /** method that sets new value to onoma variable 
+     * new value @param onomaNew to set. 
+    */
     public void setOnoma(final String onomaNew) {
         onoma = onomaNew;
     }
 
-    /** method that sets new value to taktikos variable */
+    /** method that sets new value to taktikos variable 
+     * new value @param taktikosNew to set.
+    */
     public void setTaktikos(final BigDecimal taktikosNew) {
         taktikos = taktikosNew;
         recalcSynolo();
     }
-    
-    /** method that sets new value to kodikos variable */
+
+    /** method that sets new value to ependyseis variable
+     * new value @param ependyseisNew to set.
+     */
     public void setEpendyseis(final BigDecimal ependyseisNew) {
         ependyseis = ependyseisNew;
         recalcSynolo();
     }
 
-    /** method that sets new value to kodikos variable */
+    /** method that sets new value to synolo variable
+     * new value @param synoloNew to set.
+     */
     public void setSynolo(final BigDecimal synoloNew) {
         synolo = synoloNew;
     }

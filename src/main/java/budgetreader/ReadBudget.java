@@ -131,7 +131,8 @@ public final class ReadBudget {
 
                     String onoma = line[1].trim();
                     BigDecimal taktikos = parseNumber(line[COLUMN_TAKTIKOS]);
-                    BigDecimal ependyseis = parseNumber(line[COLUMN_EPENDYSEIS]);
+                    BigDecimal ependyseis = parseNumber(
+                        line[COLUMN_EPENDYSEIS]);
                     BigDecimal synolo = parseNumber(line[COLUMN_SYNOLO]);
                     ypourg.add(new Ypourgeio(
                         kodikos, onoma, taktikos, ependyseis, synolo));

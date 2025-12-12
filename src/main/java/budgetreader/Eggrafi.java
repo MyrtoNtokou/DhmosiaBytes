@@ -55,17 +55,23 @@ public final class  Eggrafi {
         return poso;
     }
 
-    /** method that sets new value to Kodikos variable */
+    /** method that sets new value to Kodikos variable
+     * new value @param kodikosNew to set.
+    */
     public void setKodikos(final String kodikosNew) {
         kodikos = kodikosNew;
     }
 
-    /** method that sets new value to perigrafi variable*/
+    /** method that sets new value to perigrafi variable
+     * new value @param perigrafiNew to set.
+    */
     public void setPerigrafi(final String perigrafiNew) {
         perigrafi = perigrafiNew;
     }
 
-    /**method that set new value to poso variable */
+    /**method that set new value to poso variable
+     * new value @param posoNew to set.
+     */
     public void setPoso(final BigDecimal posoNew) {
         poso = posoNew;
     }
