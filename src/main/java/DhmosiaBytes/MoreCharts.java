@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
 import java.awt.Color;
+import java.math.BigDecimal;
 import java.util.List;
 import budgetreader.Eggrafi;
 
@@ -36,8 +37,8 @@ public final class MoreCharts {
     */
     public static void pieChartEsodaExoda(final List<Eggrafi> eggrafes) {
         // Initialisation
-        double esoda = 0.0;
-        double exoda = 0.0;
+        BigDecimal esoda = BigDecimal.ZERO;;
+        BigDecimal exoda = BigDecimal.ZERO;;
 
         // Find and save the totals of revenue and expenses
         for (Eggrafi e : eggrafes) {
@@ -78,8 +79,8 @@ public final class MoreCharts {
     */
     public static void pieChartElleimma(final List<Eggrafi> eggrafes) {
         // Initialisation
-        double esoda = 0.0;
-        double elleimma = 0.0;
+        BigDecimal esoda = BigDecimal.ZERO;;
+        BigDecimal elleimma = BigDecimal.ZERO;;
 
         // Find and save the total expenses and the revenue-expesnes difference
         for (Eggrafi e : eggrafes) {
