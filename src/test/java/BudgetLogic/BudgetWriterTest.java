@@ -28,7 +28,7 @@ class BudgetWriterTest {
         BudgetWriter.writeGeneral(temp.toString(), original);
 
         // READ BACK USING THE LOADER
-        List<Eggrafi> loaded = BudgetLoader.loadGeneral(temp.toString());
+        List<Eggrafi> loaded = ReadBudget.readGeneralBudget(temp.toString());
 
         assertEquals(original.size(), loaded.size());
 
@@ -52,7 +52,7 @@ class BudgetWriterTest {
                         new BigDecimal("500"),
                         new BigDecimal("300"),
                         new BigDecimal("800")),
-                new Ministry(20, "Min B",
+                new Ypourgeio(20, "Min B",
                         new BigDecimal("1000"),
                         new BigDecimal("2000"),
                         new BigDecimal("3000"))
@@ -62,7 +62,7 @@ class BudgetWriterTest {
         BudgetWriter.writeMinistries(temp.toString(), original);
 
         // READ BACK USING THE LOADER
-        List<Ypourgeio> loaded = BudgetLoader.loadMinistries(temp.toString());
+        List<Ypourgeio> loaded = ReadBudget.readByMinistry(temp.toString());
 
         assertEquals(original.size(), loaded.size());
 
