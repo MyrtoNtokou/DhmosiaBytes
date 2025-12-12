@@ -1,5 +1,6 @@
 package budgetreader;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
 /** Represents a single budget record (Eggrafi).
@@ -17,7 +18,7 @@ public final class  Eggrafi {
 
     /**poso  of
      * Eggrafi instance. */
-    private double poso;
+    private BigDecimal poso;
 
     /** constructor
      * that creates new Eggrafi instance.
@@ -27,7 +28,7 @@ public final class  Eggrafi {
      * @param posoValue the amount value
      */
     public Eggrafi(final String kodikosValue, final String perigrafiValue,
-    final double posoValue) {
+    final BigDecimal posoValue) {
         this.kodikos = kodikosValue;
         this.perigrafi = perigrafiValue;
         this.poso = posoValue;
@@ -50,8 +51,29 @@ public final class  Eggrafi {
     /** method that return poso.
      * @return poso
      */
-    public double getPoso() {
+    public BigDecimal getPoso() {
         return poso;
+    }
+
+    /** method that sets new value to Kodikos variable.
+     * @param kodikosNew to set.
+    */
+    public void setKodikos(final String kodikosNew) {
+        kodikos = kodikosNew;
+    }
+
+    /** method that sets new value to perigrafi variable.
+     * @param perigrafiNew to set.
+    */
+    public void setPerigrafi(final String perigrafiNew) {
+        perigrafi = perigrafiNew;
+    }
+
+    /**method that set new value to poso variable.
+     * @param posoNew to set.
+     */
+    public void setPoso(final BigDecimal posoNew) {
+        poso = posoNew;
     }
 
     /** toString method.

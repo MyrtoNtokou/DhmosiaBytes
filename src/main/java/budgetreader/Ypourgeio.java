@@ -1,5 +1,9 @@
 package budgetreader;
 
+import java.math.BigDecimal;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 /**
  * Represents a Ministry entry containing its code, name, and associated
  * budget values (regular budget, public investment budget, and total budget).
@@ -13,13 +17,13 @@ public class Ypourgeio {
     private String onoma;
 
     /** Regular budget amount (taktikos). */
-    private double taktikos;
+    private BigDecimal taktikos;
 
     /** Public investment budget amount. */
-    private double ependyseis;
+    private BigDecimal ependyseis;
 
     /** Total ministry budget amount. */
-    private double synolo;
+    private BigDecimal synolo;
 
     /**
      * Constructs a new {@code Ypourgeio} instance with the given attributes.
@@ -30,15 +34,30 @@ public class Ypourgeio {
      * @param ependyseisValue is the amount of Ministry's investments
      * @param synoloValue is the total amount of Ministry's Budget
      */
-    public Ypourgeio(final int kodikosValue, final String onomaValue,
-                     final double taktikosValue, final double ependyseisValue,
-                     final double synoloValue) {
+    public Ypourgeio(final int kodikosValue,
+                    final String onomaValue,
+                    final BigDecimal taktikosValue,
+                    final BigDecimal ependyseisValue,
+                    final BigDecimal synoloValue) {
 
         kodikos = kodikosValue;
         onoma = onomaValue;
         taktikos = taktikosValue;
         ependyseis = ependyseisValue;
         synolo = synoloValue;
+        this.allocation = new LinkedHashMap<>();
+    }
+
+    /** Allocation categories mapped to their percentage. */
+    private final Map<String, BigDecimal> allocation;
+
+    /**
+     * Gets a copy of the allocation map.
+     *
+     * @return a copy of the allocation map
+     */
+    public Map<String, BigDecimal> getAllocation() {
+        return new LinkedHashMap<>(allocation);
     }
 
     /**
@@ -64,7 +83,7 @@ public class Ypourgeio {
      *
      * @return taktikos (General Ministry's Budget)
      */
-    public double getTaktikos() {
+    public BigDecimal getTaktikos() {
         return taktikos;
     }
 
@@ -73,7 +92,7 @@ public class Ypourgeio {
      *
      * @return investments budget
      */
-    public double getEpendysewn() {
+    public BigDecimal getEpendyseis() {
         return ependyseis;
     }
 
@@ -82,8 +101,45 @@ public class Ypourgeio {
      *
      * @return total budget
      */
-    public double getSynolo() {
+    public BigDecimal getSynolo() {
         return synolo;
+    }
+
+    /** method that sets new value to kodikos variable.
+     * @param kodikosNew to set.
+     */
+    public void setKodikos(final int kodikosNew) {
+        kodikos = kodikosNew;
+    }
+
+    /** method that sets new value to onoma variable.
+     * @param onomaNew to set.
+    */
+    public void setOnoma(final String onomaNew) {
+        onoma = onomaNew;
+    }
+
+    /** method that sets new value to taktikos variable.
+     * @param taktikosNew to set.
+    */
+    public void setTaktikos(final BigDecimal taktikosNew) {
+        taktikos = taktikosNew;
+        recalcSynolo();
+    }
+
+    /** method that sets new value to ependyseis variable.
+     * @param ependyseisNew to set.
+     */
+    public void setEpendyseis(final BigDecimal ependyseisNew) {
+        ependyseis = ependyseisNew;
+        recalcSynolo();
+    }
+
+    /** method that sets new value to synolo variable.
+     * @param synoloNew to set.
+     */
+    public void setSynolo(final BigDecimal synoloNew) {
+        synolo = synoloNew;
     }
 
     /**
@@ -98,4 +154,28 @@ public class Ypourgeio {
                + " | " + ependyseis
                + " | " + synolo;
     }
+
+    /**
+     * Sets or updates an allocation percentage for a category.
+     *
+     * @param cat the allocation category
+     * @param percent the percentage assigned to the category
+     */
+    public void setAllocationEntry(final String cat, final BigDecimal percent) {
+        allocation.put(cat, percent);
+    }
+
+    /**
+     * Recalculates the total budget based on taktikos and pde.
+     */
+    private void recalcSynolo() {
+        if (taktikos == null) {
+            taktikos = BigDecimal.ZERO;
+        }
+        if (ependyseis == null) {
+            ependyseis = BigDecimal.ZERO;
+        }
+        this.synolo = taktikos.add(ependyseis);
+    }
+
 }

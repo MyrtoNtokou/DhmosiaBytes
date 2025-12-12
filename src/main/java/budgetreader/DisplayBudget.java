@@ -44,7 +44,7 @@ public final class DisplayBudget {
         for (Ypourgeio y : ypourg) {
             System.out.printf("%-3d | %-55s | %-25.2f | %-35.2f | %-25.2f%n",
                 y.getKodikos(), y.getOnoma(), y.getTaktikos(),
-                y.getEpendysewn(), y.getSynolo());
+                y.getEpendyseis(), y.getSynolo());
         }
     }
 }

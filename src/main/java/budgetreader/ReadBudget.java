@@ -6,6 +6,7 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +76,7 @@ public final class ReadBudget {
 
                 String kodikos = line[0].trim();
                 String perigrafi = line[1].trim();
-                double poso = parseNumber(line[2].trim());
+                BigDecimal poso = parseNumber(line[2].trim());
                 eggrafes.add(new Eggrafi(kodikos, perigrafi, poso));
             }
         } catch (Exception e) {
@@ -129,9 +130,10 @@ public final class ReadBudget {
                     int kodikos = Integer.parseInt(kodikosStr);
 
                     String onoma = line[1].trim();
-                    double taktikos = parseNumber(line[COLUMN_TAKTIKOS]);
-                    double ependyseis = parseNumber(line[COLUMN_EPENDYSEIS]);
-                    double synolo = parseNumber(line[COLUMN_SYNOLO]);
+                    BigDecimal taktikos = parseNumber(line[COLUMN_TAKTIKOS]);
+                    BigDecimal ependyseis = parseNumber(
+                        line[COLUMN_EPENDYSEIS]);
+                    BigDecimal synolo = parseNumber(line[COLUMN_SYNOLO]);
                     ypourg.add(new Ypourgeio(
                         kodikos, onoma, taktikos, ependyseis, synolo));
                 } catch (Exception e) {
@@ -154,11 +156,12 @@ public final class ReadBudget {
      * @param s the numeric string to convert
      * @return the parsed double value, or 0.0 if conversion fails
      */
-    public static double parseNumber(final String s) {
+
+    private static BigDecimal parseNumber(final String s) {
 
         String value = s;
     if (value == null || value.isEmpty()) {
-        return 0.0;
+        return BigDecimal.ZERO;
     }
 
     value = value.trim();
@@ -169,10 +172,10 @@ public final class ReadBudget {
     value = value.replace(",", ".");
 
         try {
-            return Double.parseDouble(value);
+            return new BigDecimal(value);
         } catch (Exception e) {
             System.err.println("ΣΦΑΛΜΑ ΣΤΟΝ ΑΡΙΘΜΟ: [" + s + "]");
-            return 0.0;
+            return BigDecimal.ZERO;
         }
     }
 }
