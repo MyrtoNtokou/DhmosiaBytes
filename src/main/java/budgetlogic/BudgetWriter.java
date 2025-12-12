@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import budgetreader.*;
 
 /**
  * Writes budget data to CSV files.
@@ -23,7 +24,7 @@ public final class BudgetWriter {
      */
     public static void writeGeneral(
             final String path,
-            final List<BasicRecord> list
+            final List<Eggrafi> list
     ) throws IOException {
 
         try (Writer writer = new OutputStreamWriter(
@@ -31,7 +32,7 @@ public final class BudgetWriter {
                 StandardCharsets.UTF_8
         )) {
 
-            for (final BasicRecord r : list) {
+            for (final Eggrafi r : list) {
                 writer.write(
                         r.getKodikos()
                         + ";"
@@ -53,7 +54,7 @@ public final class BudgetWriter {
      */
     public static void writeMinistries(
             final String path,
-            final List<Ministry> list
+            final List<Ypourgeio> list
     ) throws IOException {
 
         try (Writer writer = new OutputStreamWriter(
@@ -61,7 +62,7 @@ public final class BudgetWriter {
                 StandardCharsets.UTF_8
         )) {
 
-            for (final Ministry m : list) {
+            for (final Ypourgeio m : list) {
                 writer.write(
                         m.getKodikos()
                         + ";"
@@ -69,7 +70,7 @@ public final class BudgetWriter {
                         + ";"
                         + m.getTaktikos().toPlainString()
                         + ";"
-                        + m.getPde().toPlainString()
+                        + m.getEpendyseis().toPlainString()
                         + ";"
                         + m.getSynolo().toPlainString()
                         + System.lineSeparator()

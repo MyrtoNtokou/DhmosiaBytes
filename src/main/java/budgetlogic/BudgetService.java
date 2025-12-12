@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import budgetreader.*;
 
 /**
  * Service class for managing and updating budget information.
@@ -14,8 +15,8 @@ import java.util.Objects;
  * <p>This class coordinates interactions with:
  * <ul>
  *   <li>{@code Budget}: revenues, expenses, ministries</li>
- *   <li>{@code BasicRecord}: general table records</li>
- *   <li>{@code Ministry}: ministry-level budget entries</li>
+ *   <li>{@code Eggrafi}: general table records</li>
+ *   <li>{@code Ypourgeio}: ministry-level budget entries</li>
  * </ul>
  *
  * <p>Optional mapping provides allocation percentages:
@@ -73,7 +74,7 @@ private static final String TOTAL_EXPENDITURE_KEYWORD = "Σύνολο εξόδω
 
     /**
      * Changes a general table amount. Kodikos identifies the
-     * {@code BasicRecord}.
+     * {@code Eggrafi}.
      * Automatically updates the header totals: ΕΣΟΔΑ,
      * ΕΞΟΔΑ, ΑΠΟΤΕΛΕΣΜΑ.
      *
@@ -82,10 +83,10 @@ private static final String TOTAL_EXPENDITURE_KEYWORD = "Σύνολο εξόδω
      */
     public void changeGeneralAmount(final String kodikos,
         final BigDecimal newAmount) {
-        final Map<String, BasicRecord> revenues = budget.getRevenues();
-        final Map<String, BasicRecord> expenses = budget.getExpenses();
+        final Map<String, Eggrafi> revenues = budget.getRevenues();
+        final Map<String, Eggrafi> expenses = budget.getExpenses();
 
-        BasicRecord target = revenues.get(kodikos);
+        Eggrafi target = revenues.get(kodikos);
         if (target == null) {
             target = expenses.get(kodikos);
         }
@@ -109,7 +110,7 @@ private static final String TOTAL_EXPENDITURE_KEYWORD = "Σύνολο εξόδω
                                      final String column,
                                      final BigDecimal newValue) {
 
-        final Ministry m = budget.getMinistries().get(ministryKodikos);
+        final Ypourgeio m = budget.getMinistries().get(ministryKodikos);
         if (m == null) {
             throw new IllegalArgumentException("Δεν υπάρχει υπουργείο με κωδικό"
             + ministryKodikos);
@@ -126,7 +127,7 @@ private static final String TOTAL_EXPENDITURE_KEYWORD = "Σύνολο εξόδω
                 break;
             case "πδε":
             case "προϋπολογισμός δημοσίων επενδύσεων":
-                m.setPde(nv);
+                m.setEpendyseis(nv);
                 break;
             default:
                 throw new IllegalArgumentException(
@@ -146,10 +147,10 @@ private static final String TOTAL_EXPENDITURE_KEYWORD = "Σύνολο εξόδω
      * Scans the table to locate these rows dynamically.
      */
     public void recomputeGeneralAggregates() {
-        final Map<String, BasicRecord> revs = budget.getRevenues();
-        final Map<String, BasicRecord> exps = budget.getExpenses();
+        final Map<String, Eggrafi> revs = budget.getRevenues();
+        final Map<String, Eggrafi> exps = budget.getExpenses();
 
-        final List<BasicRecord> ordered = new java.util.ArrayList<>();
+        final List<Eggrafi> ordered = new java.util.ArrayList<>();
         ordered.addAll(revs.values());
         ordered.addAll(exps.values());
 
@@ -208,23 +209,23 @@ private static final String TOTAL_EXPENDITURE_KEYWORD = "Σύνολο εξόδω
      * </ul>.
      */
     public void recomputeMinistriesAggregates() {
-        final Map<Integer, Ministry> ministries = budget.getMinistries();
+        final Map<Integer, Ypourgeio> ministries = budget.getMinistries();
 
         BigDecimal sumMin = BigDecimal.ZERO;
         BigDecimal sumMinTakt = BigDecimal.ZERO;
         BigDecimal sumMinPde = BigDecimal.ZERO;
 
-        for (Ministry m : ministries.values()) {
+        for (Ypourgeio m : ministries.values()) {
             final String name = safe(m.getOnoma());
             if (name.startsWith(MINISTRY_PREFIX)) {
                 sumMin = sumMin.add(nonNull(m.getSynolo()));
                 sumMinTakt = sumMinTakt.add(nonNull(m.getTaktikos()));
-                sumMinPde = sumMinPde.add(nonNull(m.getPde()));
+                sumMinPde = sumMinPde.add(nonNull(m.getEpendyseis()));
             }
         }
 
-        Ministry ministriesTotalRow = null;
-        for (Ministry m : ministries.values()) {
+        Ypourgeio ministriesTotalRow = null;
+        for (Ypourgeio m : ministries.values()) {
             if (safe(m.getOnoma()).toUpperCase(Locale.ROOT)
                 .contains("ΥΠΟΥΡΓΕΙΑ")) {
                 ministriesTotalRow = m;
@@ -238,7 +239,7 @@ private static final String TOTAL_EXPENDITURE_KEYWORD = "Σύνολο εξόδω
 
         if (ministriesTotalRow != null) {
             ministriesTotalRow.setTaktikos(normalize(sumMinTakt));
-            ministriesTotalRow.setPde(normalize(sumMinPde));
+            ministriesTotalRow.setEpendyseis(normalize(sumMinPde));
             ministriesTotalRow.setSynolo(normalize(sumMin));
         }
 
@@ -246,17 +247,17 @@ private static final String TOTAL_EXPENDITURE_KEYWORD = "Σύνολο εξόδω
         BigDecimal sumDecTakt = BigDecimal.ZERO;
         BigDecimal sumDecPde = BigDecimal.ZERO;
 
-        for (Ministry m : ministries.values()) {
+        for (Ypourgeio m : ministries.values()) {
             final String name = safe(m.getOnoma());
             if (name.startsWith(DECENTRALIZED_PREFIX)) {
                 sumDec = sumDec.add(nonNull(m.getSynolo()));
                 sumDecTakt = sumDecTakt.add(nonNull(m.getTaktikos()));
-                sumDecPde = sumDecPde.add(nonNull(m.getPde()));
+                sumDecPde = sumDecPde.add(nonNull(m.getEpendyseis()));
             }
         }
 
-        Ministry decentralizedTotalRow = null;
-        for (Ministry m : ministries.values()) {
+        Ypourgeio decentralizedTotalRow = null;
+        for (Ypourgeio m : ministries.values()) {
             if (safe(m.getOnoma()).toUpperCase(Locale.ROOT)
                     .contains("ΑΠΟΚΕΝΤΡΩΜΕΝΕΣ")) {
                 decentralizedTotalRow = m;
@@ -270,34 +271,34 @@ private static final String TOTAL_EXPENDITURE_KEYWORD = "Σύνολο εξόδω
 
         if (decentralizedTotalRow != null) {
             decentralizedTotalRow.setTaktikos(normalize(sumDecTakt));
-            decentralizedTotalRow.setPde(normalize(sumDecPde));
+            decentralizedTotalRow.setEpendyseis(normalize(sumDecPde));
             decentralizedTotalRow.setSynolo(normalize(sumDec));
         }
 
-        final Ministry m1 = ministries.get(1);
-        final Ministry m2 = ministries.get(2);
-        final Ministry m3 = ministries.get(3);
+        final Ypourgeio m1 = ministries.get(1);
+        final Ypourgeio m2 = ministries.get(2);
+        final Ypourgeio m3 = ministries.get(3);
 
         BigDecimal g1 = m1 == null ? BigDecimal.ZERO
         : nonNull(m1.getSynolo());
         BigDecimal gt1 = m1 == null ? BigDecimal.ZERO
         : nonNull(m1.getTaktikos());
         BigDecimal gp1 = m1 == null ? BigDecimal.ZERO
-        : nonNull(m1.getPde());
+        : nonNull(m1.getEpendyseis());
 
         BigDecimal g2 = m2 == null ? BigDecimal.ZERO
         : nonNull(m2.getSynolo());
         BigDecimal gt2 = m2 == null ? BigDecimal.ZERO
         : nonNull(m2.getTaktikos());
         BigDecimal gp2 = m2 == null ? BigDecimal.ZERO
-        : nonNull(m2.getPde());
+        : nonNull(m2.getEpendyseis());
 
         BigDecimal g3 = m3 == null ? BigDecimal.ZERO
         : nonNull(m3.getSynolo());
         BigDecimal gt3 = m3 == null ? BigDecimal.ZERO
         : nonNull(m3.getTaktikos());
         BigDecimal gp3 = m3 == null ? BigDecimal.ZERO
-        : nonNull(m3.getPde());
+        : nonNull(m3.getEpendyseis());
 
         BigDecimal ministriesTotal =
             nonNull(ministriesTotalRow == null ? BigDecimal.ZERO
@@ -307,7 +308,7 @@ private static final String TOTAL_EXPENDITURE_KEYWORD = "Σύνολο εξόδω
                 : ministriesTotalRow.getTaktikos());
         BigDecimal ministriesPde =
             nonNull(ministriesTotalRow == null ? BigDecimal.ZERO
-                : ministriesTotalRow.getPde());
+                : ministriesTotalRow.getEpendyseis());
 
         BigDecimal kod25 = BigDecimal.ZERO;
         BigDecimal kod25t = BigDecimal.ZERO;
@@ -316,7 +317,7 @@ private static final String TOTAL_EXPENDITURE_KEYWORD = "Σύνολο εξόδω
         if (ministries.containsKey(DEC_TOTAL_CODE)) {
             kod25 = nonNull(ministries.get(DEC_TOTAL_CODE).getSynolo());
             kod25t = nonNull(ministries.get(DEC_TOTAL_CODE).getTaktikos());
-            kod25p = nonNull(ministries.get(DEC_TOTAL_CODE).getPde());
+            kod25p = nonNull(ministries.get(DEC_TOTAL_CODE).getEpendyseis());
         }
 
         final BigDecimal overall = normalize(
@@ -328,23 +329,23 @@ private static final String TOTAL_EXPENDITURE_KEYWORD = "Σύνολο εξόδω
 
         boolean updated = false;
 
-        for (Ministry m : ministries.values()) {
+        for (Ypourgeio m : ministries.values()) {
             if (safe(m.getOnoma()).toUpperCase(Locale.ROOT)
                     .contains(TOTAL_EXPENDITURE_KEYWORD
                 .toUpperCase(Locale.ROOT))) {
                 m.setSynolo(overall);
                 m.setTaktikos(overallT);
-                m.setPde(overallP);
+                m.setEpendyseis(overallP);
                 updated = true;
                 break;
             }
         }
 
         if (!updated && ministries.containsKey(SYN_TOTAL_CODE)) {
-            final Ministry r = ministries.get(SYN_TOTAL_CODE);
+            final Ypourgeio r = ministries.get(SYN_TOTAL_CODE);
             r.setSynolo(overall);
             r.setTaktikos(overallT);
-            r.setPde(overallP);
+            r.setEpendyseis(overallP);
         }
     }
 
@@ -359,7 +360,7 @@ private static final String TOTAL_EXPENDITURE_KEYWORD = "Σύνολο εξόδω
                                            final BigDecimal oldTotal,
                                            final BigDecimal newTotal) {
 
-        final Map<String, BasicRecord> expenses = budget.getExpenses();
+        final Map<String, Eggrafi> expenses = budget.getExpenses();
         if (expenses == null || expenses.isEmpty()) {
             return;
         }
@@ -372,7 +373,7 @@ private static final String TOTAL_EXPENDITURE_KEYWORD = "Σύνολο εξόδω
             final Map<String, BigDecimal> map = mapping
             .get(ministryKodikos);
             for (Map.Entry<String, BigDecimal> e : map.entrySet()) {
-                final BasicRecord expenseRec = expenses.get(e.getKey());
+                final Eggrafi expenseRec = expenses.get(e.getKey());
                 if (expenseRec != null) {
                     final BigDecimal percent = nonNull(e.getValue());
                     final BigDecimal newVal =
@@ -400,7 +401,7 @@ private static final String TOTAL_EXPENDITURE_KEYWORD = "Σύνολο εξόδω
                 nw.divide(BigDecimal.valueOf(count),
                 2, RoundingMode.HALF_EVEN);
 
-            for (Map.Entry<String, BasicRecord> en
+            for (Map.Entry<String, Eggrafi> en
                 : expenses.entrySet()) {
                 if (en.getKey().startsWith(prefix)) {
                     en.getValue().setPoso(each);
@@ -410,7 +411,7 @@ private static final String TOTAL_EXPENDITURE_KEYWORD = "Σύνολο εξόδω
             final BigDecimal ratio =
                 nw.divide(oldT, 10, RoundingMode.HALF_EVEN);
 
-            for (Map.Entry<String, BasicRecord> en : expenses.entrySet()) {
+            for (Map.Entry<String, Eggrafi> en : expenses.entrySet()) {
                 if (en.getKey().startsWith(prefix)) {
                     final BigDecimal oldVal = nonNull(en.getValue()
                     .getPoso());
@@ -426,9 +427,9 @@ private static final String TOTAL_EXPENDITURE_KEYWORD = "Σύνολο εξόδω
      *
      * @param m ministry to reconcile
      */
-    private void reconcileMinistryParts(final Ministry m) {
+    private void reconcileMinistryParts(final Ypourgeio m) {
         final BigDecimal takt = nonNull(m.getTaktikos());
-        final BigDecimal pde = nonNull(m.getPde());
+        final BigDecimal pde = nonNull(m.getEpendyseis());
         final BigDecimal sum = takt.add(pde);
 
         if (m.getSynolo() == null || m.getSynolo().compareTo(sum) != 0) {
@@ -443,9 +444,9 @@ private static final String TOTAL_EXPENDITURE_KEYWORD = "Σύνολο εξόδω
      * @return true if consistent
      */
     public boolean validateMinistries() {
-        for (Ministry m : budget.getMinistries().values()) {
+        for (Ypourgeio m : budget.getMinistries().values()) {
             final BigDecimal takt = nonNull(m.getTaktikos());
-            final BigDecimal pde = nonNull(m.getPde());
+            final BigDecimal pde = nonNull(m.getEpendyseis());
             final BigDecimal syn = nonNull(m.getSynolo());
 
             if (takt.add(pde)
