@@ -2,6 +2,7 @@ package dhmosiabytes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.math.BigDecimal;
 
 import org.knowm.xchart.CategoryChart;
 import org.knowm.xchart.CategoryChartBuilder;
@@ -45,7 +46,7 @@ public final class Barcharts {
 
         // Prepare data for the chart
         List<String> categories = new ArrayList<>();
-        List<Double> values = new ArrayList<>();
+        List<BigDecimal> values = new ArrayList<>();
         for (Eggrafi e : esoda) {
             categories.add(e.getPerigrafi());
             values.add(e.getPoso());
@@ -96,7 +97,7 @@ public final class Barcharts {
 
         // Prepare data for the chart
         List<String> categories = new ArrayList<>();
-        List<Double> values = new ArrayList<>();
+        List<BigDecimal> values = new ArrayList<>();
         for (Eggrafi e : exoda) {
             categories.add(e.getPerigrafi());
             values.add(e.getPoso());
@@ -147,7 +148,7 @@ public final class Barcharts {
 
         // Prepare data for the chart
         List<String> names = new ArrayList<>();
-        List<Double> values = new ArrayList<>();
+        List<BigDecimal> values = new ArrayList<>();
         for (Ypourgeio m : ministries) {
             names.add(m.getOnoma());
             values.add(m.getSynolo());
