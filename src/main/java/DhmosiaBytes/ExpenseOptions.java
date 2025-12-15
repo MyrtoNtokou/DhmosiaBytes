@@ -1,6 +1,6 @@
 package dhmosiabytes;
 
-public enum ExpenceOptions {
+public enum ExpenseOptions {
     PROEDRIADHM(1, "Προεδρία της Δημοκρατίας"),
     BOYLH(2, "Βουλή των Ελλήνων"),
     PROEDRIA(3, "Προεδρία της Κυβέρνησης"),
@@ -35,7 +35,7 @@ public enum ExpenceOptions {
     private final int expenseCode;
     private final String expenseDescription;
 
-    ExpenceOptions(int expenseCode, String expenseDescription) {
+    ExpenseOptions(int expenseCode, String expenseDescription) {
         this.expenseCode = expenseCode;
         this.expenseDescription = expenseDescription;
     }
@@ -48,12 +48,12 @@ public enum ExpenceOptions {
         return expenseDescription;
     }
 
-    public static ExpenceOptions ExpenseOption(final int expenseCode) {
-        for (ExpenceOptions expenseOpt : ExpenceOptions.values()) {
+    public static ExpenseOptions fromCode(final int expenseCode) {
+        for (ExpenseOptions expenseOpt : ExpenseOptions.values()) {
             if (expenseOpt.getExpenseCode() == expenseCode) {
                 return expenseOpt;
             }
         }
-        return null;
+        throw new IllegalArgumentException("Μη έγκυρη επιλογή: " + expenseCode);
     }
 }

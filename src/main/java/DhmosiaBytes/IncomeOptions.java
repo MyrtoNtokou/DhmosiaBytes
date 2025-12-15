@@ -9,7 +9,8 @@ public enum IncomeOptions {
     PAGIA("1,6", "Πάγια Περιουσιακά Στοιχεία"), 
     XREOSTIKOI("1,7", "Χρεωστικοί τίτλοι"),
     DANEIO("1,8", "Δάνεια"),
-    SYMMETOXIKOI("1,9", "Συμμετοχικοί τίτλοι και μερίδια επενδυτικών κεφαλαίων"),
+    SYMMETOXIKOI("1,9",
+    "Συμμετοχικοί τίτλοι και μερίδια επενδυτικών κεφαλαίων"),
     YPOXREOSEIS("1,9,1", "Υποχρεώσεις από νόμισμα και καταθέσεις"), 
     XREOSTIKOI_YPOXREOSEIS("1,9,2", "Χρεωστικοί τίτλοι (υποχρεώσεις)"),
     DANEIA("1,9,3", "Δάνεια"),
@@ -24,19 +25,19 @@ public enum IncomeOptions {
     }
 
     public String getIncomeCode() {
-        return this.incomeCode;
+        return incomeCode;
     }
 
     public String getIncomeDescription() {
         return incomeDescription;
     }
 
-    public static IncomeOptions IncomeOption(String incomeCode) {
+    public static IncomeOptions fromCode(String incomeCode) {
         for (IncomeOptions incomeOpt : IncomeOptions.values()) {
             if (incomeOpt.getIncomeCode().equals(incomeCode)) {
                 return incomeOpt;
             }
         }
-        return null;
+        throw new IllegalArgumentException("Μη έγκυρη επιλογή: " + incomeCode);
     }   
 }
