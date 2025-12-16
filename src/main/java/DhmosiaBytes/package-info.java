@@ -1,7 +1,4 @@
 /**
- * Description of the budgetReader package.
- * This package contains classes related to reading and representing
- * budget data.
+ * Package containing classes for DhmosiaBytes.
  */
-
-package budgetreader;
+package dhmosiabytes;
