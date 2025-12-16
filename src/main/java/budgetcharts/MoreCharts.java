@@ -1,4 +1,4 @@
-package dhmosiabytes;
+package budgetcharts;
 
 import org.knowm.xchart.PieChart;
 import org.knowm.xchart.PieChartBuilder;
