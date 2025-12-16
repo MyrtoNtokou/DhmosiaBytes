@@ -29,11 +29,14 @@ public final class BudgetAnalyzer {
                 List<Eggrafi> revenues = list.stream()
                         // code that starts with 1
                         .filter(e -> e.getKodikos().startsWith("1"))
+                        // code that starts with 1 contains comma
+                        .filter(e -> e.getKodikos().contains(","))
                         // convert back to list
                         .collect(Collectors.toList());
 
                 List<Eggrafi> expenses = list.stream()
                         .filter(e -> e.getKodikos().startsWith("2"))
+                        .filter(e -> e.getKodikos().contains(","))
                         .collect(Collectors.toList());
 
                 // Compare Eggrafi types based on their ammount (poso)
