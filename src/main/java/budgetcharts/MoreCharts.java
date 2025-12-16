@@ -35,7 +35,7 @@ public final class MoreCharts {
     /** First year. */
     private static final int START_YEAR_CONST = 2020;
     /** Last year. */
-    private static final int END_YEAR_CONST = 2025;
+    private static final int END_YEAR_CONST = 2026;
 
     private MoreCharts() {
         // private Constructor

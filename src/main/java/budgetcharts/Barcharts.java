@@ -27,7 +27,7 @@ public final class Barcharts {
     /** First year. */
     private static final int START_YEAR_CONST = 2020;
     /** Last year. */
-    private static final int END_YEAR_CONST = 2025;
+    private static final int END_YEAR_CONST = 2026;
     /** Divider for billion scaling. */
     private static final BigDecimal BILLION =
             new BigDecimal("1000000000");
@@ -333,7 +333,9 @@ public final class Barcharts {
         /** Debt securities (liabilities). */
         DEBT_SECURITIES("2,9,4", "Χρεωστικοί τίτλοι (υποχρεώσεις)"),
         /** Loans. */
-        LOANS_2("2,9,5", "Δάνεια");
+        LOANS_2("2,9,5", "Δάνεια"),
+        /** Financial derivatives. */
+        XRHMATOOIKONOMIKA("2,9,6", "Χρηματοοικονομικά παράγωγα");
 
         /** Expence code. */
         private final String code;
