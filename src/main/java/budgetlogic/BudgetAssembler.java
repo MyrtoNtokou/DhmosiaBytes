@@ -1,0 +1,118 @@
+package budgetlogic;
+
+import budgetreader.ReadBudget;
+import budgetreader.Eggrafi;
+import budgetreader.Ypourgeio;
+
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Locale;
+import java.nio.file.Path;
+
+/**
+ * Separate revenues and expenses.
+ * Prepare object Budget.
+ */
+public final class BudgetAssembler {
+
+    /** Keyword for revenues. */
+    private static final String REVENUES = "ΕΣΟΔΑ";
+    /** Keyword for expenses. */
+    private static final String EXPENSES = "ΕΞΟΔΑ";
+    /** Keyword for result (revenues-expenses). */
+    private static final String RESULT = "ΑΠΟΤΕΛΕΣΜΑ";
+
+    /** Constructor. */
+    public BudgetAssembler() { }
+
+    /**
+     * Load general budget and ministries csv.
+     * Assemble the final Budget object.
+     * @param generalFile general budget file name
+     * @param ministriesFile ministries budget file name
+     * @return object Budget
+     */
+    public Budget loadBudget(final String generalFile,
+                            final String ministriesFile) {
+
+        // Convert String to Path
+        Path pathGeneral = Path.of(generalFile);
+        Path pathMinistries = Path.of(ministriesFile);
+
+        List<Eggrafi> generalList =
+        ReadBudget.readGeneralBudgetFromPath(pathGeneral);
+
+        List<Ypourgeio> ministriesList =
+        ReadBudget.readByMinistryFromPath(pathMinistries);
+
+        // Initialise revenues map and expenses map
+        Map<String, Eggrafi> revenuesMap = new LinkedHashMap<>();
+        Map<String, Eggrafi> expensesMap = new LinkedHashMap<>();
+
+        separateAndMapGeneralRecords(generalList, revenuesMap, expensesMap);
+
+        Map<Integer, Ypourgeio> ministriesMap =
+                        mapMinistryRecords(ministriesList);
+
+        // Final Budget object
+        return new Budget(revenuesMap, expensesMap, ministriesMap);
+    }
+
+    /**
+     * Separete list with revenues and expenses into two.
+     * Create one map with revenues and one map with expenses.
+     * @param generalList list with everything
+     * @param revenuesMap map for revenues
+     * @param expensesMap map for expenses
+     */
+    private void separateAndMapGeneralRecords(
+            final List<Eggrafi> generalList,
+            final Map<String, Eggrafi> revenuesMap,
+            final Map<String, Eggrafi> expensesMap) {
+
+        // Define either revenue section or expenses setcion
+        boolean inRevenuesSection = false;
+        boolean inExpensesSection = false;
+
+        for (Eggrafi eggrafi : generalList) {
+            final String perigrafiUpper = eggrafi.getPerigrafi()
+                                                 .toUpperCase(Locale.ROOT);
+
+            // Put result in the expenses map
+            if (perigrafiUpper.contains(RESULT)) {
+                expensesMap.put(eggrafi.getKodikos(), eggrafi);
+                continue;
+            }
+            // Check revenues section
+            if (perigrafiUpper.contains(REVENUES)) {
+                inRevenuesSection = true;
+                inExpensesSection = false;
+            // Check expenses section
+            } else if (perigrafiUpper.contains(EXPENSES)) {
+                inExpensesSection = true;
+                inRevenuesSection = false;
+            }
+            // Based on the section add eggrafi contents to the correct map
+            if (inRevenuesSection) {
+                revenuesMap.put(eggrafi.getKodikos(), eggrafi);
+            } else if (inExpensesSection) {
+                 expensesMap.put(eggrafi.getKodikos(), eggrafi);
+            }
+        }
+    }
+
+    /**
+     * Convert ministry list in map and set the code as key.
+     * @param list with all the ministries
+     * @return the map version
+     */
+    private Map<Integer, Ypourgeio> mapMinistryRecords(
+                                        final List<Ypourgeio> list) {
+        Map<Integer, Ypourgeio> map = new LinkedHashMap<>();
+        for (Ypourgeio ypourg : list) {
+            map.put(ypourg.getKodikos(), ypourg);
+        }
+        return map;
+    }
+}
