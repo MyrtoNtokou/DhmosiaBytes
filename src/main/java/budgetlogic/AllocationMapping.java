@@ -31,14 +31,14 @@ public final class AllocationMapping {
         final Function<String, BigDecimal> p =
                 s -> new BigDecimal(s).setScale(2);
 
-                putGovermentBodies(all, p);
+                putGovernmentBodies(all, p);
                 putMinistries(all, p);
                 putRegions(all, p);
 
                 return all;
     }
 
-    private static void putGovermentBodies(
+    private static void putGovernmentBodies(
        final Map<String, Map<String, BigDecimal>> all,
        final Function<String, BigDecimal> p) {
 
@@ -49,7 +49,7 @@ public final class AllocationMapping {
 
         all.put("Βουλή των Ελλήνων", Map.of(
             "Παροχές σε εργαζόμενους", p.apply("0.70"),
-            "Αγορές αγαθών και υπηρεσισιών", p.apply("0.25"),
+            "Αγορές αγαθών και υπηρεσιών", p.apply("0.25"),
             "Λοιπές δαπάνες", p.apply("0.05")
         ));
 
