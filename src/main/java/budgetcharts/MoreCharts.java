@@ -42,16 +42,16 @@ public final class MoreCharts {
     }
 
     /**
-    * Pie chart for total revenue and total expenses.
+    * Pie chart for total revenue and total ministrys.
     *
-    * @param eggrafes the list with revenue and expenses
+    * @param eggrafes the list with revenue and ministrys
     */
     public static void pieChartEsodaExoda(final List<Eggrafi> eggrafes) {
         // Initialisation
         BigDecimal esoda = BigDecimal.ZERO;
         BigDecimal exoda = BigDecimal.ZERO;
 
-        // Find and save the totals of revenue and expenses
+        // Find and save the totals of revenue and ministrys
         for (Eggrafi e : eggrafes) {
             if (e.getPerigrafi().equalsIgnoreCase("ΕΣΟΔΑ")) {
                 esoda = e.getPoso();
@@ -84,16 +84,16 @@ public final class MoreCharts {
     }
 
     /**
-    * Pie chart for revenue coverage of expenses.
+    * Pie chart for revenue coverage of ministrys.
     *
-    * @param eggrafes the list with revenue and expenses
+    * @param eggrafes the list with revenue and ministrys
     */
     public static void pieChartElleimma(final List<Eggrafi> eggrafes) {
         // Initialisation
         BigDecimal esoda = BigDecimal.ZERO;
         BigDecimal elleimma = BigDecimal.ZERO;
 
-        // Find and save the total expenses and the revenue-expesnes difference
+        // Find and save the total ministrys and the revenue-expesnes difference
         for (Eggrafi e : eggrafes) {
             if (e.getPerigrafi().equalsIgnoreCase("ΕΣΟΔΑ")) {
                 esoda = e.getPoso();
@@ -128,7 +128,7 @@ public final class MoreCharts {
 
     /**
     * Creates and displays a line chart showing
-    * Income and Expenses per year
+    * Income and ministrys per year
     * from CSV budget files.
     *
     */
@@ -190,6 +190,5 @@ public final class MoreCharts {
         SwingWrapper<XYChart> window = new SwingWrapper<>(chart);
         window.displayChart();
     }
-
 
 }

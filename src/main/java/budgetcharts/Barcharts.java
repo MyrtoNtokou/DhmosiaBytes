@@ -2,6 +2,7 @@ package budgetcharts;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
@@ -417,5 +418,169 @@ public final class Barcharts {
             javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     }
 
-}
+    public enum MinistryOptions {
+        /** Presidency of the Hellenic Republic. */
+        PROEDRIADHM(1, "Προεδρία της Δημοκρατίας"),
+        /** Hellenic Parliament. */
+        BOYLH(2, "Βουλή των Ελλήνων"),
+        /** Presidency of the Government. */
+        PROEDRIA(3, "Προεδρία της Κυβέρνησης"),
+        /** Ministry of Interior. */
+        ESOTERIKON(5, "Υπουργείο Εσωτερικών"),
+        /** Ministry of Foreign Affairs. */
+        EXOTERIKON(6, "Υπουργείο Εξωτερικών"),
+        /** Ministry of National Defense. */
+        ETHNIKHS_AMYNAS(7, "Υπουργείο Εθνικής Άμυνας"),
+        /** Ministry of Health. */
+        YGEIAS(8, "Υπουργείο Υγείας"),
+        /** Ministry of Justice. */
+        DIKAIOSYNHS(9, "Υπουργείο Δικαιοσύνης"),
+        /** Ministry of Education, Religion, and Sports. */
+        PAIDEIAS(10, "Υπουργείο Παιδείας, Θρησκευμάτων και Αθλητισμού"),
+        /** Ministry of Culture. */
+        POLITISMOY(11, "Υπουργείο Πολιτισμού"),
+        /** Ministry of National Economy and Finance. */
+        OIKONOMIKON(12, "Υπουργείο Εθνικής Οικονομίας και Οικονομικών"),
+        /** Ministry of Rural Development and Food. */
+        AGROTIKHS(13, "Υπουργείο Αγροτικής Ανάπτυξης και Τροφίμων"),
+        /** Ministry of Environment and Energy. */
+        PERIVALLONTOS(14, "Υπουργείο Περιβάλλοντος και Ενέργειας"),
+        /** Ministry of Labor and Social Security. */
+        ERGASIAS(15, "Υπουργείο Εργασίας και Κοινωνικής Ασφάλισης"),
+        /** Ministry of Social Cohesion and Family. */
+        OIKOGENEIAS(16, "Υπουργείο Κοινωνικής Συνοχής και Οικογένειας"),
+        /** Ministry of Development. */
+        ANAPTYXHS(17, "Υπουργείο Ανάπτυξης"),
+        /** Ministry of Infrastructure and Transport. */
+        YPODOMON(18, "Υπουργείο Υποδομών και Μεταφορών"),
+        /** Ministry of Shipping and Island Policy. */
+        NAYTILIAS(19, "Υπουργείο Ναυτιλίας και Νησιωτικής Πολιτικής"),
+        /** Ministry of Tourism. */
+        TOYRISMOY(20, "Υπουργείο Τουρισμού"),
+        /** Ministry of Digital Governance. */
+        DIAKYBERNHSHS(21, "Υπουργείο Ψηφιακής Διακυβέρνησης"),
+        /** Ministry of Migration and Asylum. */
+        METANASTEYSHS(22, "Υπουργείο Μετανάστευσης και Ασύλου"),
+        /** Ministry of Citizen Protection. */
+        PROSTASIAS(23, "Υπουργείο Προστασίας του Πολίτη"),
+        /** Ministry of Climate Crisis and Civil Protection. */
+        POLITIKHSPROSTASIAS(
+            24, "Υπουργείο Κλιματικής Κρίσης και Πολιτικής Προστασίας"),
+        /** Decentralized Administration of Attica. */
+        ATTIKHS(26, "Αποκεντρωμένη Διοίκηση Αττικής"),
+        /** Decentralized Administration of Thessaly and Central Greece. */
+        STEREAS_ELLADAS_THESSALIAS(
+            27, "Αποκεντρωμένη Διοίκηση Θεσσαλίας - Στερεάς Ελλάδας"),
+        /** Decentralized Administration of Epirus and Western Greece. */
+        HPEIROY_DYTIKHS(28, "Αποκεντρωμένη Διοίκηση Ηπείρου - Δυτικής"),
+        /** Decentralized Administration of Peloponnese and Western Greece. */
+        PELOPONNHSOY_DYTIKHS(
+            29, "Αποκεντρωμένη Διοίκηση Πελοποννήσου - Δυτικής"),
+        /** Decentralized Administration of the Aegean. */
+        AIGAIOY(30, "Αποκεντρωμένη Διοίκηση Αιγαίου"),
+        /** Decentralized Administration of Crete. */
+        KRHTHS(31, "Αποκεντρωμένη Διοίκηση Κρήτης"),
+        /** Decentralized Administration of Macedonia and Thrace. */
+        MAKEDONIAS_THRAKHS(32, "Αποκεντρωμένη Διοίκηση Μακεδονίας - Θράκης");
 
+         /** The unique code that identifies the ministry. */
+        private final int ministryCode;
+        /** The descriptive name of the ministry. */
+        private final String ministryDescription;
+        /**
+         * Constructs a {@code MinistryOptions} instance.
+         *
+         * @param minCode        the unique code of the ministry
+         * @param minDescription the description or name of the ministry
+         */
+        MinistryOptions(final int minCode, final String minDescription) {
+            this.ministryCode = minCode;
+            this.ministryDescription = minDescription;
+        }
+
+        /**
+         * Returns the ministry code.
+         *
+         * @return the ministry code
+         */
+        public int getministryCode() {
+            return this.ministryCode;
+        }
+
+        /**
+        * Returns the ministry description.
+        *
+        * @return the ministry description
+        */
+        public String getministryDescription() {
+            return ministryDescription;
+        }
+    }
+
+    /**
+     * Displays a bar chart showing the total budget of a specific ministry
+     * across all available years.
+     *
+     * @param x the index of the selected ministry
+     */
+    public static void chartMinistryByYear(final int x) {
+
+        MinistryOptions[] options = MinistryOptions.values();
+        int ministryCode = options[x - 1].getministryCode();
+        String ministryName = options[x - 1].getministryDescription();
+
+        int startYear = START_YEAR_CONST;
+        int endYear = END_YEAR_CONST;
+
+        List<Integer> years = new ArrayList<>();
+        List<Double> budgetValues = new ArrayList<>();
+
+        BigDecimal scale = new BigDecimal("1000000000");
+
+        for (int year = startYear; year <= endYear; year++) {
+            years.add(year);
+
+            String filename = "proypologismos" + year + "anaypourgeio.csv";
+
+            List<Ypourgeio> ministries =
+                ReadBudget.readCroppedByMinistry(filename);
+
+            BigDecimal totalBudget = BigDecimal.ZERO;
+
+            for (Ypourgeio m : ministries) {
+                if (m.getKodikos() == ministryCode) {
+                    totalBudget = m.getSynolo();
+                    break;
+                }
+            }
+
+            BigDecimal scaledBudget = totalBudget.divide(
+                scale, 2, RoundingMode.HALF_UP);
+
+            budgetValues.add(scaledBudget.doubleValue());
+
+        }
+
+
+        // Build chart
+        CategoryChart chart = new CategoryChartBuilder()
+            .width(CHART_WIDTH)
+            .height(CHART_HEIGHT)
+            .title("Κατηγοριοποιημένο έξοδο: " + ministryName)
+            .xAxisTitle("Έτος")
+            .yAxisTitle("Ποσό (δις €)")
+            .build();
+
+        chart.getStyler().setLegendVisible(false);
+        chart.getStyler().setXAxisLabelRotation(X_AXIS_LABEL_ROTATION);
+        chart.getStyler().setAvailableSpaceFill(AVAILABLE_SPACE_FILL);
+        chart.getStyler().setPlotContentSize(PLOT_CONTENT_SIZE);
+
+        chart.addSeries("Total Budget", years, budgetValues);
+
+        SwingWrapper<CategoryChart> sw = new SwingWrapper<>(chart);
+        javax.swing.JFrame frame = sw.displayChart();
+        frame.setDefaultCloseOperation(
+            javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+    }
+}
