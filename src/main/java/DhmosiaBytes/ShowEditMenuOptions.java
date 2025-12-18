@@ -2,9 +2,7 @@ package dhmosiabytes;
 
 import java.util.List;
 import java.util.Scanner;
-import java.math.BigDecimal;
 import java.util.InputMismatchException;
-import java.io.IOException;
 
 import budgetlogic.Budget;
 import budgetlogic.ReadBudget;
@@ -19,14 +17,15 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 public class ShowEditMenuOptions {
-    Scanner scanner = new Scanner(System.in);
     BudgetEditor editor = new BudgetEditor();
 
+    /** Constracts a ShowEditMenuOptions object. */
+    public ShowEditMenuOptions() { }
+
     /**
-     * Displays the RevenueOrExpense menu, gets the user's choice,
-     * displays the proper list and makes the change to this list.
+     * Displays the RevenueOrExpense menu and gets the user's choice.
      */
-    public void chooseRevenueOrExpense() {
+    public RevenueOrExpense chooseRevenueOrExpense(final Scanner scanner) {
         for (RevenueOrExpense opt : RevenueOrExpense.values()) {
             System.out.println(opt.getRevenueOrExpenseCode() + ". "
             + opt.getDescription());
@@ -47,7 +46,14 @@ public class ShowEditMenuOptions {
                 scanner.next();
             }
         }
+        return selected;
+    }
 
+    /**
+     * Displays the proper list and makes the change to this list.
+     */
+    public void editRevenueOrExpence(final Budget initialBudget,
+    final Scanner scanner) {
         if (selected == RevenueOrExpense.INCOME) {
             List<Eggrafi> g =
             ReadBudget.readGeneralBudget("proypologismos2025.csv");
@@ -60,8 +66,8 @@ public class ShowEditMenuOptions {
             }
             DisplayBudget.showGeneral(esoda);
 
-            String code = selectRevenue();
-            editIncome(code);
+            String code = selectRevenue(scanner);
+            editIncome(code, initialbudget, scanner);
         } else if (selected == RevenueOrExpense.EXPENSE) {
             List<Ypourgeio> y =
             ReadBudget.readByMinistry("proypologismos2025anaypourgeio.csv");
@@ -76,8 +82,8 @@ public class ShowEditMenuOptions {
             }
             DisplayBudget.showMinistry(ministries);
 
-            int code = selectExpense();
-            editExpense(code);
+            int code = selectExpense(scanner);
+            editExpense(code, initialbudget, scanner);
         }
     }
 
@@ -86,7 +92,7 @@ public class ShowEditMenuOptions {
      *
      * @return the code of the revenue to be edited
      */
-    public String selectRevenue() {
+    public String selectRevenue(final Scanner scanner) {
         IncomeOptions selected = null;
         while (selected == null) {
             System.out.print("Επιλογή: ");
@@ -106,7 +112,7 @@ public class ShowEditMenuOptions {
      *
      * @return the code of the expense to be edited 
      */
-    public int selectExpense() {
+    public int selectExpense(final Scanner scanner) {
         ExpenseOptions selectedOption = null;
         while (selectedOption == null) {
             System.out.print("Επιλογή: ");
@@ -127,7 +133,7 @@ public class ShowEditMenuOptions {
      *
      * @return the code of user's choice
      */
-    public int selectBudgetType() {
+    public int selectBudgetType(final Scanner scanner) {
         BudgetType selectedOption1 = null;
         for (BudgetType option : BudgetType.values()) {
             System.out.println(option.getTypeCode() + ". "

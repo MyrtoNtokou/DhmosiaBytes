@@ -14,8 +14,11 @@ public enum MenuOptions {
     /** Option to summarize data. */
     SUMMARY(3, "Κατηγοριοποίηση στοιχείων"),
 
+    /** Option to aggrigate data. */
+    AGGRIGATE(4, "Συγκεντρωτικά στοιχεία"),
+
     /** Option to display charts. */
-    GRAPHS(4, "Γραφήματα"),
+    GRAPHS(5, "Γραφήματα"),
 
     /** Option to exit the application. */
     EXIT(0, "Έξοδος");
