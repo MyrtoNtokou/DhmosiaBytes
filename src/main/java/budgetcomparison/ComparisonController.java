@@ -1,5 +1,6 @@
 package budgetcomparison;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 /** Controller class
@@ -12,12 +13,11 @@ public class ComparisonController {
     private final ComparisonService service;
 
     /**
-     * Constructs a ComparisonController with the specified Scanner.
+     * Constructs a ComparisonController.
      *
-     * @param scanner the Scanner for user input
      */
-    public ComparisonController(final Scanner scanner) {
-        this.sc = scanner;
+    public ComparisonController() {
+        this.sc = new Scanner(System.in, StandardCharsets.UTF_8);
         this.service = new ComparisonService();
     }
 
