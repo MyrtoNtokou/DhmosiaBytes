@@ -2,22 +2,36 @@ package budgetcomparison;
 
 import java.util.Scanner;
 
+/** Controller class
+ * for handling user interactions for budget comparisons. */
 public class ComparisonController {
-    
+    /** Scanner for user input. */
     private final Scanner sc;
+
+    /** Service for performing budget comparisons. */
     private final ComparisonService service;
 
-    public ComparisonController(Scanner sc) {
-        this.sc = sc;
+    /**
+     * Constructs a ComparisonController with the specified Scanner.
+     *
+     * @param scanner the Scanner for user input
+     */
+    public ComparisonController(final Scanner scanner) {
+        this.sc = scanner;
         this.service = new ComparisonService();
     }
 
+    /**
+     * Starts the budget comparison process by interacting with the user.
+     */
     public void start() {
 
+        // Display options to the user
         System.out.println("Τι θέλεις να συγκρίνεις;");
         System.out.println("1. Εγγραφές");
         System.out.println("2. Υπουργεία");
 
+        // Read user choice
         int type = sc.nextInt();
         sc.nextLine();
 
@@ -31,6 +45,7 @@ public class ComparisonController {
         System.out.println("Δώσε κωδικό σύγκρισης:");
         String kodikos = sc.nextLine();
 
+        // Perform comparison based on user choice
         if (type == 1) {
             service.compareGeneralBudgetByYear(year1, year2, kodikos);
         } else if (type == 2) {

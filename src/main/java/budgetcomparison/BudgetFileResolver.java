@@ -5,15 +5,22 @@ package budgetcomparison;
 public final class BudgetFileResolver {
     /** Private constructor to prevent instantiation. */
     private BudgetFileResolver() { }
-    // Year constants
+
+    /** Year constant 2020. */
     private static final int YEAR_2020 = 2020;
+    /** Year constant 2021. */
     private static final int YEAR_2021 = 2021;
+    /** Year constant 2022. */
     private static final int YEAR_2022 = 2022;
+    /** Year constant 2023. */
     private static final int YEAR_2023 = 2023;
+    /** Year constant 2024. */
     private static final int YEAR_2024 = 2024;
+    /** Year constant 2025. */
     private static final int YEAR_2025 = 2025;
+    /** Year constant 2026. */
     private static final int YEAR_2026 = 2026;
-    
+
     /**
      * Returns the general budget file name for the specified year.
      *
@@ -36,14 +43,14 @@ public final class BudgetFileResolver {
         };
     }
 
-    /** 
+    /**
      * Returns the ministry budget file name for the specified year.
      *
      * @param year the year for which to get the ministry budget file name
      * @return the ministry budget file name
      * @throws IllegalArgumentException if the year is not supported
      */
-    public static String ministryBudgetFile(int year) {
+    public static String ministryBudgetFile(final int year) {
 
         return switch (year) {
             case YEAR_2020 -> "proypologismos2020anaypourgeio.csv";
