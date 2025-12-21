@@ -3,14 +3,13 @@ package dhmosiabytes;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
+
+import budgetlogic.Budget;
+import budgetlogic.BudgetAssembler;
 import budgetreader.DisplayBudget;
 import budgetreader.Eggrafi;
 import budgetreader.ReadBudget;
 import budgetreader.Ypourgeio;
-import budgetlogic.Budget;
-import budgetlogic.BudgetAssembler;
-import budgetlogic.Budget;
-import budgetlogic.BudgetAssembler;
 
 
 /**
@@ -80,7 +79,7 @@ public final class ShowMenuOptions {
                     ShowEditMenuOptions revOrExp = new ShowEditMenuOptions();
                     RevenueOrExpense preference =
                     revOrExp.chooseRevenueOrExpense(input);
-                    agg.minOrMax(input);
+                    agg.minOrMax(preference, input);
                 }
                 case GRAPHS -> {
                     graph.chooseGraph(input);
@@ -129,19 +128,19 @@ public final class ShowMenuOptions {
             }
         } while (choice !=1 && choice != CODE_FOR_MENUS);
 
+        Budget initialBudget;
         if (choice == 1) {
             BudgetAssembler loader = new BudgetAssembler();
-            Budget initialBudget = loader.loadBudget("general.csv",
+            initialBudget = loader.loadBudget("general.csv",
             "ministries.csv");
         } else {
             BudgetAssembler loader = new BudgetAssembler();
-            Budget initialBudget = loader.loadBudget("newgeneral.csv",
+            initialBudget = loader.loadBudget("newgeneral.csv",
             "newministries.csv");
         }
         ShowEditMenuOptions edit = new ShowEditMenuOptions();
-        RevenueOrExpense usersChoice = edit
-        .chooseRevenueOrExpense(input);
-        edit.editRevenueOrExpence(initialBudget, input);
+        RevenueOrExpense usersChoice = edit.chooseRevenueOrExpense(input);
+        edit.editRevenueOrExpence(initialBudget, input, usersChoice);
     }
 
     /** Shows summarized data. */

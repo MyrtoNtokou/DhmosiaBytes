@@ -7,9 +7,8 @@ import budgetlogic.Budget;
 import budgetlogic.BudgetService;
 
 public class BudgetEditor {
-    /** BudgetService object. */
-    private final BudgetService service;
-
+    BudgetService service;
+    
     public BudgetEditor(final BudgetService serv) {
         this.service = serv;
     }
@@ -38,11 +37,7 @@ public class BudgetEditor {
                 System.out.println("Μη έγκυρη τιμή.");
             }
 
-            BudgetService service = new BudgetService(initialBudget, null);
-            service.changeGeneralAmount(code, newAmmount);
-            // έλεγχος αν έγινε η αλλαγή
-            boolean isValid = service.validateAll();
-            System.out.println("Σφάλμα κατά την αλλαγή τιμής.");
+            this.service.changeGeneralAmount(code, newAmmount);
         }
     }
 
@@ -76,11 +71,7 @@ public class BudgetEditor {
                 continue;       
             }
 
-            BudgetService service = new BudgetService(initialBudget, null);
-            service.changeMinistryAmount(code, column, newAmmount);
-            // έλεγχος αν έγινε η αλλαγή
-            boolean isValid = service.validateAll();                
-            System.out.println("Σφάλμα κατά την αλλαγή τιμής.");
+            this.service.changeMinistryAmount(code, column, newAmmount);
         }
     }
 }

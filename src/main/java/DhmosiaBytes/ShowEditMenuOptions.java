@@ -1,24 +1,18 @@
 package dhmosiabytes;
 
+import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
-import java.util.InputMismatchException;
 
 import budgetlogic.Budget;
-import budgetlogic.ReadBudget;
 import budgetlogic.BudgetService;
-import budgetlogic.BudgetWriter;
-import budgetreader.ReadBudget;
-import budgetreader.Ypourgeio;
 import budgetreader.DisplayBudget;
 import budgetreader.Eggrafi;
-
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import budgetreader.ReadBudget;
+import budgetreader.Ypourgeio;
 
 public class ShowEditMenuOptions {
-    BudgetEditor editor = new BudgetEditor();
-
     /** Constracts a ShowEditMenuOptions object. */
     public ShowEditMenuOptions() { }
 
@@ -53,7 +47,10 @@ public class ShowEditMenuOptions {
      * Displays the proper list and makes the change to this list.
      */
     public void editRevenueOrExpence(final Budget initialBudget,
-    final Scanner scanner) {
+    final Scanner scanner, final RevenueOrExpense selected) {
+        BudgetService service = new BudgetService(initialBudget, null);
+        BudgetEditor editor = new BudgetEditor(service);
+        
         if (selected == RevenueOrExpense.INCOME) {
             List<Eggrafi> g =
             ReadBudget.readGeneralBudget("proypologismos2025.csv");
@@ -65,9 +62,8 @@ public class ShowEditMenuOptions {
                 }
             }
             DisplayBudget.showGeneral(esoda);
-
             String code = selectRevenue(scanner);
-            editIncome(code, initialbudget, scanner);
+            editor.editIncome(code, initialBudget, scanner);
         } else if (selected == RevenueOrExpense.EXPENSE) {
             List<Ypourgeio> y =
             ReadBudget.readByMinistry("proypologismos2025anaypourgeio.csv");
@@ -83,7 +79,7 @@ public class ShowEditMenuOptions {
             DisplayBudget.showMinistry(ministries);
 
             int code = selectExpense(scanner);
-            editExpense(code, initialbudget, scanner);
+            editor.editExpense(code, initialBudget, scanner);
         }
     }
 
