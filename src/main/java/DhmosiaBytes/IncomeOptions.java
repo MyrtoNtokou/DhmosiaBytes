@@ -75,6 +75,7 @@ public enum IncomeOptions {
      *
      * @return the income description
      */
+
     public String getIncomeDescription() {
         return incomeDescription;
     }
