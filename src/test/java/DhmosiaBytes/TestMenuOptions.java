@@ -1,6 +1,7 @@
 package dhmosiabytes;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import org.junit.jupiter.api.Test;
 
 public class TestMenuOptions {
@@ -19,9 +20,13 @@ public class TestMenuOptions {
         assertEquals("Κατηγοριοποίηση στοιχείων", MenuOptions.SUMMARY.getDescription());
         assertEquals(MenuOptions.SUMMARY, MenuOptions.fromCode(3));
 
-        assertEquals(4, MenuOptions.GRAPHS.getCode());
+        assertEquals(4, MenuOptions.AGGRIGATE.getCode());
+        assertEquals("Συγκεντρωτικά στοιχεία", MenuOptions.AGGRIGATE.getDescription());
+        assertEquals(MenuOptions.AGGRIGATE, MenuOptions.fromCode(4));
+
+        assertEquals(5, MenuOptions.GRAPHS.getCode());
         assertEquals("Γραφήματα", MenuOptions.GRAPHS.getDescription());
-        assertEquals(MenuOptions.GRAPHS, MenuOptions.fromCode(4));
+        assertEquals(MenuOptions.GRAPHS, MenuOptions.fromCode(5));
 
         assertEquals(0, MenuOptions.EXIT.getCode());
         assertEquals("Έξοδος", MenuOptions.EXIT.getDescription());

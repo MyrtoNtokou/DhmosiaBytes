@@ -125,7 +125,8 @@ private static final String TOTAL_EXPENDITURE_KEYWORD = "Σύνολο εξόδω
 
         switch (column.toLowerCase(Locale.ROOT)) {
             case "τακτικός" -> m.setTaktikos(nv);
-            case "πδε", "προϋπολογισμός δημοσίων επενδύσεων" -> m.setEpendyseis(nv);
+            case "πδε", "προϋπολογισμός δημοσίων επενδύσεων" ->
+            m.setEpendyseis(nv);
             default -> throw new IllegalArgumentException(
                 "Άγνωστη κατηγορία Υπουργείου: " + column);
         }

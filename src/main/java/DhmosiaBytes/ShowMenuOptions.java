@@ -23,7 +23,7 @@ public final class ShowMenuOptions {
      */
     private ShowMenuOptions() { }
 
-    /** Code to edit a new file */
+    /** Code to edit a new file. */
     private static final int CODE_FOR_MENUS = 2;
 
     /**
@@ -76,10 +76,7 @@ public final class ShowMenuOptions {
                 case AGGRIGATE -> {
                     AggrigateMenu agg = new AggrigateMenu();
                     int code = agg.typeOfBudget(input);
-                    ShowEditMenuOptions revOrExp = new ShowEditMenuOptions();
-                    RevenueOrExpense preference =
-                    revOrExp.chooseRevenueOrExpense(input);
-                    agg.minOrMax(preference, input);
+                    agg.displayMinMax(code);
                 }
                 case GRAPHS -> {
                     graph.chooseGraph(input);
@@ -102,10 +99,10 @@ public final class ShowMenuOptions {
         DisplayBudget.showGeneral(g);
     }
 
-    /** 
+    /**
      * Asks for the file to be edited.
      *
-     * @param imput the scanner for user's input
+     * @param input the scanner for user's input
      */
     public static void editBudget(final Scanner input) {
         int choice = 0;
@@ -121,12 +118,12 @@ public final class ShowMenuOptions {
                 continue;
             }
 
-            if (choice != 1 && choice !=2) {
+            if (choice != 1 && choice != 2) {
                 System.out.println("Μη έγκυρη επιλογή.");
                 System.out.println("Πρέπει να επιλέξετε 1 ή "
                 + CODE_FOR_MENUS + ".");
             }
-        } while (choice !=1 && choice != CODE_FOR_MENUS);
+        } while (choice != 1 && choice != CODE_FOR_MENUS);
 
         Budget initialBudget;
         if (choice == 1) {
