@@ -1,14 +1,16 @@
-import java.util.Scanner;
-import java.math.BigDecimal;
+package dhmosiabytes;
 
+import java.math.BigDecimal;
+import java.util.Scanner;
+
+import budgetlogic.Budget;
 import budgetlogic.BudgetService;
-import dhmosiabytes.ShowEditMenuOptions;
 
 public class BudgetEditor {
     /** BudgetService object. */
     private final BudgetService service;
 
-    public BudgetEditor(finale BudgetService serv) {
+    public BudgetEditor(final BudgetService serv) {
         this.service = serv;
     }
 
@@ -32,12 +34,12 @@ public class BudgetEditor {
                 System.out.println("Το ποσό δεν μπορεί να είναι αρνητικό.");
                 newAmmount = null;
                 }
-            } catch (newAmmountFormatException e) {
+            } catch (NumberFormatException e) {
                 System.out.println("Μη έγκυρη τιμή.");
             }
 
             BudgetService service = new BudgetService(initialBudget, null);
-            service.changeGeneralAmmount(code, newAmmount);
+            service.changeGeneralAmount(code, newAmmount);
             // έλεγχος αν έγινε η αλλαγή
             boolean isValid = service.validateAll();
             System.out.println("Σφάλμα κατά την αλλαγή τιμής.");
@@ -69,13 +71,13 @@ public class BudgetEditor {
                 System.out.println("Το ποσό δεν μπορεί να είναι αρνητικό.");
                 newAmmount = null;
                 }
-            } catch (newAmmountFormatException e) {
+            } catch (NumberFormatException e) {
                 System.out.println("Μη έγκυρη τιμή.");
                 continue;       
             }
 
             BudgetService service = new BudgetService(initialBudget, null);
-            service.changeMinistryAmmount(code, column, newAmmount);
+            service.changeMinistryAmount(code, column, newAmmount);
             // έλεγχος αν έγινε η αλλαγή
             boolean isValid = service.validateAll();                
             System.out.println("Σφάλμα κατά την αλλαγή τιμής.");
