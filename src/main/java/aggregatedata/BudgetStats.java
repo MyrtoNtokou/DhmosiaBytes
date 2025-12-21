@@ -2,6 +2,7 @@ package aggregatedata;
 
 import budgetreader.Eggrafi;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -18,21 +19,31 @@ public class BudgetStats {
     private List<Eggrafi> maxExpenses;
     /** Min expenses list initialisation. */
     private List<Eggrafi> minExpenses;
+    /** Max revenues percentages list initialisation. */
+    private final List<BigDecimal> maxRevenuePercentages;
+    /** Max expenses percentages list initialisation. */
+    private final List<BigDecimal> maxExpensePercentages;
 
     /** Constructor.
      * @param maxRev
      * @param minRev
      * @param maxExp
      * @param minExp
+     * @param maxRevPer
+     * @param maxExpPer
      * */
     public BudgetStats(final List<Eggrafi> maxRev,
                        final List<Eggrafi> minRev,
                        final List<Eggrafi> maxExp,
-                       final List<Eggrafi> minExp) {
+                       final List<Eggrafi> minExp,
+                       final List<BigDecimal> maxRevPer,
+                       final List<BigDecimal> maxExpPer) {
         maxRevenues = new ArrayList<>(maxRev);
         minRevenues = new ArrayList<>(minRev);
         maxExpenses = new ArrayList<>(maxExp);
         minExpenses = new ArrayList<>(minExp);
+        maxRevenuePercentages = new ArrayList<>(maxRevPer);
+        maxExpensePercentages = new ArrayList<>(maxExpPer);
     }
 
     /**
@@ -65,5 +76,21 @@ public class BudgetStats {
      * */
     public List<Eggrafi> getMinExpenses() {
         return new ArrayList<>(minExpenses);
+    }
+
+    /**
+     * Getter for max revenues percentages.
+     * @return max revenues percentages
+     * */
+    public List<BigDecimal> getMaxRevenuePercentages() {
+        return new ArrayList<>(maxRevenuePercentages);
+    }
+
+    /**
+     * Getter for max expenses percentages.
+     * @return max expenses percentages
+     * */
+    public List<BigDecimal> getMaxExpensePercentages() {
+        return new ArrayList<>(maxExpensePercentages);
     }
 }
