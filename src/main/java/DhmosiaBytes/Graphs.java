@@ -4,6 +4,8 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+import budgetcharts.Barcharts;
+import budgetcharts.MoreCharts;
 import budgetreader.Eggrafi;
 import budgetreader.ReadBudget;
 import budgetreader.Ypourgeio;
@@ -14,7 +16,7 @@ import budgetreader.Ypourgeio;
  */
 public class Graphs {
     /** The maximum valid option number. */
-    private static final int MAX_CODE = 5;
+    private static final int MAX_CODE = 9;
 
     /** The minimum valid option number. */
     private static final int MIN_CODE = 1;
@@ -33,6 +35,18 @@ public class Graphs {
 
     /** Numerical code for chart per ministry. */
     private static final int CHART_MINISTRY = 5;
+
+    /** Line chart index for revenues and expenses. */
+    private static final int LINE_CHART_ESODA_EXODA = 6;
+
+    /** Chart index for yearly revenues. */
+    private static final int CHART_ESODA_YEAR = 7;
+
+    /** Chart index for yearly expenses. */
+    private static final int CHART_EXODA_YEAR = 8;
+
+    /** Chart index for yearly ministry data. */
+    private static final int CHART_MINISTRY_YEAR = 9;
 
     /**
      * Creates a Graph object.
@@ -56,6 +70,14 @@ public class Graphs {
             System.out.println("3. Ιστόγραμμα Εσόδων");
             System.out.println("4. Ιστόγραμμα Εξόδων");
             System.out.println("5. Ιστόγραμμα Προϋπολογισμού ανά Υπουργείο");
+            System.out.println("6. Γραμμικό διάγραμμα εσόδων εξόδων "
+            + "για τα έτη 2020-2026");
+            System.out.println("7. Ιστόγραμμα για συγκεκριμένο έσοδο "
+            + "2020-2026");
+            System.out.println("8. Ιστόγραμμα για συγκεκριμένο έξοδο "
+            + "2020-2026 ");
+            System.out.println("9. Ιστόγραμμα ανά Υπουργείο "
+            + "για τα έτη 2020-2026");
             System.out.println("0. Έξοδος");
             System.out.print("Επιλογή: ");
 
@@ -85,9 +107,9 @@ public class Graphs {
     public void runGraphs(final Scanner input) {
         List<Eggrafi> eggra =
         ReadBudget.readGeneralBudget("proypologismos2025.csv");
-
         List<Ypourgeio> y =
         ReadBudget.readByMinistry("proypologismos2025anaypourgeio.csv");
+        CutLists cut = new CutLists();
 
         int code;
         do {
@@ -98,6 +120,33 @@ public class Graphs {
                 case CHART_ESODA -> Barcharts.chartEsoda(eggra);
                 case CHART_EXODA -> Barcharts.chartExoda(eggra);
                 case CHART_MINISTRY -> Barcharts.chartMinistry(y);
+                case LINE_CHART_ESODA_EXODA -> MoreCharts
+                .lineChartEsodaExoda();
+                case CHART_ESODA_YEAR -> {
+                    List<Eggrafi> esoda = cut.cutEggrafiEsoda();
+                    String revenueCode = cut.selectRevenue(input, esoda);
+                    try {
+                        int revenueCodeInt = Integer.parseInt(revenueCode);
+                        Barcharts.chartExodaByYear(revenueCodeInt);
+                    } catch (NumberFormatException e) {
+                        System.out.println("Μη έγκυρη επιλογή");
+                    }
+                }
+                case CHART_EXODA_YEAR -> {
+                    List<Eggrafi> exoda = cut.cutEggrafiExoda();
+                    String expenseCode = cut.selectExpense(input, exoda);
+                    try {
+                        int expenseCodeInt = Integer.parseInt(expenseCode);
+                        Barcharts.chartExodaByYear(expenseCodeInt);
+                    } catch (NumberFormatException e) {
+                        System.out.println("Μη έγκυρη επιλογή");
+                    }
+                }
+                case CHART_MINISTRY_YEAR -> {
+                    List<Ypourgeio> ministries = cut.cutYpourgeio();
+                    int ministryCode = cut.selectMinistry(input, ministries);
+                    Barcharts.chartMinistryByYear(ministryCode);
+                }
                 case 0 -> System.out.println("Επιστροφή στο μενού επιλογών");
                 default -> System.out.println("Μη έγκυρη επιλογή.");
             }

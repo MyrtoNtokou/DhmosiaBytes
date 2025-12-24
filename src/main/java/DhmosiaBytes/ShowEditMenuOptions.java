@@ -1,15 +1,12 @@
 package dhmosiabytes;
 
-import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
 import budgetlogic.Budget;
 import budgetlogic.BudgetService;
-import budgetreader.DisplayBudget;
 import budgetreader.Eggrafi;
-import budgetreader.ReadBudget;
 import budgetreader.Ypourgeio;
 
 /**
@@ -64,108 +61,17 @@ public class ShowEditMenuOptions {
     final Scanner scanner, final RevenueOrExpense selected) {
         BudgetService service = new BudgetService(initialBudget, null);
         BudgetEditor editor = new BudgetEditor(service);
+        CutLists cut = new CutLists();
 
         if (selected == RevenueOrExpense.INCOME) {
-            List<Eggrafi> g =
-            ReadBudget.readGeneralBudget("proypologismos2025.csv");
-
-            List<Eggrafi> esoda = new ArrayList<>();
-            for (Eggrafi e : g) {
-                if (e.getKodikos().startsWith("1,")) {
-                    esoda.add(e);
-                }
-            }
-            DisplayBudget.showGeneral(esoda);
-            String code = selectRevenue(scanner, esoda);
+            List<Eggrafi> esoda = cut.cutEggrafiEsoda();
+            String code = cut.selectRevenue(scanner, esoda);
             editor.editIncome(code, scanner);
         } else if (selected == RevenueOrExpense.EXPENSE) {
-            List<Ypourgeio> y =
-            ReadBudget.readByMinistry("proypologismos2025anaypourgeio.csv");
-
-            List<Ypourgeio> ministries = new ArrayList<>();
-            for (Ypourgeio e : y) {
-                if (!String.valueOf(e.getKodikos()).startsWith("4")
-                && !String.valueOf(e.getKodikos()).startsWith("25")
-                && !String.valueOf(e.getKodikos()).startsWith("33")) {
-                    ministries.add(e);
-                }
-            }
-            DisplayBudget.showMinistry(ministries);
-
-            int code = selectMinistry(scanner, ministries);
+            List<Ypourgeio> ministries = cut.cutYpourgeio();
+            int code = cut.selectMinistry(scanner, ministries);
             editor.editExpense(code, scanner);
         }
-    }
-
-    /**
-     * Asks for specific revenue to be edited.
-     *
-     * @param scanner the Scanner for user's input
-     * @param esoda the List<Eggrafi>
-     * @return the code of the revenue to be edited
-     */
-    public String selectRevenue(final Scanner scanner,
-    final List<Eggrafi> esoda) {
-        String choice;
-        while (true) {
-            System.out.print("Επιλογή: ");
-            choice = scanner.nextLine();
-
-            boolean exists = false;
-            for (Eggrafi eg : esoda) {
-                if (eg.getKodikos().equals(choice)) {
-                    exists = true;
-                    break;
-                }
-            }
-            if (!exists) {
-                System.out.println("Δεν υπάρχει επιλογή "
-                + "με αυτόν τον κωδικό.");
-                continue;
-            }
-            break;
-        }
-        return choice;
-    }
-
-    /**
-     * Asks for specific expense to be edited.
-     *
-     * @param scanner the Scanner for user's input
-     * @param ministries the List<Ypourgeio>
-     * @return the code of the expense to be edited
-     */
-    public int selectMinistry(final Scanner scanner,
-    final List<Ypourgeio> ministries) {
-        int choice = -1;
-        while (true) {
-            System.out.print("Επιλογή: ");
-            String input = scanner.nextLine();
-            try {
-                choice = Integer.parseInt(input);
-            } catch (InputMismatchException e) {
-                System.out.println("Δώστε έναν αριθμό από το 1 έως το "
-                + MinistryOptions.values().length);
-            } catch (IllegalArgumentException e) {
-                System.out.println("Μη έγκυρη επιλογή.");
-                continue;
-            }
-
-            boolean exists = false;
-            for (Ypourgeio y : ministries) {
-                if (y.getKodikos() == choice) {
-                    exists = true;
-                    break;
-                }
-            }
-            if (!exists) {
-                System.out.println("Δεν υπάρχει επιλογή "
-                + "με αυτόν τον κωδικό.");
-                continue;
-            }
-            break;
-        }
-        return choice;
     }
 
     /**
