@@ -101,10 +101,11 @@ public class ShowEditMenuOptions {
      * Asks for specific revenue to be edited.
      *
      * @param scanner the Scanner for user's input
+     * @param esoda the List<Eggrafi>
      * @return the code of the revenue to be edited
      */
     public String selectRevenue(final Scanner scanner,
-    List<Eggrafi> esoda) {
+    final List<Eggrafi> esoda) {
         String choice;
         while (true) {
             System.out.print("Επιλογή: ");
@@ -124,17 +125,18 @@ public class ShowEditMenuOptions {
             }
             break;
         }
-        return choice; 
+        return choice;
     }
 
     /**
      * Asks for specific expense to be edited.
      *
      * @param scanner the Scanner for user's input
+     * @param ministries the List<Ypourgeio>
      * @return the code of the expense to be edited
      */
     public int selectMinistry(final Scanner scanner,
-    List<Ypourgeio> ministries) {
+    final List<Ypourgeio> ministries) {
         int choice = -1;
         while (true) {
             System.out.print("Επιλογή: ");
@@ -163,7 +165,7 @@ public class ShowEditMenuOptions {
             }
             break;
         }
-        return choice; 
+        return choice;
     }
 
     /**
