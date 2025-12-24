@@ -5,7 +5,6 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-import budgetreader.DisplayBudget;
 import budgetreader.Eggrafi;
 import budgetreader.ReadBudget;
 import budgetreader.Ypourgeio;
@@ -32,26 +31,22 @@ public class CutLists {
                 esoda.add(e);
             }
         }
-        DisplayBudget.showGeneral(esoda);
         return esoda;
     }
 
-     /**
+    /**
      * Displays the expenses from list Eggrafi.
-     *
-     * @return the List<Eggrafi> containing only the expenses
      */
     public List<Eggrafi> cutEggrafiExoda() {
         List<Eggrafi> g =
         ReadBudget.readGeneralBudget("proypologismos2025.csv");
-
+ 
         List<Eggrafi> exoda = new ArrayList<>();
         for (Eggrafi e : g) {
             if (e.getKodikos().startsWith("2,")) {
                 exoda.add(e);
             }
         }
-        DisplayBudget.showGeneral(exoda);
         return exoda;
     }
 
@@ -72,7 +67,6 @@ public class CutLists {
                 ministries.add(e);
             }
         }
-        DisplayBudget.showMinistry(ministries);
         return ministries;
     }
 
@@ -92,37 +86,6 @@ public class CutLists {
 
             boolean exists = false;
             for (Eggrafi eg : esoda) {
-                if (eg.getKodikos().equals(choice)) {
-                    exists = true;
-                    break;
-                }
-            }
-            if (!exists) {
-                System.out.println("Δεν υπάρχει επιλογή "
-                + "με αυτόν τον κωδικό.");
-                continue;
-            }
-            break;
-        }
-        return choice;
-    }
-
-    /**
-     * Asks for specific revenue to be edited.
-     *
-     * @param scanner the Scanner for user's input
-     * @param exoda the List<Eggrafi>
-     * @return the code of the revenue to be edited
-     */
-    public String selectExpense(final Scanner scanner,
-    final List<Eggrafi> exoda) {
-        String choice;
-        while (true) {
-            System.out.print("Επιλογή: ");
-            choice = scanner.nextLine();
-
-            boolean exists = false;
-            for (Eggrafi eg : exoda) {
                 if (eg.getKodikos().equals(choice)) {
                     exists = true;
                     break;
@@ -177,4 +140,65 @@ public class CutLists {
         }
         return choice;
     }
+
+    /**
+     * Displays a numbered list of revenue entries
+     * and prompts the user to select one by number.
+     *
+     * @param scanner the Scanner to read user input
+     * @param esoda the list of revenue entries to choose from
+     * @return the code of the selected revenue entry
+     */
+    public String selectRevenueByNumber(final Scanner scanner,
+    final List<Eggrafi> esoda) {
+        for (int i = 0; i < esoda.size(); i++) {
+            System.out.println((i + 1) + ". " + esoda.get(i).getPerigrafi());
+        }
+        int choice = -1;
+        while (choice < 1 || choice > esoda.size()) { 
+            System.out.print("Επιλογή: ");
+            String input = scanner.nextLine();
+            try {
+                choice = Integer.parseInt(input);
+                if (choice < 1 || choice > esoda.size()) {
+                    System.out.println("Μη έγκυρη επιλογή. "
+                    + "Δώστε αριθμό από 1 έως " + esoda.size());
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Μη έγκυρη επιλογή.");
+            }
+        }
+        return esoda.get(choice - 1).getKodikos();
+    }
+
+    /**
+     * Displays a numbered list of expense entries
+     * and prompts the user to select one by number.
+     *
+     * @param scanner the Scanner to read user input
+     * @param exoda the list of expense entries to choose from
+     * @return the code of the selected revenue entry
+     */
+    public String selectExpenseByNumber(final Scanner scanner,
+    final List<Eggrafi> exoda) {
+        for (int i = 0; i < exoda.size(); i++) {
+            System.out.println((i + 1) + ". " + exoda.get(i).getPerigrafi());
+        }
+        int choice = -1;
+        while (choice < 1 || choice > exoda.size()) {
+            System.out.print("Επιλογή: ");
+            String input = scanner.nextLine();
+            try {
+                choice = Integer.parseInt(input);
+                if (choice < 1 || choice > exoda.size()) {
+                    System.out.println("Μη έγκυρη επιλογή. "
+                    + "Δώστε αριθμό από 1 έως " + exoda.size());
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Μη έγκυρη επιλογή.");
+            }
+        }
+        return exoda.get(choice - 1).getKodikos();
+    }
+
 }

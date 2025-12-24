@@ -124,17 +124,19 @@ public class Graphs {
                 .lineChartEsodaExoda();
                 case CHART_ESODA_YEAR -> {
                     List<Eggrafi> esoda = cut.cutEggrafiEsoda();
-                    String revenueCode = cut.selectRevenue(input, esoda);
+                    String revenueCode = cut.selectRevenueByNumber(input,
+                    esoda);
                     try {
                         int revenueCodeInt = Integer.parseInt(revenueCode);
-                        Barcharts.chartExodaByYear(revenueCodeInt);
+                        Barcharts.chartEsodaByYear(revenueCodeInt);
                     } catch (NumberFormatException e) {
                         System.out.println("Μη έγκυρη επιλογή");
                     }
                 }
                 case CHART_EXODA_YEAR -> {
                     List<Eggrafi> exoda = cut.cutEggrafiExoda();
-                    String expenseCode = cut.selectExpense(input, exoda);
+                    String expenseCode = cut.selectExpenseByNumber(input,
+                    exoda);
                     try {
                         int expenseCodeInt = Integer.parseInt(expenseCode);
                         Barcharts.chartExodaByYear(expenseCodeInt);
