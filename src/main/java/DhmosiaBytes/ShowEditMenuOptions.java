@@ -93,7 +93,7 @@ public class ShowEditMenuOptions {
             }
             DisplayBudget.showMinistry(ministries);
 
-            int code = selectExpense(scanner);
+            int code = selectMinistry(scanner);
             editor.editExpense(code, scanner);
         }
     }
@@ -125,17 +125,17 @@ public class ShowEditMenuOptions {
      * @param scanner the Scanner for user's input
      * @return the code of the expense to be edited
      */
-    public int selectExpense(final Scanner scanner) {
-        ExpenseOptions selectedOption = null;
+    public int selectMinistry(final Scanner scanner) {
+        MinistryOptions selectedOption = null;
         while (selectedOption == null) {
             System.out.print("Επιλογή: ");
             try {
                 int choice = scanner.nextInt();
                 scanner.nextLine();
-                selectedOption = ExpenseOptions.fromCode(choice);
+                selectedOption = MinistryOptions.fromCode(choice);
             } catch (InputMismatchException e) {
                 System.out.println("Δώστε έναν αριθμό από το 1 έως το "
-                + ExpenseOptions.values().length);
+                + MinistryOptions.values().length);
             }
         }
         return selectedOption.getExpenseCode();

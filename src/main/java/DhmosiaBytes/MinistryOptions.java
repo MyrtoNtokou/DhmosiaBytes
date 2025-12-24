@@ -4,7 +4,7 @@ package dhmosiabytes;
  * Enum representing budget expense options, including ministries
  * and decentralized administrations, each with a numeric code and description.
  */
-public enum ExpenseOptions {
+public enum MinistryOptions {
     /** Presidency of the Republic. */
     PROEDRIADHM(1, "Προεδρία της Δημοκρατίας"),
 
@@ -104,12 +104,12 @@ public enum ExpenseOptions {
     private final String expenseDescription;
 
      /**
-     * Constructs an ExpenseOptions enum constant.
+     * Constructs an MinistryOptions enum constant.
      *
      * @param code numeric code of the expense
      * @param description description of the expense
      */
-    ExpenseOptions(final int code, final String description) {
+    MinistryOptions(final int code, final String description) {
         this.expenseCode = code;
         this.expenseDescription = description;
     }
@@ -133,14 +133,14 @@ public enum ExpenseOptions {
     }
 
      /**
-     * Returns the ExpenseOptions constant matching the given code.
+     * Returns the MinistryOptions constant matching the given code.
      *
      * @param expenseCode the numeric code to look up
-     * @return matching ExpenseOptions constant
+     * @return matching MinistryOptions constant
      * @throws IllegalArgumentException if no matching constant is found
      */
-    public static ExpenseOptions fromCode(final int expenseCode) {
-        for (ExpenseOptions expenseOpt : ExpenseOptions.values()) {
+    public static MinistryOptions fromCode(final int expenseCode) {
+        for (MinistryOptions expenseOpt : MinistryOptions.values()) {
             if (expenseOpt.getExpenseCode() == expenseCode) {
                 return expenseOpt;
             }
