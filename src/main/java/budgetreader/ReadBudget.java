@@ -1,6 +1,5 @@
 package budgetreader;
 
-import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
@@ -10,6 +9,8 @@ import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.FileInputStream;
+import java.nio.file.Path;
 
 /**Utility class that reads budget data from CSV files and processes
  * them according to the application's requirements.*/
@@ -37,37 +38,25 @@ public final class ReadBudget {
     private static final int COLUMNS_REQUIRED = 5;
 
 
-    /** Reads the proper csv file
-    * from folder resources
-    * and converts each row into an {@link Eggrafi} object.
-    *
-    * @param resourceName the CSV filename to load
-    * @return a list of Eggrafi objects read from the file
-    */
-        public static List<Eggrafi> readGeneralBudget(
-            final String resourceName) {
+
+    /**
+ * Reads general budget data from an input stream and converts
+ * each row into an {@link Eggrafi} object.
+ *
+ * @param input the input stream of the CSV file
+ * @return a list of Eggrafi objects
+ */
+    private static List<Eggrafi> readGeneralBudgetFromStream(
+        final InputStream input) {
 
         List<Eggrafi> eggrafes = new ArrayList<>();
-        try {
-           /* Loads CSV file from classpath (resources folder) */
-            InputStream input = ReadBudget.class.getResourceAsStream(
-                "/" + resourceName);
 
-                if (input == null) {
-                    System.err.println(
-                        "Δεν βρέθηκε το αρχείο: " + resourceName);
-                    return eggrafes;
-                }
-
-            /*Converts delimiter to ";" instead of ","  */
-            CSVParser parser = new CSVParserBuilder()
-                .withSeparator(';')
-                    .build();
-
-            CSVReader reader = new CSVReaderBuilder(
-                new InputStreamReader(input, StandardCharsets.UTF_8)
-                    ).withCSVParser(parser)
-                        .build();
+        try (CSVReader reader = new CSVReaderBuilder(
+            new InputStreamReader(input, StandardCharsets.UTF_8))
+            .withCSVParser(new CSVParserBuilder()
+                    .withSeparator(';')
+                    .build())
+            .build()) {
 
             String[] line;
 
@@ -80,86 +69,162 @@ public final class ReadBudget {
                 String kodikos = line[0].trim();
                 String perigrafi = line[1].trim();
                 BigDecimal poso = parseNumber(line[2].trim());
+
                 eggrafes.add(new Eggrafi(kodikos, perigrafi, poso));
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return eggrafes;
+        }
+
+
+    /** Reads the proper csv file
+    * from resources folder
+    * and calls the readGeneralBudgetFromStream method.
+    *
+    * @param resourceName the CSV filename to load
+    * @return a list of {@link Eggrafi} objects parsed from the CSV file;
+    *        an empty list is returned if the resource cannot be found
+    */
+        public static List<Eggrafi> readGeneralBudget(
+            final String resourceName) {
+
+        /* Loads CSV file from classpath (resources folder) */
+        InputStream input = ReadBudget.class.getResourceAsStream(
+            "/" + resourceName);
+
+        if (input == null) {
+            System.err.println(
+                "Δεν βρέθηκε το αρχείο: " + resourceName);
+                return new ArrayList<>();
+        }
+
+        return readGeneralBudgetFromStream(input);
     }
 
-    /** Reads cσv file from folder resources
-     *  and converts each row into an @Ypourgeio object.
-     *
-     * @param resourceName the CSV filename to load
-     * @return a list of Ypourgeio objects read from the file
-     */
-    public static List<Ypourgeio> readByMinistry(final String resourceName) {
+    /**
+    * Reads a general budget CSV file from the filesystem and converts
+    * each row into an {@link Eggrafi} object.
+    *
+    * @param path the path to the CSV file to be read
+    * @return a list of {@link Eggrafi} objects parsed from the file;
+    *         an empty list is returned if the file cannot be read
+    */
+    public static List<Eggrafi> readGeneralBudgetFromPath(
+        final Path path) {
+
+        try (InputStream input = new FileInputStream(path.toFile())) {
+            return readGeneralBudgetFromStream(input);
+        } catch (Exception e) {
+            System.err.println("Αδυναμία ανάγνωσης αρχείου: " + path);
+            return new ArrayList<>();
+        }
+    }
+
+
+    private static List<Ypourgeio> readMinistryFromStream(
+        final InputStream input) {
 
         List<Ypourgeio> ypourg = new ArrayList<>();
-        try {
-            /* Loads  CSV file from classpath (resources folder) */
-            InputStream input = ReadBudget.class.getResourceAsStream(
-                "/" + resourceName);
-            if (input == null) {
-                System.err.println("Δεν βρέθηκε το αρχείο: " + resourceName);
-                return ypourg;
-            }
-            /*Converts delimiter to ";" instead of "," */
-            CSVParser parser = new CSVParserBuilder()
-                .withSeparator(';')
-                    .build();
 
-            CSVReader reader = new CSVReaderBuilder(
-                new InputStreamReader(input, StandardCharsets.UTF_8)
-                    ).withCSVParser(parser)
-                        .build();
+        try (CSVReader reader = new CSVReaderBuilder(
+            new InputStreamReader(input, StandardCharsets.UTF_8))
+            .withCSVParser(new CSVParserBuilder()
+                    .withSeparator(';')
+                    .build())
+            .build()) {
+
             String[] line;
 
-            /* Creates new instances Ypourgeio for each line */
             while ((line = reader.readNext()) != null) {
                 if (line.length < MIN_MINISTRY_COLUMNS) {
                     continue;
                 }
 
                 try {
-                    String kodikosStr = line[0].trim().replace("\uFEFF", "");
-
-                /* If it's not a number  → skip */
+                    String kodikosStr = line[0].trim().replace(
+                    "\uFEFF", "");
                     if (!kodikosStr.matches("\\d+")) {
                         continue;
                     }
 
                     int kodikos = Integer.parseInt(kodikosStr);
-
                     String onoma = line[1].trim();
+
                     BigDecimal taktikos = parseNumber(line[COLUMN_TAKTIKOS]);
                     BigDecimal ependyseis = parseNumber(
                         line[COLUMN_EPENDYSEIS]);
                     BigDecimal synolo = parseNumber(line[COLUMN_SYNOLO]);
+
                     ypourg.add(new Ypourgeio(
                         kodikos, onoma, taktikos, ependyseis, synolo));
-                } catch (Exception e) {
-                        System.err.println("Προσπέραση λανθασμένης εγγραφής: "
-                        + e.getMessage());
 
+                    } catch (Exception e) {
+                        System.err.println("Προσπέραση εγγραφής: "
+                            + e.getMessage());
+                    }
                 }
-            }
+
         } catch (Exception e) {
-            System.err.println("Δεν μπόρεσα να διαβάσω το αρχείο: "
-                + resourceName);
             e.printStackTrace();
         }
+
         return ypourg;
     }
 
-    /** Converts a number written as a string into a double
-     * by trimming the input and chainging commas to dots.
-     *
-     * @param s the numeric string to convert
-     * @return the parsed double value, or 0.0 if conversion fails
-     */
+    /**
+    * Reads a ministry budget CSV file from the application's resources
+    * directory and converts each row into a {@link Ypourgeio} object.
+    *
+    * @param resourceName the name of the CSV resource file to be read
+    * @return a list of {@link Ypourgeio} objects parsed from the file;
+    *         an empty list is returned if the resource cannot be found
+    */
+    public static List<Ypourgeio> readByMinistry(final String resourceName) {
 
+        /* Loads  CSV file from classpath (resources folder) */
+        InputStream input = ReadBudget.class.getResourceAsStream(
+            "/" + resourceName);
+
+        if (input == null) {
+            System.err.println("Δεν βρέθηκε το αρχείο: " + resourceName);
+            return new ArrayList<>();
+        }
+        return readMinistryFromStream(input);
+    }
+
+
+    /**
+    * Reads a ministry budget CSV file from the filesystem and converts
+    * each row into a {@link Ypourgeio} object.
+    *
+    * @param path the path to the CSV file to be read
+    * @return a list of {@link Ypourgeio} objects parsed from the file;
+    *         an empty list is returned if the file cannot be read
+    */
+    public static List<Ypourgeio> readByMinistryFromPath(
+        final Path path) {
+
+        try (InputStream input = new FileInputStream(path.toFile())) {
+            return readMinistryFromStream(input);
+
+        } catch (Exception e) {
+            System.err.println("Αδυναμία ανάγνωσης αρχείου: " + path);
+            return new ArrayList<>();
+        }
+    }
+
+    /**
+    * Converts a numeric string into a {@link BigDecimal} by
+    * removing thousand separators and normalizing decimal points.
+    *
+    * @param s the numeric string to convert
+    * @return the parsed {@link BigDecimal} value, or {@code BigDecimal.ZERO}
+    *         if conversion fails
+    */
     private static BigDecimal parseNumber(final String s) {
 
         String value = s;
