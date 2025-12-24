@@ -9,7 +9,7 @@ public enum  RevenueOrExpense {
     INCOME(1, "Έσοδα Προϋπολογισμού"),
 
     /** Budget expense. */
-    EXPENSE(2, "Έξοδα Προϋπολογισμού");
+    EXPENSE(2, "Έξοδα Προϋπολογισμού (ανά Υπουργείο)");
 
     /** Numeric code identifying the type. */
     private final int revenueOrExpenseCode;

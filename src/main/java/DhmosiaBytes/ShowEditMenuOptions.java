@@ -32,11 +32,10 @@ public class ShowEditMenuOptions {
         }
         RevenueOrExpense selected = null;
         do {
-            System.out.print("Επιλογή: ");
+            System.out.print("\nΕπιλογή: ");
             int choice;
             try {
                 choice = scanner.nextInt();
-                scanner.nextInt();
             } catch (InputMismatchException e) {
                 System.out.println("Παρακαλώ εισάγετε αριθμό.");
                 scanner.next();
@@ -77,7 +76,7 @@ public class ShowEditMenuOptions {
                 }
             }
             DisplayBudget.showGeneral(esoda);
-            String code = selectRevenue(scanner);
+            String code = selectRevenue(scanner, esoda);
             editor.editIncome(code, scanner);
         } else if (selected == RevenueOrExpense.EXPENSE) {
             List<Ypourgeio> y =
@@ -85,15 +84,15 @@ public class ShowEditMenuOptions {
 
             List<Ypourgeio> ministries = new ArrayList<>();
             for (Ypourgeio e : y) {
-                if (!e.getOnoma().startsWith("4,")
-                && !e.getOnoma().startsWith("25,")
-                && !e.getOnoma().startsWith("33,")) {
+                if (!String.valueOf(e.getKodikos()).startsWith("4")
+                && !String.valueOf(e.getKodikos()).startsWith("25")
+                && !String.valueOf(e.getKodikos()).startsWith("33")) {
                     ministries.add(e);
                 }
             }
             DisplayBudget.showMinistry(ministries);
 
-            int code = selectMinistry(scanner);
+            int code = selectMinistry(scanner, ministries);
             editor.editExpense(code, scanner);
         }
     }
@@ -104,19 +103,28 @@ public class ShowEditMenuOptions {
      * @param scanner the Scanner for user's input
      * @return the code of the revenue to be edited
      */
-    public String selectRevenue(final Scanner scanner) {
-        IncomeOptions selected = null;
-        while (selected == null) {
+    public String selectRevenue(final Scanner scanner,
+    List<Eggrafi> esoda) {
+        String choice;
+        while (true) {
             System.out.print("Επιλογή: ");
-            try {
-                String choice = scanner.nextLine().trim();
-                selected = IncomeOptions.fromCode(choice);
-            } catch (InputMismatchException e) {
-                System.out.println(" Δώστε έναν αριθμό από το 1 έως το "
-                + IncomeOptions.values().length);
+            choice = scanner.nextLine();
+
+            boolean exists = false;
+            for (Eggrafi eg : esoda) {
+                if (eg.getKodikos().equals(choice)) {
+                    exists = true;
+                    break;
+                }
             }
+            if (!exists) {
+                System.out.println("Δεν υπάρχει επιλογή "
+                + "με αυτόν τον κωδικό.");
+                continue;
+            }
+            break;
         }
-        return selected.getIncomeCode();
+        return choice; 
     }
 
     /**
@@ -125,20 +133,37 @@ public class ShowEditMenuOptions {
      * @param scanner the Scanner for user's input
      * @return the code of the expense to be edited
      */
-    public int selectMinistry(final Scanner scanner) {
-        MinistryOptions selectedOption = null;
-        while (selectedOption == null) {
+    public int selectMinistry(final Scanner scanner,
+    List<Ypourgeio> ministries) {
+        int choice = -1;
+        while (true) {
             System.out.print("Επιλογή: ");
+            String input = scanner.nextLine();
             try {
-                int choice = scanner.nextInt();
-                scanner.nextLine();
-                selectedOption = MinistryOptions.fromCode(choice);
+                choice = Integer.parseInt(input);
             } catch (InputMismatchException e) {
                 System.out.println("Δώστε έναν αριθμό από το 1 έως το "
                 + MinistryOptions.values().length);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Μη έγκυρη επιλογή.");
+                continue;
             }
+
+            boolean exists = false;
+            for (Ypourgeio y : ministries) {
+                if (y.getKodikos() == choice) {
+                    exists = true;
+                    break;
+                }
+            }
+            if (!exists) {
+                System.out.println("Δεν υπάρχει επιλογή "
+                + "με αυτόν τον κωδικό.");
+                continue;
+            }
+            break;
         }
-        return selectedOption.getExpenseCode();
+        return choice; 
     }
 
     /**

@@ -1,7 +1,7 @@
 package dhmosiabytes;
 
 /**
- * Enum representing budget expense options, including ministries
+ * Enum representing budget ministry options, including ministries
  * and decentralized administrations, each with a numeric code and description.
  */
 public enum MinistryOptions {
@@ -97,55 +97,55 @@ public enum MinistryOptions {
     /** Decentralized Administration of Macedonia - Thrace. */
     MAKEDONIAS_THRAKHS(32, "Αποκεντρωμένη Διοίκηση Μακεδονίας - Θράκης");
 
-    /** Numeric code identifying the expense. */
-    private final int expenseCode;
+    /** Numeric code identifying the ministry. */
+    private final int ministryCode;
 
-    /** Human-readable description of the expense. */
-    private final String expenseDescription;
+    /** Human-readable description of the ministry. */
+    private final String ministryDescription;
 
      /**
      * Constructs an MinistryOptions enum constant.
      *
-     * @param code numeric code of the expense
-     * @param description description of the expense
+     * @param code numeric code of the ministry
+     * @param description description of the ministry
      */
     MinistryOptions(final int code, final String description) {
-        this.expenseCode = code;
-        this.expenseDescription = description;
+        this.ministryCode = code;
+        this.ministryDescription = description;
     }
 
      /**
-     * Returns the numeric code of the expense.
+     * Returns the numeric code of the ministry.
      *
-     * @return expense code
+     * @return ministry code
      */
-    public int getExpenseCode() {
-        return this.expenseCode;
+    public int getMinistryCode() {
+        return this.ministryCode;
     }
 
      /**
-     * Returns the description of the expense.
+     * Returns the description of the ministry.
      *
-     * @return expense description
+     * @return ministry description
      */
-    public String getExpenseDescription() {
-        return expenseDescription;
+    public String getMinistryDescription() {
+        return ministryDescription;
     }
 
      /**
      * Returns the MinistryOptions constant matching the given code.
      *
-     * @param expenseCode the numeric code to look up
+     * @param ministryCode the numeric code to look up
      * @return matching MinistryOptions constant
      * @throws IllegalArgumentException if no matching constant is found
      */
-    public static MinistryOptions fromCode(final int expenseCode) {
-        for (MinistryOptions expenseOpt : MinistryOptions.values()) {
-            if (expenseOpt.getExpenseCode() == expenseCode) {
-                return expenseOpt;
+    public static MinistryOptions fromCode(final int ministryCode) {
+        for (MinistryOptions ministryOpt : MinistryOptions.values()) {
+            if (ministryOpt.getMinistryCode() == ministryCode) {
+                return ministryOpt;
             }
         }
         throw new IllegalArgumentException("Μη έγκυρη επιλογή: "
-        + expenseCode);
+        + ministryCode);
     }
 }
