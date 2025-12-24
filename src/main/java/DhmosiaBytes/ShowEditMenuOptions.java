@@ -138,7 +138,7 @@ public class ShowEditMenuOptions {
                 + MinistryOptions.values().length);
             }
         }
-        return selectedOption.getExpenseCode();
+        return selectedOption.getMinistryCode();
     }
 
     /**

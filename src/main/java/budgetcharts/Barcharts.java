@@ -12,6 +12,9 @@ import org.knowm.xchart.SwingWrapper;
 import budgetreader.Eggrafi;
 import budgetreader.Ypourgeio;
 import budgetreader.ReadBudget;
+import dhmosiabytes.IncomeOptions;
+import dhmosiabytes.MinistryOptions;
+import dhmosiabytes.ExpenseOptions;
 
 public final class Barcharts {
 
@@ -37,12 +40,12 @@ public final class Barcharts {
     }
 
      /**
-     * Creates and displays the expence bar chart.
+     * Creates and displays the Expense bar chart.
      *
      * @param eggrafes List of budget records
      */
     public static void chartEsoda(final List<Eggrafi> eggrafes) {
-        // Filter expence records (code starts with "1,")
+        // Filter Expense records (code starts with "1,")
         List<Eggrafi> esoda = new ArrayList<>();
         for (Eggrafi e : eggrafes) {
             if (e.getKodikos().startsWith("1,")) {
@@ -183,69 +186,9 @@ public final class Barcharts {
     }
 
     /**
-    * Enum representing expence categories steliou.
-    */
-    public enum IncomeOptions {
-        /** Taxes. */
-        FOROI("1,1", "Φόροι"),
-        /** Social contributions. */
-        KOINONIKES_EISFORES("1,2", "Κοινωνικές εισφορές"),
-        /** Transfers. */
-        METAVIVASEIS("1,3", "Μεταβιβάσεις"),
-        /** Sales of goods and services. */
-        POLHSEIS("1,4", "Πωλήσεις αγαθών και υπηρεσιών"),
-        /** Other current expence. */
-        LOIPA("1,5", "Λοιπά τρέχοντα έσοδα"),
-        /** Fixed assets. */
-        PAGIA("1,6", "Πάγια Περιουσιακά Στοιχεία"),
-        /** Debt securities. */
-        XREOSTIKOI("1,7", "Χρεωστικοί τίτλοι"),
-        /** Loans. */
-        DANEIO("1,8", "Δάνεια"),
-        /** Equity securities and investment fund shares. */
-        SYMMETOXIKOI(
-            "1,9",
-            "Συμμετοχικοί τίτλοι και μερίδια επενδυτικών κεφαλαίων"),
-        /** Obligations from currency and deposits. */
-        YPOXREOSEIS("1,9,1", "Υποχρεώσεις από νόμισμα και καταθέσεις"),
-        /** Debt securities (liabilities). */
-        XREOSTIKOI_YPOXREOSEIS("1,9,2", "Χρεωστικοί τίτλοι (υποχρεώσεις)"),
-        /** Loans. */
-        DANEIA("1,9,3", "Δάνεια"),
-        /** Financial derivatives. */
-        XRHMATOOIKONOMIKA("1,9,4", "Χρηματοοικονομικά παράγωγα");
-
-        /** Income code. */
-        private final String incomeCode;
-        /** Income description. */
-        private final String incomeDescription;
-
-        IncomeOptions(final String code, final String description) {
-            this.incomeCode = code;
-            this.incomeDescription = description;
-        }
-
-        /**
-        * Returns the expence code.
-        * @return code of the expence.
-        */
-        public String getIncomeCode() {
-            return this.incomeCode;
-        }
-
-        /**
-        * Returns the expence description.
-        * @return description of the expence.
-        */
-        public String getIncomeDescription() {
-            return incomeDescription;
-        }
-    }
-
-    /**
-    * Creates a bar chart for the selected expence category per year.
+    * Creates a bar chart for the selected Expense category per year.
     *
-    * @param x index of the expence category (1-based).
+    * @param x index of the Expense category (1-based).
     */
     public static void chartEsodaByYear(final int x) {
         IncomeOptions[] options = IncomeOptions.values();
@@ -270,7 +213,7 @@ public final class Barcharts {
                if (e.getKodikos().startsWith(y)) {
                 esoda = esoda.add(
                     e.getPoso());
-                }
+             }
             }
             BigDecimal scaledEsoda = esoda.divide(
                 scale, 2, RoundingMode.HALF_UP);
@@ -301,73 +244,14 @@ public final class Barcharts {
     }
 
     /**
-     * Enum representing expense categories.
-     */
-    public enum ExpenceOptions {
-        /** Employee benefits. */
-        EMPLOYEE_BENEFITS("2,1", "Παροχές σε εργαζομένους"),
-        /** Social benefits. */
-        SOCIAL_BENEFITS("2,2", "Κοινωνικές παροχές"),
-        /** Transfers. */
-        TRANSFERS("2,3", "Μεταβιβάσεις"),
-        /** Purchases of goods and services. */
-        PURCHASES_GOODS_SERVICES("2,4", "Αγορές αγαθών και υπηρεσιών"),
-        /** Subsidies. */
-        SUBSIDIES("2,5", "Επιδοτήσεις"),
-        /** Interests. */
-        INTERESTS("2,6", "Τόκοι"),
-        /** Other expenses. */
-        OTHER_EXPENSES("2,7", "Λοιπές δαπάνες"),
-        /** Credits to allocate. */
-        CREDITS_TO_ALLOCATE("2,8", "Πιστώσεις υπό κατανομή"),
-        /** Fixed assets. */
-        FIXED_ASSETS("2,9", "Πάγια περιουσιακά στοιχεία"),
-
-        /** Precious metals. */
-        PRECIOUS_METALS("2,9,1", "Τιμαλφή"),
-        /** Loans. */
-        LOANS_1("2,9,2", "Δάνεια"),
-        /** Equity securities and investment fund shares. */
-        EQUITY_SECURITIES(
-            "2,9,3",
-             "Συμμετοχικοί τίτλοι και μερίδια επενδυτικών κεφαλαίων"),
-        /** Debt securities (liabilities). */
-        DEBT_SECURITIES("2,9,4", "Χρεωστικοί τίτλοι (υποχρεώσεις)"),
-        /** Loans. */
-        LOANS_2("2,9,5", "Δάνεια"),
-        /** Financial derivatives. */
-        XRHMATOOIKONOMIKA("2,9,6", "Χρηματοοικονομικά παράγωγα");
-
-        /** Expence code. */
-        private final String code;
-        /** Expence description. */
-        private final String description;
-
-        ExpenceOptions(final String codeParam, final String descParam) {
-        this.code = codeParam;
-        this.description = descParam;
-        }
-
-        /** @return the expense code. */
-        public String getExpenceCode() {
-            return code;
-        }
-
-        /** @return the expense description. */
-        public String getExpenceDescription() {
-            return description;
-        }
-    }
-
-    /**
-    * Creates a bar chart for the selected expence category per year.
+    * Creates a bar chart for the selected Expense category per year.
     *
-    * @param x index of the expence category (2-based).
+    * @param x index of the Expense category (2-based).
     */
     public static void chartExodaByYear(final int x) {
 
-        ExpenceOptions[] options = ExpenceOptions.values();
-        String y = options[x - 1].getExpenceCode();
+        ExpenseOptions[] options = ExpenseOptions.values();
+        String y = options[x - 1].getExpenseCode();
 
         int startYear = START_YEAR_CONST;
         int endYear = END_YEAR_CONST;
@@ -399,7 +283,7 @@ public final class Barcharts {
         CategoryChart chart = new CategoryChartBuilder()
             .width(CHART_WIDTH)
             .height(CHART_HEIGHT)
-            .title("Έξοδα: " + options[x - 1].getExpenceDescription())
+            .title("Έξοδα: " + options[x - 1].getExpenseDescription())
             .xAxisTitle("Έτος")
             .yAxisTitle("Ποσό (δις €)")
             .build();
@@ -418,105 +302,6 @@ public final class Barcharts {
             javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     }
 
-    public enum MinistryOptions {
-        /** Presidency of the Hellenic Republic. */
-        PROEDRIADHM(1, "Προεδρία της Δημοκρατίας"),
-        /** Hellenic Parliament. */
-        BOYLH(2, "Βουλή των Ελλήνων"),
-        /** Presidency of the Government. */
-        PROEDRIA(3, "Προεδρία της Κυβέρνησης"),
-        /** Ministry of Interior. */
-        ESOTERIKON(5, "Υπουργείο Εσωτερικών"),
-        /** Ministry of Foreign Affairs. */
-        EXOTERIKON(6, "Υπουργείο Εξωτερικών"),
-        /** Ministry of National Defense. */
-        ETHNIKHS_AMYNAS(7, "Υπουργείο Εθνικής Άμυνας"),
-        /** Ministry of Health. */
-        YGEIAS(8, "Υπουργείο Υγείας"),
-        /** Ministry of Justice. */
-        DIKAIOSYNHS(9, "Υπουργείο Δικαιοσύνης"),
-        /** Ministry of Education, Religion, and Sports. */
-        PAIDEIAS(10, "Υπουργείο Παιδείας, Θρησκευμάτων και Αθλητισμού"),
-        /** Ministry of Culture. */
-        POLITISMOY(11, "Υπουργείο Πολιτισμού"),
-        /** Ministry of National Economy and Finance. */
-        OIKONOMIKON(12, "Υπουργείο Εθνικής Οικονομίας και Οικονομικών"),
-        /** Ministry of Rural Development and Food. */
-        AGROTIKHS(13, "Υπουργείο Αγροτικής Ανάπτυξης και Τροφίμων"),
-        /** Ministry of Environment and Energy. */
-        PERIVALLONTOS(14, "Υπουργείο Περιβάλλοντος και Ενέργειας"),
-        /** Ministry of Labor and Social Security. */
-        ERGASIAS(15, "Υπουργείο Εργασίας και Κοινωνικής Ασφάλισης"),
-        /** Ministry of Social Cohesion and Family. */
-        OIKOGENEIAS(16, "Υπουργείο Κοινωνικής Συνοχής και Οικογένειας"),
-        /** Ministry of Development. */
-        ANAPTYXHS(17, "Υπουργείο Ανάπτυξης"),
-        /** Ministry of Infrastructure and Transport. */
-        YPODOMON(18, "Υπουργείο Υποδομών και Μεταφορών"),
-        /** Ministry of Shipping and Island Policy. */
-        NAYTILIAS(19, "Υπουργείο Ναυτιλίας και Νησιωτικής Πολιτικής"),
-        /** Ministry of Tourism. */
-        TOYRISMOY(20, "Υπουργείο Τουρισμού"),
-        /** Ministry of Digital Governance. */
-        DIAKYBERNHSHS(21, "Υπουργείο Ψηφιακής Διακυβέρνησης"),
-        /** Ministry of Migration and Asylum. */
-        METANASTEYSHS(22, "Υπουργείο Μετανάστευσης και Ασύλου"),
-        /** Ministry of Citizen Protection. */
-        PROSTASIAS(23, "Υπουργείο Προστασίας του Πολίτη"),
-        /** Ministry of Climate Crisis and Civil Protection. */
-        POLITIKHSPROSTASIAS(
-            24, "Υπουργείο Κλιματικής Κρίσης και Πολιτικής Προστασίας"),
-        /** Decentralized Administration of Attica. */
-        ATTIKHS(26, "Αποκεντρωμένη Διοίκηση Αττικής"),
-        /** Decentralized Administration of Thessaly and Central Greece. */
-        STEREAS_ELLADAS_THESSALIAS(
-            27, "Αποκεντρωμένη Διοίκηση Θεσσαλίας - Στερεάς Ελλάδας"),
-        /** Decentralized Administration of Epirus and Western Greece. */
-        HPEIROY_DYTIKHS(28, "Αποκεντρωμένη Διοίκηση Ηπείρου - Δυτικής"),
-        /** Decentralized Administration of Peloponnese and Western Greece. */
-        PELOPONNHSOY_DYTIKHS(
-            29, "Αποκεντρωμένη Διοίκηση Πελοποννήσου - Δυτικής"),
-        /** Decentralized Administration of the Aegean. */
-        AIGAIOY(30, "Αποκεντρωμένη Διοίκηση Αιγαίου"),
-        /** Decentralized Administration of Crete. */
-        KRHTHS(31, "Αποκεντρωμένη Διοίκηση Κρήτης"),
-        /** Decentralized Administration of Macedonia and Thrace. */
-        MAKEDONIAS_THRAKHS(32, "Αποκεντρωμένη Διοίκηση Μακεδονίας - Θράκης");
-
-         /** The unique code that identifies the ministry. */
-        private final int ministryCode;
-        /** The descriptive name of the ministry. */
-        private final String ministryDescription;
-        /**
-         * Constructs a {@code MinistryOptions} instance.
-         *
-         * @param minCode        the unique code of the ministry
-         * @param minDescription the description or name of the ministry
-         */
-        MinistryOptions(final int minCode, final String minDescription) {
-            this.ministryCode = minCode;
-            this.ministryDescription = minDescription;
-        }
-
-        /**
-         * Returns the ministry code.
-         *
-         * @return the ministry code
-         */
-        public int getministryCode() {
-            return this.ministryCode;
-        }
-
-        /**
-        * Returns the ministry description.
-        *
-        * @return the ministry description
-        */
-        public String getministryDescription() {
-            return ministryDescription;
-        }
-    }
-
     /**
      * Displays a bar chart showing the total budget of a specific ministry
      * across all available years.
@@ -526,16 +311,13 @@ public final class Barcharts {
     public static void chartMinistryByYear(final int x) {
 
         MinistryOptions[] options = MinistryOptions.values();
-        int ministryCode = options[x - 1].getministryCode();
-        String ministryName = options[x - 1].getministryDescription();
+        String ministryName = options[x - 1].getMinistryDescription();
 
         int startYear = START_YEAR_CONST;
         int endYear = END_YEAR_CONST;
 
         List<Integer> years = new ArrayList<>();
         List<Double> budgetValues = new ArrayList<>();
-
-        BigDecimal scale = new BigDecimal("1000000000");
 
         for (int year = startYear; year <= endYear; year++) {
             years.add(year);
@@ -548,14 +330,14 @@ public final class Barcharts {
             BigDecimal totalBudget = BigDecimal.ZERO;
 
             for (Ypourgeio m : ministries) {
-                if (m.getKodikos() == ministryCode) {
+                if (m.getKodikos() == options[x - 1].getMinistryCode()) {
                     totalBudget = m.getSynolo();
                     break;
                 }
             }
 
             BigDecimal scaledBudget = totalBudget.divide(
-                scale, 2, RoundingMode.HALF_UP);
+                BILLION, 2, RoundingMode.HALF_UP);
 
             budgetValues.add(scaledBudget.doubleValue());
 

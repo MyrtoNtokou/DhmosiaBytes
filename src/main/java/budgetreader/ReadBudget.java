@@ -3,8 +3,10 @@ package budgetreader;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
+import com.opencsv.CSVParser;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -118,7 +120,7 @@ public final class ReadBudget {
 
         try (InputStream input = new FileInputStream(path.toFile())) {
             return readGeneralBudgetFromStream(input);
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.err.println("Αδυναμία ανάγνωσης αρχείου: " + path);
             return new ArrayList<>();
         }
@@ -211,7 +213,7 @@ public final class ReadBudget {
         try (InputStream input = new FileInputStream(path.toFile())) {
             return readMinistryFromStream(input);
 
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.err.println("Αδυναμία ανάγνωσης αρχείου: " + path);
             return new ArrayList<>();
         }
