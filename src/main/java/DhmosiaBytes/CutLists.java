@@ -19,7 +19,7 @@ public class CutLists {
      /**
      * Displays some elements from list Eggrafi.
      *
-     * @return the List<Eggrafi> containing only th e revenues
+     * @return the List<Eggrafi> containing only the revenues
      */
     public List<Eggrafi> cutEggrafiEsoda() {
         List<Eggrafi> g =
@@ -36,11 +36,13 @@ public class CutLists {
 
     /**
      * Displays the expenses from list Eggrafi.
+     *
+     * @return the List<Eggrafi> containing only the expenses
      */
     public List<Eggrafi> cutEggrafiExoda() {
         List<Eggrafi> g =
         ReadBudget.readGeneralBudget("proypologismos2025.csv");
- 
+
         List<Eggrafi> exoda = new ArrayList<>();
         for (Eggrafi e : g) {
             if (e.getKodikos().startsWith("2,")) {
@@ -113,12 +115,12 @@ public class CutLists {
         int choice = -1;
         while (true) {
             System.out.print("Επιλογή: ");
-            String input = scanner.nextLine();
             try {
-                choice = Integer.parseInt(input);
+                choice = scanner.nextInt();
             } catch (InputMismatchException e) {
                 System.out.println("Δώστε έναν αριθμό από το 1 έως το "
                 + MinistryOptions.values().length);
+                continue;
             } catch (IllegalArgumentException e) {
                 System.out.println("Μη έγκυρη επιλογή.");
                 continue;
@@ -149,13 +151,15 @@ public class CutLists {
      * @param esoda the list of revenue entries to choose from
      * @return the code of the selected revenue entry
      */
-    public String selectRevenueByNumber(final Scanner scanner,
+    public int selectRevenueByNumber(final Scanner scanner,
     final List<Eggrafi> esoda) {
+        scanner.nextLine();
+
         for (int i = 0; i < esoda.size(); i++) {
             System.out.println((i + 1) + ". " + esoda.get(i).getPerigrafi());
         }
         int choice = -1;
-        while (choice < 1 || choice > esoda.size()) { 
+        while (choice < 1 || choice > esoda.size()) {
             System.out.print("Επιλογή: ");
             String input = scanner.nextLine();
             try {
@@ -168,7 +172,7 @@ public class CutLists {
                 System.out.println("Μη έγκυρη επιλογή.");
             }
         }
-        return esoda.get(choice - 1).getKodikos();
+        return choice;
     }
 
     /**
@@ -179,8 +183,10 @@ public class CutLists {
      * @param exoda the list of expense entries to choose from
      * @return the code of the selected revenue entry
      */
-    public String selectExpenseByNumber(final Scanner scanner,
+    public int selectExpenseByNumber(final Scanner scanner,
     final List<Eggrafi> exoda) {
+        scanner.nextLine();
+
         for (int i = 0; i < exoda.size(); i++) {
             System.out.println((i + 1) + ". " + exoda.get(i).getPerigrafi());
         }
@@ -198,7 +204,38 @@ public class CutLists {
                 System.out.println("Μη έγκυρη επιλογή.");
             }
         }
-        return exoda.get(choice - 1).getKodikos();
+        return choice;
     }
 
+    /**
+     * Displays a numbered list of ministries
+     * and prompts the user to select one by number.
+     *
+     * @param scanner the Scanner to read user input
+     * @param ministry the list of ministries to choose from
+     * @return the code of the selected ministry
+     */
+    public int selectMinistryByNumber(final Scanner scanner,
+    final List<Ypourgeio> ministry) {
+        scanner.nextLine();
+
+        for (int i = 0; i < ministry.size(); i++) {
+            System.out.println((i + 1) + ". " + ministry.get(i).getOnoma());
+        }
+        int choice = -1;
+        while (choice < 1 || choice > ministry.size()) {
+            System.out.print("Επιλογή: ");
+            String input = scanner.nextLine();
+            try {
+                choice = Integer.parseInt(input);
+                if (choice < 1 || choice > ministry.size()) {
+                    System.out.println("Μη έγκυρη επιλογή. "
+                    + "Δώστε αριθμό από 1 έως " + ministry.size());
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Μη έγκυρη επιλογή.");
+            }
+        }
+        return choice;
+    }
 }

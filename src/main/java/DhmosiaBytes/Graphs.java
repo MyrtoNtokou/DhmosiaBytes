@@ -65,7 +65,7 @@ public class Graphs {
         boolean valid = false;
 
         while (!valid) {
-            System.out.println("1. Πίτα Συνολικών Εσόδων - Εξόδων");
+            System.out.println("\n1. Πίτα Συνολικών Εσόδων - Εξόδων");
             System.out.println("2. Πίτα Χρηματοδότησης Εξόδων");
             System.out.println("3. Ιστόγραμμα Εσόδων");
             System.out.println("4. Ιστόγραμμα Εξόδων");
@@ -124,29 +124,20 @@ public class Graphs {
                 .lineChartEsodaExoda();
                 case CHART_ESODA_YEAR -> {
                     List<Eggrafi> esoda = cut.cutEggrafiEsoda();
-                    String revenueCode = cut.selectRevenueByNumber(input,
+                    int revenueCode = cut.selectRevenueByNumber(input,
                     esoda);
-                    try {
-                        int revenueCodeInt = Integer.parseInt(revenueCode);
-                        Barcharts.chartEsodaByYear(revenueCodeInt);
-                    } catch (NumberFormatException e) {
-                        System.out.println("Μη έγκυρη επιλογή");
-                    }
+                    Barcharts.chartEsodaByYear(revenueCode);
                 }
                 case CHART_EXODA_YEAR -> {
                     List<Eggrafi> exoda = cut.cutEggrafiExoda();
-                    String expenseCode = cut.selectExpenseByNumber(input,
+                    int expenseCode = cut.selectExpenseByNumber(input,
                     exoda);
-                    try {
-                        int expenseCodeInt = Integer.parseInt(expenseCode);
-                        Barcharts.chartExodaByYear(expenseCodeInt);
-                    } catch (NumberFormatException e) {
-                        System.out.println("Μη έγκυρη επιλογή");
-                    }
+                    Barcharts.chartExodaByYear(expenseCode);
                 }
                 case CHART_MINISTRY_YEAR -> {
                     List<Ypourgeio> ministries = cut.cutYpourgeio();
-                    int ministryCode = cut.selectMinistry(input, ministries);
+                    int ministryCode = cut.selectMinistryByNumber(input,
+                    ministries);
                     Barcharts.chartMinistryByYear(ministryCode);
                 }
                 case 0 -> System.out.println("Επιστροφή στο μενού επιλογών");
