@@ -82,6 +82,12 @@ public class CutLists {
     public String selectRevenue(final Scanner scanner,
     final List<Eggrafi> esoda) {
         String choice;
+        System.out.printf("%-6s | %-60s | %-25s%n", "Α/Α",
+            "Έσοδα (1) / Έξοδα (2)", "Ποσό");
+            for (Eggrafi e : esoda) {
+                System.out.printf("%-6s | %-60s | %-25.2f%n",
+                e.getKodikos(), e.getPerigrafi(), e.getPoso());
+            }
         while (true) {
             System.out.print("Επιλογή: ");
             choice = scanner.nextLine();
@@ -113,6 +119,14 @@ public class CutLists {
     public int selectMinistry(final Scanner scanner,
     final List<Ypourgeio> ministries) {
         int choice = -1;
+        System.out.printf("%-3s | %-55s | %-25s | %-35s | %-25s%n",
+            "Α/Α", "Υπουργείο", "Τακτικός Προϋπολογισμός",
+            "Προϋπολογισμός Δημοσίων Επενδύσεων", "Σύνολο");
+            for (Ypourgeio y : ministries) {
+                System.out.printf("%-3d | %-55s | %-25.2f | %-35.2f | %-25.2f%n",
+                y.getKodikos(), y.getOnoma(), y.getTaktikos(),
+                y.getEpendyseis(), y.getSynolo());
+            }
         while (true) {
             System.out.print("Επιλογή: ");
             try {

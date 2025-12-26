@@ -23,27 +23,28 @@ public class ShowEditMenuOptions {
      * @return the selected RevenueOrExpense constant
      */
     public RevenueOrExpense chooseRevenueOrExpense(final Scanner scanner) {
-        for (RevenueOrExpense opt : RevenueOrExpense.values()) {
-            System.out.println(opt.getRevenueOrExpenseCode() + ". "
-            + opt.getDescription());
-        }
         RevenueOrExpense selected = null;
         do {
+            System.out.println("\nΕπιλέξτε τύπο εγγραφής:");
+            for (RevenueOrExpense opt : RevenueOrExpense.values()) {
+                System.out.println(opt.getRevenueOrExpenseCode() + ". "
+                + opt.getDescription());
+            }
+
             System.out.print("\nΕπιλογή: ");
             int choice;
             try {
                 choice = scanner.nextInt();
+                scanner.nextLine();
+                selected = RevenueOrExpense.fromCode(choice);
             } catch (InputMismatchException e) {
                 System.out.println("Παρακαλώ εισάγετε αριθμό.");
-                scanner.next();
-                continue;
-            }
-            if (choice < 1 || choice > RevenueOrExpense.values().length) {
-                System.out.println("Δώστε έναν αριθμό από το 1 έως το "
+                scanner.nextLine();
+            } catch (IllegalArgumentException e) {
+                System.out.println("Μη έγκυρη επιλογή.");
+                System.out.println("Δώστε έναν αριθμό από το 1 έως "
                 + RevenueOrExpense.values().length);
-                continue;
             }
-            selected = RevenueOrExpense.fromCode(choice);
         } while (selected == null);
         return selected;
     }
@@ -81,23 +82,29 @@ public class ShowEditMenuOptions {
      * @return the code of user's choice
      */
     public int selectBudgetType(final Scanner scanner) {
-        BudgetType selectedOption1 = null;
-        for (BudgetType option : BudgetType.values()) {
-            System.out.println(option.getTypeCode() + ". "
-            + option.getTypeDescription());
-        }
+        BudgetType selectedOption = null;
 
-        while (selectedOption1 == null) {
-            System.out.print("Επιλογή: ");
-            try {
-                int choice = scanner.nextInt();
-                scanner.nextLine();
-                selectedOption1 = BudgetType.fromCode(choice);
-            } catch (InputMismatchException e) {
-                System.out.println("Δώστε έναν αριθμό από το 1 έως το "
-                + BudgetType.values().length);
+        System.out.println("\nΕπιλέξτε τύπο προϋπολογισμού:");
+        do {
+            for (BudgetType option : BudgetType.values()) {
+                System.out.println(option.getTypeCode() + ". "
+                + option.getTypeDescription());
             }
-        }
-        return selectedOption1.getTypeCode();
+
+            System.out.print("Επιλογή: ");
+                try {
+                    int choice = scanner.nextInt();
+                    scanner.nextLine();
+                    selectedOption = BudgetType.fromCode(choice);
+                } catch (InputMismatchException e) {
+                System.out.println("Παρακαλώ εισάγετε αριθμό.");
+                scanner.next();
+            } catch (IllegalArgumentException e) {
+                System.out.println("Μη έγκυρη επιλογή.");
+                System.out.println("Δώστε έναν αριθμό από το 1 έως το "
+                        + BudgetType.values().length);
+            }
+        } while (selectedOption == null);
+        return selectedOption.getTypeCode();
     }
 }
