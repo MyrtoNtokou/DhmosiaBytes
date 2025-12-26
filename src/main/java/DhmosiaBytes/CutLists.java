@@ -5,6 +5,8 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+import budgetlogic.Budget;
+import budgetlogic.BudgetService;
 import budgetreader.Eggrafi;
 import budgetreader.ReadBudget;
 import budgetreader.Ypourgeio;
@@ -73,24 +75,30 @@ public class CutLists {
     }
 
     /**
-     * Asks for specific revenue to be edited.
+     * Prompts the user to select a revenue entry to edit, validates the input,
+     * updates the selected entry, and returns the selected code.
+     * The user can enter "0" to return without making any changes.
      *
-     * @param scanner the Scanner for user's input
-     * @param esoda the List<Eggrafi>
-     * @return the code of the revenue to be edited
+     * @param scanner    Scanner for reading user input
+     * @param esoda      List of revenue entries to choose from
+     * @param initialBudget Budget object to edit
+     * @return the code of the selected revenue, or "0" to go back
      */
     public String selectRevenue(final Scanner scanner,
-    final List<Eggrafi> esoda) {
+    final List<Eggrafi> esoda, final Budget initialBudget) {
+        BudgetService service = new BudgetService(initialBudget, null);
+        BudgetEditor editor = new BudgetEditor(service);
+
         String choice;
-        System.out.printf("%-6s | %-60s | %-25s%n", "Α/Α",
-            "Έσοδα (1) / Έξοδα (2)", "Ποσό");
-            for (Eggrafi e : esoda) {
-                System.out.printf("%-6s | %-60s | %-25.2f%n",
-                e.getKodikos(), e.getPerigrafi(), e.getPoso());
+        do {
+            System.out.println("Επιλέξτε 0 για επιστροφή πίσω");
+            System.out.print("Επιλέξτε τον κωδικό του εσόδου που θέλετε "
+            + "να τροποποιήσετε: ");
+            choice = scanner.nextLine().trim();
+
+            if (choice.equals("0")) {
+                return "0";
             }
-        while (true) {
-            System.out.print("Επιλογή: ");
-            choice = scanner.nextLine();
 
             boolean exists = false;
             for (Eggrafi eg : esoda) {
@@ -104,33 +112,37 @@ public class CutLists {
                 + "με αυτόν τον κωδικό.");
                 continue;
             }
-            break;
-        }
-        return choice;
+
+            editor.editIncome(choice, scanner);
+
+            return choice;
+        } while (true);
     }
 
     /**
-     * Asks for specific expense to be edited.
+     * Prompts the user to select a ministry entry to edit,
+     * validates the input, updates the selected entry,
+     * and returns the selected code.
+     * The user can enter 0 to return without making any changes.
      *
-     * @param scanner the Scanner for user's input
-     * @param ministries the List<Ypourgeio>
-     * @return the code of the expense to be edited
+     * @param scanner    Scanner for reading user input
+     * @param ministries List of ministries to choose from
+     * @param initialBudget Budget object to edit
+     * @return the code of the selected ministry, or 0 to go back
      */
     public int selectMinistry(final Scanner scanner,
-    final List<Ypourgeio> ministries) {
-        int choice = -1;
-        System.out.printf("%-3s | %-55s | %-25s | %-35s | %-25s%n",
-            "Α/Α", "Υπουργείο", "Τακτικός Προϋπολογισμός",
-            "Προϋπολογισμός Δημοσίων Επενδύσεων", "Σύνολο");
-            for (Ypourgeio y : ministries) {
-                System.out.printf("%-3d | %-55s | %-25.2f | %-35.2f | %-25.2f%n",
-                y.getKodikos(), y.getOnoma(), y.getTaktikos(),
-                y.getEpendyseis(), y.getSynolo());
-            }
-        while (true) {
-            System.out.print("Επιλογή: ");
+    final List<Ypourgeio> ministries, final Budget initialBudget) {
+        BudgetService service = new BudgetService(initialBudget, null);
+        BudgetEditor editor = new BudgetEditor(service);
+
+        int choice;
+        do {
+            System.out.println("Επιλέξτε 0 για επιστροφή πίσω");
+            System.out.print("Επιλέξτε τον κωδικό του στοιχείου που θέλετε "
+            + "να τροποποιήσετε: ");
             try {
                 choice = scanner.nextInt();
+                scanner.nextLine();
             } catch (InputMismatchException e) {
                 System.out.println("Δώστε έναν αριθμό από το 1 έως το "
                 + MinistryOptions.values().length);
@@ -138,6 +150,10 @@ public class CutLists {
             } catch (IllegalArgumentException e) {
                 System.out.println("Μη έγκυρη επιλογή.");
                 continue;
+            }
+
+            if (choice == 0) {
+                return 0;
             }
 
             boolean exists = false;
@@ -152,9 +168,10 @@ public class CutLists {
                 + "με αυτόν τον κωδικό.");
                 continue;
             }
-            break;
-        }
-        return choice;
+            editor.editExpense(choice, scanner);
+            return choice;
+        } while (true);
+
     }
 
     /**

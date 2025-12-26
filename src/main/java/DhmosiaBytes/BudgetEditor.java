@@ -1,8 +1,11 @@
 package dhmosiabytes;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Scanner;
 
+import budgetlogic.Budget;
+import budgetlogic.BudgetSave;
 import budgetlogic.BudgetService;
 
  /**
@@ -22,7 +25,8 @@ public class BudgetEditor {
     }
 
     /**
-     * Asks user for the new income amount and replaces the old one.
+     * Asks user for the new income amount, replaces the old one
+     * and saves the changes.
      *
      * @param code the code of the income to be replaced
      * @param scanner Scanner to read user input
@@ -44,6 +48,16 @@ public class BudgetEditor {
             }
 
             this.service.changeGeneralAmount(code, newAmount);
+
+            try {
+                BudgetSave saver = new BudgetSave();
+                Budget finalBudget = service.getBudget();
+                saver.saveChanges(finalBudget, "newgeneral.csv",
+                "newministries.csv");
+                System.out.println("Η αλλαγή αποθηκεύτηκε επιτυχώς.");
+            } catch (IOException e) {
+                System.err.println("Σφάλμα κατά την αποθήκευση.");
+            }
         }
     }
 
@@ -79,6 +93,16 @@ public class BudgetEditor {
             }
 
             this.service.changeMinistryAmount(code, column, newAmount);
+
+            try {
+                BudgetSave saver = new BudgetSave();
+                Budget finalBudget = service.getBudget();
+                saver.saveChanges(finalBudget, "newgeneral.csv",
+                "newministries.csv");
+                System.out.println("Η αλλαγή αποθηκεύτηκε επιτυχώς.");
+            } catch (IOException e) {
+                System.err.println("Σφάλμα κατά την αποθήκευση.");
+            }
         }
     }
 }

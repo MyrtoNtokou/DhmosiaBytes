@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Scanner;
 
 import budgetlogic.Budget;
-import budgetlogic.BudgetService;
 import budgetreader.Eggrafi;
 import budgetreader.Ypourgeio;
 
@@ -25,7 +24,6 @@ public class ShowEditMenuOptions {
     public RevenueOrExpense chooseRevenueOrExpense(final Scanner scanner) {
         RevenueOrExpense selected = null;
         do {
-            System.out.println("\nΕπιλέξτε τύπο εγγραφής:");
             for (RevenueOrExpense opt : RevenueOrExpense.values()) {
                 System.out.println(opt.getRevenueOrExpenseCode() + ". "
                 + opt.getDescription());
@@ -58,20 +56,38 @@ public class ShowEditMenuOptions {
      * @param selected RevenueOrExpense constant
      * indicating whether to edit income or expense
      */
-    public void editRevenueOrExpence(final Budget initialBudget,
+    public void editRevenueOrExpense(final Budget initialBudget,
     final Scanner scanner, final RevenueOrExpense selected) {
-        BudgetService service = new BudgetService(initialBudget, null);
-        BudgetEditor editor = new BudgetEditor(service);
         CutLists cut = new CutLists();
-
         if (selected == RevenueOrExpense.INCOME) {
             List<Eggrafi> esoda = cut.cutEggrafiEsoda();
-            String code = cut.selectRevenue(scanner, esoda);
-            editor.editIncome(code, scanner);
+            System.out.printf("%-6s | %-60s | %-25s%n", "Α/Α",
+            "Έσοδα", "Ποσό");
+            for (Eggrafi e : esoda) {
+                System.out.printf("%-6s | %-60s | %-25.2f%n",
+                e.getKodikos(), e.getPerigrafi(), e.getPoso());
+            }
+
+            String code;
+            do {
+                code = cut.selectRevenue(scanner, esoda, initialBudget);
+            } while (!code.equals("0"));
         } else if (selected == RevenueOrExpense.EXPENSE) {
             List<Ypourgeio> ministries = cut.cutYpourgeio();
-            int code = cut.selectMinistry(scanner, ministries);
-            editor.editExpense(code, scanner);
+            System.out.printf("%-3s | %-55s | %-25s | %-35s | %-25s%n",
+            "Α/Α", "Υπουργείο", "Τακτικός Προϋπολογισμός",
+            "Προϋπολογισμός Δημοσίων Επενδύσεων", "Σύνολο");
+            for (Ypourgeio y : ministries) {
+                System.out.printf("%-3d | %-55s | %-25.2f | %-35.2f | "
+                + "%-25.2f%n",
+                y.getKodikos(), y.getOnoma(), y.getTaktikos(),
+                y.getEpendyseis(), y.getSynolo());
+            }
+
+            int code;
+            do {
+                code = cut.selectMinistry(scanner, ministries, initialBudget);
+            } while (code != 0);
         }
     }
 

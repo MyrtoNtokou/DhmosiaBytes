@@ -101,13 +101,16 @@ public final class ShowMenuOptions {
     }
 
     /**
-     * Asks for the file to be edited.
+     * Allows the user to select a budget file to edit and modify either
+     * income or expense entries. The user can return to the previous menu
+     * by selecting 0.
      *
      * @param input the scanner for user's input
      */
     public static void editBudget(final Scanner input) {
-        int choice = 0;
+        int choice;
         do {
+            System.out.println("0. Έξοδος");
             System.out.println("1. Τρέχων προϋπολογισμός");
             System.out.println("2. Τροποποιημένο αρχείο");
             System.out.print("\nΕπιλέξτε το αρχείο που θα επεξεργαστείτε: ");
@@ -120,26 +123,28 @@ public final class ShowMenuOptions {
                 continue;
             }
 
-            if (choice != 1 && choice != 2) {
+            if (choice == 0) {
+                break;
+            } else if (choice != 1 && choice != 2) {
                 System.out.println("Μη έγκυρη επιλογή.");
                 System.out.println("Πρέπει να επιλέξετε 1 ή "
                 + CODE_FOR_MENUS + ".");
             }
-        } while (choice != 1 && choice != CODE_FOR_MENUS);
 
-        Budget initialBudget;
-        if (choice == 1) {
-            BudgetAssembler loader = new BudgetAssembler();
-            initialBudget = loader.loadBudget("general.csv",
-            "ministries.csv");
-        } else {
-            BudgetAssembler loader = new BudgetAssembler();
-            initialBudget = loader.loadBudget("newgeneral.csv",
-            "newministries.csv");
-        }
-        ShowEditMenuOptions edit = new ShowEditMenuOptions();
-        RevenueOrExpense usersChoice = edit.chooseRevenueOrExpense(input);
-        edit.editRevenueOrExpence(initialBudget, input, usersChoice);
+            Budget initialBudget;
+            if (choice == 1) {
+                BudgetAssembler loader = new BudgetAssembler();
+                initialBudget = loader.loadBudget("general.csv",
+                "ministries.csv");
+            } else {
+                BudgetAssembler loader = new BudgetAssembler();
+                initialBudget = loader.loadBudget("newgeneral.csv",
+                "newministries.csv");
+            }
+            ShowEditMenuOptions edit = new ShowEditMenuOptions();
+            RevenueOrExpense usersChoice = edit.chooseRevenueOrExpense(input);
+            edit.editRevenueOrExpense(initialBudget, input, usersChoice);
+        } while (true);
     }
 
     /** Shows summarized data. */
