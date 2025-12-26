@@ -113,7 +113,7 @@ public class CutLists {
                 continue;
             }
 
-            editor.editIncome(choice, scanner);
+            editor.editIncome(choice, scanner, initialBudget);
 
             return choice;
         } while (true);

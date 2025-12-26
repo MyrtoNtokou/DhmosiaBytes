@@ -31,7 +31,8 @@ public class BudgetEditor {
      * @param code the code of the income to be replaced
      * @param scanner Scanner to read user input
      */
-    public void editIncome(final String code, final Scanner scanner) {
+    public void editIncome(final String code, final Scanner scanner,
+    final Budget initialBudget) {
         BigDecimal newAmount = null;
 
         while (newAmount == null) {
@@ -58,6 +59,7 @@ public class BudgetEditor {
             } catch (IOException e) {
                 System.err.println("Σφάλμα κατά την αποθήκευση.");
             }
+            BudgetDiffPrinter.compareGeneral(initialBudget, finalBudget);
         }
     }
 

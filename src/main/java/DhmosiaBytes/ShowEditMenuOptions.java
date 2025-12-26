@@ -58,6 +58,7 @@ public class ShowEditMenuOptions {
      */
     public void editRevenueOrExpense(final Budget initialBudget,
     final Scanner scanner, final RevenueOrExpense selected) {
+        // εδώ θα κληθεί η Μυρτώ αντί για αυτό
         CutLists cut = new CutLists();
         if (selected == RevenueOrExpense.INCOME) {
             List<Eggrafi> esoda = cut.cutEggrafiEsoda();
@@ -73,6 +74,7 @@ public class ShowEditMenuOptions {
                 code = cut.selectRevenue(scanner, esoda, initialBudget);
             } while (!code.equals("0"));
         } else if (selected == RevenueOrExpense.EXPENSE) {
+            // εδώ θα κληθεί η Μυρτώ αντί για αυτό
             List<Ypourgeio> ministries = cut.cutYpourgeio();
             System.out.printf("%-3s | %-55s | %-25s | %-35s | %-25s%n",
             "Α/Α", "Υπουργείο", "Τακτικός Προϋπολογισμός",
