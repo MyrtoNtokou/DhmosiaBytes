@@ -7,6 +7,7 @@ import java.util.Scanner;
 import budgetlogic.Budget;
 import budgetreader.Eggrafi;
 import budgetreader.Ypourgeio;
+import budgetlogic.BudgetDiffPrinter;
 
 /**
  * Provides menus and input handling for editing budget entries.
@@ -62,30 +63,14 @@ public class ShowEditMenuOptions {
         CutLists cut = new CutLists();
         if (selected == RevenueOrExpense.INCOME) {
             List<Eggrafi> esoda = cut.cutEggrafiEsoda();
-            System.out.printf("%-6s | %-60s | %-25s%n", "Α/Α",
-            "Έσοδα", "Ποσό");
-            for (Eggrafi e : esoda) {
-                System.out.printf("%-6s | %-60s | %-25.2f%n",
-                e.getKodikos(), e.getPerigrafi(), e.getPoso());
-            }
-
+            BudgetDiffPrinter.printRevenues(initialBudget);
             String code;
             do {
                 code = cut.selectRevenue(scanner, esoda, initialBudget);
             } while (!code.equals("0"));
         } else if (selected == RevenueOrExpense.EXPENSE) {
-            // εδώ θα κληθεί η Μυρτώ αντί για αυτό
             List<Ypourgeio> ministries = cut.cutYpourgeio();
-            System.out.printf("%-3s | %-55s | %-25s | %-35s | %-25s%n",
-            "Α/Α", "Υπουργείο", "Τακτικός Προϋπολογισμός",
-            "Προϋπολογισμός Δημοσίων Επενδύσεων", "Σύνολο");
-            for (Ypourgeio y : ministries) {
-                System.out.printf("%-3d | %-55s | %-25.2f | %-35.2f | "
-                + "%-25.2f%n",
-                y.getKodikos(), y.getOnoma(), y.getTaktikos(),
-                y.getEpendyseis(), y.getSynolo());
-            }
-
+            BudgetDiffPrinter.printMinistries(initialBudget);
             int code;
             do {
                 code = cut.selectMinistry(scanner, ministries, initialBudget);
