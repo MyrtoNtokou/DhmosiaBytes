@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.util.Scanner;
 
 import budgetlogic.Budget;
+import budgetlogic.BudgetDiffPrinter;
 import budgetlogic.BudgetSave;
 import budgetlogic.BudgetService;
 
@@ -25,14 +26,16 @@ public class BudgetEditor {
     }
 
     /**
-     * Asks user for the new income amount, replaces the old one
-     * and saves the changes.
+     * Edits the amount of a specific income entry in the general budget.
+     * The user is prompted to enter a new non-negative amount.
+     * The updated value is saved to the modified budget files and
+     * the differences between the initial and the updated budget
+     * are displayed.
      *
      * @param code the code of the income to be replaced
      * @param scanner Scanner to read user input
      */
-    public void editIncome(final String code, final Scanner scanner,
-    final Budget initialBudget) {
+    public void editIncome(final String code, final Scanner scanner) {
         BigDecimal newAmount = null;
 
         while (newAmount == null) {
@@ -48,6 +51,7 @@ public class BudgetEditor {
                 System.out.println("Μη έγκυρη τιμή.");
             }
 
+            Budget before = new Budget(service.getBudget());
             this.service.changeGeneralAmount(code, newAmount);
 
             try {
@@ -56,15 +60,20 @@ public class BudgetEditor {
                 saver.saveChanges(finalBudget, "newgeneral.csv",
                 "newministries.csv");
                 System.out.println("Η αλλαγή αποθηκεύτηκε επιτυχώς.");
+                BudgetDiffPrinter.printDiffGeneral(before, finalBudget);
             } catch (IOException e) {
                 System.err.println("Σφάλμα κατά την αποθήκευση.");
             }
-            BudgetDiffPrinter.compareGeneral(initialBudget, finalBudget);
         }
     }
 
     /**
-     * Asks user for the new expense amount and replaces the old one.
+     * Edits the budget amount of a specific ministry.
+     * The user selects the budget type (regular or public investments),
+     * enters a new amount, and the change is saved to the modified budget
+     * files.
+     * After saving, the differences between the initial and the updated budget
+     * are printed.
      *
      * @param code the code of the expense to be replaced
      * @param scanner the Scanner to read user input
@@ -94,6 +103,7 @@ public class BudgetEditor {
                 continue;
             }
 
+            Budget before = new Budget(service.getBudget());
             this.service.changeMinistryAmount(code, column, newAmount);
 
             try {
@@ -102,6 +112,7 @@ public class BudgetEditor {
                 saver.saveChanges(finalBudget, "newgeneral.csv",
                 "newministries.csv");
                 System.out.println("Η αλλαγή αποθηκεύτηκε επιτυχώς.");
+                BudgetDiffPrinter.printDiffMinistries(before, finalBudget);
             } catch (IOException e) {
                 System.err.println("Σφάλμα κατά την αποθήκευση.");
             }

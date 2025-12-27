@@ -81,9 +81,9 @@ public class Graphs {
             System.out.println("0. Έξοδος");
             System.out.print("Επιλογή: ");
 
+            String inputLine = input.nextLine();
             try {
-                code = input.nextInt();
-                input.nextLine();
+                code = Integer.parseInt(inputLine);
                 if (code == 0) {
                     break;
                 } else if (code < MIN_CODE || code > MAX_CODE) {
@@ -94,7 +94,6 @@ public class Graphs {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Παρακαλώ εισάγετε αριθμό.");
-                input.next();
             }
         }
         return code;

@@ -1,18 +1,20 @@
 package budgetreader;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
-import com.opencsv.CSVParser;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.io.FileInputStream;
-import java.nio.file.Path;
+import com.opencsv.exceptions.CsvValidationException;
 
 /**Utility class that reads budget data from CSV files and processes
  * them according to the application's requirements.*/
@@ -39,15 +41,13 @@ public final class ReadBudget {
     /**  Minimum number of columns required in the CSV file. */
     private static final int COLUMNS_REQUIRED = 5;
 
-
-
     /**
- * Reads general budget data from an input stream and converts
- * each row into an {@link Eggrafi} object.
- *
- * @param input the input stream of the CSV file
- * @return a list of Eggrafi objects
- */
+     * Reads general budget data from an input stream and converts
+     * each row into an {@link Eggrafi} object.
+     *
+     * @param input the input stream of the CSV file
+     * @return a list of Eggrafi objects
+     */
     private static List<Eggrafi> readGeneralBudgetFromStream(
         final InputStream input) {
 
@@ -76,7 +76,7 @@ public final class ReadBudget {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
 
         return eggrafes;
@@ -164,14 +164,14 @@ public final class ReadBudget {
                     ypourg.add(new Ypourgeio(
                         kodikos, onoma, taktikos, ependyseis, synolo));
 
-                    } catch (Exception e) {
+                    } catch (NumberFormatException e) {
                         System.err.println("Προσπέραση εγγραφής: "
                             + e.getMessage());
                     }
                 }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
 
         return ypourg;
@@ -212,7 +212,6 @@ public final class ReadBudget {
 
         try (InputStream input = new FileInputStream(path.toFile())) {
             return readMinistryFromStream(input);
-
         } catch (IOException e) {
             System.err.println("Αδυναμία ανάγνωσης αρχείου: " + path);
             return new ArrayList<>();
@@ -286,39 +285,45 @@ public final class ReadBudget {
                 .build();
 
             String[] row;
-            while ((row = csvReader.readNext()) != null) {
-                if (row.length < COLUMNS_REQUIRED) {
-                    continue;
-                }
-
-                try {
-                    String codeStr = row[0].trim().replace("\uFEFF", "");
-                    if (!codeStr.matches("\\d+")) {
+            try {
+                while ((row = csvReader.readNext()) != null) {
+                    if (row.length < COLUMNS_REQUIRED) {
                         continue;
                     }
 
-                    int ministryCode = Integer.parseInt(codeStr);
-                    String ministryName = row[1].trim();
-                    BigDecimal totalBudget = parseNumber(row[COLUMN_SYNOLO]);
+                    try {
+                        String codeStr = row[0].trim().replace("\uFEFF", "");
+                        if (!codeStr.matches("\\d+")) {
+                            continue;
+                        }
 
-                    // Create a Ypourgeio object with empty/zero
-                    // values for the other fields
-                    ministriesList.add(new Ypourgeio(
-                        ministryCode,
-                        ministryName,
-                        BigDecimal.ZERO, // taktikos
-                        BigDecimal.ZERO, // ependyseis
-                        totalBudget     // synolo
-                    ));
+                        int ministryCode = Integer.parseInt(codeStr);
+                        String ministryName = row[1].trim();
+                        BigDecimal totalBudget =
+                        parseNumber(row[COLUMN_SYNOLO]);
 
-                } catch (Exception e) {
-                    System.err.println(
-                        "Προσπέραση λανθασμένης εγγραφής: " + e.getMessage());
+                        // Create a Ypourgeio object with empty/zero
+                        // values for the other fields
+                        ministriesList.add(new Ypourgeio(
+                            ministryCode,
+                            ministryName,
+                            BigDecimal.ZERO, // taktikos
+                            BigDecimal.ZERO, // ependyseis
+                            totalBudget     // synolo
+                        ));
+
+                    } catch (NumberFormatException e) {
+                        System.err.println(
+                            "Προσπέραση λανθασμένης εγγραφής: "
+                            + e.getMessage());
+                    }
                 }
+            } catch (IOException | CsvValidationException e) {
+                System.err.println(e.getMessage());
             }
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             System.err.println("Δεν μπόρεσα να διαβάσω το αρχείο: " + fileName);
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
         return ministriesList;
     }

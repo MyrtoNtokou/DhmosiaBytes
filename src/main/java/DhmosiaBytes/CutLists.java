@@ -113,7 +113,7 @@ public class CutLists {
                 continue;
             }
 
-            editor.editIncome(choice, scanner, initialBudget);
+            editor.editIncome(choice, scanner);
 
             return choice;
         } while (true);
@@ -184,8 +184,6 @@ public class CutLists {
      */
     public int selectRevenueByNumber(final Scanner scanner,
     final List<Eggrafi> esoda) {
-        scanner.nextLine();
-
         for (int i = 0; i < esoda.size(); i++) {
             System.out.println((i + 1) + ". " + esoda.get(i).getPerigrafi());
         }
@@ -216,8 +214,6 @@ public class CutLists {
      */
     public int selectExpenseByNumber(final Scanner scanner,
     final List<Eggrafi> exoda) {
-        scanner.nextLine();
-
         for (int i = 0; i < exoda.size(); i++) {
             System.out.println((i + 1) + ". " + exoda.get(i).getPerigrafi());
         }
@@ -248,8 +244,6 @@ public class CutLists {
      */
     public int selectMinistryByNumber(final Scanner scanner,
     final List<Ypourgeio> ministry) {
-        scanner.nextLine();
-
         for (int i = 0; i < ministry.size(); i++) {
             System.out.println((i + 1) + ". " + ministry.get(i).getOnoma());
         }
