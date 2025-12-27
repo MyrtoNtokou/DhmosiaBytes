@@ -11,10 +11,10 @@ public class User implements Serializable {
     private final Role role;
 
     /** The username of the user. */
-    private String username;
+    private final String username;
 
     /** The password of the user. */
-    private String password;
+    private final String password;
 
     /**
      * Creates a user with a specific role, username, and password.

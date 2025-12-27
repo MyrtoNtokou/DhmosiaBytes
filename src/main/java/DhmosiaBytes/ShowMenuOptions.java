@@ -4,10 +4,14 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+import budgetlogic.Budget;
+import budgetlogic.BudgetAssembler;
 import budgetreader.DisplayBudget;
 import budgetreader.Eggrafi;
 import budgetreader.ReadBudget;
 import budgetreader.Ypourgeio;
+
+
 
 /**
  * Class that displays the application's main menu.
@@ -19,6 +23,9 @@ public final class ShowMenuOptions {
      * Private constractor to prevent object creation.
      */
     private ShowMenuOptions() { }
+
+    /** Code to edit a new file. */
+    private static final int CODE_FOR_MENUS = 2;
 
     /**
      * Displays the menu options depending on the role's access rights.
@@ -44,9 +51,11 @@ public final class ShowMenuOptions {
 
             try {
                 int code = input.nextInt();
+                input.nextLine();
                 choice = MenuOptions.fromCode(code);
             } catch (InputMismatchException e) {
                 System.out.println("Παρακαλώ εισάγετε αριθμό.");
+                input.next();
                 continue;
             }
 
@@ -64,10 +73,15 @@ public final class ShowMenuOptions {
 
             switch (choice) {
                 case SHOW_BUDGET -> showBudget();
-                case EDIT_BUDGET -> editBudget();
+                case EDIT_BUDGET -> editBudget(input);
                 case SUMMARY -> summary();
+                case AGGRIGATE -> {
+                    AggrigateMenu agg = new AggrigateMenu();
+                    int code = agg.typeOfBudget(input);
+                    agg.displayMinMax(code);
+                }
                 case GRAPHS -> {
-                    int code = graph.chooseGraph(input);
+                    graph.chooseGraph(input);
                     graph.runGraphs(input);
                 }
                 case EXIT -> {
@@ -87,9 +101,51 @@ public final class ShowMenuOptions {
         DisplayBudget.showGeneral(g);
     }
 
-    /** Edits the national budget. */
-    public static void editBudget() {
-        System.out.println("Τώρα επεξεργάζεσαι τον Κρατικό Προϋπολογισμό");
+    /**
+     * Allows the user to select a budget file to edit and modify either
+     * income or expense entries. The user can return to the previous menu
+     * by selecting 0.
+     *
+     * @param input the scanner for user's input
+     */
+    public static void editBudget(final Scanner input) {
+        int choice;
+        do {
+            System.out.println("0. Έξοδος");
+            System.out.println("1. Τρέχων προϋπολογισμός");
+            System.out.println("2. Τροποποιημένο αρχείο");
+            System.out.print("\nΕπιλέξτε το αρχείο που θα επεξεργαστείτε: ");
+            try {
+                choice = input.nextInt();
+                input.nextLine();
+            } catch (InputMismatchException e) {
+                System.out.println("Παρακαλώ εισάγετε αριθμό.");
+                input.nextLine();
+                continue;
+            }
+
+            if (choice == 0) {
+                break;
+            } else if (choice != 1 && choice != 2) {
+                System.out.println("Μη έγκυρη επιλογή.");
+                System.out.println("Πρέπει να επιλέξετε 1 ή "
+                + CODE_FOR_MENUS + ".");
+            }
+
+            Budget initialBudget;
+            if (choice == 1) {
+                BudgetAssembler loader = new BudgetAssembler();
+                initialBudget = loader.loadBudget("general.csv",
+                "ministries.csv");
+            } else {
+                BudgetAssembler loader = new BudgetAssembler();
+                initialBudget = loader.loadBudget("newgeneral.csv",
+                "newministries.csv");
+            }
+            ShowEditMenuOptions edit = new ShowEditMenuOptions();
+            RevenueOrExpense usersChoice = edit.chooseRevenueOrExpense(input);
+            edit.editRevenueOrExpense(initialBudget, input, usersChoice);
+        } while (true);
     }
 
     /** Shows summarized data. */
