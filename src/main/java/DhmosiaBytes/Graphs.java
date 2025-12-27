@@ -4,6 +4,8 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+import budgetcharts.Barcharts;
+import budgetcharts.MoreCharts;
 import budgetreader.Eggrafi;
 import budgetreader.ReadBudget;
 import budgetreader.Ypourgeio;
@@ -14,7 +16,7 @@ import budgetreader.Ypourgeio;
  */
 public class Graphs {
     /** The maximum valid option number. */
-    private static final int MAX_CODE = 5;
+    private static final int MAX_CODE = 9;
 
     /** The minimum valid option number. */
     private static final int MIN_CODE = 1;
@@ -34,6 +36,18 @@ public class Graphs {
     /** Numerical code for chart per ministry. */
     private static final int CHART_MINISTRY = 5;
 
+    /** Line chart index for revenues and expenses. */
+    private static final int LINE_CHART_ESODA_EXODA = 6;
+
+    /** Chart index for yearly revenues. */
+    private static final int CHART_ESODA_YEAR = 7;
+
+    /** Chart index for yearly expenses. */
+    private static final int CHART_EXODA_YEAR = 8;
+
+    /** Chart index for yearly ministry data. */
+    private static final int CHART_MINISTRY_YEAR = 9;
+
     /**
      * Creates a Graph object.
      */
@@ -51,16 +65,25 @@ public class Graphs {
         boolean valid = false;
 
         while (!valid) {
-            System.out.println("1. Πίτα Συνολικών Εσόδων - Εξόδων");
+            System.out.println("\n1. Πίτα Συνολικών Εσόδων - Εξόδων");
             System.out.println("2. Πίτα Χρηματοδότησης Εξόδων");
             System.out.println("3. Ιστόγραμμα Εσόδων");
             System.out.println("4. Ιστόγραμμα Εξόδων");
             System.out.println("5. Ιστόγραμμα Προϋπολογισμού ανά Υπουργείο");
+            System.out.println("6. Γραμμικό διάγραμμα εσόδων εξόδων "
+            + "για τα έτη 2020-2026");
+            System.out.println("7. Ιστόγραμμα για συγκεκριμένο έσοδο "
+            + "2020-2026");
+            System.out.println("8. Ιστόγραμμα για συγκεκριμένο έξοδο "
+            + "2020-2026 ");
+            System.out.println("9. Ιστόγραμμα ανά Υπουργείο "
+            + "για τα έτη 2020-2026");
             System.out.println("0. Έξοδος");
             System.out.print("Επιλογή: ");
 
+            String inputLine = input.nextLine();
             try {
-                code = input.nextInt();
+                code = Integer.parseInt(inputLine);
                 if (code == 0) {
                     break;
                 } else if (code < MIN_CODE || code > MAX_CODE) {
@@ -71,7 +94,6 @@ public class Graphs {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Παρακαλώ εισάγετε αριθμό.");
-                input.next();
             }
         }
         return code;
@@ -85,9 +107,9 @@ public class Graphs {
     public void runGraphs(final Scanner input) {
         List<Eggrafi> eggra =
         ReadBudget.readGeneralBudget("proypologismos2025.csv");
-
         List<Ypourgeio> y =
         ReadBudget.readByMinistry("proypologismos2025anaypourgeio.csv");
+        CutLists cut = new CutLists();
 
         int code;
         do {
@@ -98,6 +120,26 @@ public class Graphs {
                 case CHART_ESODA -> Barcharts.chartEsoda(eggra);
                 case CHART_EXODA -> Barcharts.chartExoda(eggra);
                 case CHART_MINISTRY -> Barcharts.chartMinistry(y);
+                case LINE_CHART_ESODA_EXODA -> MoreCharts
+                .lineChartEsodaExoda();
+                case CHART_ESODA_YEAR -> {
+                    List<Eggrafi> esoda = cut.cutEggrafiEsoda();
+                    int revenueCode = cut.selectRevenueByNumber(input,
+                    esoda);
+                    Barcharts.chartEsodaByYear(revenueCode);
+                }
+                case CHART_EXODA_YEAR -> {
+                    List<Eggrafi> exoda = cut.cutEggrafiExoda();
+                    int expenseCode = cut.selectExpenseByNumber(input,
+                    exoda);
+                    Barcharts.chartExodaByYear(expenseCode);
+                }
+                case CHART_MINISTRY_YEAR -> {
+                    List<Ypourgeio> ministries = cut.cutYpourgeio();
+                    int ministryCode = cut.selectMinistryByNumber(input,
+                    ministries);
+                    Barcharts.chartMinistryByYear(ministryCode);
+                }
                 case 0 -> System.out.println("Επιστροφή στο μενού επιλογών");
                 default -> System.out.println("Μη έγκυρη επιλογή.");
             }

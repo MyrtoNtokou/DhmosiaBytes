@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+
 import budgetreader.Eggrafi;
 import budgetreader.Ypourgeio;
 
@@ -123,16 +124,11 @@ private static final String TOTAL_EXPENDITURE_KEYWORD = "Σύνολο εξόδω
             : m.getSynolo());
 
         switch (column.toLowerCase(Locale.ROOT)) {
-            case "τακτικός":
-                m.setTaktikos(nv);
-                break;
-            case "πδε":
-            case "προϋπολογισμός δημοσίων επενδύσεων":
-                m.setEpendyseis(nv);
-                break;
-            default:
-                throw new IllegalArgumentException(
-                    "Άγνωστη κατηγορία Υπουργείου" + column);
+            case "τακτικός" -> m.setTaktikos(nv);
+            case "πδε", "προϋπολογισμός δημοσίων επενδύσεων" ->
+            m.setEpendyseis(nv);
+            default -> throw new IllegalArgumentException(
+                "Άγνωστη κατηγορία Υπουργείου: " + column);
         }
 
         reconcileMinistryParts(m);

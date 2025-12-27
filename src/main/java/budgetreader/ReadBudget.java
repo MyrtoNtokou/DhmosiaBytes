@@ -1,16 +1,20 @@
 package budgetreader;
 
-import com.opencsv.CSVParserBuilder;
-import com.opencsv.CSVReader;
-import com.opencsv.CSVReaderBuilder;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.io.FileInputStream;
-import java.nio.file.Path;
+
+import com.opencsv.CSVParser;
+import com.opencsv.CSVParserBuilder;
+import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
+import com.opencsv.exceptions.CsvValidationException;
 
 /**Utility class that reads budget data from CSV files and processes
  * them according to the application's requirements.*/
@@ -34,15 +38,16 @@ public final class ReadBudget {
 
     /** CSV column index for the total budget value. */
     private static final int COLUMN_SYNOLO = 4;
-
+    /**  Minimum number of columns required in the CSV file. */
+    private static final int COLUMNS_REQUIRED = 5;
 
     /**
- * Reads general budget data from an input stream and converts
- * each row into an {@link Eggrafi} object.
- *
- * @param input the input stream of the CSV file
- * @return a list of Eggrafi objects
- */
+     * Reads general budget data from an input stream and converts
+     * each row into an {@link Eggrafi} object.
+     *
+     * @param input the input stream of the CSV file
+     * @return a list of Eggrafi objects
+     */
     private static List<Eggrafi> readGeneralBudgetFromStream(
         final InputStream input) {
 
@@ -74,7 +79,7 @@ public final class ReadBudget {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
 
         return eggrafes;
@@ -118,7 +123,7 @@ public final class ReadBudget {
 
         try (InputStream input = new FileInputStream(path.toFile())) {
             return readGeneralBudgetFromStream(input);
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.err.println("Αδυναμία ανάγνωσης αρχείου: " + path);
             return new ArrayList<>();
         }
@@ -162,14 +167,14 @@ public final class ReadBudget {
                     ypourg.add(new Ypourgeio(
                         kodikos, onoma, taktikos, ependyseis, synolo));
 
-                    } catch (Exception e) {
+                    } catch (NumberFormatException e) {
                         System.err.println("Προσπέραση εγγραφής: "
                             + e.getMessage());
                     }
                 }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
 
         return ypourg;
@@ -210,8 +215,7 @@ public final class ReadBudget {
 
         try (InputStream input = new FileInputStream(path.toFile())) {
             return readMinistryFromStream(input);
-
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.err.println("Αδυναμία ανάγνωσης αρχείου: " + path);
             return new ArrayList<>();
         }
@@ -245,5 +249,85 @@ public final class ReadBudget {
             System.err.println("ΣΦΑΛΜΑ ΣΤΟΝ ΑΡΙΘΜΟ: [" + s + "]");
             return BigDecimal.ZERO;
         }
+    }
+
+    /**
+     * Reads a CSV file containing ministry budget data and returns a list
+     * of {@link Ypourgeio} objects.
+     * <p>
+     * This method only reads the 1st column (ministry code) and the
+     * 5th column (total budget) from the CSV.
+     * The other fields of {@link Ypourgeio} (taktikos, ependyseis)
+     * are set to {@code BigDecimal.ZERO}.
+     * Rows with fewer columns than {@link #COLUMNS_REQUIRED}
+     * or invalid numeric codes are skipped.
+     * </p>
+     *
+     * @param fileName the name of the CSV file to read
+     * (should be in the resources folder)
+     * @return a list of {@link Ypourgeio} objects
+     * containing the ministry code, name, and total budget
+     */
+    public static List<Ypourgeio> readCroppedByMinistry(final String fileName) {
+        List<Ypourgeio> ministriesList = new ArrayList<>();
+        try {
+            InputStream inputStream =
+            ReadBudget.class.getResourceAsStream("/" + fileName);
+            if (inputStream == null) {
+                System.err.println("Δεν βρέθηκε το αρχείο: " + fileName);
+                return ministriesList;
+            }
+
+            CSVParser csvParser = new CSVParserBuilder()
+                .withSeparator(';')
+                .build();
+
+            CSVReader csvReader = new CSVReaderBuilder(
+                new InputStreamReader(inputStream, StandardCharsets.UTF_8))
+                .withCSVParser(csvParser)
+                .build();
+
+            String[] row;
+            try {
+                while ((row = csvReader.readNext()) != null) {
+                    if (row.length < COLUMNS_REQUIRED) {
+                        continue;
+                    }
+
+                    try {
+                        String codeStr = row[0].trim().replace("\uFEFF", "");
+                        if (!codeStr.matches("\\d+")) {
+                            continue;
+                        }
+
+                        int ministryCode = Integer.parseInt(codeStr);
+                        String ministryName = row[1].trim();
+                        BigDecimal totalBudget =
+                        parseNumber(row[COLUMN_SYNOLO]);
+
+                        // Create a Ypourgeio object with empty/zero
+                        // values for the other fields
+                        ministriesList.add(new Ypourgeio(
+                            ministryCode,
+                            ministryName,
+                            BigDecimal.ZERO, // taktikos
+                            BigDecimal.ZERO, // ependyseis
+                            totalBudget     // synolo
+                        ));
+
+                    } catch (NumberFormatException e) {
+                        System.err.println(
+                            "Προσπέραση λανθασμένης εγγραφής: "
+                            + e.getMessage());
+                    }
+                }
+            } catch (IOException | CsvValidationException e) {
+                System.err.println(e.getMessage());
+            }
+        } catch (NumberFormatException e) {
+            System.err.println("Δεν μπόρεσα να διαβάσω το αρχείο: " + fileName);
+            System.err.println(e.getMessage());
+        }
+        return ministriesList;
     }
 }

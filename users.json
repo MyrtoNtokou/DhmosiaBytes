@@ -6,7 +6,12 @@
   },
   "test4": {
     "role": "FINANCE_MINISTRY_EMPLOYEE",
-    "username": "test4",
+    "username": "test_4",
     "password": "Test4"
+  },
+  "test_3": {
+    "role": "FINANCE_MINISTER",
+    "username": "test_3",
+    "password": "Test3"
   }
 }
