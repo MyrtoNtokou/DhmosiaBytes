@@ -20,6 +20,10 @@ public final class BudgetDiffPrinter {
     private static final String RESET = "\u001B[0m";
     /** ANSI bold text modifier. */
     private static final String BOLD = "\u001B[1m";
+    /** Line to be removed when printing ministries. */
+    private static final int MINISTRY_TOTALS = 4;
+    /** Line to be removed when printing ministries. */
+    private static final int TOTALS = 33;
 
     /**
      * Helper: Generate ANSI escape codes for RGB.
@@ -69,7 +73,7 @@ public final class BudgetDiffPrinter {
      */
     private static void compareGeneral(final Budget before,
                                     final Budget after) {
-        System.out.println("\n" + BOLD
+        System.out.println("\n" + BOLD + CYAN
         + "=== Αλλαγές στα Έσοδα του Κρατικού Προϋπολογισμού ===" + RESET);
 
         // Find changes
@@ -80,7 +84,7 @@ public final class BudgetDiffPrinter {
             BigDecimal newVal = after.getRevenues().get(k).getPoso();
 
             if (oldVal.compareTo(newVal) != 0) {
-                System.out.println("\n" + BOLD + CYAN + "  " + k + " | "
+                System.out.println("\n" + BOLD + "  " + k + " | "
                     + entry.getValue().getPerigrafi() + RESET);
 
                 System.out.println("    " + oldVal
@@ -99,7 +103,7 @@ public final class BudgetDiffPrinter {
      */
     private static void compareMinistries(final Budget before,
                                         final Budget after) {
-        System.out.println("\n" + BOLD
+        System.out.println("\n" + BOLD + CYAN
         + "=== Αλλαγές στον Προϋπολογισμού των Υπουργείων ===" + RESET);
 
         for (Map.Entry<Integer, Ypourgeio> entry : before.getMinistries()
@@ -114,7 +118,7 @@ public final class BudgetDiffPrinter {
                 || oldM.getSynolo().compareTo(newM.getSynolo()) != 0;
 
             if (changed) {
-                System.out.println("\n" + BOLD + CYAN + "  " + k + " | "
+                System.out.println("\n" + BOLD + "  " + k + " | "
                                             + oldM.getOnoma() + RESET);
 
                 if (oldM.getTaktikos().compareTo(newM.getTaktikos()) != 0) {
@@ -133,6 +137,65 @@ public final class BudgetDiffPrinter {
                                     + " → " + BLUE + newM.getSynolo() + RESET);
                 }
             }
+        }
+    }
+
+    /**
+     * Print all revenues in aligned table format.
+     * @param budget the budget to print
+     */
+    public static void printRevenues(final Budget budget) {
+        System.out.println("\n" + BOLD + CYAN
+            + "=== Έσοδα Κρατικού Προϋπολογισμού ===" + RESET);
+
+        // Table header
+        System.out.printf("%-6s | %-60s | %-25s%n", "Α/Α",
+        "Έσοδα", "Ποσό");
+
+        for (Map.Entry<String, Eggrafi> entry : budget
+                                                .getRevenues().entrySet()) {
+            String code = entry.getKey();
+            Eggrafi e = entry.getValue();
+
+            if (e.getPerigrafi().toUpperCase().contains("ΕΣΟΔΑ")) {
+                    continue;
+            }
+
+            System.out.printf("%-8s | %-60s | %-15s%n",
+                    code,
+                    e.getPerigrafi(),
+                    e.getPoso().toString());
+        }
+    }
+
+    /**
+     * Print all ministries in aligned table format.
+     * @param budget the budget to print
+     */
+    public static void printMinistries(final Budget budget) {
+        System.out.println("\n" + BOLD + CYAN
+            + "=== Προϋπολογισμός Υπουργείων ===" + RESET);
+
+        // Table header
+        System.out.printf("%-3s | %-55s | %-25s | %-35s | %-25s%n",
+            "Α/Α", "Υπουργείο", "Τακτικός Προϋπολογισμός",
+            "Προϋπολογισμός Δημοσίων Επενδύσεων", "Σύνολο");
+
+        for (Map.Entry<Integer, Ypourgeio> entry : budget
+                                                .getMinistries().entrySet()) {
+            Integer code = entry.getKey();
+            Ypourgeio y = entry.getValue();
+
+            if (code == MINISTRY_TOTALS || code == TOTALS) {
+                continue;
+            }
+
+            System.out.printf("%-3s | %-55s | %-25s | %-35s | %-25s%n",
+                    code,
+                    y.getOnoma(),
+                    y.getTaktikos().toString(),
+                    y.getEpendyseis().toString(),
+                    y.getSynolo().toString());
         }
     }
 }
