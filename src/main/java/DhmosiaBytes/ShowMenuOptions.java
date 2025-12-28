@@ -135,8 +135,8 @@ public final class ShowMenuOptions {
             Budget initialBudget;
             if (choice == 1) {
                 BudgetAssembler loader = new BudgetAssembler();
-                initialBudget = loader.loadBudget("general.csv",
-                "ministries.csv");
+                initialBudget = loader.loadBudget("proypologismos2025.csv",
+                "proypologismos2025anaypourgeio.csv");
             } else {
                 BudgetAssembler loader = new BudgetAssembler();
                 initialBudget = loader.loadBudget("newgeneral.csv",
