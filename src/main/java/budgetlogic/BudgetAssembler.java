@@ -36,15 +36,24 @@ public final class BudgetAssembler {
     public Budget loadBudget(final String generalFile,
                             final String ministriesFile) {
 
-        // Convert String to Path
-        Path pathGeneral = Path.of(generalFile);
-        Path pathMinistries = Path.of(ministriesFile);
+        boolean generalIsModified = generalFile.contains("new");
+        boolean ministriesIsModified = ministriesFile.contains("new");
 
-        List<Eggrafi> generalList =
-        ReadBudget.readGeneralBudgetFromPath(pathGeneral);
+        List<Eggrafi> generalList;
+        if (generalIsModified) {
+            Path pathGeneral = Path.of(generalFile);
+            generalList = ReadBudget.readGeneralBudgetFromPath(pathGeneral);
+        } else {
+            generalList = ReadBudget.readGeneralBudget(generalFile);
+        }
 
-        List<Ypourgeio> ministriesList =
-        ReadBudget.readByMinistryFromPath(pathMinistries);
+        List<Ypourgeio> ministriesList;
+        if (ministriesIsModified) {
+            Path pathMinistries = Path.of(ministriesFile);
+            ministriesList = ReadBudget.readByMinistryFromPath(pathMinistries);
+        } else {
+            ministriesList = ReadBudget.readByMinistry(ministriesFile);
+        }
 
         // Initialise revenues map and expenses map
         Map<String, Eggrafi> revenuesMap = new LinkedHashMap<>();
