@@ -68,7 +68,10 @@ public final class ReadBudget {
                     continue;
                 }
 
-                String kodikos = line[0].trim();
+                String kodikos = line[0]
+                    .replace("\uFEFF", "")
+                    .replace("\u00A0", "")
+                    .trim();
                 String perigrafi = line[1].trim();
                 BigDecimal poso = parseNumber(line[2].trim());
 
