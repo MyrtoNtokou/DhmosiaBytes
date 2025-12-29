@@ -24,9 +24,13 @@ public class TestMenuOptions {
         assertEquals("Συγκεντρωτικά στοιχεία", MenuOptions.AGGRIGATE.getDescription());
         assertEquals(MenuOptions.AGGRIGATE, MenuOptions.fromCode(4));
 
-        assertEquals(5, MenuOptions.GRAPHS.getCode());
+        assertEquals(5, MenuOptions.COMPARISON.getCode());
+        assertEquals("Σύγκριση Κρατικού Προϋπολογισμού διαφορετικών ετών", MenuOptions.COMPARISON.getDescription());
+        assertEquals(MenuOptions.COMPARISON, MenuOptions.fromCode(5));
+
+        assertEquals(6, MenuOptions.GRAPHS.getCode());
         assertEquals("Γραφήματα", MenuOptions.GRAPHS.getDescription());
-        assertEquals(MenuOptions.GRAPHS, MenuOptions.fromCode(5));
+        assertEquals(MenuOptions.GRAPHS, MenuOptions.fromCode(6));
 
         assertEquals(0, MenuOptions.EXIT.getCode());
         assertEquals("Έξοδος", MenuOptions.EXIT.getDescription());

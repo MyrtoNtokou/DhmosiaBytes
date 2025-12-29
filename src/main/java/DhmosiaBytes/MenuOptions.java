@@ -17,8 +17,11 @@ public enum MenuOptions {
     /** Option to aggrigate data. */
     AGGRIGATE(4, "Συγκεντρωτικά στοιχεία"),
 
+    /** Option to compare budgets from different years. */
+    COMPARISON(5, "Σύγκριση Κρατικού Προϋπολογισμού διαφορετικών ετών"),
+
     /** Option to display charts. */
-    GRAPHS(5, "Γραφήματα"),
+    GRAPHS(6, "Γραφήματα"),
 
     /** Option to exit the application. */
     EXIT(0, "Έξοδος");

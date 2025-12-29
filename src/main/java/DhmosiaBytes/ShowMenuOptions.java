@@ -4,6 +4,7 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+import budgetcomparison.ComparisonController;
 import budgetlogic.Budget;
 import budgetlogic.BudgetAssembler;
 import budgetreader.DisplayBudget;
@@ -79,6 +80,16 @@ public final class ShowMenuOptions {
                     AggrigateMenu agg = new AggrigateMenu();
                     int code = agg.typeOfBudget(input);
                     agg.displayMinMax(code);
+                }
+                case COMPARISON -> {
+                    try {
+                        ComparisonController controller =
+                        new ComparisonController();
+                        controller.start();
+                    } catch (Exception e) {
+                        System.err.println("Σφάλμα κατά την σύγκριση στοιχείων"
+                        + e.getMessage());
+                    }
                 }
                 case GRAPHS -> {
                     graph.chooseGraph(input);

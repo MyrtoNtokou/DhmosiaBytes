@@ -1,12 +1,13 @@
 package budgetcomparison;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Optional;
-import java.math.RoundingMode;
+
 import budgetreader.Eggrafi;
-import budgetreader.Ypourgeio;
 import budgetreader.ReadBudget;
+import budgetreader.Ypourgeio;
 
 /** Service class
  * for performing budget comparisons. */
