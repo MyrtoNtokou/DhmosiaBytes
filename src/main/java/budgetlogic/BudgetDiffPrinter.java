@@ -8,7 +8,7 @@ import budgetreader.Ypourgeio;
 
 
 /**
- * Create report after all changes in the state budget.
+ * Print general and ministries budget after changes.
  * Output is formatted with ANSI escape codes (bold + blue).
  */
 public final class BudgetDiffPrinter {
@@ -20,6 +20,8 @@ public final class BudgetDiffPrinter {
     private static final String RESET = "\u001B[0m";
     /** ANSI bold text modifier. */
     private static final String BOLD = "\u001B[1m";
+    /** ANSI underline text modifier. */
+    public static final String UNDERLINE = "\u001B[4m";
     /** Line to be removed when printing ministries. */
     private static final int MINISTRY_TOTALS = 4;
     /** Line to be removed when printing ministries. */
@@ -196,6 +198,106 @@ public final class BudgetDiffPrinter {
                     y.getTaktikos().toString(),
                     y.getEpendyseis().toString(),
                     y.getSynolo().toString());
+        }
+    }
+
+    /**
+     * Print current and modified general budget side by side.
+     * @param before
+     * @param after
+     */
+    public static void compareGeneralSideBySide(final Budget before,
+                                                final Budget after) {
+        System.out.println("\n" + BOLD + CYAN
+            + "=== ΣΥΓΚΡΙΣΗ ΓΕΝΙΚΟΥ ΠΡΟΫΠΟΛΟΓΙΣΜΟΥ ===\n" + RESET);
+
+        System.out.printf("%-8s | %-70s | %-33s | %-25s%n",
+            BOLD + "Α/Α" + RESET,
+            BOLD + "Περιγραφή" + RESET,
+            BOLD + "Τρέχον" + RESET,
+            BOLD + "Τροποποιημένος" + RESET);
+
+        for (Map.Entry<String, Eggrafi> entry : before.getRevenues()
+                                                    .entrySet()) {
+            String code = entry.getKey();
+            Eggrafi oldE = entry.getValue();
+            Eggrafi newE = after.getRevenues().get(code);
+
+            String beforeVal = oldE.getPoso().toString();
+            String afterVal = newE.getPoso().toString();
+
+            boolean changed = oldE.getPoso().compareTo(newE.getPoso()) != 0;
+
+            if (changed) {
+                afterVal = BOLD + BLUE + afterVal + RESET;
+            }
+
+            System.out.printf("%-6s | %-60s | %-25s | %-25s%n",
+                    code,
+                    oldE.getPerigrafi(),
+                    beforeVal,
+                    afterVal);
+        }
+    }
+
+    /**
+     * Print current and modified ministries budget side by side.
+     * @param before
+     * @param after
+     */
+    public static void compareMinistriesSideBySide(final Budget before,
+                                                final Budget after) {
+        System.out.println("\n" + BOLD + CYAN
+            + "=== ΣΥΓΚΡΙΣΗ ΥΠΟΥΡΓΕΙΩΝ ===\n" + RESET);
+
+        System.out.printf("%-92s %-46s %-18s %-44s%n",
+                    " ",
+                    UNDERLINE + BOLD + "Τρέχον" + RESET,
+                    " | ",
+                    UNDERLINE + BOLD + "Τροποποιημένος" + RESET);
+
+        System.out.printf(
+            "%-4s | %-73s | %-25s %-25s %-25s | %-25s %-25s %-14s%n",
+            BOLD + "Κωδ." + RESET,
+            BOLD + "Υπουργείο" + RESET,
+            BOLD + "Τακτικός" + RESET,
+            BOLD + "ΠΔΕ" + RESET,
+            BOLD + "Σύνολο" + RESET,
+            BOLD + "Τακτικός" + RESET,
+            BOLD + "ΠΔΕ" + RESET,
+            BOLD + "Σύνολο" + RESET);
+
+        for (Map.Entry<Integer, Ypourgeio> entry : before.getMinistries()
+                                                        .entrySet()) {
+            Integer code = entry.getKey();
+            Ypourgeio oldM = entry.getValue();
+            Ypourgeio newM = after.getMinistries().get(code);
+
+            String tBefore = oldM.getTaktikos().toString();
+            String tAfter = newM.getTaktikos().toString();
+
+            String pBefore = oldM.getEpendyseis().toString();
+            String pAfter = newM.getEpendyseis().toString();
+
+            String sBefore = oldM.getSynolo().toString();
+            String sAfter = newM.getSynolo().toString();
+
+            if (oldM.getTaktikos().compareTo(newM.getTaktikos()) != 0) {
+                tAfter = BOLD + BLUE + tAfter + RESET;
+            }
+            if (oldM.getEpendyseis().compareTo(newM.getEpendyseis()) != 0) {
+                pAfter = BOLD + BLUE + pAfter + RESET;
+            }
+            if (oldM.getSynolo().compareTo(newM.getSynolo()) != 0) {
+                sAfter = BOLD + BLUE + sAfter + RESET;
+            }
+
+            System.out.printf(
+                "%-4s | %-65s | %-17s %-17s %-17s | %-17s %-17s %-17s%n",
+                code,
+                oldM.getOnoma(),
+                tBefore, pBefore, sBefore,
+                tAfter, pAfter, sAfter);
         }
     }
 }
