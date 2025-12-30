@@ -41,7 +41,7 @@ public final class InvestmentPrinter {
                             + "ΛΟΓΟΥ ΕΠΕΝΔΥΣΕΩΝ ===\n" + RESET);
 
         System.out.printf(BOLD + "%-5s | %-55s | %-15s | %-15s | %-15s%n",
-                "Κωδικός", "Υπουργείο", "Επενδύσεις", "Σύνολο",
+                "A/A", "Υπουργείο", "Επενδύσεις", "Σύνολο",
                 "Λόγος Επενδύσεων" + RESET);
 
         for (InvestmentRatio ir : ratios) {
