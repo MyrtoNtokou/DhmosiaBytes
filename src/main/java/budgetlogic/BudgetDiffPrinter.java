@@ -76,7 +76,7 @@ public final class BudgetDiffPrinter {
     private static void compareGeneral(final Budget before,
                                     final Budget after) {
         System.out.println("\n" + BOLD + CYAN
-        + "=== Αλλαγές στα Έσοδα του Κρατικού Προϋπολογισμού ===" + RESET);
+        + "=== ΑΛΛΑΓΕΣ ΣΤΑ ΕΣΟΔΑ ΤΟΥ ΚΡΑΤΙΚΟΥ ΠΡΟΫΠΟΛΟΓΙΣΜΟΥ ===" + RESET);
 
         // Find changes
         for (Map.Entry<String, Eggrafi> entry : before.getRevenues()
@@ -106,7 +106,7 @@ public final class BudgetDiffPrinter {
     private static void compareMinistries(final Budget before,
                                         final Budget after) {
         System.out.println("\n" + BOLD + CYAN
-        + "=== Αλλαγές στον Προϋπολογισμού των Υπουργείων ===" + RESET);
+        + "=== ΑΛΛΑΓΕΣ ΣΤΟΝ ΠΡΟΫΠΟΛΟΓΙΣΜΟ ΤΩΝ ΥΠΟΥΡΓΕΙΩΝ ===" + RESET);
 
         for (Map.Entry<Integer, Ypourgeio> entry : before.getMinistries()
                                                         .entrySet()) {
@@ -148,11 +148,11 @@ public final class BudgetDiffPrinter {
      */
     public static void printRevenues(final Budget budget) {
         System.out.println("\n" + BOLD + CYAN
-            + "=== Έσοδα Κρατικού Προϋπολογισμού ===" + RESET);
+            + "=== ΕΣΟΔΑ ΚΡΑΤΙΚΟΥ ΠΡΟΫΠΟΛΟΓΙΣΜΟΥ ===\n" + RESET);
 
         // Table header
-        System.out.printf("%-6s | %-60s | %-25s%n", "Α/Α",
-        "Έσοδα", "Ποσό");
+        System.out.printf(BOLD + "%-6s | %-60s | %-25s%n", "Α/Α",
+        "Έσοδα", "Ποσό" + RESET);
 
         for (Map.Entry<String, Eggrafi> entry : budget
                                                 .getRevenues().entrySet()) {
@@ -163,7 +163,7 @@ public final class BudgetDiffPrinter {
                     continue;
             }
 
-            System.out.printf("%-8s | %-60s | %-15s%n",
+            System.out.printf("%-6s | %-60s | %-25s%n",
                     code,
                     e.getPerigrafi(),
                     e.getPoso().toString());
@@ -176,12 +176,11 @@ public final class BudgetDiffPrinter {
      */
     public static void printMinistries(final Budget budget) {
         System.out.println("\n" + BOLD + CYAN
-            + "=== Προϋπολογισμός Υπουργείων ===" + RESET);
+            + "=== ΠΡΟΫΠΟΛΟΓΙΣΜΟΣ ΥΠΟΥΡΓΕΙΩΝ ===\n" + RESET);
 
         // Table header
-        System.out.printf("%-3s | %-55s | %-25s | %-35s | %-25s%n",
-            "Α/Α", "Υπουργείο", "Τακτικός Προϋπολογισμός",
-            "Προϋπολογισμός Δημοσίων Επενδύσεων", "Σύνολο");
+        System.out.printf(BOLD + "%-5s | %-65s | %-15s | %-15s | %-15s%n",
+                "A/A", "Υπουργείο", "Τακτικός", "Επενδύσεων", "Σύνολο" + RESET);
 
         for (Map.Entry<Integer, Ypourgeio> entry : budget
                                                 .getMinistries().entrySet()) {
@@ -192,7 +191,7 @@ public final class BudgetDiffPrinter {
                 continue;
             }
 
-            System.out.printf("%-3s | %-55s | %-25s | %-35s | %-25s%n",
+            System.out.printf("%-5d | %-65s | %-15s | %-15s | %-15s%n",
                     code,
                     y.getOnoma(),
                     y.getTaktikos().toString(),
