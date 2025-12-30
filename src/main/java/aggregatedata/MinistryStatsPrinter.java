@@ -28,6 +28,8 @@ public final class MinistryStatsPrinter {
 
     /** Blue color used percentages. */
     private static final String BLUE = rgb(30, 144, 255);
+    /** Cyan color used titles. */
+    private static final String CYAN = rgb(0, 200, 255);
 
     /**
      * Print max Taktikos.
@@ -35,8 +37,8 @@ public final class MinistryStatsPrinter {
      */
     public static void printTaktikos(final MinistryStats stats) {
 
-        System.out.println(BOLD + "\n=== Μέγιστες Δαπάνες "
-            + "Τακτικού Προϋπολογισμού ===" + RESET);
+        System.out.println(BOLD + CYAN + "\n=== ΜΕΓΙΣΤΕΣ ΔΑΠΑΝΕΣ "
+            + "ΤΑΚΤΙΚΟΥ ΠΡΟΫΠΟΛΟΓΙΣΜΟΥ ===" + RESET);
 
         List<Ypourgeio> max = stats.getMaxTaktikos();
         List<BigDecimal> per = stats.getMaxTaktikosPercentages();
@@ -45,12 +47,11 @@ public final class MinistryStatsPrinter {
             Ypourgeio y = max.get(i);
             BigDecimal p = per.get(i);
 
-            System.out.println(
-                y.getKodikos() + " | "
-                + y.getOnoma() + " | "
-                + y.getTaktikos() + " | "
-                + BLUE + p + "%" + RESET
-            );
+            System.out.printf("%-5s | %-45s | %-15s | %-10s%n",
+                y.getKodikos(),
+                y.getOnoma(),
+                y.getTaktikos(),
+                BLUE + p + "%" + RESET);
         }
     }
 
@@ -60,8 +61,8 @@ public final class MinistryStatsPrinter {
      */
     public static void printEpendyseis(final MinistryStats stats) {
 
-        System.out.println(BOLD + "\n=== Μέγιστες Δαπάνες "
-            + "Δημοσίων Επενδύσεων ===" + RESET);
+        System.out.println(BOLD + CYAN + "\n=== ΜΕΓΙΣΤΕΣ ΔΑΠΑΝΕΣ "
+            + "ΔΗΜΟΣΙΩΝ ΕΠΕΝΔΥΣΕΩΝ ===" + RESET);
 
         List<Ypourgeio> max = stats.getMaxEpendyseis();
         List<BigDecimal> per = stats.getMaxEpendyseisPercentages();
@@ -70,12 +71,11 @@ public final class MinistryStatsPrinter {
             Ypourgeio y = max.get(i);
             BigDecimal p = per.get(i);
 
-            System.out.println(
-                y.getKodikos() + " | "
-                + y.getOnoma() + " | "
-                + y.getEpendyseis() + " | "
-                + BLUE + p + "%" + RESET
-            );
+            System.out.printf("%-5s | %-45s | %-15s | %-10s%n",
+                y.getKodikos(),
+                y.getOnoma(),
+                y.getEpendyseis(),
+                BLUE + p + "%" + RESET);
         }
     }
 
@@ -85,8 +85,8 @@ public final class MinistryStatsPrinter {
      */
     public static void printSynolo(final MinistryStats stats) {
 
-        System.out.println(BOLD + "\n=== Μέγιστες "
-            + "Συνολικές Δαπάνες ===" + RESET);
+        System.out.println(BOLD + CYAN + "\n=== ΜΕΓΙΣΤΕΣ "
+            + "ΣΥΝΟΛΙΚΕΣ ΔΑΠΑΝΕΣ ===" + RESET);
 
         List<Ypourgeio> max = stats.getMaxSynolo();
         List<BigDecimal> per = stats.getMaxSynoloPercentages();
@@ -95,12 +95,11 @@ public final class MinistryStatsPrinter {
             Ypourgeio y = max.get(i);
             BigDecimal p = per.get(i);
 
-            System.out.println(
-                y.getKodikos() + " | "
-                + y.getOnoma() + " | "
-                + y.getSynolo() + " | "
-                + BLUE + p + "%" + RESET
-            );
+            System.out.printf("%-5s | %-45s | %-15s | %-10s%n",
+                y.getKodikos(),
+                y.getOnoma(),
+                y.getSynolo(),
+                BLUE + p + "%" + RESET);
         }
     }
 }
