@@ -11,8 +11,11 @@ import aggregatedata.MinistryAnalyzer;
 import aggregatedata.MinistryStats;
 import aggregatedata.MinistryStatsPrinter;
 import budgetreader.Eggrafi;
-import budgetreader.ReadBudget;
 import budgetreader.Ypourgeio;
+import aggregatedata.InvestmentRatio;
+import aggregatedata.InvestmentAnalyzer;
+import aggregatedata.InvestmentPrinter;
+import budgetreader.ReadBudget;
 
 /**
  * Provides a menu for selecting and displaying budget statistics.
@@ -34,9 +37,8 @@ public final class AggrigateMenu {
         do {
             System.out.println("1. Γενικός προϋπολογισμός");
             System.out.println("2. Προϋπολογισμός υπουργείων");
-            System.out.print("""
-            Επιλέξτε το αρχείο για το οποίο θέλετε να δείτε
-             συγκεντρωτικά στοιχεία: """);
+            System.out.print("Επιλέξτε το αρχείο για το οποίο θέλετε να δείτε "
+            + "συγκεντρωτικά στοιχεία: ");
             try {
                 choice = input.nextInt();
             } catch (InputMismatchException e) {
@@ -55,28 +57,33 @@ public final class AggrigateMenu {
     }
 
     /**
-     * Displays minimum and maximum values for revenues and expenses
-     * based on the selected budget type.
+     * Displays a menu that allows the user to choose between
+     * viewing budget statistics or investment ratio indicators.
      *
-     * @param generalOrMinistries 1 for general budget, 2 for ministries budget
+     * @param input the Scanner used to read user input
      */
-    public void displayMinMax(final int generalOrMinistries) {
-        if (generalOrMinistries == 1) {
-            List<Eggrafi> g =
-            ReadBudget.readGeneralBudget("proypologismos2025.csv");
-            BudgetStats stats = BudgetAnalyzer.analyze(g);
-           System.out.println("""
+    public void budgetOrIndices(final Scanner input) {
+        int choice = 0;
+        do {
+            System.out.println("1. Προϋπολογισμός");
+            System.out.println("2. Δείκτες Λόγου Επενδύσεων");
+            System.out.print("Επιλογή: ");
+            try {
+                choice = input.nextInt();
+            } catch (InputMismatchException e) {
+                System.out.println("Παρακαλώ εισάγετε αριθμό.");
+                input.next();
+                continue;
+            }
 
-           ==================== ΕΣΟΔΑ ====================
-           """);
-            BudgetStatsPrinter.printRevenues(stats);
+            if (choice != 1 && choice != 2) {
+                System.out.println("Μη έγκυρη επιλογή.");
+                System.out.println("Πρέπει να επιλέξετε 1 ή "
+                + CODE_FOR_MENUS + ".");
+            }
+        } while (choice != 1 && choice != CODE_FOR_MENUS);
 
-            System.out.println("""
-
-            ==================== ΕΞΟΔΑ ====================
-            """);
-            BudgetStatsPrinter.printExpenses(stats);
-        } else {
+        if (choice == 1) {
             List<Ypourgeio> y =
             ReadBudget.readByMinistry("proypologismos2025anaypourgeio.csv");
             MinistryStats stats = MinistryAnalyzer.analyze(y);
@@ -95,6 +102,41 @@ public final class AggrigateMenu {
             ==================== ΣΥΝΟΛΟ ====================
             """);
             MinistryStatsPrinter.printSynolo(stats);
+        } else if (choice == 2) {
+            List<Ypourgeio> ypourg =
+            ReadBudget.readByMinistry("proypologismos2025anaypourgeio.csv");
+            List<InvestmentRatio> ratios =
+            InvestmentAnalyzer.calculate(ypourg);
+            InvestmentPrinter.print(ypourg, ratios);
+        }
+    }
+
+    /**
+     * Displays minimum and maximum values for revenues and expenses
+     * based on the selected budget type.
+     *
+     * @param generalOrMinistries 1 for general budget, 2 for ministries budget
+     * @param input the Scanner used to read user input
+     */
+    public void displayMinMax(final int generalOrMinistries,
+    final Scanner input) {
+        if (generalOrMinistries == 1) {
+            List<Eggrafi> g =
+            ReadBudget.readGeneralBudget("proypologismos2025.csv");
+            BudgetStats stats = BudgetAnalyzer.analyze(g);
+           System.out.println("""
+
+           ==================== ΕΣΟΔΑ ====================
+           """);
+            BudgetStatsPrinter.printRevenues(stats);
+
+            System.out.println("""
+
+            ==================== ΕΞΟΔΑ ====================
+            """);
+            BudgetStatsPrinter.printExpenses(stats);
+        } else {
+            budgetOrIndices(input);
         }
     }
 }

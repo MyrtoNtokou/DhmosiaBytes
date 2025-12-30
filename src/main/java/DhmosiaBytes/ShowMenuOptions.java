@@ -79,7 +79,7 @@ public final class ShowMenuOptions {
                 case AGGRIGATE -> {
                     AggrigateMenu agg = new AggrigateMenu();
                     int code = agg.typeOfBudget(input);
-                    agg.displayMinMax(code);
+                    agg.displayMinMax(code, input);
                 }
                 case COMPARISON -> {
                     try {
