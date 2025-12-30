@@ -9,23 +9,23 @@ public class TestMenuOptions {
     @Test
     public void testCodeAndDescription() {
         assertEquals(1, MenuOptions.SHOW_BUDGET.getCode());
-        assertEquals("Εμφάνιση Κρατικού Προϋπολογισμού", MenuOptions.SHOW_BUDGET.getDescription());
+        assertEquals("Εμφάνηση Κρατικού Προϋπολογισμού", MenuOptions.SHOW_BUDGET.getDescription());
         assertEquals(MenuOptions.SHOW_BUDGET, MenuOptions.fromCode(1));
 
-        assertEquals(2, MenuOptions.EDIT_BUDGET.getCode());
-        assertEquals("Αλλαγή στοιχείων", MenuOptions.EDIT_BUDGET.getDescription());
-        assertEquals(MenuOptions.EDIT_BUDGET, MenuOptions.fromCode(2));
+        assertEquals(2, MenuOptions.SUMMARY.getCode());
+        assertEquals("Προϋπολογισμός Υπουργείων", MenuOptions.SUMMARY.getDescription());
+        assertEquals(MenuOptions.SUMMARY, MenuOptions.fromCode(2));
 
-        assertEquals(3, MenuOptions.SUMMARY.getCode());
-        assertEquals("Κατηγοριοποίηση στοιχείων", MenuOptions.SUMMARY.getDescription());
-        assertEquals(MenuOptions.SUMMARY, MenuOptions.fromCode(3));
+        assertEquals(3, MenuOptions.EDIT_BUDGET.getCode());
+        assertEquals("Αλλαγή Στοιχείων", MenuOptions.EDIT_BUDGET.getDescription());
+        assertEquals(MenuOptions.EDIT_BUDGET, MenuOptions.fromCode(3));
 
         assertEquals(4, MenuOptions.AGGRIGATE.getCode());
-        assertEquals("Συγκεντρωτικά στοιχεία", MenuOptions.AGGRIGATE.getDescription());
+        assertEquals("Συγκεντρωτικά Στοιχεία", MenuOptions.AGGRIGATE.getDescription());
         assertEquals(MenuOptions.AGGRIGATE, MenuOptions.fromCode(4));
 
         assertEquals(5, MenuOptions.COMPARISON.getCode());
-        assertEquals("Σύγκριση Κρατικού Προϋπολογισμού διαφορετικών ετών", MenuOptions.COMPARISON.getDescription());
+        assertEquals("Σύγκριση Κρατικού Προϋπολογισμού Διαφορετικών Ετών", MenuOptions.COMPARISON.getDescription());
         assertEquals(MenuOptions.COMPARISON, MenuOptions.fromCode(5));
 
         assertEquals(6, MenuOptions.GRAPHS.getCode());

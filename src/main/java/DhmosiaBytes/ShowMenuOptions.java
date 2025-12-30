@@ -74,8 +74,8 @@ public final class ShowMenuOptions {
 
             switch (choice) {
                 case SHOW_BUDGET -> showBudget();
-                case EDIT_BUDGET -> editBudget(input);
                 case SUMMARY -> summary();
+                case EDIT_BUDGET -> editBudget(input);
                 case AGGRIGATE -> {
                     AggrigateMenu agg = new AggrigateMenu();
                     int code = agg.typeOfBudget(input);

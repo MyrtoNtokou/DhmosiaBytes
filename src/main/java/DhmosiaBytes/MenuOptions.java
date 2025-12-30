@@ -6,19 +6,19 @@ package dhmosiabytes;
 public enum MenuOptions {
 
     /** Option to display the national budget. */
-    SHOW_BUDGET(1, "Εμφάνιση Κρατικού Προϋπολογισμού"),
-
-    /** Option to edit budget details. */
-    EDIT_BUDGET(2, "Αλλαγή στοιχείων"),
+    SHOW_BUDGET(1, "Εμφάνηση Κρατικού Προϋπολογισμού"),
 
     /** Option to summarize data. */
-    SUMMARY(3, "Κατηγοριοποίηση στοιχείων"),
+    SUMMARY(2, "Προϋπολογισμός Υπουργείων"),
+
+    /** Option to edit budget details. */
+    EDIT_BUDGET(3, "Αλλαγή Στοιχείων"),
 
     /** Option to aggrigate data. */
-    AGGRIGATE(4, "Συγκεντρωτικά στοιχεία"),
+    AGGRIGATE(4, "Συγκεντρωτικά Στοιχεία"),
 
     /** Option to compare budgets from different years. */
-    COMPARISON(5, "Σύγκριση Κρατικού Προϋπολογισμού διαφορετικών ετών"),
+    COMPARISON(5, "Σύγκριση Κρατικού Προϋπολογισμού Διαφορετικών Ετών"),
 
     /** Option to display charts. */
     GRAPHS(6, "Γραφήματα"),

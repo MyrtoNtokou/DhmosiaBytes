@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Scanner;
 
 import budgetlogic.Budget;
+import budgetlogic.BudgetDiffPrinter;
 import budgetreader.Eggrafi;
 import budgetreader.Ypourgeio;
-import budgetlogic.BudgetDiffPrinter;
 
 /**
  * Provides menus and input handling for editing budget entries.
@@ -29,12 +29,17 @@ public class ShowEditMenuOptions {
                 System.out.println(opt.getRevenueOrExpenseCode() + ". "
                 + opt.getDescription());
             }
+            System.out.println("0. Έξοδος");
 
             System.out.print("\nΕπιλογή: ");
             int choice;
+
             try {
                 choice = scanner.nextInt();
                 scanner.nextLine();
+                if (choice == 0) {
+                    return null;
+                }
                 selected = RevenueOrExpense.fromCode(choice);
             } catch (InputMismatchException e) {
                 System.out.println("Παρακαλώ εισάγετε αριθμό.");
@@ -44,6 +49,7 @@ public class ShowEditMenuOptions {
                 System.out.println("Δώστε έναν αριθμό από το 1 έως "
                 + RevenueOrExpense.values().length);
             }
+
         } while (selected == null);
         return selected;
     }
