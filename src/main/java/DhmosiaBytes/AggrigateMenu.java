@@ -87,20 +87,11 @@ public final class AggrigateMenu {
             List<Ypourgeio> y =
             ReadBudget.readByMinistry("proypologismos2025anaypourgeio.csv");
             MinistryStats stats = MinistryAnalyzer.analyze(y);
-            System.out.println("""
 
-            ==================== ΤΑΚΤΙΚΟΣ ====================
-            """);
             MinistryStatsPrinter.printTaktikos(stats);
-            System.out.println("""
 
-            ==================== ΕΠΕΝΔΥΣΕΙΣ ====================
-            """);
             MinistryStatsPrinter.printEpendyseis(stats);
-            System.out.println("""
 
-            ==================== ΣΥΝΟΛΟ ====================
-            """);
             MinistryStatsPrinter.printSynolo(stats);
         } else if (choice == 2) {
             List<Ypourgeio> ypourg =
@@ -124,16 +115,9 @@ public final class AggrigateMenu {
             List<Eggrafi> g =
             ReadBudget.readGeneralBudget("proypologismos2025.csv");
             BudgetStats stats = BudgetAnalyzer.analyze(g);
-           System.out.println("""
 
-           ==================== ΕΣΟΔΑ ====================
-           """);
             BudgetStatsPrinter.printRevenues(stats);
 
-            System.out.println("""
-
-            ==================== ΕΞΟΔΑ ====================
-            """);
             BudgetStatsPrinter.printExpenses(stats);
         } else {
             budgetOrIndices(input);
