@@ -28,6 +28,8 @@ public final class BudgetStatsPrinter {
 
     /** Blue color used percentages. */
     private static final String BLUE = rgb(30, 144, 255);
+    /** Cyan color used titles. */
+    private static final String CYAN = rgb(0, 200, 255);
 
     /**
      * Print revenues (max + min).
@@ -35,7 +37,8 @@ public final class BudgetStatsPrinter {
      */
     public static void printRevenues(final BudgetStats stats) {
 
-        System.out.println(BOLD + "\n=== Μέγιστες Πηγές Εσόδων ===" + RESET);
+        System.out.println(BOLD + CYAN + "\n=== ΜΕΓΙΣΤΕΣ "
+                    + "ΠΗΓΕΣ ΕΣΟΔΩΝ ===" + RESET);
 
         List<Eggrafi> maxRev = stats.getMaxRevenues();
         List<BigDecimal> maxRevPer = stats.getMaxRevenuePercentages();
@@ -44,21 +47,20 @@ public final class BudgetStatsPrinter {
             Eggrafi e = maxRev.get(i);
             BigDecimal p = maxRevPer.get(i);
 
-            System.out.println(
-                e.getKodikos() + " | "
-                + e.getPerigrafi() + " | "
-                + e.getPoso() + " | "
-                + BLUE + p + "%" + RESET
-            );
+            System.out.printf("%-8s | %-35s | %-15s | %-10s%n",
+                e.getKodikos(),
+                e.getPerigrafi(),
+                e.getPoso(),
+                BLUE + p + "%" + RESET);
         }
-        System.out.println(BOLD + "\n=== Ελάχιστες Πηγές Εσόδων ===" + RESET);
+        System.out.println(BOLD + CYAN + "\n=== ΕΛΑΧΙΣΤΕΣ "
+                    + "ΠΗΓΕΣ ΕΣΟΔΩΝ ===" + RESET);
 
         for (Eggrafi e : stats.getMinRevenues()) {
-            System.out.println(
-                e.getKodikos() + " | "
-                + e.getPerigrafi() + " | "
-                + e.getPoso()
-            );
+            System.out.printf("%-8s | %-35s | %-15s%n",
+                e.getKodikos(),
+                e.getPerigrafi(),
+                e.getPoso());
         }
     }
 
@@ -68,7 +70,8 @@ public final class BudgetStatsPrinter {
      */
     public static void printExpenses(final BudgetStats stats) {
 
-        System.out.println(BOLD + "\n=== Μέγιστοι Τομέις Εξόδων ===" + RESET);
+        System.out.println(BOLD + CYAN + "\n=== ΜΕΓΙΣΤΟΙ "
+                    + "ΤΟΜΕΙΣ ΕΞΟΔΩΝ ===" + RESET);
 
         List<Eggrafi> maxExp = stats.getMaxExpenses();
         List<BigDecimal> maxExpPer = stats.getMaxExpensePercentages();
@@ -77,21 +80,20 @@ public final class BudgetStatsPrinter {
             Eggrafi e = maxExp.get(i);
             BigDecimal p = maxExpPer.get(i);
 
-            System.out.println(
-                e.getKodikos() + " | "
-                + e.getPerigrafi() + " | "
-                + e.getPoso() + " | "
-                + BLUE + p + "%" + RESET
-            );
+            System.out.printf("%-8s | %-35s | %-15s | %-10s%n",
+                e.getKodikos(),
+                e.getPerigrafi(),
+                e.getPoso(),
+                BLUE + p + "%" + RESET);
         }
-        System.out.println(BOLD + "\n=== Ελάχιστοι Τομείς Εξόδων ===" + RESET);
+        System.out.println(BOLD + CYAN + "\n=== ΕΛΑΧΙΣΤΟΙ "
+                    + "ΤΟΜΕΙΣ ΕΞΟΔΩΝ ===" + RESET);
 
         for (Eggrafi e : stats.getMinExpenses()) {
-            System.out.println(
-                e.getKodikos() + " | "
-                + e.getPerigrafi() + " | "
-                + e.getPoso()
-            );
+            System.out.printf("%-8s | %-35s | %-15s%n",
+                e.getKodikos(),
+                e.getPerigrafi(),
+                e.getPoso());
         }
     }
 }
