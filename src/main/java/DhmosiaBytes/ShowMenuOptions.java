@@ -77,7 +77,7 @@ public final class ShowMenuOptions {
                 case SUMMARY -> summary();
                 case EDIT_BUDGET -> editBudget(input);
                 case AGGRIGATE -> {
-                    AggrigateMenu agg = new AggrigateMenu();
+                    AggregateMenu agg = new AggregateMenu();
                     int code = agg.typeOfBudget(input);
                     agg.displayMinMax(code, input);
                 }

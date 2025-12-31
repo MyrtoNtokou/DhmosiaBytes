@@ -9,15 +9,15 @@ public class TestMenuOptions {
     @Test
     public void testCodeAndDescription() {
         assertEquals(1, MenuOptions.SHOW_BUDGET.getCode());
-        assertEquals("Εμφάνηση Κρατικού Προϋπολογισμού", MenuOptions.SHOW_BUDGET.getDescription());
+        assertEquals("Εμφάνιση Κρατικού Προϋπολογισμού", MenuOptions.SHOW_BUDGET.getDescription());
         assertEquals(MenuOptions.SHOW_BUDGET, MenuOptions.fromCode(1));
 
         assertEquals(2, MenuOptions.SUMMARY.getCode());
-        assertEquals("Προϋπολογισμός Υπουργείων", MenuOptions.SUMMARY.getDescription());
+        assertEquals("Εμφάνιση Προϋπολογισμού Υπουργείων", MenuOptions.SUMMARY.getDescription());
         assertEquals(MenuOptions.SUMMARY, MenuOptions.fromCode(2));
 
         assertEquals(3, MenuOptions.EDIT_BUDGET.getCode());
-        assertEquals("Αλλαγή Στοιχείων", MenuOptions.EDIT_BUDGET.getDescription());
+        assertEquals("Τροποποίηση Στοιχείων Προϋπολογισμού", MenuOptions.EDIT_BUDGET.getDescription());
         assertEquals(MenuOptions.EDIT_BUDGET, MenuOptions.fromCode(3));
 
         assertEquals(4, MenuOptions.AGGRIGATE.getCode());

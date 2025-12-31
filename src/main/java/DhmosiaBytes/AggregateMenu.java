@@ -7,21 +7,21 @@ import java.util.Scanner;
 import aggregatedata.BudgetAnalyzer;
 import aggregatedata.BudgetStats;
 import aggregatedata.BudgetStatsPrinter;
+import aggregatedata.InvestmentAnalyzer;
+import aggregatedata.InvestmentPrinter;
+import aggregatedata.InvestmentRatio;
 import aggregatedata.MinistryAnalyzer;
 import aggregatedata.MinistryStats;
 import aggregatedata.MinistryStatsPrinter;
 import budgetreader.Eggrafi;
-import budgetreader.Ypourgeio;
-import aggregatedata.InvestmentRatio;
-import aggregatedata.InvestmentAnalyzer;
-import aggregatedata.InvestmentPrinter;
 import budgetreader.ReadBudget;
+import budgetreader.Ypourgeio;
 
 /**
  * Provides a menu for selecting and displaying budget statistics.
  * Supports both general budget and ministries budget.
  */
-public final class AggrigateMenu {
+public final class AggregateMenu {
 
     /** Code to edit a new file. */
     private static final int CODE_FOR_MENUS = 2;
