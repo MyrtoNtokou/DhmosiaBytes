@@ -68,18 +68,25 @@ public final class BudgetSave {
     }
 
     /**
-     * Save the changes in the modified budget csv.
+     * Save the changes in the modified general csv.
      * @param finalBudget object budget after changes
      * @param updatedGeneral modified general budget csv name
+     */
+    public void saveGeneralChanges(final Budget finalBudget,
+                               final String updatedGeneral) throws IOException {
+        PreparedRecords records = prepareRecords(finalBudget);
+        BudgetWriter.writeGeneral(updatedGeneral, records.general());
+    }
+
+    /**
+     * Save the changes in the modified ministries csv.
+     * @param finalBudget object budget after changes
      * @param updatedMinistries modified ministries csv name
      */
-    public void saveChanges(final Budget finalBudget,
-                        final String updatedGeneral,
-                        final String updatedMinistries) throws IOException {
-
+    public void saveMinistryChanges(final Budget finalBudget,
+                                    final String updatedMinistries)
+                                    throws IOException {
         PreparedRecords records = prepareRecords(finalBudget);
-
-        BudgetWriter.writeGeneral(updatedGeneral, records.general());
         BudgetWriter.writeMinistries(updatedMinistries, records.ministries());
     }
 }
