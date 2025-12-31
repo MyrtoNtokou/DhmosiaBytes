@@ -58,8 +58,7 @@ public class BudgetEditor {
         try {
             BudgetSave saver = new BudgetSave();
             Budget finalBudget = service.getBudget();
-            saver.saveChanges(finalBudget, "newgeneral.csv",
-            "newministries.csv");
+            saver.saveGeneralChanges(finalBudget, "newgeneral.csv");
             System.out.println("Η αλλαγή αποθηκεύτηκε επιτυχώς.");
             BudgetDiffPrinter.printDiffGeneral(before, finalBudget);
         } catch (IOException e) {
@@ -109,8 +108,7 @@ public class BudgetEditor {
         try {
             BudgetSave saver = new BudgetSave();
             Budget finalBudget = service.getBudget();
-            saver.saveChanges(finalBudget, "newgeneral.csv",
-            "newministries.csv");
+            saver.saveMinistryChanges(finalBudget, "newministries.csv");
             System.out.println("Η αλλαγή αποθηκεύτηκε επιτυχώς.");
             BudgetDiffPrinter.printDiffMinistries(before, finalBudget);
         } catch (IOException e) {
