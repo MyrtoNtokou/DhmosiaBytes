@@ -50,20 +50,20 @@ public class BudgetEditor {
             } catch (NumberFormatException e) {
                 System.out.println("Μη έγκυρη τιμή.");
             }
+        }
 
-            Budget before = new Budget(service.getBudget());
-            this.service.changeGeneralAmount(code, newAmount);
+        Budget before = new Budget(service.getBudget());
+        this.service.changeGeneralAmount(code, newAmount);
 
-            try {
-                BudgetSave saver = new BudgetSave();
-                Budget finalBudget = service.getBudget();
-                saver.saveChanges(finalBudget, "newgeneral.csv",
-                "newministries.csv");
-                System.out.println("Η αλλαγή αποθηκεύτηκε επιτυχώς.");
-                BudgetDiffPrinter.printDiffGeneral(before, finalBudget);
-            } catch (IOException e) {
-                System.err.println("Σφάλμα κατά την αποθήκευση.");
-            }
+        try {
+            BudgetSave saver = new BudgetSave();
+            Budget finalBudget = service.getBudget();
+            saver.saveChanges(finalBudget, "newgeneral.csv",
+            "newministries.csv");
+            System.out.println("Η αλλαγή αποθηκεύτηκε επιτυχώς.");
+            BudgetDiffPrinter.printDiffGeneral(before, finalBudget);
+        } catch (IOException e) {
+            System.err.println("Σφάλμα κατά την αποθήκευση.");
         }
     }
 
@@ -100,22 +100,21 @@ public class BudgetEditor {
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Μη έγκυρη τιμή.");
-                continue;
             }
+        }
 
-            Budget before = new Budget(service.getBudget());
-            this.service.changeMinistryAmount(code, column, newAmount);
+        Budget before = new Budget(service.getBudget());
+        this.service.changeMinistryAmount(code, column, newAmount);
 
-            try {
-                BudgetSave saver = new BudgetSave();
-                Budget finalBudget = service.getBudget();
-                saver.saveChanges(finalBudget, "newgeneral.csv",
-                "newministries.csv");
-                System.out.println("Η αλλαγή αποθηκεύτηκε επιτυχώς.");
-                BudgetDiffPrinter.printDiffMinistries(before, finalBudget);
-            } catch (IOException e) {
-                System.err.println("Σφάλμα κατά την αποθήκευση.");
-            }
+        try {
+            BudgetSave saver = new BudgetSave();
+            Budget finalBudget = service.getBudget();
+            saver.saveChanges(finalBudget, "newgeneral.csv",
+            "newministries.csv");
+            System.out.println("Η αλλαγή αποθηκεύτηκε επιτυχώς.");
+            BudgetDiffPrinter.printDiffMinistries(before, finalBudget);
+        } catch (IOException e) {
+            System.err.println("Σφάλμα κατά την αποθήκευση.");
         }
     }
 }

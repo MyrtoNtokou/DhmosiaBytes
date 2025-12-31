@@ -110,12 +110,10 @@ public class CutLists {
             if (!exists) {
                 System.out.println("Δεν υπάρχει επιλογή "
                 + "με αυτόν τον κωδικό.");
-                continue;
+            } else {
+                editor.editIncome(choice, scanner);
+                return choice;
             }
-
-            editor.editIncome(choice, scanner);
-
-            return choice;
         } while (true);
     }
 
@@ -146,6 +144,7 @@ public class CutLists {
             } catch (InputMismatchException e) {
                 System.out.println("Δώστε έναν αριθμό από το 1 έως το "
                 + MinistryOptions.values().length);
+                scanner.nextLine();
                 continue;
             } catch (IllegalArgumentException e) {
                 System.out.println("Μη έγκυρη επιλογή.");
@@ -166,10 +165,10 @@ public class CutLists {
             if (!exists) {
                 System.out.println("Δεν υπάρχει επιλογή "
                 + "με αυτόν τον κωδικό.");
-                continue;
+            } else {
+                editor.editExpense(choice, scanner);
+                return choice;
             }
-            editor.editExpense(choice, scanner);
-            return choice;
         } while (true);
 
     }
