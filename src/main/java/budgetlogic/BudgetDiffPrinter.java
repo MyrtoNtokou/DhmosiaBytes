@@ -20,12 +20,18 @@ public final class BudgetDiffPrinter {
     private static final String RESET = "\u001B[0m";
     /** ANSI bold text modifier. */
     private static final String BOLD = "\u001B[1m";
+    /** ANSI red for negative difference. */
+    public static final String RED = "\u001B[31m";
+    /** ANSI green for positive difference. */
+    public static final String GREEN = "\u001B[32m";
     /** ANSI underline text modifier. */
     public static final String UNDERLINE = "\u001B[4m";
     /** Line to be removed when printing ministries. */
     private static final int MINISTRY_TOTALS = 4;
     /** Line to be removed when printing ministries. */
     private static final int TOTALS = 33;
+    /** Target display width for budget ammounts. */
+    private static final int DISPLAY_AMMOUNT_WIDTH = 17;
 
     /**
      * Helper: Generate ANSI escape codes for RGB.
@@ -65,6 +71,25 @@ public final class BudgetDiffPrinter {
         compareMinistries(before, after);
     }
 
+    /**
+     * Calculate difference between the old and the new value.
+     * Format the difference.
+     * @param oldVal
+     * @param newVal
+     * @return difference formatted
+     */
+    private static String formatDiff(final BigDecimal oldVal,
+                                    final BigDecimal newVal) {
+        BigDecimal diff = newVal.subtract(oldVal);
+        if (diff.signum() == 0) {
+            return "";
+        }
+        if (diff.signum() > 0) {
+            return " (" + GREEN + "+" + diff + RESET + ")";
+        } else {
+            return " (" + RED + diff + RESET + ")";
+        }
+    }
 
     /**
      * Compares the general section of the budget.
@@ -90,11 +115,32 @@ public final class BudgetDiffPrinter {
                     + entry.getValue().getPerigrafi() + RESET);
 
                 System.out.println("    " + oldVal
-                               + " → " + BLUE + newVal + RESET);
+                               + " → " + BLUE + newVal + RESET
+                               + formatDiff(oldVal, newVal));
             }
         }
-    }
 
+        Eggrafi resultRecord = after.getExpenses().values().stream()
+        .filter(e -> e.getPerigrafi().toUpperCase().contains("ΑΠΟΤΕΛΕΣΜΑ"))
+                        .findFirst()
+                        .orElse(null);
+
+        String resultCode = resultRecord.getKodikos();
+
+        BigDecimal oldResult = before.totalRevenues()
+                                .subtract(before.totalExpenses());
+        BigDecimal newResult = after.totalRevenues()
+                                .subtract(after.totalExpenses());
+
+        if (oldResult.compareTo(newResult) != 0) {
+            System.out.println("\n" + BOLD + "  " + resultCode + " | "
+            + "ΑΠΟΤΕΛΕΣΜΑ ΚΡΑΤΙΚΟΥ ΠΡΟΫΠΟΛΟΓΙΣΜΟΥ (ΕΣΟΔΑ - ΕΞΟΔΑ)" + RESET);
+
+            System.out.println("    " + oldResult
+                + " → " + BLUE + newResult + RESET
+                + formatDiff(oldResult, newResult));
+        }
+    }
 
     /**
      * Compares the ministries section of the budget.
@@ -125,18 +171,24 @@ public final class BudgetDiffPrinter {
 
                 if (oldM.getTaktikos().compareTo(newM.getTaktikos()) != 0) {
                     System.out.println("    Τακτικός: " + oldM.getTaktikos()
-                                   + " → " + BLUE + newM.getTaktikos() + RESET);
+                                   + " → " + BLUE + newM.getTaktikos() + RESET
+                                   + formatDiff(oldM.getTaktikos(),
+                                                newM.getTaktikos()));
                 }
 
                 if (oldM.getEpendyseis()
                         .compareTo(newM.getEpendyseis()) != 0) {
                     System.out.println("    ΠΔΕ: " + oldM.getEpendyseis()
-                                + " → " + BLUE + newM.getEpendyseis() + RESET);
+                                + " → " + BLUE + newM.getEpendyseis() + RESET
+                                + formatDiff(oldM.getEpendyseis(),
+                                            newM.getEpendyseis()));
                 }
 
                 if (oldM.getSynolo().compareTo(newM.getSynolo()) != 0) {
                     System.out.println("    Σύνολο: " + oldM.getSynolo()
-                                    + " → " + BLUE + newM.getSynolo() + RESET);
+                                    + " → " + BLUE + newM.getSynolo() + RESET
+                                    + formatDiff(oldM.getSynolo(),
+                                                newM.getSynolo()));
                 }
             }
         }
@@ -180,7 +232,7 @@ public final class BudgetDiffPrinter {
 
         // Table header
         System.out.printf(BOLD + "%-5s | %-65s | %-15s | %-15s | %-15s%n",
-                "A/A", "Υπουργείο", "Τακτικός", "Επενδύσεων", "Σύνολο" + RESET);
+            "A/A", "Υπουργείο", "Τακτικός", "Επενδύσεων", "Σύνολο" + RESET);
 
         for (Map.Entry<Integer, Ypourgeio> entry : budget
                                                 .getMinistries().entrySet()) {
@@ -208,13 +260,10 @@ public final class BudgetDiffPrinter {
     public static void compareGeneralSideBySide(final Budget before,
                                                 final Budget after) {
         System.out.println("\n" + BOLD + CYAN
-            + "=== ΣΥΓΚΡΙΣΗ ΓΕΝΙΚΟΥ ΠΡΟΫΠΟΛΟΓΙΣΜΟΥ ===\n" + RESET);
+            + "=== ΣΥΓΚΡΙΣΗ ΕΣΟΔΩΝ ΠΡΟΫΠΟΛΟΓΙΣΜΟΥ ===\n" + RESET);
 
-        System.out.printf("%-8s | %-70s | %-33s | %-25s%n",
-            BOLD + "Α/Α" + RESET,
-            BOLD + "Περιγραφή" + RESET,
-            BOLD + "Τρέχον" + RESET,
-            BOLD + "Τροποποιημένος" + RESET);
+         System.out.printf(BOLD + "%-6s | %-60s | %-30s | %-30s%n", "Α/Α",
+        "Έσοδα", "Τρέχον", "Τροποποιημένος", "Διαφορά" + RESET);
 
         for (Map.Entry<String, Eggrafi> entry : before.getRevenues()
                                                     .entrySet()) {
@@ -231,11 +280,14 @@ public final class BudgetDiffPrinter {
                 afterVal = BOLD + BLUE + afterVal + RESET;
             }
 
-            System.out.printf("%-6s | %-60s | %-25s | %-25s%n",
+            String diff = formatDiff(oldE.getPoso(), newE.getPoso());
+
+            System.out.printf("%-6s | %-60s | %-30s | %-30s%n",
                     code,
                     oldE.getPerigrafi(),
                     beforeVal,
-                    afterVal);
+                    afterVal,
+                    diff);
         }
     }
 
@@ -249,22 +301,16 @@ public final class BudgetDiffPrinter {
         System.out.println("\n" + BOLD + CYAN
             + "=== ΣΥΓΚΡΙΣΗ ΥΠΟΥΡΓΕΙΩΝ ===\n" + RESET);
 
-        System.out.printf("%-92s %-46s %-18s %-44s%n",
+        System.out.printf("%-96s %-48s %-20s %-44s%n",
                     " ",
                     UNDERLINE + BOLD + "Τρέχον" + RESET,
                     " | ",
                     UNDERLINE + BOLD + "Τροποποιημένος" + RESET);
 
-        System.out.printf(
-            "%-4s | %-73s | %-25s %-25s %-25s | %-25s %-25s %-14s%n",
-            BOLD + "Κωδ." + RESET,
-            BOLD + "Υπουργείο" + RESET,
-            BOLD + "Τακτικός" + RESET,
-            BOLD + "ΠΔΕ" + RESET,
-            BOLD + "Σύνολο" + RESET,
-            BOLD + "Τακτικός" + RESET,
-            BOLD + "ΠΔΕ" + RESET,
-            BOLD + "Σύνολο" + RESET);
+        System.out.printf(BOLD
+            + "%-5s | %-65s | %-17s  %-17s  %-20s | %-17s  %-17s  %-17s%n",
+            "A/A", "Υπουργείο", "Τακτικός", "Επενδύσεων",
+            "Σύνολο", "Τακτικός", "Επενδύσεων", "Σύνολο" + RESET);
 
         for (Map.Entry<Integer, Ypourgeio> entry : before.getMinistries()
                                                         .entrySet()) {
@@ -292,11 +338,26 @@ public final class BudgetDiffPrinter {
             }
 
             System.out.printf(
-                "%-4s | %-65s | %-17s %-17s %-17s | %-17s %-17s %-17s%n",
+                "%-5s | %-65s | %-17s  %-17s  %-20s | %-17s  %-17s  %-17s%n",
                 code,
                 oldM.getOnoma(),
-                tBefore, pBefore, sBefore,
-                tAfter, pAfter, sAfter);
+                oldM.getTaktikos(), oldM.getEpendyseis(), oldM.getSynolo(),
+                padRight(tAfter, DISPLAY_AMMOUNT_WIDTH),
+                padRight(pAfter, DISPLAY_AMMOUNT_WIDTH),
+                padRight(sAfter, DISPLAY_AMMOUNT_WIDTH));
         }
+    }
+
+    /**
+     * Pad a string with spaces to the right.
+     * @param s string that might contain ANSI format
+     * @param n the target display width
+     * @return the string followed by the correct number of visual spaces
+     */
+    private static String padRight(final String s, final int n) {
+        // Remove ANSI codes to calculate the actual visible length
+        String plain = s.replaceAll("\u001B\\[[;\\d]*m", "");
+        int spacesNeeded = n - plain.length();
+        return s + " ".repeat(Math.max(0, spacesNeeded));
     }
 }
