@@ -2,45 +2,43 @@ package dhmosiabytes;
 
 /**
  * Enum containing the options of the application's main menu.
+ * Some options may have role-dependent behavior.
  */
 public enum MenuOptions {
 
     /** Option to display the national budget. */
-    SHOW_BUDGET(1, "Εμφάνιση Κρατικού Προϋπολογισμού"),
+    SHOW_BUDGET(1),
 
     /** Option to summarize data. */
-    SUMMARY(2, "Εμφάνιση Προϋπολογισμού Υπουργείων"),
+    SUMMARY(2),
 
-    /** Option to edit budget details. */
-    EDIT_BUDGET(3, "Τροποποίηση Στοιχείων Προϋπολογισμού"),
+    /** Option whose meaning depends on the user's role
+     * (edit, request, or comparison).
+     */
+    ACTION_3(3),
 
     /** Option to aggrigate data. */
-    AGGRIGATE(4, "Συγκεντρωτικά Στοιχεία"),
+    AGGREGATE(4),
 
     /** Option to compare budgets from different years. */
-    COMPARISON(5, "Σύγκριση Κρατικού Προϋπολογισμού Διαφορετικών Ετών"),
+    COMPARISON(5),
 
     /** Option to display charts. */
-    GRAPHS(6, "Γραφήματα"),
+    GRAPHS(6),
 
     /** Option to exit the application. */
-    EXIT(0, "Έξοδος");
+    EXIT(0);
 
     /** Code of the menu option. */
     private final int code;
-
-    /** Description of the menu option. */
-    private final String description;
 
     /**
      * Creates a MenuOptions object with a code and description.
      *
      * @param givenCode the numeric code of the option
-     * @param givenDescription the description of the option
      */
-    MenuOptions(final int givenCode, final String givenDescription) {
+    MenuOptions(final int givenCode) {
         this.code = givenCode;
-        this.description = givenDescription;
     }
 
     /**
@@ -50,15 +48,6 @@ public enum MenuOptions {
      */
     public int getCode() {
         return this.code;
-    }
-
-    /**
-     * Returns the description of the menu option.
-     *
-     * @return the description of the option
-     */
-    public String getDescription() {
-        return description;
     }
 
     /**

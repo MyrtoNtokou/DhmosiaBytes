@@ -46,7 +46,7 @@ public class ShowEditMenuOptions {
                 scanner.nextLine();
             } catch (IllegalArgumentException e) {
                 System.out.println("Μη έγκυρη επιλογή.");
-                System.out.println("Δώστε έναν αριθμό από το 1 έως "
+                System.out.println("Δώστε έναν αριθμό από το 1 έως το "
                 + RevenueOrExpense.values().length);
             }
 

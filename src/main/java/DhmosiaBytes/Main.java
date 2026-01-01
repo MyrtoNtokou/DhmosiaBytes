@@ -34,6 +34,7 @@ public final class Main {
     private static Role selectRole(final Scanner input) {
         while (true) {
             System.out.println("\nΕπιλέξτε μία από τις παρακάτω ιδιότητες:");
+            System.out.println();
             for (Role r : Role.values()) {
                 System.out.println(r.getCode() + ". " + r.getUsersRole());
             }
@@ -74,25 +75,35 @@ public final class Main {
                 break;
             }
 
-            int choice;
-            while (true) {
+            int choice = -1;
+            boolean validChoice = false;
+            while (!validChoice) {
                 System.out.println("\n1. Δημιουργία λογαριασμού");
                 System.out.println("2. Σύνδεση σε λογαριασμό");
                 System.out.println("0. Έξοδος");
-                System.out.printf("Επιλογή: ");
+                System.out.print("Επιλογή: ");
                 try {
                     choice = input.nextInt();
-                    if (choice == CODE_FOR_EXIT) {
-                        System.out.println("Έξοδος από την εφαρμογή");
-                        running = false;
-                        break;
-                    } else if (choice == 1 || choice == 2) {
-                        break;
-                    } else {
-                        System.out.println("Πρέπει να επιλέξετε 1, 2 ή 0");
+                    switch (choice) {
+                        case CODE_FOR_EXIT -> {
+                            System.out.println("Έξοδος από την εφαρμογή");
+                            running = false;
+                            validChoice = true;
+                            break;
+                        }
+                        case 1 -> {
+                            validChoice = true;
+                            break;
+                        }
+                        case 2 -> {
+                            validChoice = true;
+                            break;
+                        }
+                        default -> System.out.println("Πρέπει να επιλέξετε 1, "
+                        + "2 ή 0");
                     }
                 } catch (InputMismatchException e) {
-                    System.out.print("Παρακαλώ εισάγετε αριθμό:");
+                    System.out.println("Παρακαλώ εισάγετε αριθμό:");
                     input.next();
                 }
             }

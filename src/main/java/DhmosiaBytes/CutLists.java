@@ -143,7 +143,7 @@ public class CutLists {
                 scanner.nextLine();
             } catch (InputMismatchException e) {
                 System.out.println("Δώστε έναν αριθμό από το 1 έως το "
-                + MinistryOptions.values().length);
+                + ministries.get(ministries.size() - 1).getKodikos());
                 scanner.nextLine();
                 continue;
             } catch (IllegalArgumentException e) {

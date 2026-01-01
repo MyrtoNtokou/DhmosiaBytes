@@ -1,7 +1,6 @@
 package dhmosiabytes;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import org.junit.jupiter.api.Test;
 
 class TestUser {
@@ -24,7 +23,7 @@ class TestUser {
         String username = "Test";
         String password = "Test123";
         User user = new User(role, username, password);
-        String expected = "Test (Υπουργός Οικονομικών)";
+        String expected = "Test (Υπουργείο Οικονομικών)";
         assertEquals(expected, user.toString());
     }
 }

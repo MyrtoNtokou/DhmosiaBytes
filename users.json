@@ -1,11 +1,6 @@
 {
-  "test_1": {
-    "role": "PRIME_MINISTER",
-    "username": "test_1",
-    "password": "Test1"
-  },
-  "test4": {
-    "role": "FINANCE_MINISTRY_EMPLOYEE",
+  "test_4": {
+    "role": "OTHER_MINISTRY",
     "username": "test_4",
     "password": "Test4"
   },
@@ -13,5 +8,10 @@
     "role": "FINANCE_MINISTER",
     "username": "test_3",
     "password": "Test3"
+  },
+  "test_1": {
+    "role": "PRIME_MINISTER",
+    "username": "test_1",
+    "password": "Test1"
   }
 }

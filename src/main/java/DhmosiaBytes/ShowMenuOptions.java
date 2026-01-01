@@ -7,10 +7,12 @@ import java.util.Scanner;
 import budgetcomparison.ComparisonController;
 import budgetlogic.Budget;
 import budgetlogic.BudgetAssembler;
+import budgetlogic.BudgetDiffPrinter;
 import budgetreader.DisplayBudget;
 import budgetreader.Eggrafi;
 import budgetreader.ReadBudget;
 import budgetreader.Ypourgeio;
+
 
 
 
@@ -25,8 +27,11 @@ public final class ShowMenuOptions {
      */
     private ShowMenuOptions() { }
 
+    /** Code for option 3. */
+    private static final int CODE_FOR_OPTION_3 = 3;
+
     /** Code to edit a new file. */
-    private static final int CODE_FOR_MENUS = 2;
+    private static final int CODE_FOR_MENUS = 4;
 
     /**
      * Displays the menu options depending on the role's access rights.
@@ -40,11 +45,11 @@ public final class ShowMenuOptions {
         Graphs graph = new Graphs();
         MenuOptions choice = null;
         do {
-            // Display menu options
+            System.out.println();
             for (MenuOptions opt : MenuOptions.values()) {
                 if (currentRole.canAccess(opt)) {
                     System.out.println(opt.getCode() + ". "
-                    + opt.getDescription());
+                    + currentRole.getMenuLabel(opt));
                 }
             }
 
@@ -75,8 +80,8 @@ public final class ShowMenuOptions {
             switch (choice) {
                 case SHOW_BUDGET -> showBudget();
                 case SUMMARY -> summary();
-                case EDIT_BUDGET -> editBudget(input);
-                case AGGRIGATE -> {
+                case ACTION_3 -> handleAction3(currentRole, input);
+                case AGGREGATE -> {
                     AggregateMenu agg = new AggregateMenu();
                     int code = agg.typeOfBudget(input);
                     agg.displayMinMax(code, input);
@@ -113,6 +118,50 @@ public final class ShowMenuOptions {
     }
 
     /**
+     * Handles the functionality of the third menu option (ACTION_3)
+     * depending on the role of the current user.
+     *
+     * @param currentRole the role of the user executing the action
+     * @param input the Scanner object for reading user input
+     */
+    public static void handleAction3(final Role currentRole,
+    final Scanner input) {
+        switch (currentRole) {
+            case PRIME_MINISTER, PARLIAMENT -> showComparedBudgets();
+            case FINANCE_MINISTER -> editBudget(input);
+            case OTHER_MINISTRY -> {
+                showComparedBudgets();
+                System.out.println();
+                System.out.println("Θέλετε να υποβάλλετε κάποιο αίτημα "
+                + "αλλαγής του προϋπολογισμού;");
+                System.out.println("Τα αιτήματα σας θα σταλούν στο Υπουργείο "
+                + "Οικονομικών για αξιολόγηση.");
+            }
+            default -> System.out.println("Σφάλμα κατά την φόρτωση "
+            + "της ενέργειας");
+        }
+    }
+
+    /**
+     * Loads the current and modified budgets and prints a side-by-side
+     * comparison of both the general budget and individual ministries.
+     */
+    public static void showComparedBudgets() {
+        BudgetAssembler assembler = new BudgetAssembler();
+        Budget currentBudget = assembler
+        .loadBudget("proypologismos2025.csv",
+        "proypologismos2025anaypourgeio.csv");
+        Budget modifiedBudget = assembler.loadBudget("newgeneral.csv",
+        "newministries.csv");
+        // === Εκτύπωση σύγκρισης Γενικού Προϋπολογισμού ===
+        BudgetDiffPrinter.compareGeneralSideBySide(currentBudget,
+        modifiedBudget);
+        // === Εκτύπωση σύγκρισης Υπουργείων ===
+        BudgetDiffPrinter.compareMinistriesSideBySide(currentBudget,
+        modifiedBudget);
+    }
+
+    /**
      * Allows the user to select a budget file to edit and modify either
      * income or expense entries. The user can return to the previous menu
      * by selecting 0.
@@ -122,10 +171,14 @@ public final class ShowMenuOptions {
     public static void editBudget(final Scanner input) {
         int choice;
         do {
-            System.out.println("0. Έξοδος");
-            System.out.println("1. Τρέχων προϋπολογισμός");
-            System.out.println("2. Τροποποιημένο αρχείο");
-            System.out.print("\nΕπιλέξτε το αρχείο που θα επεξεργαστείτε: ");
+            System.out.println("\n\n0. Έξοδος");
+            System.out.println("1. Επεξεργασία Τρέχοντος Προϋπολογισμού");
+            System.out.println("2. Επεξεργασία Τροποποιημένου Αρχείου "
+            + "Προϋπολογισμού");
+            System.out.println("3. Σύγκριση Τρέχοντος και "
+            + "Τροποποιημένου Προϋπολογισμού");
+            System.out.println("4. Προβολή Αιτημάτων από άλλα Υπουργεία");
+            System.out.print("\nΕπιλογή: ");
             try {
                 choice = input.nextInt();
                 input.nextLine();
@@ -137,25 +190,40 @@ public final class ShowMenuOptions {
 
             if (choice == 0) {
                 break;
-            } else if (choice != 1 && choice != 2) {
+            } else if (choice < 1 || choice > CODE_FOR_MENUS) {
                 System.out.println("Μη έγκυρη επιλογή.");
-                System.out.println("Πρέπει να επιλέξετε 1 ή "
+                System.out.println("Πρέπει να επιλέξετε από το 1 έως το "
                 + CODE_FOR_MENUS + ".");
+                continue;
             }
 
             Budget initialBudget;
-            if (choice == 1) {
-                BudgetAssembler loader = new BudgetAssembler();
-                initialBudget = loader.loadBudget("proypologismos2025.csv",
-                "proypologismos2025anaypourgeio.csv");
-            } else {
-                BudgetAssembler loader = new BudgetAssembler();
-                initialBudget = loader.loadBudget("newgeneral.csv",
-                "newministries.csv");
+            switch (choice) {
+                case 1 -> {
+                    BudgetAssembler loader = new BudgetAssembler();
+                    initialBudget = loader.loadBudget("proypologismos2025.csv",
+                    "proypologismos2025anaypourgeio.csv");
+                    ShowEditMenuOptions edit = new ShowEditMenuOptions();
+                    RevenueOrExpense usersChoice = edit
+                    .chooseRevenueOrExpense(input);
+                    edit.editRevenueOrExpense(initialBudget, input,
+                    usersChoice);
+                }
+                case 2 -> {
+                    BudgetAssembler loader = new BudgetAssembler();
+                    initialBudget = loader.loadBudget("newgeneral.csv",
+                    "newministries.csv");
+                    ShowEditMenuOptions edit = new ShowEditMenuOptions();
+                    RevenueOrExpense usersChoice = edit
+                    .chooseRevenueOrExpense(input);
+                    edit.editRevenueOrExpense(initialBudget, input,
+                    usersChoice);
+                }
+                case CODE_FOR_OPTION_3 -> showComparedBudgets();
+                case CODE_FOR_MENUS -> System.out
+                .print("\nΑιτήματα Άλλων Υπουργείων:");
+                default -> System.out.println("Μη έγκυρη επιλογή.");
             }
-            ShowEditMenuOptions edit = new ShowEditMenuOptions();
-            RevenueOrExpense usersChoice = edit.chooseRevenueOrExpense(input);
-            edit.editRevenueOrExpense(initialBudget, input, usersChoice);
         } while (true);
     }
 
