@@ -40,11 +40,11 @@ public final class DiffColorizer {
         String colored = cleanDiff;
         colored = colored.replaceAll(
             "\\(\\+([0-9.,]+)\\)",
-            "(+" + GREEN + "$1" + RESET + ")");
+            "(" + GREEN + "+$1" + RESET + ")");
 
         colored = colored.replaceAll(
             "\\(-([0-9.,]+)\\)",
-            "(-" + RED + "$1" + RESET + ")");
+            "(" + RED + "-$1" + RESET + ")");
 
         colored = colored.replaceAll(
                 "→\\s*([0-9.,]+)",
