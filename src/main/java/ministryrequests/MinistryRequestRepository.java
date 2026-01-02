@@ -210,6 +210,7 @@ public class MinistryRequestRepository {
 
         if (found) {
             saveAll(all);
+            System.out.println("Η κατάσταση ενημερώθηκε επιτυχώς.");
         } else {
             System.out.println("Δεν βρέθηκε αίτημα με Id = " + id);
         }
@@ -241,4 +242,20 @@ public class MinistryRequestRepository {
 
         return result;
     }
+
+    /**
+     * Check if a completed request already exists.
+     * @param ministryCode
+     * @param hash
+     * @return true/false
+     */
+    public boolean existsCompletedDuplicate(final int ministryCode,
+                                            final int hash) {
+        return loadAll().stream()
+                .anyMatch(r ->
+                        r.getMinistryCode() == ministryCode
+                        && r.getHash() == hash
+                        && r.getStatus() == RequestStatus.COMPLETED);
+    }
+
 }

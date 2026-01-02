@@ -14,6 +14,17 @@ public class MinistryRequestService {
                     new MinistryRequestRepository();
 
     /**
+     * Normalize text that contains the requested changes.
+     * @param text
+     * @return the normalized text
+     */
+    private String normalize(final String text) {
+        return text .replaceAll("\r\n", "\n")
+        .replaceAll("\r", "\n") .replaceAll("[ \t]+", " ")
+        .replaceAll("\n+", "\n") .trim();
+    }
+
+    /**
      * Submit a new ministry request and store it as PENDING.
      * @param ministry the ministry submitting the request
      * @param rawDiff the raw budget differences text
@@ -23,6 +34,14 @@ public class MinistryRequestService {
                                     final RequestType type) {
 
         String saveVersion = formatForSaving(rawDiff);
+        String normalized = normalize(saveVersion);
+        int hash = normalized.hashCode();
+
+        if (repo.existsCompletedDuplicate(ministry.getKodikos(), hash)) {
+            System.out.println("Το αίτημα αυτό έχει ήδη εγκριθεί "
+                        + "και εφαρμοστεί.");
+            return;
+        }
 
         MinistryRequest request = new MinistryRequest(
                 0,
@@ -31,7 +50,7 @@ public class MinistryRequestService {
                 type,
                 RequestStatus.PENDING,
                 LocalDateTime.now(),
-                saveVersion);
+                normalized);
 
         repo.saveNew(request);
     }
