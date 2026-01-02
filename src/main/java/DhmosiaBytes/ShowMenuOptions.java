@@ -12,9 +12,10 @@ import budgetreader.DisplayBudget;
 import budgetreader.Eggrafi;
 import budgetreader.ReadBudget;
 import budgetreader.Ypourgeio;
-
-
-
+import ministryrequests.MinistryRequest;
+import ministryrequests.MinistryRequestPrinter;
+import ministryrequests.MinistryRequestService;
+import ministryrequests.RequestType;
 
 /**
  * Class that displays the application's main menu.
@@ -220,8 +221,22 @@ public final class ShowMenuOptions {
                     usersChoice);
                 }
                 case CODE_FOR_OPTION_3 -> showComparedBudgets();
-                case CODE_FOR_MENUS -> System.out
-                .print("\nΑιτήματα Άλλων Υπουργείων:");
+                case CODE_FOR_MENUS -> {
+                    System.out.print("\nΑιτήματα Άλλων Υπουργείων:");
+                    MinistryRequestService reqService =
+                        new MinistryRequestService();
+                    List<MinistryRequest> pendingReqs =
+                        reqService.getPendingByType(RequestType.BOTH);
+                    MinistryRequestPrinter.printRequests(pendingReqs);
+                    int code = RequestsController.chooseRequest(input);
+                    int complOrRej = RequestsController.completeOrReject(input,
+                        code);
+                    if (complOrRej == 1) {
+                        reqService.markCompleted(code);
+                    } else {
+                        reqService.markRejected(code);
+                    }
+                }
                 default -> System.out.println("Μη έγκυρη επιλογή.");
             }
         } while (true);

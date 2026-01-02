@@ -1,15 +1,13 @@
 package budgetlogic;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 import budgetreader.Eggrafi;
 import budgetreader.Ypourgeio;
-
-
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-import java.nio.charset.StandardCharsets;
 
 /**
  * Print general and ministries budget after changes.

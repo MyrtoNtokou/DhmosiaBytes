@@ -163,8 +163,7 @@ public enum Role {
      */
     public boolean canAccess(final MenuOptions option) {
         return switch (option) {
-            case SHOW_BUDGET, SUMMARY, GRAPHS, AGGREGATE -> true;
-            case COMPARISON -> canViewComparison;
+            case SHOW_BUDGET, SUMMARY, GRAPHS, AGGREGATE, COMPARISON -> true;
             case ACTION_3 -> true;
             case EXIT -> true;
         };
