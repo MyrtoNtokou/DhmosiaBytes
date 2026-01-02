@@ -5,6 +5,25 @@ import java.util.Scanner;
 
 public final class RequestsController {
 
+     /** ANSI reset code to clear all formatting. */
+    private static final String RESET = "\u001B[0m";
+    /** ANSI bold text modifier. */
+    private static final String BOLD = "\u001B[1m";
+
+    /**
+     * Helper: Generate ANSI escape codes for RGB.
+     * @param r red component
+     * @param g green component
+     * @param b blue component
+     * @return ANSI escape code fro RGB
+     */
+    private static String rgb(final int r, final int g, final int b) {
+        return "\u001B[38;2;" + r + ";" + g + ";" + b + "m";
+    }
+
+    /** Cyan for ID. */
+    private static final String CYAN = rgb(0, 200, 255);
+
     /** Code for option 2: rejected. */
     private static final int REJECT = 2;
 
@@ -25,7 +44,8 @@ public final class RequestsController {
             + "αιτήματα που έχετε ολοκληρώσει ή απορρίψει.");
             System.out.println("Επιλέξτε 0 για επιστροφή στο "
             + "προηγούμενο μενού.");
-            System.out.print("Επιλέξτε το ID Αιτήματος "
+            System.out.print("Επιλέξτε το " + BOLD + CYAN
+            + "ID Αιτήματος " + RESET
             + "για ολοκλήρωση ή απόρριψη: ");
             try {
                 choice = input.nextInt();
