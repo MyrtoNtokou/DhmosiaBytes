@@ -113,10 +113,10 @@ public final class BudgetDiffPrinter {
             BigDecimal newVal = after.getRevenues().get(k).getPoso();
 
             if (oldVal.compareTo(newVal) != 0) {
-                System.out.println("\n" + BOLD + "  " + k + " | "
+                System.out.println("\n" + BOLD + k + " | "
                     + entry.getValue().getPerigrafi() + RESET);
 
-                System.out.println("    " + oldVal
+                System.out.println(oldVal
                                + " → " + BLUE + newVal + RESET
                                + formatDiff(oldVal, newVal));
             }
@@ -135,10 +135,10 @@ public final class BudgetDiffPrinter {
                                 .subtract(after.totalExpenses());
 
         if (oldResult.compareTo(newResult) != 0) {
-            System.out.println("\n" + BOLD + "  " + resultCode + " | "
+            System.out.println("\n" + BOLD + resultCode + " | "
             + "ΑΠΟΤΕΛΕΣΜΑ ΚΡΑΤΙΚΟΥ ΠΡΟΫΠΟΛΟΓΙΣΜΟΥ (ΕΣΟΔΑ - ΕΞΟΔΑ)" + RESET);
 
-            System.out.println("    " + oldResult
+            System.out.println(oldResult
                 + " → " + BLUE + newResult + RESET
                 + formatDiff(oldResult, newResult));
         }
@@ -168,11 +168,11 @@ public final class BudgetDiffPrinter {
                 || oldM.getSynolo().compareTo(newM.getSynolo()) != 0;
 
             if (changed) {
-                System.out.println("\n" + BOLD + "  " + k + " | "
+                System.out.println("\n" + BOLD + k + " | "
                                             + oldM.getOnoma() + RESET);
 
                 if (oldM.getTaktikos().compareTo(newM.getTaktikos()) != 0) {
-                    System.out.println("    Τακτικός: " + oldM.getTaktikos()
+                    System.out.println("Τακτικός: " + oldM.getTaktikos()
                                    + " → " + BLUE + newM.getTaktikos() + RESET
                                    + formatDiff(oldM.getTaktikos(),
                                                 newM.getTaktikos()));
@@ -180,14 +180,14 @@ public final class BudgetDiffPrinter {
 
                 if (oldM.getEpendyseis()
                         .compareTo(newM.getEpendyseis()) != 0) {
-                    System.out.println("    ΠΔΕ: " + oldM.getEpendyseis()
+                    System.out.println("ΠΔΕ: " + oldM.getEpendyseis()
                                 + " → " + BLUE + newM.getEpendyseis() + RESET
                                 + formatDiff(oldM.getEpendyseis(),
                                             newM.getEpendyseis()));
                 }
 
                 if (oldM.getSynolo().compareTo(newM.getSynolo()) != 0) {
-                    System.out.println("    Σύνολο: " + oldM.getSynolo()
+                    System.out.println("Σύνολο: " + oldM.getSynolo()
                                     + " → " + BLUE + newM.getSynolo() + RESET
                                     + formatDiff(oldM.getSynolo(),
                                                 newM.getSynolo()));
