@@ -7,6 +7,10 @@ import budgetreader.Eggrafi;
 import budgetreader.Ypourgeio;
 
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
+
 /**
  * Print general and ministries budget after changes.
  * Output is formatted with ANSI escape codes (bold + blue).
@@ -192,6 +196,26 @@ public final class BudgetDiffPrinter {
                 }
             }
         }
+    }
+
+    /**
+     * Convert the compareMinistries System.out into String.
+     * @param before
+     * @param after
+     * @return String of change
+     */
+    public static String captureMinistryDiff(final Budget before,
+                                            final Budget after) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream ps = new PrintStream(baos, true, StandardCharsets.UTF_8);
+        PrintStream oldOut = System.out;
+
+        System.setOut(ps);
+        compareMinistries(before, after);
+        System.out.flush();
+        System.setOut(oldOut);
+
+        return baos.toString(StandardCharsets.UTF_8);
     }
 
     /**
