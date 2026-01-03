@@ -188,7 +188,8 @@ public final class MoreCharts {
 
         // Display LineChart
         SwingWrapper<XYChart> window = new SwingWrapper<>(chart);
-        window.displayChart();
+        JFrame frame = window.displayChart();
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     }
 
 }
