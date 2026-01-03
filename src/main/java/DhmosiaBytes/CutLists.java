@@ -1,7 +1,6 @@
 package dhmosiabytes;
 
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -25,7 +24,7 @@ public class CutLists {
      */
     public List<Eggrafi> cutEggrafiEsoda() {
         List<Eggrafi> g =
-        ReadBudget.readGeneralBudget("proypologismos2025.csv");
+        ReadBudget.readGeneralBudget("proypologismos2026.csv");
 
         List<Eggrafi> esoda = new ArrayList<>();
         for (Eggrafi e : g) {
@@ -43,7 +42,7 @@ public class CutLists {
      */
     public List<Eggrafi> cutEggrafiExoda() {
         List<Eggrafi> g =
-        ReadBudget.readGeneralBudget("proypologismos2025.csv");
+        ReadBudget.readGeneralBudget("proypologismos2026.csv");
 
         List<Eggrafi> exoda = new ArrayList<>();
         for (Eggrafi e : g) {
@@ -61,7 +60,7 @@ public class CutLists {
      */
     public List<Ypourgeio> cutYpourgeio() {
         List<Ypourgeio> y =
-        ReadBudget.readByMinistry("proypologismos2025anaypourgeio.csv");
+        ReadBudget.readByMinistry("proypologismos2026anaypourgeio.csv");
 
         List<Ypourgeio> ministries = new ArrayList<>();
         for (Ypourgeio e : y) {
@@ -139,18 +138,14 @@ public class CutLists {
             System.out.print("Επιλέξτε τον κωδικό του στοιχείου που θέλετε "
             + "να τροποποιήσετε: ");
             try {
-                choice = scanner.nextInt();
-                scanner.nextLine();
-            } catch (InputMismatchException e) {
-                System.out.println("Δώστε έναν αριθμό από το 1 έως το "
-                + ministries.get(ministries.size() - 1).getKodikos());
-                scanner.nextLine();
-                continue;
+                choice = Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Δώστε έναν έγκυρο αριθμό.");
+                 continue;
             } catch (IllegalArgumentException e) {
                 System.out.println("Μη έγκυρη επιλογή.");
                 continue;
             }
-
             if (choice == 0) {
                 return 0;
             }

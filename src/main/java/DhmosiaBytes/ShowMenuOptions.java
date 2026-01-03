@@ -114,7 +114,7 @@ public final class ShowMenuOptions {
     /** Displays the national budget. */
     public static void showBudget() {
         List<Eggrafi> g =
-        ReadBudget.readGeneralBudget("proypologismos2025.csv");
+        ReadBudget.readGeneralBudget("proypologismos2026.csv");
         DisplayBudget.showGeneral(g);
     }
 
@@ -150,8 +150,8 @@ public final class ShowMenuOptions {
     public static void showComparedBudgets() {
         BudgetAssembler assembler = new BudgetAssembler();
         Budget currentBudget = assembler
-        .loadBudget("proypologismos2025.csv",
-        "proypologismos2025anaypourgeio.csv");
+        .loadBudget("proypologismos2026.csv",
+        "proypologismos2026anaypourgeio.csv");
         Budget modifiedBudget = assembler.loadBudget("newgeneral.csv",
         "newministries.csv");
         // === Εκτύπωση σύγκρισης Γενικού Προϋπολογισμού ===
@@ -202,8 +202,8 @@ public final class ShowMenuOptions {
             switch (choice) {
                 case 1 -> {
                     BudgetAssembler loader = new BudgetAssembler();
-                    initialBudget = loader.loadBudget("proypologismos2025.csv",
-                    "proypologismos2025anaypourgeio.csv");
+                    initialBudget = loader.loadBudget("proypologismos2026.csv",
+                    "proypologismos2026anaypourgeio.csv");
                     ShowEditMenuOptions edit = new ShowEditMenuOptions();
                     RevenueOrExpense usersChoice = edit
                     .chooseRevenueOrExpense(input);
@@ -245,7 +245,7 @@ public final class ShowMenuOptions {
     /** Shows summarized data. */
     public static void summary() {
         List<Ypourgeio> y =
-        ReadBudget.readByMinistry("proypologismos2025anaypourgeio.csv");
+        ReadBudget.readByMinistry("proypologismos2026anaypourgeio.csv");
         DisplayBudget.showMinistry(y);
     }
 }
