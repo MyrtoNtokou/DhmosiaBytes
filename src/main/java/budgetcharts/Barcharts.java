@@ -236,7 +236,6 @@ public final class Barcharts {
         chart.addSeries("Έσοδα", years, esodaList);
 
         // Display chart
-        new SwingWrapper<>(chart).displayChart();
         SwingWrapper<CategoryChart> sw = new SwingWrapper<>(chart);
         javax.swing.JFrame frame = sw.displayChart();
         frame.setDefaultCloseOperation(
