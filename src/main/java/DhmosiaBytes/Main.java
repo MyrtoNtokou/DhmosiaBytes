@@ -1,6 +1,5 @@
 package dhmosiabytes;
 
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -42,7 +41,7 @@ public final class Main {
             System.out.print("Επιλογή: ");
 
             try {
-                int roleCode = input.nextInt();
+                int roleCode = Integer.parseInt(input.nextLine());
                 if (roleCode >= MIN_CODE && roleCode <= MAX_CODE) {
                     return Role.fromCode(roleCode);
                 } else if (roleCode == 0) {
@@ -50,9 +49,8 @@ public final class Main {
                 }
                 System.out.println("Πρέπει να επιλέξετε μία από τις "
                 + "παραπάνω ιδιότητες (1-" + MAX_CODE + ")");
-            } catch (InputMismatchException e) {
+            } catch (NumberFormatException e) {
                 System.out.println("Παρακαλώ εισάγετε αριθμό.");
-                input.next();
             }
         }
     }
@@ -82,29 +80,26 @@ public final class Main {
                 System.out.println("2. Σύνδεση σε λογαριασμό");
                 System.out.println("0. Έξοδος");
                 System.out.print("Επιλογή: ");
+                String line = input.nextLine();
                 try {
-                    choice = input.nextInt();
-                    switch (choice) {
-                        case CODE_FOR_EXIT -> {
-                            System.out.println("Έξοδος από την εφαρμογή");
-                            running = false;
-                            validChoice = true;
-                            break;
-                        }
-                        case 1 -> {
-                            validChoice = true;
-                            break;
-                        }
-                        case 2 -> {
-                            validChoice = true;
-                            break;
-                        }
-                        default -> System.out.println("Πρέπει να επιλέξετε 1, "
-                        + "2 ή 0");
-                    }
-                } catch (InputMismatchException e) {
+                    choice = Integer.parseInt(line);
+                } catch (NumberFormatException e) {
                     System.out.println("Παρακαλώ εισάγετε αριθμό:");
-                    input.next();
+                    continue;
+                }
+
+                switch (choice) {
+                    case CODE_FOR_EXIT -> {
+                    System.out.println("Έξοδος από την εφαρμογή");
+                    running = false;
+                    validChoice = true;
+                    }
+                    case 1, 2 -> {
+                        validChoice = true;
+                    }
+                    default -> {
+                        System.out.println("Πρέπει να επιλέξετε 1, 2 ή 0");
+                    }
                 }
             }
 
@@ -146,7 +141,7 @@ public final class Main {
             } else {
                 // Login
                 System.out.println("\nΠαρακαλώ εισάγετε το username σας: ");
-                String currentUsername = input.next();
+                String currentUsername = input.nextLine();
 
                 if (UserDatabase.getDB().findUser(currentUsername) == null) {
                     System.out.println("Δεν υπάρχει χρήστης"
@@ -159,7 +154,7 @@ public final class Main {
                 int counter = MAX_TIMES_CODE;
                 while (counter > 0 && !iAmIn) {
                     System.out.println("Παρακαλώ εισάγετε το password σας: ");
-                    currentPassword = input.next();
+                    currentPassword = input.nextLine();
                     currentUser = log.login(currentRole, currentUsername,
                     currentPassword);
                     if (currentUser != null) {
