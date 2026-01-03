@@ -29,11 +29,43 @@ public class EggrafiTest {
      */
     @Test
     public void testToString() {
-        Eggrafi e = new Eggrafi("002", "Example", new BigDecimal(50.0));
+        Eggrafi e = new Eggrafi(
+            "002",
+            "Example",
+            new BigDecimal(50.0));
 
         String text = e.toString();
 
         /* Basic check that toString works */
         assertEquals(true, text.contains("002"));
     }
+
+    /**
+     * Tests that setters correctly update the fields.
+     */
+    @Test
+    public void testSetters() {
+        Eggrafi e = new Eggrafi(
+            "001",
+            "Old",
+            new BigDecimal("10"));
+
+        e.setKodikos("002");
+        e.setPerigrafi("New");
+        e.setPoso(new BigDecimal("20.50"));
+
+        assertEquals("002", e.getKodikos());
+        assertEquals("New", e.getPerigrafi());
+        assertEquals(new BigDecimal("20.50"), e.getPoso());
+    }
+
+    @Test
+    public void testToStringWithDecimalAmount() {
+        Eggrafi e = new Eggrafi(
+            "004",
+            "Decimal",
+            new BigDecimal("1234.56"));
+
+        assertEquals("004 | Decimal | 1.235", e.toString());
+}
 }
