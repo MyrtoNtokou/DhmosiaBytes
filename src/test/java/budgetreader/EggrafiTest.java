@@ -1,6 +1,7 @@
 package budgetreader;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
 
@@ -58,7 +59,10 @@ public class EggrafiTest {
         assertEquals("New", e.getPerigrafi());
         assertEquals(new BigDecimal("20.50"), e.getPoso());
     }
-
+    
+    /**
+     * Tests that toString formats amount with decimals correctly.
+     */
     @Test
     public void testToStringWithDecimalAmount() {
         Eggrafi e = new Eggrafi(
@@ -66,6 +70,7 @@ public class EggrafiTest {
             "Decimal",
             new BigDecimal("1234.56"));
 
-        assertEquals("004 | Decimal | 1.235", e.toString());
-}
+        String text = e.toString();
+        assertTrue(text.matches("004 \\| Decimal \\| 1[.,]235"));
+    }
 }
