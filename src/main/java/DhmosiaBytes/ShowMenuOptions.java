@@ -98,7 +98,6 @@ public final class ShowMenuOptions {
                     }
                 }
                 case GRAPHS -> {
-                    graph.chooseGraph(input);
                     graph.runGraphs(input);
                 }
                 case EXIT -> {
