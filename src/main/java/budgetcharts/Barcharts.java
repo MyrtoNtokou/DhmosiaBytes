@@ -92,6 +92,7 @@ public final class Barcharts {
         frame.setAlwaysOnTop(true);
         frame.toFront();
         frame.requestFocus();
+        frame.setAlwaysOnTop(false);
 
     }
 
@@ -150,6 +151,7 @@ public final class Barcharts {
         frame.setAlwaysOnTop(true);
         frame.toFront();
         frame.requestFocus();
+        frame.setAlwaysOnTop(false);
     }
 
     /**
@@ -198,6 +200,7 @@ public final class Barcharts {
         frame.setAlwaysOnTop(true);
         frame.toFront();
         frame.requestFocus();
+        frame.setAlwaysOnTop(false);
     }
 
     /**
@@ -260,6 +263,7 @@ public final class Barcharts {
         frame.setAlwaysOnTop(true);
         frame.toFront();
         frame.requestFocus();
+        frame.setAlwaysOnTop(false);
     }
 
     /**
@@ -324,6 +328,7 @@ public final class Barcharts {
         frame.setAlwaysOnTop(true);
         frame.toFront();
         frame.requestFocus();
+        frame.setAlwaysOnTop(false);
     }
 
     /**
@@ -393,5 +398,6 @@ public final class Barcharts {
         frame.setAlwaysOnTop(true);
         frame.toFront();
         frame.requestFocus();
+        frame.setAlwaysOnTop(false);
     }
 }
