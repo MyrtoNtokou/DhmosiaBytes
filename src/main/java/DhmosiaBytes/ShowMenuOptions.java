@@ -172,9 +172,8 @@ public final class ShowMenuOptions {
         int choice;
         do {
             System.out.println("\n\n0. Έξοδος");
-            System.out.println("1. Επεξεργασία Τρέχοντος Προϋπολογισμού");
-            System.out.println("2. Επεξεργασία Τροποποιημένου Αρχείου "
-            + "Προϋπολογισμού");
+            System.out.println("1. Επεξεργασία Προϋπολογισμού");
+            System.out.println("2. Ιστορικό Τροποποιήσεων Προϋπολογισμού");
             System.out.println("3. Σύγκριση Τρέχοντος και "
             + "Τροποποιημένου Προϋπολογισμού");
             System.out.println("4. Προβολή Αιτημάτων από άλλα Υπουργεία");
@@ -201,16 +200,6 @@ public final class ShowMenuOptions {
             switch (choice) {
                 case 1 -> {
                     BudgetAssembler loader = new BudgetAssembler();
-                    initialBudget = loader.loadBudget("proypologismos2026.csv",
-                    "proypologismos2026anaypourgeio.csv");
-                    ShowEditMenuOptions edit = new ShowEditMenuOptions();
-                    RevenueOrExpense usersChoice = edit
-                    .chooseRevenueOrExpense(input);
-                    edit.editRevenueOrExpense(initialBudget, input,
-                    usersChoice);
-                }
-                case 2 -> {
-                    BudgetAssembler loader = new BudgetAssembler();
                     initialBudget = loader.loadBudget("newgeneral.csv",
                     "newministries.csv");
                     ShowEditMenuOptions edit = new ShowEditMenuOptions();
@@ -218,6 +207,9 @@ public final class ShowMenuOptions {
                     .chooseRevenueOrExpense(input);
                     edit.editRevenueOrExpense(initialBudget, input,
                     usersChoice);
+                }
+                case 2 -> {
+                    // μέθοδος Μυρτούς :)
                 }
                 case CODE_FOR_OPTION_3 -> showComparedBudgets();
                 case CODE_FOR_MENUS -> {

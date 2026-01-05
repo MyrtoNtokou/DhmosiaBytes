@@ -161,7 +161,7 @@ public class CutLists {
                 System.out.println("Δεν υπάρχει επιλογή "
                 + "με αυτόν τον κωδικό.");
             } else {
-                editor.editExpense(choice, scanner);
+                editor.editExpense(choice, scanner, initialBudget);
                 return choice;
             }
         } while (true);

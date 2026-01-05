@@ -1,15 +1,15 @@
 package budgetlogic;
 
-import budgetreader.ReadBudget;
-import budgetreader.Eggrafi;
-import budgetreader.Ypourgeio;
-
 import java.math.BigDecimal;
+import java.nio.file.Path;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Locale;
-import java.nio.file.Path;
+import java.util.Map;
+
+import budgetreader.Eggrafi;
+import budgetreader.ReadBudget;
+import budgetreader.Ypourgeio;
 
 /**
  * Separate revenues and expenses.
@@ -160,7 +160,7 @@ public final class BudgetAssembler {
 
         if (sum.compareTo(BigDecimal.ONE) != 0) {
             throw new IllegalArgumentException(
-                "Τα ποσοστά κατανομής πρέπει να αθροίζουν σε 1.00"
+                "Τα ποσοστά κατανομής στα έξοδα πρέπει να αθροίζουν σε 100%"
             );
         }
     }

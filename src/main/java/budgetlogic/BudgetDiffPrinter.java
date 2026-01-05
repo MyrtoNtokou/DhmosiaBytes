@@ -265,7 +265,7 @@ public final class BudgetDiffPrinter {
                     continue;
             }
 
-            if (code == "2.8") {
+            if (code.equals("2,8")) {
                     continue;
             }
 
