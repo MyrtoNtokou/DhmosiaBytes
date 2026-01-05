@@ -245,6 +245,37 @@ public final class BudgetDiffPrinter {
     }
 
     /**
+     * Print all expenses in aligned table format.
+     * @param budget the budget to print
+     */
+    public static void printExpenses(final Budget budget) {
+        System.out.println("\n" + BOLD + CYAN
+            + "=== ΕΞΟΔΑ ΚΡΑΤΙΚΟΥ ΠΡΟΫΠΟΛΟΓΙΣΜΟΥ ===\n" + RESET);
+
+        // Table header
+        System.out.printf(BOLD + "%-6s | %-60s%n", "Α/Α",
+        "Έξοδα" + RESET);
+
+        for (Map.Entry<String, Eggrafi> entry : budget
+                                                .getExpenses().entrySet()) {
+            String code = entry.getKey();
+            Eggrafi e = entry.getValue();
+
+            if (e.getPerigrafi().toUpperCase().contains("ΕΞΟΔΑ")) {
+                    continue;
+            }
+
+            if (code == "2.8") {
+                    continue;
+            }
+
+            System.out.printf("%-6s | %-60s%n",
+                    code,
+                    e.getPerigrafi());
+        }
+    }
+
+    /**
      * Print all ministries in aligned table format.
      * @param budget the budget to print
      */
@@ -285,7 +316,7 @@ public final class BudgetDiffPrinter {
             + "=== ΣΥΓΚΡΙΣΗ ΕΣΟΔΩΝ ΠΡΟΫΠΟΛΟΓΙΣΜΟΥ ===\n" + RESET);
 
          System.out.printf(BOLD + "%-6s | %-60s | %-30s | %-30s%n", "Α/Α",
-        "Έσοδα", "Τρέχον", "Τροποποιημένος", "Διαφορά" + RESET);
+        "Έσοδα (1) / Έξοδα (2)", "Τρέχον", "Τροποποιημένος" + RESET);
 
         for (Map.Entry<String, Eggrafi> entry : before.getRevenues()
                                                     .entrySet()) {
@@ -308,8 +339,30 @@ public final class BudgetDiffPrinter {
                     code,
                     oldE.getPerigrafi(),
                     beforeVal,
-                    afterVal,
-                    diff);
+                    afterVal);
+        }
+        for (Map.Entry<String, Eggrafi> entry : before.getExpenses()
+                                                    .entrySet()) {
+            String code = entry.getKey();
+            Eggrafi oldE = entry.getValue();
+            Eggrafi newE = after.getExpenses().get(code);
+
+            String beforeVal = oldE.getPoso().toString();
+            String afterVal = newE.getPoso().toString();
+
+            boolean changed = oldE.getPoso().compareTo(newE.getPoso()) != 0;
+
+            if (changed) {
+                afterVal = BOLD + BLUE + afterVal + RESET;
+            }
+
+            String diff = formatDiff(oldE.getPoso(), newE.getPoso());
+
+            System.out.printf("%-6s | %-60s | %-30s | %-30s%n",
+                    code,
+                    oldE.getPerigrafi(),
+                    beforeVal,
+                    afterVal);
         }
     }
 
