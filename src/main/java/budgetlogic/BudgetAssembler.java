@@ -4,6 +4,7 @@ import budgetreader.ReadBudget;
 import budgetreader.Eggrafi;
 import budgetreader.Ypourgeio;
 
+import java.math.BigDecimal;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import java.nio.file.Path;
 /**
  * Separate revenues and expenses.
  * Prepare object Budget.
+ * Create the map with the expense percentages.
  */
 public final class BudgetAssembler {
 
@@ -123,5 +125,43 @@ public final class BudgetAssembler {
             map.put(ypourg.getKodikos(), ypourg);
         }
         return map;
+    }
+
+    /**
+     * Create the map that will be used in budget service,
+     * when executing a change.
+     * @param ministryCode
+     * @param distribution
+     * @return map with ministry code, and value a map with expense codes,
+     * and their percentages
+     */
+    public static Map<Integer, Map<String, BigDecimal>>
+                createMappingForMinistryChange(final int ministryCode,
+                    final Map<String, BigDecimal> distribution) {
+        validateDistribution(distribution);
+
+        Map<Integer, Map<String, BigDecimal>> mapping = new LinkedHashMap<>();
+        mapping.put(ministryCode, new LinkedHashMap<>(distribution));
+
+        return mapping;
+    }
+
+    /**
+     * Check if the given percentages sum equals 1.
+     * @param distribution
+     */
+    private static void validateDistribution(
+                final Map<String, BigDecimal> distribution) {
+        BigDecimal sum = BigDecimal.ZERO;
+
+        for (BigDecimal v : distribution.values()) {
+            sum = sum.add(v);
+        }
+
+        if (sum.compareTo(BigDecimal.ONE) != 0) {
+            throw new IllegalArgumentException(
+                "Τα ποσοστά κατανομής πρέπει να αθροίζουν σε 1.00"
+            );
+        }
     }
 }
