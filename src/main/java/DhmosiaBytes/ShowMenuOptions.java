@@ -215,6 +215,7 @@ public final class ShowMenuOptions {
             switch (choice) {
                 case 1 -> {
                     BudgetAssembler loader = new BudgetAssembler();
+
                     initialBudget = loader.loadBudget("newgeneral.csv",
                     "newministries.csv");
                     ShowEditMenuOptions edit = new ShowEditMenuOptions();

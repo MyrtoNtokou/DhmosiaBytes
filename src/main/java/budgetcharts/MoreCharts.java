@@ -208,6 +208,7 @@ public final class MoreCharts {
         frame.toFront();
         frame.requestFocus();
         frame.setAlwaysOnTop(false);
+
     }
 
 }

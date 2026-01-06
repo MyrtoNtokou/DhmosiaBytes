@@ -90,7 +90,9 @@ public final class Main {
 
                 switch (choice) {
                     case CODE_FOR_EXIT -> {
+
                     System.out.println("\nΈξοδος από την εφαρμογή");
+
                     running = false;
                     validChoice = true;
                     }
