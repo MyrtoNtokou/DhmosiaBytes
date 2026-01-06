@@ -185,7 +185,7 @@ public enum Role {
                 "Εμφάνιση Δημοσιευμένου Προϋπολογισμού Υπουργείων";
             case ACTION_3 -> switch (this) {
                 case PRIME_MINISTER, PARLIAMENT ->
-                    "Σύγκριση Τρέχοντος και Τροποποιημένου Προϋπολογισμού";
+                    "Αξιολόγηση Τροποποιήσεων Προϋπολογισμού";
                 case FINANCE_MINISTER ->
                     "Τροποποίηση Στοιχείων Προϋπολογισμού";
                 case OTHER_MINISTRY ->

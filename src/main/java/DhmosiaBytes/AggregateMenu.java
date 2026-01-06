@@ -35,6 +35,7 @@ public final class AggregateMenu {
     public int typeOfBudget(final Scanner input) {
         int choice = 0;
         do {
+            System.out.println();
             System.out.println("1. Γενικός προϋπολογισμός");
             System.out.println("2. Προϋπολογισμός υπουργείων");
             System.out.print("Επιλέξτε το αρχείο για το οποίο θέλετε να δείτε "

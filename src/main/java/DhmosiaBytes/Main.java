@@ -69,7 +69,7 @@ public final class Main {
         while (running) {
             Role currentRole = selectRole(input);
             if (currentRole == null) {
-                System.out.println("Έξοδος από την εφαρμογή");
+                System.out.println("\nΈξοδος από την εφαρμογή");
                 break;
             }
 
@@ -90,7 +90,7 @@ public final class Main {
 
                 switch (choice) {
                     case CODE_FOR_EXIT -> {
-                    System.out.println("Έξοδος από την εφαρμογή");
+                    System.out.println("\nΈξοδος από την εφαρμογή");
                     running = false;
                     validChoice = true;
                     }

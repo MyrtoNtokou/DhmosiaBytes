@@ -34,6 +34,9 @@ public final class ShowMenuOptions {
     /** Code to edit a new file. */
     private static final int CODE_FOR_MENUS = 4;
 
+    /** Code for rejecting a comment. */
+    private static final int REJECTED = 2;
+
     /**
      * Displays the menu options depending on the role's access rights.
      *
@@ -93,7 +96,7 @@ public final class ShowMenuOptions {
                         new ComparisonController();
                         controller.start();
                     } catch (Exception e) {
-                        System.err.println("Σφάλμα κατά την σύγκριση στοιχείων"
+                        System.err.println("Σφάλμα κατά την σύγκριση στοιχείων."
                         + e.getMessage());
                     }
                 }
@@ -220,11 +223,14 @@ public final class ShowMenuOptions {
                         reqService.getPendingByType(RequestType.BOTH);
                     MinistryRequestPrinter.printRequests(pendingReqs);
                     int code = RequestsController.chooseRequest(input);
+                    if (code == 0) {
+                        break;
+                    }
                     int complOrRej = RequestsController.completeOrReject(input,
                         code);
                     if (complOrRej == 1) {
                         reqService.markCompleted(code);
-                    } else {
+                    } else if (complOrRej == REJECTED) {
                         reqService.markRejected(code);
                     }
                 }

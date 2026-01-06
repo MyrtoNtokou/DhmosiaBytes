@@ -39,7 +39,7 @@ Id: 3
 Code: 7
 Name: Υπουργείο Εθνικής Άμυνας
 Type: TAKTIKOS
-Status: PENDING
+Status: REJECTED
 Time: 2026-01-02T18:14:22.825142
 Text:
 4 | Υπουργεία Συνολικα
@@ -57,7 +57,7 @@ Id: 4
 Code: 6
 Name: Υπουργείο Εξωτερικών
 Type: EPENDYSEIS
-Status: PENDING
+Status: COMPLETED
 Time: 2026-01-02T18:14:29.961819
 Text:
 4 | Υπουργεία Συνολικα

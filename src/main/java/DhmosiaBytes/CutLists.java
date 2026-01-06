@@ -90,7 +90,7 @@ public class CutLists {
 
         String choice;
         do {
-            System.out.println("Επιλέξτε 0 για επιστροφή πίσω");
+            System.out.println("\nΕπιλέξτε 0 για επιστροφή πίσω");
             System.out.print("Επιλέξτε τον κωδικό του εσόδου που θέλετε "
             + "να τροποποιήσετε: ");
             choice = scanner.nextLine().trim();
@@ -134,7 +134,7 @@ public class CutLists {
 
         int choice;
         do {
-            System.out.println("Επιλέξτε 0 για επιστροφή πίσω");
+            System.out.println("\nΕπιλέξτε 0 για επιστροφή πίσω");
             System.out.print("Επιλέξτε τον κωδικό του στοιχείου που θέλετε "
             + "να τροποποιήσετε: ");
             try {
@@ -178,6 +178,7 @@ public class CutLists {
      */
     public int selectRevenueByNumber(final Scanner scanner,
     final List<Eggrafi> esoda) {
+        System.out.println();
         for (int i = 0; i < esoda.size(); i++) {
             System.out.println((i + 1) + ". " + esoda.get(i).getPerigrafi());
         }
@@ -208,6 +209,7 @@ public class CutLists {
      */
     public int selectExpenseByNumber(final Scanner scanner,
     final List<Eggrafi> exoda) {
+        System.out.println();
         for (int i = 0; i < exoda.size(); i++) {
             System.out.println((i + 1) + ". " + exoda.get(i).getPerigrafi());
         }
@@ -238,6 +240,7 @@ public class CutLists {
      */
     public int selectMinistryByNumber(final Scanner scanner,
     final List<Ypourgeio> ministry) {
+        System.out.println();
         for (int i = 0; i < ministry.size(); i++) {
             System.out.println((i + 1) + ". " + ministry.get(i).getOnoma());
         }

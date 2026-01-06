@@ -39,7 +39,7 @@ public class ComparisonService {
 
         // Check if entries exist in both years
         if (e1.isEmpty() || e2.isEmpty()) {
-            System.out.println("Δεν βρέθηκε η εγγραφή και στα δύο έτη");
+            System.out.println("Δεν βρέθηκε η εγγραφή και στα δύο έτη.");
             return;
         }
 
@@ -82,7 +82,7 @@ public class ComparisonService {
 
         // Check if entries exist in both years
         if (y1.isEmpty() || y2.isEmpty()) {
-            System.out.println("Δεν βρέθηκε υπουργείο και στα δύο έτη");
+            System.out.println("Δεν βρέθηκε υπουργείο και στα δύο έτη.");
             return;
         }
 
@@ -157,7 +157,7 @@ public class ComparisonService {
         // Check for division by zero
         if (base.compareTo(BigDecimal.ZERO) == 0) {
             throw new IllegalArgumentException(
-                    "Η βάση σύγκρισης είναι μηδέν για τον κωδικό " + kodikos);
+            "Η βάση σύγκρισης είναι μηδέν για τον κωδικό " + kodikos + ".");
         }
 
         // Calculate percentage change
