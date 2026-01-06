@@ -1,13 +1,19 @@
 package ministryrequests;
 
 /**
- * Represent the current status of a ministry request.
+ * Represent the lifecycle status of a budget request.
  */
 public enum RequestStatus {
-    /** Request has been submitted and is waiting for review. */
+    /** Initial submission by the ministry. */
     PENDING,
-    /** Request has been approved and completed. */
+    /** Reviewed by the Finance Ministry. */
+    REVIEWED_BY_FINANCE_MINISTRY,
+    /** Approved by the Government. */
+    GOVERNMENT_APPROVED,
+    /** Approved by Parliament. */
+    PARLIAMENT_APPROVED,
+    /** Finalized and applied to the csv budgets. */
     COMPLETED,
-    /** Request has been rejected. */
+    /** Rejected at any stage of the process. */
     REJECTED
 }
