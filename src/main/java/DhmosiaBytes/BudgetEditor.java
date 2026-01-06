@@ -75,7 +75,7 @@ public class BudgetEditor {
             Budget finalBudget = service.getBudget();
             saver.saveGeneralChanges(finalBudget, "newgeneral.csv");
             System.out.println("Η αλλαγή αποθηκεύτηκε επιτυχώς.");
-            BudgetDiffPrinter.printDiffGeneral(before, finalBudget);
+            BudgetDiffPrinter.printDiffRevenues(before, finalBudget);
         } catch (IOException e) {
             System.err.println("Σφάλμα κατά την αποθήκευση.");
         }
