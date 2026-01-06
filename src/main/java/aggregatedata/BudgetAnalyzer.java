@@ -35,8 +35,8 @@ public final class BudgetAnalyzer {
                 if (total.compareTo(BigDecimal.ZERO) == 0) {
                         return BigDecimal.ZERO;
                 } else {
-                        return value.divide(total, 2, RoundingMode.HALF_UP)
-                        .multiply(BigDecimal.valueOf(PERCENT));
+                        return value.multiply(BigDecimal.valueOf(PERCENT))
+                    .divide(total, 2, RoundingMode.HALF_UP);
                 }
         }
 
