@@ -1,6 +1,7 @@
 package aggregatedata;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  * Keep ministry, ratio and percentage.
@@ -24,8 +25,8 @@ public class InvestmentRatio {
                         final BigDecimal rat,
                         final BigDecimal per) {
         onoma = on;
-        ratio = rat;
-        percentage = per;
+        ratio = rat.setScale(2, RoundingMode.HALF_UP);
+        percentage = per.setScale(2, RoundingMode.HALF_UP);
     }
 
     /**
