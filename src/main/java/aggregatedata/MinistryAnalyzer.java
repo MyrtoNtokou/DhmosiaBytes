@@ -22,6 +22,8 @@ public final class MinistryAnalyzer {
     private static final int LAST_MINISTRY_CODE = 24;
     /** Percent. */
     private static final int PERCENT = 100;
+    /**Scale division. */
+    private static final int SCALE_DIVISION = 10;
 
     private MinistryAnalyzer() {
         //Constructor
@@ -30,11 +32,12 @@ public final class MinistryAnalyzer {
     private static BigDecimal percent(final BigDecimal value,
                                 final BigDecimal total) {
         if (total.compareTo(BigDecimal.ZERO) == 0) {
-                return BigDecimal.ZERO;
+                return BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
         }
-        return value
-                .divide(total, 2, RoundingMode.HALF_UP)
-                .multiply(BigDecimal.valueOf(PERCENT));
+        BigDecimal ratio = value.divide(
+                total, SCALE_DIVISION, RoundingMode.HALF_UP);
+        return ratio.multiply(BigDecimal.valueOf(PERCENT)).setScale(
+                2, RoundingMode.HALF_UP);
     }
 
     /**
