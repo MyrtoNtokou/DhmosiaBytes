@@ -130,7 +130,9 @@ public final class ShowMenuOptions {
     public static void handleAction3(final Role currentRole,
     final Scanner input) {
         switch (currentRole) {
-            case PRIME_MINISTER, PARLIAMENT -> showComparedBudgets();
+            case PRIME_MINISTER, PARLIAMENT -> {
+                showComparedBudgets();
+            }
             case FINANCE_MINISTER -> editBudget(input);
             case OTHER_MINISTRY -> {
                 showComparedBudgets();
@@ -139,6 +141,16 @@ public final class ShowMenuOptions {
                 + "αλλαγής του προϋπολογισμού;");
                 System.out.println("Τα αιτήματα σας θα σταλούν στο Υπουργείο "
                 + "Οικονομικών για αξιολόγηση.");
+                CutLists cut = new CutLists();
+                List<Ypourgeio> ministries = cut.cutYpourgeio();
+                BudgetAssembler loader = new BudgetAssembler();
+                Budget budget = loader.loadBudget("newgeneral.csv",
+                        "newministries.csv");
+                BudgetDiffPrinter.printMinistries(budget);
+                int code;
+                do {
+                    code = cut.selectMinistry(input, ministries, budget);
+                } while (code != 0);
             }
             default -> System.out.println("Σφάλμα κατά την φόρτωση "
             + "της ενέργειας");

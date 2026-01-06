@@ -14,6 +14,9 @@ import budgetlogic.BudgetDiffPrinter;
 import budgetlogic.BudgetSave;
 import budgetlogic.BudgetService;
 import budgetreader.Eggrafi;
+import budgetreader.Ypourgeio;
+import ministryrequests.MinistryRequestService;
+import ministryrequests.RequestType;
 
  /**
  * Allows editing of income and expense entries in a Budget.
@@ -75,7 +78,7 @@ public class BudgetEditor {
             Budget finalBudget = service.getBudget();
             saver.saveGeneralChanges(finalBudget, "newgeneral.csv");
             System.out.println("Η αλλαγή αποθηκεύτηκε επιτυχώς.");
-            BudgetDiffPrinter.printDiffGeneral(before, finalBudget);
+            BudgetDiffPrinter.printDiffRevenues(before, finalBudget);
         } catch (IOException e) {
             System.err.println("Σφάλμα κατά την αποθήκευση.");
         }
@@ -126,20 +129,21 @@ public class BudgetEditor {
 
         BudgetDiffPrinter.printExpenses(initialBudget);
         Map<String, BigDecimal> distribution = distributeExpenses(scanner);
-        BudgetAssembler.createMappingForMinistryChange(code,
-                distribution);
-
-        Budget before = new Budget(service.getBudget());
+        Map<Integer, Map<String, BigDecimal>> mapping = BudgetAssembler
+                .createMappingForMinistryChange(code, distribution);
+        BudgetService serv = new BudgetService(initialBudget, mapping);
+        Budget before = new Budget(serv.getBudget());
         this.service.changeMinistryAmount(code, column, newAmount);
+        Budget after = serv.getBudget();
+        Ypourgeio ministry = after.getMinistries().get(code);
+        String rawDiff = BudgetDiffPrinter.captureMinistryDiff(before, after);
+        MinistryRequestService reqService = new MinistryRequestService();
 
-        try {
-            BudgetSave saver = new BudgetSave();
-            Budget finalBudget = service.getBudget();
-            saver.saveMinistryChanges(finalBudget, "newministries.csv");
-            System.out.println("Η αλλαγή αποθηκεύτηκε επιτυχώς.");
-            BudgetDiffPrinter.printDiffMinistries(before, finalBudget);
-        } catch (IOException e) {
-            System.err.println("Σφάλμα κατά την αποθήκευση.");
+        if (column.equals("τακτικός")) {
+            reqService.submitRequest(ministry, rawDiff, RequestType.TAKTIKOS);
+        } else {
+            reqService.submitRequest(ministry, rawDiff,
+            RequestType.EPENDYSEIS);
         }
     }
 

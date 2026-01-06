@@ -165,7 +165,6 @@ public class CutLists {
                 return choice;
             }
         } while (true);
-
     }
 
     /**
