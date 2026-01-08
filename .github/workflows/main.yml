@@ -19,6 +19,9 @@ jobs:
 
     - name: Build, test, quality checks
       run: mvn -B -U clean verify
+      
+    - name: Build, test, quality checks
+      run: mvn -B -U clean verify -Djava.awt.headless=true
 
     - name: Upload reports
       uses: actions/upload-artifact@v4
