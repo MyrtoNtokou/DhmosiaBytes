@@ -132,12 +132,15 @@ public class BudgetEditor {
         Map<Integer, Map<String, BigDecimal>> mapping = BudgetAssembler
                 .createMappingForMinistryChange(code, distribution);
         BudgetService serv = new BudgetService(initialBudget, mapping);
-        Budget before = new Budget(serv.getBudget());
-        this.service.changeMinistryAmount(code, column, newAmount);
+        Budget currentBudget = serv.getBudget();
+        Budget before = new Budget(currentBudget);
+        serv.changeMinistryAmount(code, column, newAmount);
         Budget after = serv.getBudget();
         Ypourgeio ministry = after.getMinistries().get(code);
         String rawDiff = BudgetDiffPrinter.captureMinistryDiff(before, after);
         MinistryRequestService reqService = new MinistryRequestService();
+
+        BudgetDiffPrinter.printDiffMinistries(before, after);
 
         if (column.equals("τακτικός")) {
             reqService.submitRequest(ministry, rawDiff, RequestType.TAKTIKOS);

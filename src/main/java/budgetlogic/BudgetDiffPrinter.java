@@ -149,7 +149,6 @@ public final class BudgetDiffPrinter {
                 System.out.println(oldVal
                             + " → " + BLUE + newVal + RESET
                             + formatDiff(oldVal, newVal));
-                            //+ calculatePercentageChange(oldVal, newVal));
             }
         }
     }
