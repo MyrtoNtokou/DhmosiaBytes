@@ -88,6 +88,12 @@ public final class Barcharts {
         frame.setDefaultCloseOperation(
             javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
+        // bring window to front
+        frame.setAlwaysOnTop(true);
+        frame.toFront();
+        frame.requestFocus();
+        frame.setAlwaysOnTop(false);
+
     }
 
 
@@ -140,6 +146,12 @@ public final class Barcharts {
         javax.swing.JFrame frame = sw.displayChart();
         frame.setDefaultCloseOperation(
         javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        // bring window to front
+        frame.setAlwaysOnTop(true);
+        frame.toFront();
+        frame.requestFocus();
+        frame.setAlwaysOnTop(false);
     }
 
     /**
@@ -183,6 +195,12 @@ public final class Barcharts {
         javax.swing.JFrame frame = sw.displayChart();
         frame.setDefaultCloseOperation(
             javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        // bring window to front
+        frame.setAlwaysOnTop(true);
+        frame.toFront();
+        frame.requestFocus();
+        frame.setAlwaysOnTop(false);
     }
 
     /**
@@ -236,11 +254,16 @@ public final class Barcharts {
         chart.addSeries("Έσοδα", years, esodaList);
 
         // Display chart
-        new SwingWrapper<>(chart).displayChart();
         SwingWrapper<CategoryChart> sw = new SwingWrapper<>(chart);
         javax.swing.JFrame frame = sw.displayChart();
         frame.setDefaultCloseOperation(
             javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        // bring window to front
+        frame.setAlwaysOnTop(true);
+        frame.toFront();
+        frame.requestFocus();
+        frame.setAlwaysOnTop(false);
     }
 
     /**
@@ -300,6 +323,12 @@ public final class Barcharts {
         javax.swing.JFrame frame = sw.displayChart();
         frame.setDefaultCloseOperation(
             javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        // bring window to front
+        frame.setAlwaysOnTop(true);
+        frame.toFront();
+        frame.requestFocus();
+        frame.setAlwaysOnTop(false);
     }
 
     /**
@@ -364,5 +393,11 @@ public final class Barcharts {
         javax.swing.JFrame frame = sw.displayChart();
         frame.setDefaultCloseOperation(
             javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        // bring window to front
+        frame.setAlwaysOnTop(true);
+        frame.toFront();
+        frame.requestFocus();
+        frame.setAlwaysOnTop(false);
     }
 }

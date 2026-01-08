@@ -9,6 +9,11 @@
     "username": "test_3",
     "password": "Test3"
   },
+  "test_2": {
+    "role": "PARLIAMENT",
+    "username": "test_2",
+    "password": "Test2"
+  },
   "test_1": {
     "role": "PRIME_MINISTER",
     "username": "test_1",

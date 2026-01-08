@@ -81,6 +81,12 @@ public final class MoreCharts {
         SwingWrapper<PieChart> window = new SwingWrapper<>(chart);
         JFrame frame = window.displayChart();
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+
+        // bring window to front
+        frame.setAlwaysOnTop(true);
+        frame.toFront();
+        frame.requestFocus();
+        frame.setAlwaysOnTop(false);
     }
 
     /**
@@ -124,6 +130,12 @@ public final class MoreCharts {
         SwingWrapper<PieChart> window = new SwingWrapper<>(chart);
         JFrame frame = window.displayChart();
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+
+        // bring window to front
+        frame.setAlwaysOnTop(true);
+        frame.toFront();
+        frame.requestFocus();
+        frame.setAlwaysOnTop(false);
     }
 
     /**
@@ -188,7 +200,15 @@ public final class MoreCharts {
 
         // Display LineChart
         SwingWrapper<XYChart> window = new SwingWrapper<>(chart);
-        window.displayChart();
+        JFrame frame = window.displayChart();
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+
+        // bring window to front
+        frame.setAlwaysOnTop(true);
+        frame.toFront();
+        frame.requestFocus();
+        frame.setAlwaysOnTop(false);
+
     }
 
 }

@@ -35,6 +35,7 @@ public final class AggregateMenu {
     public int typeOfBudget(final Scanner input) {
         int choice = 0;
         do {
+            System.out.println();
             System.out.println("1. Γενικός προϋπολογισμός");
             System.out.println("2. Προϋπολογισμός υπουργείων");
             System.out.print("Επιλέξτε το αρχείο για το οποίο θέλετε να δείτε "
@@ -85,7 +86,7 @@ public final class AggregateMenu {
 
         if (choice == 1) {
             List<Ypourgeio> y =
-            ReadBudget.readByMinistry("proypologismos2025anaypourgeio.csv");
+            ReadBudget.readByMinistry("proypologismos2026anaypourgeio.csv");
             MinistryStats stats = MinistryAnalyzer.analyze(y);
 
             MinistryStatsPrinter.printTaktikos(stats);
@@ -95,7 +96,7 @@ public final class AggregateMenu {
             MinistryStatsPrinter.printSynolo(stats);
         } else if (choice == 2) {
             List<Ypourgeio> ypourg =
-            ReadBudget.readByMinistry("proypologismos2025anaypourgeio.csv");
+            ReadBudget.readByMinistry("proypologismos2026anaypourgeio.csv");
             List<InvestmentRatio> ratios =
             InvestmentAnalyzer.calculate(ypourg);
             InvestmentPrinter.print(ypourg, ratios);
@@ -113,7 +114,7 @@ public final class AggregateMenu {
     final Scanner input) {
         if (generalOrMinistries == 1) {
             List<Eggrafi> g =
-            ReadBudget.readGeneralBudget("proypologismos2025.csv");
+            ReadBudget.readGeneralBudget("proypologismos2026.csv");
             BudgetStats stats = BudgetAnalyzer.analyze(g);
 
             BudgetStatsPrinter.printRevenues(stats);

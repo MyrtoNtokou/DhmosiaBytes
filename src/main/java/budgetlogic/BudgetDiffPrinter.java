@@ -52,14 +52,15 @@ public final class BudgetDiffPrinter {
     private static final String CYAN = rgb(0, 200, 255);
 
     /**
-     * Print formatted difference report for general budget.
+     * Print formatted difference report for revenues.
      * Between two budget objects.
      * @param before
      * @param after
      */
-    public static void printDiffGeneral(final Budget before,
+    public static void printDiffRevenues(final Budget before,
                                         final Budget after) {
-        compareGeneral(before, after);
+        compareRevenues(before, after);
+        compareResult(before, after);
     }
 
     /**
@@ -71,6 +72,7 @@ public final class BudgetDiffPrinter {
     public static void printDiffMinistries(final Budget before,
                                         final Budget after) {
         compareMinistries(before, after);
+        compareExpenses(before, after);
     }
 
     /**
@@ -94,13 +96,12 @@ public final class BudgetDiffPrinter {
     }
 
     /**
-     * Compares the general section of the budget.
+     * Compare the revenues section of the general budget.
      * Print only the entries whose amounts have changed.
-     * Print affects on total.
      * @param before
      * @param after
      */
-    private static void compareGeneral(final Budget before,
+    private static void compareRevenues(final Budget before,
                                     final Budget after) {
         System.out.println("\n" + BOLD + CYAN
         + "=== ΑΛΛΑΓΕΣ ΣΤΑ ΕΣΟΔΑ ΤΟΥ ΚΡΑΤΙΚΟΥ ΠΡΟΫΠΟΛΟΓΙΣΜΟΥ ===" + RESET);
@@ -121,24 +122,61 @@ public final class BudgetDiffPrinter {
                                + formatDiff(oldVal, newVal));
             }
         }
+    }
 
+    /**
+     * Compare the expenses section of the general budget.
+     * Print only the entries whose amounts have changed.
+     * @param before
+     * @param after
+     */
+    public static void compareExpenses(final Budget before,
+                                    final Budget after) {
+        System.out.println("\n" + BOLD + CYAN
+            + "=== ΑΛΛΑΓΕΣ ΣΤΑ ΕΞΟΔΑ ΤΟΥ ΚΡΑΤΙΚΟΥ ΠΡΟΫΠΟΛΟΓΙΣΜΟΥ ===" + RESET);
+
+        // Find changes
+        for (Map.Entry<String, Eggrafi> entry : before.getExpenses()
+                                                        .entrySet()) {
+            String k = entry.getKey();
+            BigDecimal oldVal = entry.getValue().getPoso();
+            BigDecimal newVal = after.getExpenses().get(k).getPoso();
+
+            if (oldVal.compareTo(newVal) != 0) {
+                System.out.println("\n" + BOLD + k + " | "
+                    + entry.getValue().getPerigrafi() + RESET);
+
+                System.out.println(oldVal
+                            + " → " + BLUE + newVal + RESET
+                            + formatDiff(oldVal, newVal));
+            }
+        }
+    }
+
+    /**
+     * Compare and print the change od the result of the general budget.
+     * @param before
+     * @param after
+     */
+    private static void compareResult(final Budget before,
+                                    final Budget after) {
         Eggrafi resultRecord = after.getExpenses().values().stream()
         .filter(e -> e.getPerigrafi().toUpperCase().contains("ΑΠΟΤΕΛΕΣΜΑ"))
-                        .findFirst()
-                        .orElse(null);
+                            .findFirst()
+                            .orElse(null);
 
         String resultCode = resultRecord.getKodikos();
 
         BigDecimal oldResult = before.totalRevenues()
-                                .subtract(before.totalExpenses());
+                                    .subtract(before.totalExpenses());
         BigDecimal newResult = after.totalRevenues()
-                                .subtract(after.totalExpenses());
+                                    .subtract(after.totalExpenses());
 
         if (oldResult.compareTo(newResult) != 0) {
             System.out.println("\n" + BOLD + resultCode + " | "
             + "ΑΠΟΤΕΛΕΣΜΑ ΚΡΑΤΙΚΟΥ ΠΡΟΫΠΟΛΟΓΙΣΜΟΥ (ΕΣΟΔΑ - ΕΞΟΔΑ)" + RESET);
 
-            System.out.println(oldResult
+            System.out.println("    " + oldResult
                 + " → " + BLUE + newResult + RESET
                 + formatDiff(oldResult, newResult));
         }
@@ -210,6 +248,7 @@ public final class BudgetDiffPrinter {
 
         System.setOut(ps);
         compareMinistries(before, after);
+        compareExpenses(before, after);
         System.out.flush();
         System.setOut(oldOut);
 
@@ -241,6 +280,37 @@ public final class BudgetDiffPrinter {
                     code,
                     e.getPerigrafi(),
                     e.getPoso().toString());
+        }
+    }
+
+    /**
+     * Print all expenses in aligned table format.
+     * @param budget the budget to print
+     */
+    public static void printExpenses(final Budget budget) {
+        System.out.println("\n" + BOLD + CYAN
+            + "=== ΕΞΟΔΑ ΚΡΑΤΙΚΟΥ ΠΡΟΫΠΟΛΟΓΙΣΜΟΥ ===\n" + RESET);
+
+        // Table header
+        System.out.printf(BOLD + "%-6s | %-60s%n", "Α/Α",
+        "Έξοδα" + RESET);
+
+        for (Map.Entry<String, Eggrafi> entry : budget
+                                                .getExpenses().entrySet()) {
+            String code = entry.getKey();
+            Eggrafi e = entry.getValue();
+
+            if (e.getPerigrafi().toUpperCase().contains("ΕΞΟΔΑ")) {
+                    continue;
+            }
+
+            if (code.equals("2,8")) {
+                    continue;
+            }
+
+            System.out.printf("%-6s | %-60s%n",
+                    code,
+                    e.getPerigrafi());
         }
     }
 
@@ -282,10 +352,10 @@ public final class BudgetDiffPrinter {
     public static void compareGeneralSideBySide(final Budget before,
                                                 final Budget after) {
         System.out.println("\n" + BOLD + CYAN
-            + "=== ΣΥΓΚΡΙΣΗ ΕΣΟΔΩΝ ΠΡΟΫΠΟΛΟΓΙΣΜΟΥ ===\n" + RESET);
+            + "=== ΣΥΓΚΡΙΣΗ ΓΕΝΙΚΟΥ ΠΡΟΫΠΟΛΟΓΙΣΜΟΥ ===\n" + RESET);
 
          System.out.printf(BOLD + "%-6s | %-60s | %-30s | %-30s%n", "Α/Α",
-        "Έσοδα", "Τρέχον", "Τροποποιημένος", "Διαφορά" + RESET);
+        "Έσοδα (1) / Έξοδα (2)", "Τρέχον", "Τροποποιημένος" + RESET);
 
         for (Map.Entry<String, Eggrafi> entry : before.getRevenues()
                                                     .entrySet()) {
@@ -308,8 +378,30 @@ public final class BudgetDiffPrinter {
                     code,
                     oldE.getPerigrafi(),
                     beforeVal,
-                    afterVal,
-                    diff);
+                    afterVal);
+        }
+        for (Map.Entry<String, Eggrafi> entry : before.getExpenses()
+                                                    .entrySet()) {
+            String code = entry.getKey();
+            Eggrafi oldE = entry.getValue();
+            Eggrafi newE = after.getExpenses().get(code);
+
+            String beforeVal = oldE.getPoso().toString();
+            String afterVal = newE.getPoso().toString();
+
+            boolean changed = oldE.getPoso().compareTo(newE.getPoso()) != 0;
+
+            if (changed) {
+                afterVal = BOLD + BLUE + afterVal + RESET;
+            }
+
+            String diff = formatDiff(oldE.getPoso(), newE.getPoso());
+
+            System.out.printf("%-6s | %-60s | %-30s | %-30s%n",
+                    code,
+                    oldE.getPerigrafi(),
+                    beforeVal,
+                    afterVal);
         }
     }
 

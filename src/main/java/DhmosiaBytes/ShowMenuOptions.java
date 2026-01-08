@@ -34,6 +34,9 @@ public final class ShowMenuOptions {
     /** Code to edit a new file. */
     private static final int CODE_FOR_MENUS = 4;
 
+    /** Code for rejecting a comment. */
+    private static final int REJECTED = 2;
+
     /**
      * Displays the menu options depending on the role's access rights.
      *
@@ -93,12 +96,11 @@ public final class ShowMenuOptions {
                         new ComparisonController();
                         controller.start();
                     } catch (Exception e) {
-                        System.err.println("Σφάλμα κατά την σύγκριση στοιχείων"
+                        System.err.println("Σφάλμα κατά την σύγκριση στοιχείων."
                         + e.getMessage());
                     }
                 }
                 case GRAPHS -> {
-                    graph.chooseGraph(input);
                     graph.runGraphs(input);
                 }
                 case EXIT -> {
@@ -114,7 +116,7 @@ public final class ShowMenuOptions {
     /** Displays the national budget. */
     public static void showBudget() {
         List<Eggrafi> g =
-        ReadBudget.readGeneralBudget("proypologismos2025.csv");
+        ReadBudget.readGeneralBudget("proypologismos2026.csv");
         DisplayBudget.showGeneral(g);
     }
 
@@ -128,15 +130,24 @@ public final class ShowMenuOptions {
     public static void handleAction3(final Role currentRole,
     final Scanner input) {
         switch (currentRole) {
-            case PRIME_MINISTER, PARLIAMENT -> showComparedBudgets();
+            case PRIME_MINISTER, PARLIAMENT -> {
+                showComparedBudgets();
+            }
             case FINANCE_MINISTER -> editBudget(input);
             case OTHER_MINISTRY -> {
-                showComparedBudgets();
                 System.out.println();
-                System.out.println("Θέλετε να υποβάλλετε κάποιο αίτημα "
-                + "αλλαγής του προϋπολογισμού;");
                 System.out.println("Τα αιτήματα σας θα σταλούν στο Υπουργείο "
                 + "Οικονομικών για αξιολόγηση.");
+                CutLists cut = new CutLists();
+                List<Ypourgeio> ministries = cut.cutYpourgeio();
+                BudgetAssembler loader = new BudgetAssembler();
+                Budget budget = loader.loadBudget("newgeneral.csv",
+                        "newministries.csv");
+                BudgetDiffPrinter.printMinistries(budget);
+                int code;
+                do {
+                    code = cut.selectMinistry(input, ministries, budget);
+                } while (code != 0);
             }
             default -> System.out.println("Σφάλμα κατά την φόρτωση "
             + "της ενέργειας");
@@ -150,8 +161,8 @@ public final class ShowMenuOptions {
     public static void showComparedBudgets() {
         BudgetAssembler assembler = new BudgetAssembler();
         Budget currentBudget = assembler
-        .loadBudget("proypologismos2025.csv",
-        "proypologismos2025anaypourgeio.csv");
+        .loadBudget("proypologismos2026.csv",
+        "proypologismos2026anaypourgeio.csv");
         Budget modifiedBudget = assembler.loadBudget("newgeneral.csv",
         "newministries.csv");
         // === Εκτύπωση σύγκρισης Γενικού Προϋπολογισμού ===
@@ -173,9 +184,8 @@ public final class ShowMenuOptions {
         int choice;
         do {
             System.out.println("\n\n0. Έξοδος");
-            System.out.println("1. Επεξεργασία Τρέχοντος Προϋπολογισμού");
-            System.out.println("2. Επεξεργασία Τροποποιημένου Αρχείου "
-            + "Προϋπολογισμού");
+            System.out.println("1. Επεξεργασία Προϋπολογισμού");
+            System.out.println("2. Ιστορικό Τροποποιήσεων Προϋπολογισμού");
             System.out.println("3. Σύγκριση Τρέχοντος και "
             + "Τροποποιημένου Προϋπολογισμού");
             System.out.println("4. Προβολή Αιτημάτων από άλλα Υπουργεία");
@@ -202,16 +212,7 @@ public final class ShowMenuOptions {
             switch (choice) {
                 case 1 -> {
                     BudgetAssembler loader = new BudgetAssembler();
-                    initialBudget = loader.loadBudget("proypologismos2025.csv",
-                    "proypologismos2025anaypourgeio.csv");
-                    ShowEditMenuOptions edit = new ShowEditMenuOptions();
-                    RevenueOrExpense usersChoice = edit
-                    .chooseRevenueOrExpense(input);
-                    edit.editRevenueOrExpense(initialBudget, input,
-                    usersChoice);
-                }
-                case 2 -> {
-                    BudgetAssembler loader = new BudgetAssembler();
+
                     initialBudget = loader.loadBudget("newgeneral.csv",
                     "newministries.csv");
                     ShowEditMenuOptions edit = new ShowEditMenuOptions();
@@ -219,6 +220,9 @@ public final class ShowMenuOptions {
                     .chooseRevenueOrExpense(input);
                     edit.editRevenueOrExpense(initialBudget, input,
                     usersChoice);
+                }
+                case 2 -> {
+                    // μέθοδος Μυρτούς :)
                 }
                 case CODE_FOR_OPTION_3 -> showComparedBudgets();
                 case CODE_FOR_MENUS -> {
@@ -229,11 +233,14 @@ public final class ShowMenuOptions {
                         reqService.getPendingByType(RequestType.BOTH);
                     MinistryRequestPrinter.printRequests(pendingReqs);
                     int code = RequestsController.chooseRequest(input);
+                    if (code == 0) {
+                        break;
+                    }
                     int complOrRej = RequestsController.completeOrReject(input,
                         code);
                     if (complOrRej == 1) {
                         reqService.markCompleted(code);
-                    } else {
+                    } else if (complOrRej == REJECTED) {
                         reqService.markRejected(code);
                     }
                 }
@@ -245,7 +252,7 @@ public final class ShowMenuOptions {
     /** Shows summarized data. */
     public static void summary() {
         List<Ypourgeio> y =
-        ReadBudget.readByMinistry("proypologismos2025anaypourgeio.csv");
+        ReadBudget.readByMinistry("proypologismos2026anaypourgeio.csv");
         DisplayBudget.showMinistry(y);
     }
 }

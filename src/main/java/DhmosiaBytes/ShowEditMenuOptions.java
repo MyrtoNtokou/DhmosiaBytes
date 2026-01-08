@@ -25,6 +25,7 @@ public class ShowEditMenuOptions {
     public RevenueOrExpense chooseRevenueOrExpense(final Scanner scanner) {
         RevenueOrExpense selected = null;
         do {
+            System.out.println();
             for (RevenueOrExpense opt : RevenueOrExpense.values()) {
                 System.out.println(opt.getRevenueOrExpenseCode() + ". "
                 + opt.getDescription());
@@ -65,7 +66,6 @@ public class ShowEditMenuOptions {
      */
     public void editRevenueOrExpense(final Budget initialBudget,
     final Scanner scanner, final RevenueOrExpense selected) {
-        // εδώ θα κληθεί η Μυρτώ αντί για αυτό
         CutLists cut = new CutLists();
         if (selected == RevenueOrExpense.INCOME) {
             List<Eggrafi> esoda = cut.cutEggrafiEsoda();
@@ -91,29 +91,32 @@ public class ShowEditMenuOptions {
      * @return the code of user's choice
      */
     public int selectBudgetType(final Scanner scanner) {
-        BudgetType selectedOption = null;
 
         System.out.println("\nΕπιλέξτε τύπο προϋπολογισμού:");
-        do {
+        while (true) {
             for (BudgetType option : BudgetType.values()) {
                 System.out.println(option.getTypeCode() + ". "
                 + option.getTypeDescription());
             }
-
+            System.out.println("0. Έξοδος");
             System.out.print("Επιλογή: ");
-                try {
-                    int choice = scanner.nextInt();
-                    scanner.nextLine();
-                    selectedOption = BudgetType.fromCode(choice);
-                } catch (InputMismatchException e) {
+
+            try {
+                int choice = scanner.nextInt();
+                scanner.nextLine();
+
+                if (choice == 0) {
+                    return 0;
+                }
+
+                BudgetType selectedOption = BudgetType.fromCode(choice);
+                return selectedOption.getTypeCode();
+            } catch (InputMismatchException e) {
                 System.out.println("Παρακαλώ εισάγετε αριθμό.");
                 scanner.next();
             } catch (IllegalArgumentException e) {
-                System.out.println("Μη έγκυρη επιλογή.");
-                System.out.println("Δώστε έναν αριθμό από το 1 έως το "
-                        + BudgetType.values().length);
+                System.out.println(e.getMessage());
             }
-        } while (selectedOption == null);
-        return selectedOption.getTypeCode();
+        }
     }
 }

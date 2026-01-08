@@ -1,7 +1,6 @@
 package dhmosiabytes;
 
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -25,7 +24,7 @@ public class CutLists {
      */
     public List<Eggrafi> cutEggrafiEsoda() {
         List<Eggrafi> g =
-        ReadBudget.readGeneralBudget("proypologismos2025.csv");
+        ReadBudget.readGeneralBudget("proypologismos2026.csv");
 
         List<Eggrafi> esoda = new ArrayList<>();
         for (Eggrafi e : g) {
@@ -43,7 +42,7 @@ public class CutLists {
      */
     public List<Eggrafi> cutEggrafiExoda() {
         List<Eggrafi> g =
-        ReadBudget.readGeneralBudget("proypologismos2025.csv");
+        ReadBudget.readGeneralBudget("proypologismos2026.csv");
 
         List<Eggrafi> exoda = new ArrayList<>();
         for (Eggrafi e : g) {
@@ -61,7 +60,7 @@ public class CutLists {
      */
     public List<Ypourgeio> cutYpourgeio() {
         List<Ypourgeio> y =
-        ReadBudget.readByMinistry("proypologismos2025anaypourgeio.csv");
+        ReadBudget.readByMinistry("proypologismos2026anaypourgeio.csv");
 
         List<Ypourgeio> ministries = new ArrayList<>();
         for (Ypourgeio e : y) {
@@ -91,7 +90,7 @@ public class CutLists {
 
         String choice;
         do {
-            System.out.println("Επιλέξτε 0 για επιστροφή πίσω");
+            System.out.println("\nΕπιλέξτε 0 για επιστροφή πίσω");
             System.out.print("Επιλέξτε τον κωδικό του εσόδου που θέλετε "
             + "να τροποποιήσετε: ");
             choice = scanner.nextLine().trim();
@@ -135,22 +134,18 @@ public class CutLists {
 
         int choice;
         do {
-            System.out.println("Επιλέξτε 0 για επιστροφή πίσω");
+            System.out.println("\nΕπιλέξτε 0 για επιστροφή πίσω");
             System.out.print("Επιλέξτε τον κωδικό του στοιχείου που θέλετε "
             + "να τροποποιήσετε: ");
             try {
-                choice = scanner.nextInt();
-                scanner.nextLine();
-            } catch (InputMismatchException e) {
-                System.out.println("Δώστε έναν αριθμό από το 1 έως το "
-                + ministries.get(ministries.size() - 1).getKodikos());
-                scanner.nextLine();
-                continue;
+                choice = Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Δώστε έναν έγκυρο αριθμό.");
+                 continue;
             } catch (IllegalArgumentException e) {
                 System.out.println("Μη έγκυρη επιλογή.");
                 continue;
             }
-
             if (choice == 0) {
                 return 0;
             }
@@ -166,11 +161,10 @@ public class CutLists {
                 System.out.println("Δεν υπάρχει επιλογή "
                 + "με αυτόν τον κωδικό.");
             } else {
-                editor.editExpense(choice, scanner);
+                editor.editExpense(choice, scanner, initialBudget);
                 return choice;
             }
         } while (true);
-
     }
 
     /**
@@ -183,6 +177,7 @@ public class CutLists {
      */
     public int selectRevenueByNumber(final Scanner scanner,
     final List<Eggrafi> esoda) {
+        System.out.println();
         for (int i = 0; i < esoda.size(); i++) {
             System.out.println((i + 1) + ". " + esoda.get(i).getPerigrafi());
         }
@@ -213,6 +208,7 @@ public class CutLists {
      */
     public int selectExpenseByNumber(final Scanner scanner,
     final List<Eggrafi> exoda) {
+        System.out.println();
         for (int i = 0; i < exoda.size(); i++) {
             System.out.println((i + 1) + ". " + exoda.get(i).getPerigrafi());
         }
@@ -243,6 +239,7 @@ public class CutLists {
      */
     public int selectMinistryByNumber(final Scanner scanner,
     final List<Ypourgeio> ministry) {
+        System.out.println();
         for (int i = 0; i < ministry.size(); i++) {
             System.out.println((i + 1) + ". " + ministry.get(i).getOnoma());
         }

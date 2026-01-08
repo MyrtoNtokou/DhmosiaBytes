@@ -1,6 +1,5 @@
 package dhmosiabytes;
 
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -81,7 +80,10 @@ public class Graphs {
             System.out.println("0. Έξοδος");
             System.out.print("Επιλογή: ");
 
-            String inputLine = input.nextLine();
+            String inputLine = input.nextLine().trim();
+            if (inputLine.isEmpty()) {
+                continue;
+            }
             try {
                 code = Integer.parseInt(inputLine);
                 if (code == 0) {
@@ -92,7 +94,7 @@ public class Graphs {
                 } else {
                     valid = true;
                 }
-            } catch (InputMismatchException e) {
+            } catch (NumberFormatException e) {
                 System.out.println("Παρακαλώ εισάγετε αριθμό.");
             }
         }
@@ -106,9 +108,9 @@ public class Graphs {
      */
     public void runGraphs(final Scanner input) {
         List<Eggrafi> eggra =
-        ReadBudget.readGeneralBudget("proypologismos2025.csv");
+        ReadBudget.readGeneralBudget("proypologismos2026.csv");
         List<Ypourgeio> y =
-        ReadBudget.readByMinistry("proypologismos2025anaypourgeio.csv");
+        ReadBudget.readByMinistry("proypologismos2026anaypourgeio.csv");
         CutLists cut = new CutLists();
 
         int code;

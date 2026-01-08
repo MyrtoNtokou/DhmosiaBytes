@@ -119,4 +119,28 @@ public class MinistryRequestService {
                                             final RequestType type) {
         return repo.findByStatusAndType(status, type);
     }
+
+    /**
+     * Mark request as reviewed by the finance ministry.
+     * @param id request id
+     */
+    public void reveiwByFinanceMinistry(final int id) {
+        repo.updateStatus(id, RequestStatus.REVIEWED_BY_FINANCE_MINISTRY);
+    }
+
+    /**
+     * Mark request as approved by the government.
+     * @param id request id
+     */
+    public void approveByGovernment(final int id) {
+        repo.updateStatus(id, RequestStatus.GOVERNMENT_APPROVED);
+    }
+
+    /**
+     * Mark request as approved by the Parliamen.
+     * @param id request id
+     */
+    public void approveByParliament(final int id) {
+        repo.updateStatus(id, RequestStatus.PARLIAMENT_APPROVED);
+    }
 }
