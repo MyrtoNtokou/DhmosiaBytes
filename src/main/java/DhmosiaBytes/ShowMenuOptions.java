@@ -135,10 +135,7 @@ public final class ShowMenuOptions {
             }
             case FINANCE_MINISTER -> editBudget(input);
             case OTHER_MINISTRY -> {
-                showComparedBudgets();
                 System.out.println();
-                System.out.println("Θέλετε να υποβάλλετε κάποιο αίτημα "
-                + "αλλαγής του προϋπολογισμού;");
                 System.out.println("Τα αιτήματα σας θα σταλούν στο Υπουργείο "
                 + "Οικονομικών για αξιολόγηση.");
                 CutLists cut = new CutLists();

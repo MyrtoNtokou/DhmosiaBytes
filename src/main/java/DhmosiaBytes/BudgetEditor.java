@@ -172,13 +172,8 @@ public class BudgetEditor {
 
             while (true) {
                 System.out.println();
-                System.out.print("Επιλέξτε κωδικό εξόδου ή "
-                + "0 για ολοκλήρωση ενέργειας: ");
+                System.out.print("Επιλέξτε κωδικό εξόδου: ");
                 String code = input.nextLine().trim();
-
-                if (code.equals("0")) {
-                    break;
-                }
 
                 boolean exists = exoda.stream().anyMatch(e -> e.getKodikos()
                         .equals(code));
@@ -209,25 +204,23 @@ public class BudgetEditor {
                     percentage.divide(MAX_PERCENTAGE, FOUR,
                             RoundingMode.HALF_UP);
                     increases.put(code, normalized);
+                    BigDecimal currentSum = increases.values().stream()
+                            .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+                    if (currentSum.compareTo(BigDecimal.ONE) > 0) {
+                        System.out.println("Σφάλμα: Το συνολικό ποσοστό "
+                                + "κατανομής ξεπέρασε το 100%.");
+                        System.out.println("Ξεκινήστε από την αρχή.");
+                        increases.clear();
+                        break;
+                    } else if (currentSum.compareTo(BigDecimal.ONE) == 0) {
+                        System.out.println("Η κατανομή ολοκληρώθηκε.");
+                        return increases;
+                    }
                 } catch (NumberFormatException e) {
                     System.out.println("Μη έγκυρο ποσοστό.");
                 }
             }
-            BigDecimal sum = increases.values().stream()
-                    .reduce(BigDecimal.ZERO, BigDecimal::add);
-            if (sum.compareTo(BigDecimal.ONE) != 0) {
-                System.out.println("Σφάλμα: Τα ποσοστά κατανομής πρέπει "
-                + "να αθροίζουν σε 100%.");
-                BigDecimal sumSoFar = increases.values().stream()
-                        .reduce(BigDecimal.ZERO, BigDecimal::add);
-                System.out.println("Συνολικό άθροισμα ποσοστών αυτή "
-                + "την στιγμή: " + sumSoFar.multiply(MAX_PERCENTAGE) + "%.");
-                System.out.println("Ξαναπροσπαθήστε να εισάγετε τις "
-                + "κατανομές.");
-                continue;
-            }
-            break;
         }
-        return increases;
     }
 }
