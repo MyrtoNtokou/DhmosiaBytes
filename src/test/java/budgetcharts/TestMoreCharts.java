@@ -1,43 +1,67 @@
 package budgetcharts;
 
-import budgetreader.Eggrafi;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.awt.GraphicsEnvironment;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Unit tests for MoreCharts class.
- * Tests mainly check that methods run without throwing exceptions.
- */
-class TestMoreCharts {
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-    @Test
-    void testPieChartEsodaExoda_runsWithoutException() {
-        List<Eggrafi> records = new ArrayList<>();
-        records.add(new Eggrafi("1,001", "ΕΣΟΔΑ", new BigDecimal("1000000000")));
-        records.add(new Eggrafi("2,001", "ΕΞΟΔΑ", new BigDecimal("500000000")));
+import budgetreader.Eggrafi;
 
-        // Run method, should not throw exception
-        MoreCharts.pieChartEsodaExoda(records);
+public class TestMoreCharts {
+
+    private List<Eggrafi> mockEggrafes;
+
+    @BeforeEach
+    void setUp() {
+        mockEggrafes = new ArrayList<>();
+        mockEggrafes.add(new Eggrafi("01", "ΕΣΟΔΑ", new BigDecimal("10000000000")));
+        mockEggrafes.add(new Eggrafi("02", "ΕΞΟΔΑ", new BigDecimal("8000000000")));
+        mockEggrafes.add(new Eggrafi("03", "ΑΠΟΤΕΛΕΣΜΑ ΚΡΑΤΙΚΟΥ ΠΡΟΫΠΟΛΟΓΙΣΜΟΥ (ΕΣΟΔΑ - ΕΞΟΔΑ)", new BigDecimal("2000000000")));
     }
 
     @Test
-    void testPieChartElleimma_runsWithoutException() {
-        List<Eggrafi> records = new ArrayList<>();
-        records.add(new Eggrafi("1,001", "ΕΣΟΔΑ", new BigDecimal("1000000000")));
-        records.add(new Eggrafi("2,001", "ΑΠΟΤΕΛΕΣΜΑ ΚΡΑΤΙΚΟΥ ΠΡΟΫΠΟΛΟΓΙΣΜΟΥ (ΕΣΟΔΑ - ΕΞΟΔΑ)", new BigDecimal("500000000")));
+    void testPieChartEsodaExoda_DisplaySuccess() {
+        Assumptions.assumeFalse(GraphicsEnvironment.isHeadless(),
+                "Παράλειψη test γιατί το περιβάλλον δεν υποστηρίζει GUI");
 
-        // Run method, should not throw exception
-        MoreCharts.pieChartElleimma(records);
+        try {
+            MoreCharts.pieChartEsodaExoda(mockEggrafes);
+            assertNotNull(mockEggrafes, "Mock data δεν πρέπει να είναι null");
+        } catch (Exception e) {
+            throw new AssertionError("pieChartEsodaExoda threw an exception: " + e.getMessage());
+        }
     }
 
     @Test
-    void testLineChartEsodaExoda_runsWithoutException() {
-        // Run method, should not throw exception
-        // Note: This method reads CSV files, so you may want to mock ReadBudget
-        // or ensure test CSV files exist, otherwise it may throw FileNotFoundException
-        MoreCharts.lineChartEsodaExoda();
+    void testPieChartElleimma_DisplaySuccess() {
+        Assumptions.assumeFalse(GraphicsEnvironment.isHeadless(),
+                "Παράλειψη test γιατί το περιβάλλον δεν υποστηρίζει GUI");
+
+        try {
+            MoreCharts.pieChartElleimma(mockEggrafes);
+            assertNotNull(mockEggrafes, "Mock data δεν πρέπει να είναι null");
+        } catch (Exception e) {
+            throw new AssertionError("pieChartElleimma threw an exception: " + e.getMessage());
+        }
+    }
+
+    @Test
+    void testLineChartEsodaExoda_DisplaySuccess() {
+        Assumptions.assumeFalse(GraphicsEnvironment.isHeadless(),
+                "Παράλειψη test γιατί το περιβάλλον δεν υποστηρίζει GUI");
+
+        try {
+            // Προσοχή: χρειάζεται CSV files με ονόματα "proypologismos2020.csv" ... "proypologismos2026.csv"
+            // Αν δεν υπάρχουν, μπορούμε να mockάρουμε ReadBudget με Mockito
+            MoreCharts.lineChartEsodaExoda();
+        } catch (Exception e) {
+            throw new AssertionError("lineChartEsodaExoda threw an exception: " + e.getMessage());
+        }
     }
 }
