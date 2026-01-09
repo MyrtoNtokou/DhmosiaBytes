@@ -16,6 +16,10 @@ import dhmosiabytes.IncomeOptions;
 import dhmosiabytes.MinistryOptions;
 import dhmosiabytes.ExpenseOptions;
 
+/**
+ * Utility class for creating and displaying bar charts related to
+ * national budget data using the XChart library.
+ */
 public final class Barcharts {
 
      /** Width of the chart in pixels. */
@@ -71,29 +75,7 @@ public final class Barcharts {
             .yAxisTitle("Ποσό (δις. €)")
             .build();
 
-        // Styling
-        chart.getStyler().setLegendVisible(false);
-        chart.getStyler().setToolTipsEnabled(true);
-
-        chart.getStyler().setXAxisLabelRotation(X_AXIS_LABEL_ROTATION);
-
-
-        chart.getStyler().setAvailableSpaceFill(AVAILABLE_SPACE_FILL);
-        chart.getStyler().setPlotContentSize(PLOT_CONTENT_SIZE);
-
-        // Add series and display chart
-        chart.addSeries("Έσοδα", categories, values);
-        SwingWrapper<CategoryChart> sw = new SwingWrapper<>(chart);
-        javax.swing.JFrame frame = sw.displayChart();
-        frame.setDefaultCloseOperation(
-            javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-
-        // bring window to front
-        frame.setAlwaysOnTop(true);
-        frame.toFront();
-        frame.requestFocus();
-        frame.setAlwaysOnTop(false);
-
+        configureAndShowChart(chart, "Έσοδα", categories, values);
     }
 
 
@@ -128,30 +110,7 @@ public final class Barcharts {
                 .yAxisTitle("Ποσό (δισ. €)")
                 .build();
 
-        // Styling
-        chart.getStyler().setLegendVisible(false);
-        chart.getStyler().setToolTipsEnabled(true);
-
-
-        chart.getStyler().setXAxisLabelRotation(X_AXIS_LABEL_ROTATION);
-
-
-        chart.getStyler().setAvailableSpaceFill(AVAILABLE_SPACE_FILL);
-        chart.getStyler().setPlotContentSize(PLOT_CONTENT_SIZE);
-
-        // Add series and display chart
-        chart.addSeries("Έξοδα", categories, values);
-
-        SwingWrapper<CategoryChart> sw = new SwingWrapper<>(chart);
-        javax.swing.JFrame frame = sw.displayChart();
-        frame.setDefaultCloseOperation(
-        javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-
-        // bring window to front
-        frame.setAlwaysOnTop(true);
-        frame.toFront();
-        frame.requestFocus();
-        frame.setAlwaysOnTop(false);
+        configureAndShowChart(chart, "Έξοδα", categories, values);
     }
 
     /**
@@ -185,22 +144,7 @@ public final class Barcharts {
                 .yAxisTitle("Συνολική Δαπάνη (δισ. €)")
                 .build();
 
-        // Styling
-        chart.getStyler().setLegendVisible(false);
-        chart.getStyler().setXAxisLabelRotation(X_AXIS_LABEL_ROTATION);
-
-        // Add series and display chart
-        chart.addSeries("Δαπάνες", names, values);
-        SwingWrapper<CategoryChart> sw = new SwingWrapper<>(chart);
-        javax.swing.JFrame frame = sw.displayChart();
-        frame.setDefaultCloseOperation(
-            javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-
-        // bring window to front
-        frame.setAlwaysOnTop(true);
-        frame.toFront();
-        frame.requestFocus();
-        frame.setAlwaysOnTop(false);
+        configureAndShowChart(chart, "Δαπάνες", names, values);
     }
 
     /**
@@ -251,19 +195,7 @@ public final class Barcharts {
         chart.getStyler().setAvailableSpaceFill(AVAILABLE_SPACE_FILL);
         chart.getStyler().setPlotContentSize(PLOT_CONTENT_SIZE);
 
-        chart.addSeries("Έσοδα", years, esodaList);
-
-        // Display chart
-        SwingWrapper<CategoryChart> sw = new SwingWrapper<>(chart);
-        javax.swing.JFrame frame = sw.displayChart();
-        frame.setDefaultCloseOperation(
-            javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-
-        // bring window to front
-        frame.setAlwaysOnTop(true);
-        frame.toFront();
-        frame.requestFocus();
-        frame.setAlwaysOnTop(false);
+        configureAndShowChart(chart, "Έσοδα", years, esodaList);
     }
 
     /**
@@ -311,24 +243,7 @@ public final class Barcharts {
             .yAxisTitle("Ποσό (δις €)")
             .build();
 
-        chart.getStyler().setLegendVisible(false);
-        chart.getStyler().setXAxisLabelRotation(X_AXIS_LABEL_ROTATION);
-        chart.getStyler().setAvailableSpaceFill(AVAILABLE_SPACE_FILL);
-        chart.getStyler().setPlotContentSize(PLOT_CONTENT_SIZE);
-
-        chart.addSeries("Έξοδα", years, exodaList);
-
-        // View chart
-        SwingWrapper<CategoryChart> sw = new SwingWrapper<>(chart);
-        javax.swing.JFrame frame = sw.displayChart();
-        frame.setDefaultCloseOperation(
-            javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-
-        // bring window to front
-        frame.setAlwaysOnTop(true);
-        frame.toFront();
-        frame.requestFocus();
-        frame.setAlwaysOnTop(false);
+        configureAndShowChart(chart, "Έξοδα", years, exodaList);
     }
 
     /**
@@ -382,19 +297,27 @@ public final class Barcharts {
             .yAxisTitle("Ποσό (δις €)")
             .build();
 
+        configureAndShowChart(chart, "Κατηγορία", years, budgetValues);
+    }
+
+    private static void configureAndShowChart(
+        final CategoryChart chart, final String seriesName,
+        final List<?> xData, final List<? extends Number> yData) {
+        //Stilling
         chart.getStyler().setLegendVisible(false);
+        chart.getStyler().setToolTipsEnabled(true);
         chart.getStyler().setXAxisLabelRotation(X_AXIS_LABEL_ROTATION);
         chart.getStyler().setAvailableSpaceFill(AVAILABLE_SPACE_FILL);
         chart.getStyler().setPlotContentSize(PLOT_CONTENT_SIZE);
 
-        chart.addSeries("Total Budget", years, budgetValues);
+        //Add series
+        chart.addSeries(seriesName, xData, yData);
 
+        // Display
         SwingWrapper<CategoryChart> sw = new SwingWrapper<>(chart);
         javax.swing.JFrame frame = sw.displayChart();
         frame.setDefaultCloseOperation(
             javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-
-        // bring window to front
         frame.setAlwaysOnTop(true);
         frame.toFront();
         frame.requestFocus();
