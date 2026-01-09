@@ -155,22 +155,10 @@ public class MinistryRequestRepository {
      * If an identical PENDING request already exists for the same ministry,
      * the request is not saved again.
      * @param request the request to be saved
+     * @return the object of the submited request
      */
     public MinistryRequest saveNew(final MinistryRequest request) {
         List<MinistryRequest> all = loadAll();
-
-        int hash = request.getHash();
-        int code = request.getMinistryCode();
-
-        for (MinistryRequest r : all) {
-            if (r.getMinistryCode() == code
-                    && r.getHash() == hash
-                    && r.getStatus() == RequestStatus.PENDING) {
-                System.out.println(
-                    "Υπάρχει ήδη ίδιο PENDING αίτημα. Δεν αποθηκεύτηκε ξανά.");
-                return r;
-            }
-        }
 
         int nextId = all.stream()
                 .mapToInt(MinistryRequest::getId)
@@ -210,7 +198,6 @@ public class MinistryRequestRepository {
 
         if (found) {
             saveAll(all);
-            System.out.println("Η κατάσταση ενημερώθηκε επιτυχώς.");
         } else {
             System.out.println("Δεν βρέθηκε αίτημα με Id = " + id);
         }
@@ -242,20 +229,4 @@ public class MinistryRequestRepository {
 
         return result;
     }
-
-    /**
-     * Check if a completed request already exists.
-     * @param ministryCode
-     * @param hash
-     * @return true/false
-     */
-    public boolean existsCompletedDuplicate(final int ministryCode,
-                                            final int hash) {
-        return loadAll().stream()
-                .anyMatch(r ->
-                        r.getMinistryCode() == ministryCode
-                        && r.getHash() == hash
-                        && r.getStatus() == RequestStatus.COMPLETED);
-    }
-
 }

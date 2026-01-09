@@ -29,15 +29,13 @@ public class MinistryRequestService {
      * @param ministry the ministry submitting the request
      * @param rawDiff the raw budget differences text
      * @param type the request type
+     * @return the submited request id
      */
     public int submitRequest(final Ypourgeio ministry, final String rawDiff,
                                     final RequestType type) {
 
         String saveVersion = formatForSaving(rawDiff);
         String normalized = normalize(saveVersion);
-        int hash = normalized.hashCode();
-
-        
 
         MinistryRequest request = new MinistryRequest(
                 0,
@@ -50,19 +48,6 @@ public class MinistryRequestService {
 
         MinistryRequest saved = repo.saveNew(request);
         return saved.getId();
-    }
-
-    /**
-     * Format request text for terminal display,
-     * keeping ANSI color codes.
-     * @param rawDiff the raw request text
-     * @return formatted text for display
-     */
-    public String formatForDisplay(final String rawDiff) {
-        return rawDiff.replaceAll(
-                ".*ΑΛΛΑΓΕΣ ΣΤΟΝ\\s*ΠΡΟΫΠΟΛΟΓΙΣΜΟ\\s*ΤΩΝ\\s*ΥΠΟΥΡΓΕΙΩΝ.*\\n?",
-                ""
-        );
     }
 
     /**
@@ -87,6 +72,8 @@ public class MinistryRequestService {
      */
     public void markCompleted(final int id) {
         repo.updateStatus(id, RequestStatus.COMPLETED);
+        System.out.println("Η αλλαγή με κωδικό " + id
+                            + "έχει αξιολογηθεί θετικά.");
     }
 
     /**
@@ -95,6 +82,7 @@ public class MinistryRequestService {
      */
     public void markRejected(final int id) {
         repo.updateStatus(id, RequestStatus.REJECTED);
+        System.out.println("Το αίτημα με " + id + "απορρίφθηκε.");
     }
 
     /**
@@ -123,6 +111,8 @@ public class MinistryRequestService {
      */
     public void reveiwByFinanceMinistry(final int id) {
         repo.updateStatus(id, RequestStatus.REVIEWED_BY_FINANCE_MINISTRY);
+        System.out.println("Η αλλαγή με κωδικό " + id
+        + "υποβλήθηκε για έγκριση από την κυβέρνηση.");
     }
 
     /**
@@ -131,6 +121,8 @@ public class MinistryRequestService {
      */
     public void approveByGovernment(final int id) {
         repo.updateStatus(id, RequestStatus.GOVERNMENT_APPROVED);
+        System.out.println("Η αλλαγή με κωδικό " + id
+        + "υποβλήθηκε για τελική έγκριση από το κοινοβούλιο.");
     }
 
     /**
@@ -139,5 +131,7 @@ public class MinistryRequestService {
      */
     public void approveByParliament(final int id) {
         repo.updateStatus(id, RequestStatus.PARLIAMENT_APPROVED);
+        System.out.println("Η αλλαγή με κωδικό " + id
+                            + "καταχωρήθηκε επιτυχώς.");
     }
 }
