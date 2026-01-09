@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -229,24 +230,25 @@ public final class ReadBudget {
     * @return the parsed {@link BigDecimal} value, or {@code BigDecimal.ZERO}
     *         if conversion fails
     */
-    private static BigDecimal parseNumber(final String s) {
+    private static BigDecimal parseNumber(final String s) 
+        throws ParseException {
 
         String value = s;
-    if (value == null || value.isEmpty()) {
-        return BigDecimal.ZERO;
-    }
+        if (value == null || value.isEmpty()) {
+            return BigDecimal.ZERO;
+        }
 
-    value = value.trim();
+        value = value.trim();
 
-    /* Removes the trailing thousands separator */
-    value = value.replace(".", "");
-    /* Converts commas to dots for proper numeric formatting. */
-    value = value.replace(",", ".");
+        /* Removes the trailing thousands separator */
+        value = value.replace(".", "");
+        /* Converts commas to dots for proper numeric formatting. */
+        value = value.replace(",", ".");
 
         try {
             return new BigDecimal(value);
-        } catch (Exception e) {
-            System.err.println("ΣΦΑΛΜΑ ΣΤΟΝ ΑΡΙΘΜΟ: [" + s + "]");
+        } catch (NumberFormatException e) {
+            System.err.println("ΣΦΑΛΜΑ ΣΤΟΝ ΑΡΙΘΜΟ:   " + s);
             return BigDecimal.ZERO;
         }
     }
@@ -319,6 +321,8 @@ public final class ReadBudget {
                         System.err.println(
                             "Προσπέραση λανθασμένης εγγραφής: "
                             + e.getMessage());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
                     }
                 }
             } catch (IOException | CsvValidationException e) {
