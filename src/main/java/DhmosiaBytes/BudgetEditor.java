@@ -148,7 +148,8 @@ public class BudgetEditor {
         serv.changeMinistryAmount(code, column, newAmount);
         Budget after = serv.getBudget();
         Ypourgeio ministry = after.getMinistries().get(code);
-        String rawDiff = BudgetDiffPrinter.captureMinistryDiff(initialBudget, after);
+        String rawDiff = BudgetDiffPrinter
+                        .captureMinistryDiff(initialBudget, after);
         MinistryRequestService reqService = new MinistryRequestService();
 
         BudgetDiffPrinter.printDiffMinistries(initialBudget, after);
