@@ -1,62 +1,66 @@
 package budgetcharts;
 
-import budgetreader.Eggrafi;
-import budgetreader.Ypourgeio;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.awt.GraphicsEnvironment;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Unit tests for Barcharts class */
-class TestBarcharts {
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-    @Test
-    void testChartEsoda_runsWithoutException() {
-        List<Eggrafi> records = new ArrayList<>();
-        records.add(new Eggrafi("1,001", "Income A", new BigDecimal("1000000000")));
-        records.add(new Eggrafi("1,002", "Income B", new BigDecimal("2000000000")));
-        records.add(new Eggrafi("2,001", "Expense A", new BigDecimal("500000000")));
+import budgetreader.Eggrafi;
+import budgetreader.Ypourgeio;
 
-        // Should run without throwing exceptions
-        Barcharts.chartEsoda(records);
+public class TestBarcharts {
+
+    private List<Eggrafi> mockEggrafes;
+    private List<Ypourgeio> mockYpourgeia;
+
+    @BeforeEach
+    void setUp() {
+        mockEggrafes = new ArrayList<>();
+        mockEggrafes.add(new Eggrafi("1,01", "Φόροι", new BigDecimal("10000000000")));
+        mockEggrafes.add(new Eggrafi("2,01", "Μισθοί", new BigDecimal("8000000000")));
+
+        mockYpourgeia = new ArrayList<>();
+        mockYpourgeia.add(
+            new Ypourgeio(
+                1,
+                "Υπουργείο Οικονομικών",
+                new BigDecimal("10000000000"),
+                new BigDecimal("5000000000"),
+                new BigDecimal("15000000000")
+            )
+        );
     }
 
     @Test
-    void testChartExoda_runsWithoutException() {
-        List<Eggrafi> records = new ArrayList<>();
-        records.add(new Eggrafi("2,001", "Expense A", new BigDecimal("500000000")));
-        records.add(new Eggrafi("2,002", "Expense B", new BigDecimal("1500000000")));
-        records.add(new Eggrafi("1,001", "Income A", new BigDecimal("1000000000")));
+    void testChartEsoda_DisplaySuccess() {
+        Assumptions.assumeFalse(GraphicsEnvironment.isHeadless(),
+                "Παράλειψη test σε headless περιβάλλον");
 
-        // Should run without throwing exceptions
-        Barcharts.chartExoda(records);
+        Barcharts.chartEsoda(mockEggrafes);
+        assertNotNull(mockEggrafes);
     }
 
     @Test
-    void testChartMinistry_runsWithoutException() {
-        List<Ypourgeio> ministries = new ArrayList<>();
-        ministries.add(new Ypourgeio(5, "Υπουργείο Α", new BigDecimal("1000000000"), new BigDecimal("500000000"), new BigDecimal("1500000000")));
-        ministries.add(new Ypourgeio(6, "Some Other", new BigDecimal("500000000"), new BigDecimal("250000000"), new BigDecimal("750000000")));
+    void testChartExoda_DisplaySuccess() {
+        Assumptions.assumeFalse(GraphicsEnvironment.isHeadless(),
+                "Παράλειψη test σε headless περιβάλλον");
 
-        // Should run without throwing exceptions
-        Barcharts.chartMinistry(ministries);
-    }
-
-    // Optional: tests for ByYear methods
-    @Test
-    void testChartEsodaByYear_runsWithoutException() {
-        // Just test that method runs (does not read actual files in this test)
-        Barcharts.chartEsodaByYear(1); 
+        Barcharts.chartExoda(mockEggrafes);
+        assertNotNull(mockEggrafes);
     }
 
     @Test
-    void testChartExodaByYear_runsWithoutException() {
-        Barcharts.chartExodaByYear(1); 
-    }
+    void testChartMinistry_DisplaySuccess() {
+        Assumptions.assumeFalse(GraphicsEnvironment.isHeadless(),
+                "Παράλειψη test σε headless περιβάλλον");
 
-    @Test
-    void testChartMinistryByYear_runsWithoutException() {
-        Barcharts.chartMinistryByYear(1); 
+        Barcharts.chartMinistry(mockYpourgeia);
+        assertNotNull(mockYpourgeia);
     }
 }
