@@ -4,10 +4,10 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-import ministryrequests.MinistryRequest;
-import static aggregatedata.ConsoleColors.RESET;
 import static aggregatedata.ConsoleColors.BOLD;
 import static aggregatedata.ConsoleColors.CYAN;
+import static aggregatedata.ConsoleColors.RESET;
+import ministryrequests.MinistryRequest;
 
 /**
  * Utility class that handles user interactions related to reviewing,
@@ -78,8 +78,8 @@ public final class RequestsController {
         int choice = -1;
         do {
             System.out.println();
-            System.out.println("1. Το αίτημα αξιολογήθηκε θετικά");
-            System.out.println("2. Το αίτημα απορρίθφηκε");
+            System.out.println("1. Θετική Αξιολόγηση");
+            System.out.println("2. Απόρριψη");
             System.out.println("0. Εξοδος");
             System.out.print("Επιλογή: ");
             try {
