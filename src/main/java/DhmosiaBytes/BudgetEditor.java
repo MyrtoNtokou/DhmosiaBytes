@@ -146,8 +146,6 @@ public class BudgetEditor {
         Map<Integer, Map<String, BigDecimal>> mapping = BudgetAssembler
                 .createMappingForMinistryChange(code, distribution);
         BudgetService serv = new BudgetServiceImpl(initialBudget, mapping);
-        Budget currentBudget = serv.getBudget();
-        Budget before = new Budget(currentBudget);
         serv.changeMinistryAmount(code, column, newAmount);
         Budget after = serv.getBudget();
         Ypourgeio ministry = after.getMinistries().get(code);
