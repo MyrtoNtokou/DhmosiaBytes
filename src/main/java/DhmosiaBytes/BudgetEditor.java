@@ -22,6 +22,9 @@ import ministryrequests.RequestType;
 import ministryrequests.BudgetRequestLoader;
 import ministryrequests.BudgetRequestParser;
 
+import static aggregatedata.ConsoleColors.RESET;
+import static aggregatedata.ConsoleColors.BOLD;
+
  /**
  * Allows editing of income and expense entries in a Budget.
  */
@@ -115,17 +118,22 @@ public class BudgetEditor {
         } else {
             column = "πδε";
         }
-        BigDecimal newAmount = null;
 
-        while (newAmount == null) {
-            System.out.print("Παρακαλώ εισάγετε την \u001B[1mαύξηση\u001B[0m "
+        BigDecimal increase = null;
+        BigDecimal newAmount = null;
+        while (increase == null) {
+            System.out.print("Παρακαλώ εισάγετε την " + BOLD + "αύξηση" + RESET
             + " που θα εφαρμοστεί στο επιλεγμένο Υπουργείο: ");
             String input = scanner.nextLine();
             try {
-                newAmount = new BigDecimal(input);
+                Ypourgeio mBefore = initialBudget.getMinistries().get(code);
+                BigDecimal oldVal = column.equalsIgnoreCase("τακτικός")
+                    ? mBefore.getTaktikos() : mBefore.getEpendyseis();
+                increase = new BigDecimal(input);
+                newAmount = oldVal.add(increase);
                 if (newAmount.compareTo(BigDecimal.ZERO) < 0) {
-                System.out.println("Το ποσό δεν μπορεί να είναι αρνητικό.");
-                newAmount = null;
+                    System.out.println("Το ποσό δεν μπορεί να είναι αρνητικό.");
+                    newAmount = null;
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Μη έγκυρη τιμή.");
@@ -137,15 +145,13 @@ public class BudgetEditor {
         Map<Integer, Map<String, BigDecimal>> mapping = BudgetAssembler
                 .createMappingForMinistryChange(code, distribution);
         BudgetService serv = new BudgetService(initialBudget, mapping);
-        Budget currentBudget = serv.getBudget();
-        Budget before = new Budget(currentBudget);
         serv.changeMinistryAmount(code, column, newAmount);
         Budget after = serv.getBudget();
         Ypourgeio ministry = after.getMinistries().get(code);
-        String rawDiff = BudgetDiffPrinter.captureMinistryDiff(before, after);
+        String rawDiff = BudgetDiffPrinter.captureMinistryDiff(initialBudget, after);
         MinistryRequestService reqService = new MinistryRequestService();
 
-        BudgetDiffPrinter.printDiffMinistries(before, after);
+        BudgetDiffPrinter.printDiffMinistries(initialBudget, after);
         int requestId;
 
         if (column.equals("τακτικός")) {

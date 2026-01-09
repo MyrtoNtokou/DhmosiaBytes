@@ -158,7 +158,7 @@ public final class BudgetDiffPrinter {
             System.out.println("\n" + BOLD + resultCode + " | "
             + "ΑΠΟΤΕΛΕΣΜΑ ΚΡΑΤΙΚΟΥ ΠΡΟΫΠΟΛΟΓΙΣΜΟΥ (ΕΣΟΔΑ - ΕΞΟΔΑ)" + RESET);
 
-            System.out.println("    " + oldResult
+            System.out.println(oldResult
                 + " → " + BLUE + newResult + RESET
                 + formatDiff(oldResult, newResult));
         }
