@@ -1,12 +1,15 @@
 package budgetreader;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.ParseException;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -176,5 +179,21 @@ public class ReadBudgetTest {
 
         assertNotNull(y.getOnoma());
         assertNotNull(y.getSynolo());
+    }
+
+    /**
+     * Tests the parseNumber method with valid and invalid inputs.
+     * @throws ParseException
+     */
+    @Test
+    public void parseNumber_validNumber() throws ParseException {
+        BigDecimal result = ReadBudget.parseNumber("123,45");
+    assertEquals(new BigDecimal("123.45"), result);
+    }
+
+   @Test
+    void parseNumber_invalidNumber_returnsZero() throws ParseException {
+        BigDecimal result = ReadBudget.parseNumber("abc");
+        assertEquals(BigDecimal.ZERO, result);
     }
 }
