@@ -31,6 +31,7 @@ public class BudgetRequestParser {
         String[] lines = rawText.split("\n");
 
         Integer ministryCode = null;
+        String budgetType = null;
         BigDecimal ministryOldAmount = null;
         BigDecimal ministryNewAmount = null;
         Map<String, BigDecimal> expensePercentages = new HashMap<>();
@@ -50,8 +51,16 @@ public class BudgetRequestParser {
                 continue;
             }
 
+            if (line.startsWith("Type:")) {
+                budgetType = line.split(":")[1].trim();
+                continue;
+            }
+
+            String searchPrefix = "TAKTIKOS".equalsIgnoreCase(budgetType)
+                                ? "Τακτικός:" : "Επενδύσεις:";
+
             // Extract ministry old and new amounts
-            if (ministryCode != null && line.startsWith("Τακτικός:")
+            if (ministryCode != null && line.startsWith(searchPrefix)
                         && ministryOldAmount == null) {
                 String[] parts = line.split("→");
                 ministryOldAmount = extractNumber(parts[0]);
@@ -86,6 +95,7 @@ public class BudgetRequestParser {
             }
         }
         return new ParsedResult(ministryCode,
+                                budgetType,
                                 ministryNewAmount,
                                 expensePercentages);
     }
@@ -143,6 +153,8 @@ public class BudgetRequestParser {
     public static class ParsedResult {
         /** Ministry code. */
         private final Integer ministryCode;
+        /** Budget type. */
+        private final String budgetType;
         /** New ministry budget amount. */
         private final BigDecimal ministryNewAmount;
         /** Map of expense code to percentage contribution. */
@@ -151,13 +163,16 @@ public class BudgetRequestParser {
         /**
          * Constructor.
          * @param code
+         * @param type
          * @param newAmount
          * @param expensePer
          */
         public ParsedResult(final Integer code,
+                            final String type,
                             final BigDecimal newAmount,
                             final Map<String, BigDecimal> expensePer) {
             ministryCode = code;
+            budgetType = type;
             ministryNewAmount = newAmount;
             expensePercentages = new HashMap<>(expensePer);
         }
@@ -168,6 +183,14 @@ public class BudgetRequestParser {
          * */
         public Integer getMinistryCode() {
             return ministryCode;
+        }
+
+        /**
+         * Getter for budget type from request.
+         * @return taktikos or ependyseis
+         * */
+        public String getBudgetType() {
+            return budgetType;
         }
 
         /**
