@@ -15,6 +15,7 @@ import budgetlogic.BudgetAssembler;
 import budgetlogic.BudgetDiffPrinter;
 import budgetlogic.BudgetSave;
 import budgetlogic.BudgetService;
+import budgetlogic.BudgetServiceImpl;
 import budgetreader.Eggrafi;
 import budgetreader.Ypourgeio;
 import ministryrequests.MinistryRequestService;
@@ -136,7 +137,7 @@ public class BudgetEditor {
         Map<String, BigDecimal> distribution = distributeExpenses(scanner);
         Map<Integer, Map<String, BigDecimal>> mapping = BudgetAssembler
                 .createMappingForMinistryChange(code, distribution);
-        BudgetService serv = new BudgetService(initialBudget, mapping);
+        BudgetService serv = new BudgetServiceImpl(initialBudget, mapping);
         Budget currentBudget = serv.getBudget();
         Budget before = new Budget(currentBudget);
         serv.changeMinistryAmount(code, column, newAmount);
@@ -272,7 +273,7 @@ public class BudgetEditor {
             BudgetAssembler.createMappingForMinistryChange(ministry,
                     expensePer);
 
-            BudgetService serv = new BudgetService(initialBudget, mapping);
+            BudgetService serv = new BudgetServiceImpl(initialBudget, mapping);
             serv.changeMinistryAmount(ministry, type, newAmount);
             Budget finalBudget = serv.getBudget();
 

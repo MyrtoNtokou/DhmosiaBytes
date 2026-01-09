@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 import budgetlogic.Budget;
 import budgetlogic.BudgetService;
+import budgetlogic.BudgetServiceImpl;
 import budgetreader.Eggrafi;
 import budgetreader.ReadBudget;
 import budgetreader.Ypourgeio;
@@ -85,7 +86,7 @@ public class CutLists {
      */
     public String selectRevenue(final Scanner scanner,
     final List<Eggrafi> esoda, final Budget initialBudget) {
-        BudgetService service = new BudgetService(initialBudget, null);
+        BudgetService service = new BudgetServiceImpl(initialBudget, null);
         BudgetEditor editor = new BudgetEditor(service);
 
         String choice;
@@ -131,7 +132,7 @@ public class CutLists {
     public int selectMinistry(final Scanner scanner,
     final List<Ypourgeio> ministries, final Budget initialBudget,
     final Role currentRole) {
-        BudgetService service = new BudgetService(initialBudget, null);
+        BudgetService service = new BudgetServiceImpl(initialBudget, null);
         BudgetEditor editor = new BudgetEditor(service);
 
         int choice;

@@ -8,6 +8,10 @@ import java.util.Map;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import budgetlogic.Budget;
+import budgetlogic.BudgetService;
+import budgetlogic.BudgetServiceImpl;
 import budgetreader.*;
 
 class BudgetServiceTest {
@@ -63,7 +67,7 @@ class BudgetServiceTest {
    
     @Test
     void testChangeMinistryAmountRecomputesTotals() {
-        BudgetService service = new BudgetService(budget, mapping);
+        BudgetService service = new BudgetServiceImpl(budget, mapping);
 
         service.changeMinistryAmount(10, "τακτικός", bd(80));
 
@@ -82,7 +86,7 @@ class BudgetServiceTest {
 
     @Test
     void testPropagationWithMapping() {
-        BudgetService service = new BudgetService(budget, mapping);
+        BudgetService service = new BudgetServiceImpl(budget, mapping);
 
         // Old total = 100 -> new total = 130 (increase +30)
         service.changeMinistryAmount(10, "ΠΔΕ", bd(60));
@@ -98,20 +102,20 @@ class BudgetServiceTest {
 
     @Test
     void testValidateMinistriesPasses() {
-        BudgetService service = new BudgetService(budget, mapping);
+        BudgetService service = new BudgetServiceImpl(budget, mapping);
         assertTrue(service.validateMinistries());
     }
 
     @Test
     void testValidateMinistriesFailsWhenInconsistent() {
         budget.getMinistries().get(10).setSynolo(bd(999)); // break consistency
-        BudgetService service = new BudgetService(budget, mapping);
+        BudgetService service = new BudgetServiceImpl(budget, mapping);
         assertFalse(service.validateMinistries());
     }
 
     @Test
     void testValidateAll() {
-        BudgetService service = new BudgetService(budget, mapping);
+        BudgetService service = new BudgetServiceImpl(budget, mapping);
         assertTrue(service.validateAll());
     }
 }
