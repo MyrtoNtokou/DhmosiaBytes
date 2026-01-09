@@ -156,7 +156,7 @@ public class MinistryRequestRepository {
      * the request is not saved again.
      * @param request the request to be saved
      */
-    public void saveNew(final MinistryRequest request) {
+    public MinistryRequest saveNew(final MinistryRequest request) {
         List<MinistryRequest> all = loadAll();
 
         int hash = request.getHash();
@@ -168,7 +168,7 @@ public class MinistryRequestRepository {
                     && r.getStatus() == RequestStatus.PENDING) {
                 System.out.println(
                     "Υπάρχει ήδη ίδιο PENDING αίτημα. Δεν αποθηκεύτηκε ξανά.");
-                return;
+                return r;
             }
         }
 
@@ -184,11 +184,11 @@ public class MinistryRequestRepository {
                 request.getType(),
                 request.getStatus(),
                 request.getTimestamp(),
-                request.getText()
-        );
+                request.getText());
 
         all.add(withId);
         saveAll(all);
+        return withId;
     }
 
     /**

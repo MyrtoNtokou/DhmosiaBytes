@@ -30,18 +30,14 @@ public class MinistryRequestService {
      * @param rawDiff the raw budget differences text
      * @param type the request type
      */
-    public void submitRequest(final Ypourgeio ministry, final String rawDiff,
+    public int submitRequest(final Ypourgeio ministry, final String rawDiff,
                                     final RequestType type) {
 
         String saveVersion = formatForSaving(rawDiff);
         String normalized = normalize(saveVersion);
         int hash = normalized.hashCode();
 
-        if (repo.existsCompletedDuplicate(ministry.getKodikos(), hash)) {
-            System.out.println("Το αίτημα αυτό έχει ήδη εγκριθεί "
-                        + "και εφαρμοστεί.");
-            return;
-        }
+        
 
         MinistryRequest request = new MinistryRequest(
                 0,
@@ -52,7 +48,8 @@ public class MinistryRequestService {
                 LocalDateTime.now(),
                 normalized);
 
-        repo.saveNew(request);
+        MinistryRequest saved = repo.saveNew(request);
+        return saved.getId();
     }
 
     /**
@@ -137,7 +134,7 @@ public class MinistryRequestService {
     }
 
     /**
-     * Mark request as approved by the Parliamen.
+     * Mark request as approved by the Parliament.
      * @param id request id
      */
     public void approveByParliament(final int id) {
