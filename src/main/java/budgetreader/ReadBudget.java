@@ -230,7 +230,7 @@ public final class ReadBudget {
     * @return the parsed {@link BigDecimal} value, or {@code BigDecimal.ZERO}
     *         if conversion fails
     */
-    static BigDecimal parseNumber(final String s) 
+    static BigDecimal parseNumber(final String s)
         throws ParseException {
 
         String value = s;
