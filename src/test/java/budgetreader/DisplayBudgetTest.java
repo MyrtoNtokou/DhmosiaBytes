@@ -58,9 +58,9 @@ public class DisplayBudgetTest {
         /* Mock data. */
         List<Ypourgeio> lista = new ArrayList<>();
         lista.add(new Ypourgeio(1, "Υπ. Παιδείας",
-                BigDecimal.valueOf(200),
-                BigDecimal.valueOf(300),
-            BigDecimal.valueOf(400)));
+                new BigDecimal(200),
+                new BigDecimal(300),
+            new BigDecimal(400)));
 
         /* Call showMinistry method of DispayBudget.*/
         DisplayBudget.showMinistry(lista);
@@ -74,5 +74,22 @@ public class DisplayBudgetTest {
         assertTrue(output.contains("200"));
         assertTrue(output.contains("300"));
         assertTrue(output.contains("400"));
-    }  
+    }
+
+
+    /**
+     * Tests that showGeneral handles an empty list gracefully.
+     */
+    @Test
+    public void testShowGeneralWithEmptyList() {
+        PrintStream originalOut = System.out;
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        DisplayBudget.showGeneral(new ArrayList<>());
+        String output = outContent.toString();
+        System.setOut(originalOut);
+        assertTrue(output.contains("ΓΕΝΙΚΟΣ ΠΡΟΫΠΟΛΟΓΙΣΜΟΣ"));
+        assertFalse(output.contains("Τεστ Έσοδο"));
+    }
 }
