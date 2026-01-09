@@ -38,14 +38,21 @@ public final class AggregateMenu {
             System.out.println();
             System.out.println("1. Γενικός προϋπολογισμός");
             System.out.println("2. Προϋπολογισμός υπουργείων");
+            System.out.println("0. Έξοδος");
             System.out.print("Επιλέξτε το αρχείο για το οποίο θέλετε να δείτε "
             + "συγκεντρωτικά στοιχεία: ");
+
             try {
                 choice = input.nextInt();
+                input.nextLine();
             } catch (InputMismatchException e) {
                 System.out.println("Παρακαλώ εισάγετε αριθμό.");
-                input.next();
+                input.nextLine();
                 continue;
+            }
+
+            if (choice == 0) {
+                return 0;
             }
 
             if (choice != 1 && choice != 2) {

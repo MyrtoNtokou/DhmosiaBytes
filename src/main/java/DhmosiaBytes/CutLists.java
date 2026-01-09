@@ -128,7 +128,8 @@ public class CutLists {
      * @return the code of the selected ministry, or 0 to go back
      */
     public int selectMinistry(final Scanner scanner,
-    final List<Ypourgeio> ministries, final Budget initialBudget) {
+    final List<Ypourgeio> ministries, final Budget initialBudget,
+    final Role currentRole) {
         BudgetService service = new BudgetService(initialBudget, null);
         BudgetEditor editor = new BudgetEditor(service);
 
@@ -161,7 +162,7 @@ public class CutLists {
                 System.out.println("Δεν υπάρχει επιλογή "
                 + "με αυτόν τον κωδικό.");
             } else {
-                editor.editExpense(choice, scanner, initialBudget);
+                editor.editExpense(choice, scanner, initialBudget, currentRole);
                 return choice;
             }
         } while (true);

@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.nio.file.Path;
+import java.nio.file.Files;
 
 import budgetlogic.Budget;
 import budgetlogic.BudgetAssembler;
@@ -17,6 +19,8 @@ import budgetreader.Eggrafi;
 import budgetreader.Ypourgeio;
 import ministryrequests.MinistryRequestService;
 import ministryrequests.RequestType;
+import ministryrequests.BudgetRequestLoader;
+import ministryrequests.BudgetRequestParser;
 
  /**
  * Allows editing of income and expense entries in a Budget.
@@ -97,7 +101,7 @@ public class BudgetEditor {
      * @param initialBudget Budget object to edit
      */
     public void editExpense(final int code, final Scanner scanner,
-    final Budget initialBudget) {
+    final Budget initialBudget, final Role currentRole) {
         ShowEditMenuOptions editMenu = new ShowEditMenuOptions();
         int type;
         type = editMenu.selectBudgetType(scanner);
@@ -141,12 +145,20 @@ public class BudgetEditor {
         MinistryRequestService reqService = new MinistryRequestService();
 
         BudgetDiffPrinter.printDiffMinistries(before, after);
+        int requestId;
 
         if (column.equals("τακτικός")) {
-            reqService.submitRequest(ministry, rawDiff, RequestType.TAKTIKOS);
+            requestId = reqService.submitRequest(ministry, rawDiff,
+                    RequestType.TAKTIKOS);
         } else {
-            reqService.submitRequest(ministry, rawDiff,
+            requestId = reqService.submitRequest(ministry, rawDiff,
             RequestType.EPENDYSEIS);
+        }
+
+        switch (currentRole) {
+            case FINANCE_MINISTER -> {
+                reqService.reveiwByFinanceMinistry(requestId);
+            }
         }
     }
 
@@ -224,6 +236,43 @@ public class BudgetEditor {
                     System.out.println("Μη έγκυρο ποσοστό.");
                 }
             }
+        }
+    }
+
+    public void saveEdit(final int id) {
+        MinistryRequestService reqService = new MinistryRequestService();
+        reqService.approveByParliament(id);
+        
+        try {
+            String fileContent = Files.readString(Path
+                    .of("ministryrequests.txt"));
+            String requestBlock = BudgetRequestLoader
+                .extractRequestBlock(fileContent, id);
+            BudgetRequestParser parser =
+                    new BudgetRequestParser(requestBlock);
+            BudgetRequestParser.ParsedResult result = parser.parse(id);
+            int ministry = result.getMinistryCode();
+            String type = result.getBudgetType();
+            BigDecimal newAmount = result.getMinistryNewAmount();
+            Map<String, BigDecimal> expensePer = result
+                    .getExpensePercentages();
+            BudgetAssembler loader = new BudgetAssembler();
+            Budget initialBudget = loader.loadBudget("newgeneral.csv",
+                                "newministries.csv");
+            
+            Map<Integer, Map<String, BigDecimal>> mapping =
+            BudgetAssembler.createMappingForMinistryChange(ministry,
+                    expensePer);
+            
+            BudgetService serv = new BudgetService(initialBudget, mapping);
+            serv.changeMinistryAmount(ministry, type, newAmount);
+            Budget finalBudget = serv.getBudget();
+            
+            BudgetSave saver = new BudgetSave();
+            saver.saveGeneralChanges(finalBudget, "newgeneral.csv");
+            saver.saveMinistryChanges(finalBudget, "newministries.csv");
+        } catch (IOException e){
+            System.err.println(e.getMessage());
         }
     }
 }
