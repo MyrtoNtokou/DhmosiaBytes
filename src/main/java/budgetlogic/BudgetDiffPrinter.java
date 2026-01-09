@@ -9,6 +9,14 @@ import java.util.Map;
 import budgetreader.Eggrafi;
 import budgetreader.Ypourgeio;
 
+import static aggregatedata.ConsoleColors.RESET;
+import static aggregatedata.ConsoleColors.BOLD;
+import static aggregatedata.ConsoleColors.BLUE;
+import static aggregatedata.ConsoleColors.RED;
+import static aggregatedata.ConsoleColors.GREEN;
+import static aggregatedata.ConsoleColors.CYAN;
+import static aggregatedata.ConsoleColors.UNDERLINE;
+
 /**
  * Print general and ministries budget after changes.
  * Output is formatted with ANSI escape codes (bold + blue).
@@ -18,38 +26,12 @@ public final class BudgetDiffPrinter {
     /** Constructor. */
     private BudgetDiffPrinter() { }
 
-    /** ANSI reset code to clear all formatting. */
-    private static final String RESET = "\u001B[0m";
-    /** ANSI bold text modifier. */
-    private static final String BOLD = "\u001B[1m";
-    /** ANSI red for negative difference. */
-    public static final String RED = "\u001B[31m";
-    /** ANSI green for positive difference. */
-    public static final String GREEN = "\u001B[32m";
-    /** ANSI underline text modifier. */
-    public static final String UNDERLINE = "\u001B[4m";
     /** Line to be removed when printing ministries. */
     private static final int MINISTRY_TOTALS = 4;
     /** Line to be removed when printing ministries. */
     private static final int TOTALS = 33;
     /** Target display width for budget ammounts. */
     private static final int DISPLAY_AMMOUNT_WIDTH = 17;
-
-    /**
-     * Helper: Generate ANSI escape codes for RGB.
-     * @param r red component
-     * @param g green component
-     * @param b blue component
-     * @return ANSI escape code fro RGB
-     */
-    private static String rgb(final int r, final int g, final int b) {
-        return "\u001B[38;2;" + r + ";" + g + ";" + b + "m";
-    }
-
-    /** Blue color used new values. */
-    private static final String BLUE = rgb(30, 144, 255);
-    /** Cyan color used titles. */
-    private static final String CYAN = rgb(0, 200, 255);
 
     /**
      * Print formatted difference report for revenues.

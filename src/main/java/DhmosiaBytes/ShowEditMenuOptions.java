@@ -63,6 +63,7 @@ public class ShowEditMenuOptions {
      * @param scanner Scanner to read user input
      * @param selected RevenueOrExpense constant
      * indicating whether to edit income or expense
+     * @param currentRole Login role
      */
     public void editRevenueOrExpense(final Budget initialBudget,
             final Scanner scanner, final RevenueOrExpense selected,

@@ -3,6 +3,14 @@ package aggregatedata;
 import budgetreader.Ypourgeio;
 import java.util.List;
 
+import static aggregatedata.ConsoleColors.RESET;
+import static aggregatedata.ConsoleColors.BOLD;
+import static aggregatedata.ConsoleColors.BLUE;
+import static aggregatedata.ConsoleColors.CYAN;
+
+/**
+ * Print investment stats formatted.
+ */
 public final class InvestmentPrinter {
 
     /** Constructor. */

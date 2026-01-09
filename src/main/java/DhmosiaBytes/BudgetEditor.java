@@ -99,6 +99,7 @@ public class BudgetEditor {
      * @param code the code of the expense to be replaced
      * @param scanner the Scanner to read user input
      * @param initialBudget Budget object to edit
+     * @param currentRole Login role
      */
     public void editExpense(final int code, final Scanner scanner,
     final Budget initialBudget, final Role currentRole) {
@@ -158,6 +159,9 @@ public class BudgetEditor {
         switch (currentRole) {
             case FINANCE_MINISTER -> {
                 reqService.reveiwByFinanceMinistry(requestId);
+            }
+            default -> {
+                // no action needed
             }
         }
     }
@@ -239,10 +243,14 @@ public class BudgetEditor {
         }
     }
 
+    /**
+     * Finalize request by saving the changes.
+     * @param id request id
+     */
     public void saveEdit(final int id) {
         MinistryRequestService reqService = new MinistryRequestService();
         reqService.approveByParliament(id);
-        
+
         try {
             String fileContent = Files.readString(Path
                     .of("ministryrequests.txt"));
@@ -259,19 +267,19 @@ public class BudgetEditor {
             BudgetAssembler loader = new BudgetAssembler();
             Budget initialBudget = loader.loadBudget("newgeneral.csv",
                                 "newministries.csv");
-            
+
             Map<Integer, Map<String, BigDecimal>> mapping =
             BudgetAssembler.createMappingForMinistryChange(ministry,
                     expensePer);
-            
+
             BudgetService serv = new BudgetService(initialBudget, mapping);
             serv.changeMinistryAmount(ministry, type, newAmount);
             Budget finalBudget = serv.getBudget();
-            
+
             BudgetSave saver = new BudgetSave();
             saver.saveGeneralChanges(finalBudget, "newgeneral.csv");
             saver.saveMinistryChanges(finalBudget, "newministries.csv");
-        } catch (IOException e){
+        } catch (IOException e) {
             System.err.println(e.getMessage());
         }
     }
