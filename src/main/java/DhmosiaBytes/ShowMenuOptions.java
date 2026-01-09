@@ -4,14 +4,19 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+import budgetcomparison.ComparisonController;
 import budgetlogic.Budget;
 import budgetlogic.BudgetAssembler;
+import budgetlogic.BudgetDiffPrinter;
 import budgetreader.DisplayBudget;
 import budgetreader.Eggrafi;
 import budgetreader.ReadBudget;
 import budgetreader.Ypourgeio;
-
-
+import ministryrequests.MinistryRequest;
+import ministryrequests.MinistryRequestPrinter;
+import ministryrequests.MinistryRequestService;
+import ministryrequests.RequestStatus;
+import ministryrequests.RequestType;
 
 /**
  * Class that displays the application's main menu.
@@ -24,8 +29,14 @@ public final class ShowMenuOptions {
      */
     private ShowMenuOptions() { }
 
+    /** Code for option 3. */
+    private static final int CODE_FOR_OPTION_3 = 3;
+
     /** Code to edit a new file. */
-    private static final int CODE_FOR_MENUS = 2;
+    private static final int CODE_FOR_MENUS = 4;
+
+    /** Code for rejecting a comment. */
+    private static final int REJECTED = 2;
 
     /**
      * Displays the menu options depending on the role's access rights.
@@ -39,11 +50,11 @@ public final class ShowMenuOptions {
         Graphs graph = new Graphs();
         MenuOptions choice = null;
         do {
-            // Display menu options
+            System.out.println();
             for (MenuOptions opt : MenuOptions.values()) {
                 if (currentRole.canAccess(opt)) {
                     System.out.println(opt.getCode() + ". "
-                    + opt.getDescription());
+                    + currentRole.getMenuLabel(opt));
                 }
             }
 
@@ -73,15 +84,27 @@ public final class ShowMenuOptions {
 
             switch (choice) {
                 case SHOW_BUDGET -> showBudget();
-                case EDIT_BUDGET -> editBudget(input);
                 case SUMMARY -> summary();
-                case AGGRIGATE -> {
-                    AggrigateMenu agg = new AggrigateMenu();
+                case ACTION_3 -> handleAction3(currentRole, input);
+                case AGGREGATE -> {
+                    AggregateMenu agg = new AggregateMenu();
                     int code = agg.typeOfBudget(input);
-                    agg.displayMinMax(code);
+                    if (code == 0) {
+                        break;
+                    }
+                    agg.displayMinMax(code, input);
+                }
+                case COMPARISON -> {
+                    try {
+                        ComparisonController controller =
+                        new ComparisonController();
+                        controller.start();
+                    } catch (Exception e) {
+                        System.err.println("Σφάλμα κατά την σύγκριση στοιχείων."
+                        + e.getMessage());
+                    }
                 }
                 case GRAPHS -> {
-                    graph.chooseGraph(input);
                     graph.runGraphs(input);
                 }
                 case EXIT -> {
@@ -97,8 +120,147 @@ public final class ShowMenuOptions {
     /** Displays the national budget. */
     public static void showBudget() {
         List<Eggrafi> g =
-        ReadBudget.readGeneralBudget("proypologismos2025.csv");
+        ReadBudget.readGeneralBudget("proypologismos2026.csv");
         DisplayBudget.showGeneral(g);
+    }
+
+    /**
+     * Handles the functionality of the third menu option (ACTION_3)
+     * depending on the role of the current user.
+     *
+     * @param currentRole the role of the user executing the action
+     * @param input the Scanner object for reading user input
+     */
+    public static void handleAction3(final Role currentRole,
+    final Scanner input) {
+        switch (currentRole) {
+            case PRIME_MINISTER -> {
+                int code = RequestsController
+                        .primeMinisterAndParlMenu(input);
+                switch (code) {
+                    case 0 -> {
+                        break;
+                    }
+                    case 1 -> {
+                        MinistryRequestService reqService =
+                                new MinistryRequestService();
+                        List<MinistryRequest> finalized_changes =
+                            reqService
+                            .getByStatusAndType(RequestStatus
+                            .PARLIAMENT_APPROVED,
+                            null);
+                        MinistryRequestPrinter
+                                .printRequests(finalized_changes);
+                    }
+                    case 2 -> showComparedBudgets();
+                    case 3 -> {
+                        MinistryRequestService reqService =
+                                new MinistryRequestService();
+                        List<MinistryRequest> financeMinistry =
+                                reqService
+                                .getByStatusAndType(RequestStatus
+                                .REVIEWED_BY_FINANCE_MINISTRY, null);
+                        MinistryRequestPrinter
+                        .printRequests(financeMinistry);
+                        int choice = RequestsController.chooseEdit(input,
+                                financeMinistry);
+                        if (choice == 0) {
+                            break;
+                        }
+                        int complOrRej = RequestsController
+                                .completeOrRejectPrimMinist(input,
+                                choice);
+                        if (complOrRej == 1) {
+                            reqService.approveByGovernment(choice);
+                        } else if (complOrRej == REJECTED) {
+                            reqService.markRejected(choice);
+                        }
+                    }
+                }
+
+            }
+            case PARLIAMENT -> {
+                int code = RequestsController
+                        .primeMinisterAndParlMenu(input);
+                switch (code) {
+                    case 0 -> {
+                        break;
+                    }
+                    case 1 -> {
+                        MinistryRequestService reqService =
+                                new MinistryRequestService();
+                        List<MinistryRequest> finalized_changes =
+                            reqService
+                            .getByStatusAndType(RequestStatus
+                            .PARLIAMENT_APPROVED,
+                            null);
+                        MinistryRequestPrinter
+                                .printRequests(finalized_changes);
+                    }
+                    case 2 -> showComparedBudgets();
+                    case 3 -> {
+                        MinistryRequestService reqService =
+                                new MinistryRequestService();
+                        List<MinistryRequest> govApproved =
+                                reqService
+                                .getByStatusAndType(RequestStatus
+                                .GOVERNMENT_APPROVED, null);
+                        MinistryRequestPrinter.printRequests(govApproved);
+                        int choice = RequestsController.chooseEdit(input,
+                                govApproved);
+                        if (choice == 0) {
+                            break;
+                        }
+                        int complOrRej = RequestsController
+                                .completeOrRejectPrimMinist(input,
+                                choice);
+                        if (complOrRej == 1) {
+                            reqService.approveByGovernment(choice);
+                        } else if (complOrRej == REJECTED) {
+                            reqService.markRejected(choice);
+                        }
+                    }
+                }
+            }
+            case FINANCE_MINISTER -> editBudget(input, currentRole);
+            case OTHER_MINISTRY -> {
+                System.out.println();
+                System.out.println("Τα αιτήματα σας θα σταλούν στο Υπουργείο "
+                + "Οικονομικών για αξιολόγηση.");
+                CutLists cut = new CutLists();
+                List<Ypourgeio> ministries = cut.cutYpourgeio();
+                BudgetAssembler loader = new BudgetAssembler();
+                Budget budget = loader.loadBudget("newgeneral.csv",
+                        "newministries.csv");
+                BudgetDiffPrinter.printMinistries(budget);
+                int code;
+                do {
+                    code = cut.selectMinistry(input, ministries, budget,
+                    currentRole);
+                } while (code != 0);
+            }
+            default -> System.out.println("Σφάλμα κατά την φόρτωση "
+            + "της ενέργειας");
+        }
+    }
+
+    /**
+     * Loads the current and modified budgets and prints a side-by-side
+     * comparison of both the general budget and individual ministries.
+     */
+    public static void showComparedBudgets() {
+        BudgetAssembler assembler = new BudgetAssembler();
+        Budget currentBudget = assembler
+        .loadBudget("proypologismos2026.csv",
+        "proypologismos2026anaypourgeio.csv");
+        Budget modifiedBudget = assembler.loadBudget("newgeneral.csv",
+        "newministries.csv");
+        // === Εκτύπωση σύγκρισης Γενικού Προϋπολογισμού ===
+        BudgetDiffPrinter.compareGeneralSideBySide(currentBudget,
+        modifiedBudget);
+        // === Εκτύπωση σύγκρισης Υπουργείων ===
+        BudgetDiffPrinter.compareMinistriesSideBySide(currentBudget,
+        modifiedBudget);
     }
 
     /**
@@ -108,13 +270,17 @@ public final class ShowMenuOptions {
      *
      * @param input the scanner for user's input
      */
-    public static void editBudget(final Scanner input) {
+    public static void editBudget(final Scanner input,
+            final Role currentRole) {
         int choice;
         do {
-            System.out.println("0. Έξοδος");
-            System.out.println("1. Τρέχων προϋπολογισμός");
-            System.out.println("2. Τροποποιημένο αρχείο");
-            System.out.print("\nΕπιλέξτε το αρχείο που θα επεξεργαστείτε: ");
+            System.out.println("\n\n0. Έξοδος");
+            System.out.println("1. Επεξεργασία Προϋπολογισμού");
+            System.out.println("2. Ιστορικό Τροποποιήσεων Προϋπολογισμού");
+            System.out.println("3. Σύγκριση Δημοσιευμένου και "
+            + "Τροποποιημένου Προϋπολογισμού");
+            System.out.println("4. Προβολή Αιτημάτων από άλλα Υπουργεία");
+            System.out.print("\nΕπιλογή: ");
             try {
                 choice = input.nextInt();
                 input.nextLine();
@@ -126,32 +292,63 @@ public final class ShowMenuOptions {
 
             if (choice == 0) {
                 break;
-            } else if (choice != 1 && choice != 2) {
+            } else if (choice < 1 || choice > CODE_FOR_MENUS) {
                 System.out.println("Μη έγκυρη επιλογή.");
-                System.out.println("Πρέπει να επιλέξετε 1 ή "
+                System.out.println("Πρέπει να επιλέξετε από το 1 έως το "
                 + CODE_FOR_MENUS + ".");
+                continue;
             }
 
             Budget initialBudget;
-            if (choice == 1) {
-                BudgetAssembler loader = new BudgetAssembler();
-                initialBudget = loader.loadBudget("general.csv",
-                "ministries.csv");
-            } else {
-                BudgetAssembler loader = new BudgetAssembler();
-                initialBudget = loader.loadBudget("newgeneral.csv",
-                "newministries.csv");
+            switch (choice) {
+                case 1 -> {
+                    BudgetAssembler loader = new BudgetAssembler();
+
+                    initialBudget = loader.loadBudget("newgeneral.csv",
+                    "newministries.csv");
+                    ShowEditMenuOptions edit = new ShowEditMenuOptions();
+                    RevenueOrExpense usersChoice = edit
+                    .chooseRevenueOrExpense(input);
+                    edit.editRevenueOrExpense(initialBudget, input,
+                    usersChoice, currentRole);
+                }
+                case 2 -> {
+                    // μέθοδος Μυρτούς :)
+                }
+                case CODE_FOR_OPTION_3 -> showComparedBudgets();
+                case CODE_FOR_MENUS -> {
+                    System.out.print("\nΑιτήματα Άλλων Υπουργείων:");
+                    MinistryRequestService reqService =
+                        new MinistryRequestService();
+                    List<MinistryRequest> pendingReqs =
+                        reqService.getPendingByType(RequestType.BOTH);
+                    
+                    while (true) {
+                        MinistryRequestPrinter.printRequests(pendingReqs);
+                        int code = RequestsController.chooseRequest(input,
+                                pendingReqs);
+                        if (code == 0) {
+                            break;
+                        }
+                        int complOrRej = RequestsController
+                                .completeOrReject(input,
+                            code);
+                        if (complOrRej == 1) {
+                            reqService.markCompleted(code);
+                        } else if (complOrRej == REJECTED) {
+                            reqService.markRejected(code);
+                        }
+                    }
+                }
+                default -> System.out.println("Μη έγκυρη επιλογή.");
             }
-            ShowEditMenuOptions edit = new ShowEditMenuOptions();
-            RevenueOrExpense usersChoice = edit.chooseRevenueOrExpense(input);
-            edit.editRevenueOrExpense(initialBudget, input, usersChoice);
         } while (true);
     }
 
     /** Shows summarized data. */
     public static void summary() {
         List<Ypourgeio> y =
-        ReadBudget.readByMinistry("proypologismos2025anaypourgeio.csv");
+        ReadBudget.readByMinistry("proypologismos2026anaypourgeio.csv");
         DisplayBudget.showMinistry(y);
     }
 }

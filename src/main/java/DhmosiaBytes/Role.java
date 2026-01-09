@@ -8,39 +8,33 @@ public enum Role {
 
     /**
      * Represents the Prime Minister role.
-     * Can view and comment, but cannot edit.
-     * Only one Prime Minister exists.
+     * Can view the compared budgets, but cannot comment or edit.
+     * Only one Governance exists.
      */
-    PRIME_MINISTER(1, "Πρωθυπουργός", true, true, false, true),
+    PRIME_MINISTER(1, "Κυβέρνηση", true, false, false, true),
 
     /**
      * Represents the Parliament role.
-     * Can view and comment, but cannot edit.
+     * Can view the compared budgets, but cannot comment or edit.
      * There is only one account as Parliament.
      */
-    PARLIAMENT(2, "Κοινοβούλιο", true, true, false, true),
+    PARLIAMENT(2, "Κοινοβούλιο", true, false, false, true),
 
     /**
      * Represents the Finance Minister role.
-     * Can view, comment, and edit content.
-     * Only one Finance Minister exists.
+     * Cannot view the compared budgets (not through the main menu),
+     * and cannot comment. They can only edit content.
+     * Only one Finance Ministry exists.
      */
-    FINANCE_MINISTER(3, "Υπουργός Οικονομικών", true, true, true, true),
+    FINANCE_MINISTER(3, "Υπουργείο Οικονομικών", false, false, true, true),
 
     /**
-     * Represents a Finance Ministry Employee.
-     * Can view and comment, but cannot edit.
-     * There are many employees in the Finance Ministry.
+     * Represents a Ministry other than the Finance.
+     * Cannot view th compared budgets (not through the main menu) or edit,
+     * but they can submit comments.
+     * There are can be many Ministries.
      */
-    FINANCE_MINISTRY_EMPLOYEE(4, "Υπάλληλος Υπουργείου Οικονομικών",
-    true, true, false, false),
-
-    /**
-     * Represents other Ministry employees.
-     * Can view and comment, but cannot edit.
-     * There are many other Ministries.
-     */
-    OTHER_MINISTER(5, "Υπουργός άλλου Υπουργείου", true, true, false, false);
+    OTHER_MINISTRY(4, "Άλλο Υπουργείο", false, true, false, false);
 
     /** The numeric code identifying the user role. */
     private final int code;
@@ -48,8 +42,8 @@ public enum Role {
     /** The name/description of the user role. */
     private final String usersRole;
 
-    /** Flag indicating whether the user can view/read content. */
-    private final boolean canView;
+    /** Flag indicating whether the user can view the compared budgets. */
+    private final boolean canViewComparison;
 
     /** Flag indicating whether the user can comment on content. */
     private final boolean canComment;
@@ -57,7 +51,7 @@ public enum Role {
     /** Flag indicating whether the user can edit content. */
     private final boolean canEdit;
 
-    /** Flag indicating whether there is only one user whith this role. */
+    /** Flag indicating whether there is only one user with this role. */
     private final boolean thereIsOnlyOne;
 
     /**
@@ -75,7 +69,7 @@ public enum Role {
     final boolean onlyOne) {
         this.code = roleCode;
         this.usersRole = userRole;
-        this.canView = view;
+        this.canViewComparison = view;
         this.canComment = comment;
         this.canEdit = edit;
         this.thereIsOnlyOne = onlyOne;
@@ -100,12 +94,12 @@ public enum Role {
     }
 
     /**
-     * Checks if the user has view access.
+     * Checks if the user can view the compared budgets.
      *
      * @return true if the user can view, false otherwise
      */
     public boolean getCanView() {
-        return canView;
+        return canViewComparison;
     }
 
     /**
@@ -169,9 +163,42 @@ public enum Role {
      */
     public boolean canAccess(final MenuOptions option) {
         return switch (option) {
-            case SHOW_BUDGET, SUMMARY, GRAPHS, AGGRIGATE -> canView;
-            case EDIT_BUDGET -> canEdit;
+            case SHOW_BUDGET, SUMMARY, GRAPHS, AGGREGATE, COMPARISON -> true;
+            case ACTION_3 -> true;
             case EXIT -> true;
+        };
+    }
+
+    /**
+     * Returns the text label of a menu option as it should appear to the user,
+     * taking into account the role of the user.
+     *
+     * @param option the menu option whose label should be returned
+     * @return the text label to display for the given menu option and role
+     */
+    public String getMenuLabel(final MenuOptions option) {
+        return switch (option) {
+
+            case SHOW_BUDGET ->
+                "Εμφάνιση Δημοσιευμένου Κρατικού Προϋπολογισμού";
+            case SUMMARY ->
+                "Εμφάνιση Δημοσιευμένου Προϋπολογισμού Υπουργείων";
+            case ACTION_3 -> switch (this) {
+                case PRIME_MINISTER, PARLIAMENT ->
+                    "Αξιολόγηση Τροποποιήσεων Προϋπολογισμού";
+                case FINANCE_MINISTER ->
+                    "Τροποποίηση Στοιχείων Προϋπολογισμού";
+                case OTHER_MINISTRY ->
+                    "Υποβολή Αιτημάτων";
+            };
+            case AGGREGATE ->
+                "Συγκεντρωτικά Στοιχεία";
+            case COMPARISON ->
+                "Σύγκριση Κρατικού Προϋπολογισμού Διαφορετικών Ετών";
+            case GRAPHS ->
+                "Γραφήματα";
+            case EXIT ->
+                "Έξοδος";
         };
     }
 }

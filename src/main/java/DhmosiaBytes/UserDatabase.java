@@ -3,12 +3,12 @@ package dhmosiabytes;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.nio.charset.StandardCharsets;
-import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,10 +42,18 @@ public final class UserDatabase implements Serializable {
      */
     private UserDatabase() {
         users = new HashMap<>();
+        initializeDatabase();
+    }
+
+    /**
+     * Initializes the database separately from constructor.
+     */
+    private void initializeDatabase() {
         try {
             load();
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.out.println("Η βάση δεδομένων είναι κενή.");
+            users = new HashMap<>();
         }
     }
 
@@ -68,6 +76,11 @@ public final class UserDatabase implements Serializable {
      *         false if the user already exists
      */
     public boolean addUser(final User newUser) {
+        if (newUser == null || newUser.getUsername() == null
+            || newUser.getUsername().trim().isEmpty()) {
+            return false;
+        }
+
         if (!users.containsKey(newUser.getUsername())) {
             users.put(newUser.getUsername(), newUser);
             save();
@@ -84,6 +97,9 @@ public final class UserDatabase implements Serializable {
      * @return the User object or null if not found
      */
     public User findUser(final String username) {
+        if (username == null) {
+            return null;
+        }
         return users.get(username);
     }
 
@@ -115,7 +131,7 @@ public final class UserDatabase implements Serializable {
      * so they are available in the next program execution.
      */
     @SuppressWarnings("unchecked")
-    private void load() {
+    private void load() throws IOException {
         File file = new File("users.json");
         if (!file.exists()) {
             users = new HashMap<>();
@@ -127,15 +143,14 @@ public final class UserDatabase implements Serializable {
         InputStreamReader(new FileInputStream(file),
         StandardCharsets.UTF_8)) {
             Type type = new TypeToken<Map<String, User>>() { }.getType();
-            users = gson.fromJson(reader, type);
+            Map<String, User> loadedUsers = gson.fromJson(reader, type);
 
-            if (users == null) {
-                users = new HashMap<>();
+            if (loadedUsers != null) {
+                users.putAll(loadedUsers);
             }
 
-        } catch (IOException e) {
-            System.out.println("Σφάλμα κατά την φόρτωση.");
-            users = new HashMap<>();
+        } catch (com.google.gson.JsonSyntaxException e) {
+            throw new IOException("Invalid JSON format", e);
         }
     }
 
@@ -164,6 +179,10 @@ public final class UserDatabase implements Serializable {
      * or false if no user with the given username was found
      */
     public boolean removeUser(final String username) {
+        if (username == null) {
+            return false;
+        }
+
         if (users.containsKey(username)) {
             users.remove(username);
             save();

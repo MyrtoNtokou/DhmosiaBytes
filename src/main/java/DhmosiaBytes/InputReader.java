@@ -22,12 +22,12 @@ public final class InputReader {
      * @throws InputMismatchException if the username does not meet the rules
      */
     public static String enterValidUsername(final Scanner input) {
-        System.out.println("Δημιουργία username");
+        System.out.println("\nΔημιουργία username");
         System.out.println("Το username πρέπει να "
             + "ξεκινάει με γράμμα και να περιλαμβάνει από "
             + Entry.MIN_USERNAME_AND_PASSWORD + " μέχρι " + Entry.MAX_USERNAME
             + " χαρακτήρες (γράμματα, ψηφία ή κάτω παύλα)");
-        String currentUsername = input.next();
+        String currentUsername = input.nextLine();
 
         boolean usernameOk = false;
         while (!usernameOk) {
@@ -37,7 +37,7 @@ public final class InputReader {
             } catch (InputMismatchException e) {
                 System.err.println("Error " + e.getMessage());
                 System.out.println("Παρακαλώ δοκιμάστε άλλο username: ");
-                currentUsername = input.next();
+                currentUsername = input.nextLine();
             }
         }
         return currentUsername;
@@ -51,11 +51,11 @@ public final class InputReader {
      * @throws NotCorrectPassword if the password does not meet the rules
      */
     public static String enterValidPassword(final Scanner input) {
-        System.out.println("Δημιουργία ισχυρού password");
+        System.out.println("\nΔημιουργία ισχυρού password");
         System.out.println("Το password πρέπει να περιλαμβάνει "
             + "τουλάχιστον 5 χαρακτήρες. Τουλάχιστον ένας "
             + "πρέπει να είναι ΚΕΦΑΛΑΙΟ, ένας μικρό και ένας ψηφίο.");
-        String currentPassword = input.next();
+        String currentPassword = input.nextLine();
 
         boolean passwordOk = false;
         while (!passwordOk) {
@@ -65,7 +65,7 @@ public final class InputReader {
             } catch (NotCorrectPassword e) {
                 System.err.println("Error: " + e.getMessage());
                 System.out.println("Παρακαλώ προσπαθήστε ξανά: ");
-                currentPassword = input.next();
+                currentPassword = input.nextLine();
             }
         }
         return currentPassword;

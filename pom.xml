@@ -2,10 +2,10 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>DhmosiaBytes</groupId>
-  <artifactId>budget-app</artifactId>
+  <artifactId>budget-plus-plus</artifactId>
   <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
-  <name>budget-app</name>
+  <name>budget-plus-plus</name>
   <url>http://maven.apache.org</url>
 
   <properties>
@@ -70,7 +70,7 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.11</version>
+        <version>0.8.10</version>
         <executions>
           <!-- Prepare before tests -->
           <execution>

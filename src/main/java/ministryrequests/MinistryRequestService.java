@@ -1,0 +1,143 @@
+package ministryrequests;
+
+import budgetreader.Ypourgeio;
+import java.time.LocalDateTime;
+import java.util.List;
+
+/**
+ * Service layer for handling ministry requests and business logic.
+ */
+public class MinistryRequestService {
+
+    /** MinistryRequestRepository object. */
+    private final MinistryRequestRepository repo =
+                    new MinistryRequestRepository();
+
+    /**
+     * Normalize text that contains the requested changes.
+     * @param text
+     * @return the normalized text
+     */
+    private String normalize(final String text) {
+        return text .replaceAll("\r\n", "\n")
+        .replaceAll("\r", "\n") .replaceAll("[ \t]+", " ")
+        .replaceAll("\n+", "\n") .trim();
+    }
+
+    /**
+     * Submit a new ministry request and store it as PENDING.
+     * @param ministry the ministry submitting the request
+     * @param rawDiff the raw budget differences text
+     * @param type the request type
+     */
+    public int submitRequest(final Ypourgeio ministry, final String rawDiff,
+                                    final RequestType type) {
+
+        String saveVersion = formatForSaving(rawDiff);
+        String normalized = normalize(saveVersion);
+        int hash = normalized.hashCode();
+
+        
+
+        MinistryRequest request = new MinistryRequest(
+                0,
+                ministry.getKodikos(),
+                ministry.getOnoma(),
+                type,
+                RequestStatus.PENDING,
+                LocalDateTime.now(),
+                normalized);
+
+        MinistryRequest saved = repo.saveNew(request);
+        return saved.getId();
+    }
+
+    /**
+     * Format request text for terminal display,
+     * keeping ANSI color codes.
+     * @param rawDiff the raw request text
+     * @return formatted text for display
+     */
+    public String formatForDisplay(final String rawDiff) {
+        return rawDiff.replaceAll(
+                ".*ΑΛΛΑΓΕΣ ΣΤΟΝ\\s*ΠΡΟΫΠΟΛΟΓΙΣΜΟ\\s*ΤΩΝ\\s*ΥΠΟΥΡΓΕΙΩΝ.*\\n?",
+                ""
+        );
+    }
+
+    /**
+     * Format request text for file storage,
+     * removing ANSI color codes.
+     * @param rawDiff the raw request text
+     * @return cleaned text for saving
+     */
+    public String formatForSaving(final String rawDiff) {
+
+        String clean = rawDiff.replaceAll("\u001B\\[[;\\d]*m", "");
+
+        return clean.replaceAll(
+                ".*ΑΛΛΑΓΕΣ ΣΤΟΝ\\s*ΠΡΟΫΠΟΛΟΓΙΣΜΟ\\s*ΤΩΝ\\s*ΥΠΟΥΡΓΕΙΩΝ.*\\n?",
+                ""
+        );
+    }
+
+    /**
+     * Mark a request as completed.
+     * @param id the request id
+     */
+    public void markCompleted(final int id) {
+        repo.updateStatus(id, RequestStatus.COMPLETED);
+    }
+
+    /**
+     * Marks a request as rejected.
+     * @param id the request id
+     */
+    public void markRejected(final int id) {
+        repo.updateStatus(id, RequestStatus.REJECTED);
+    }
+
+    /**
+     * Return all pending requests of the given type.
+     * @param type the request type
+     * @return list of pending requests
+     */
+    public List<MinistryRequest> getPendingByType(final RequestType type) {
+        return repo.findByStatusAndType(RequestStatus.PENDING, type);
+    }
+
+    /**
+     * Return requests filtered by status and type.
+     * @param status the request status
+     * @param type the request type
+     * @return list of matching requests
+     */
+    public List<MinistryRequest> getByStatusAndType(final RequestStatus status,
+                                            final RequestType type) {
+        return repo.findByStatusAndType(status, type);
+    }
+
+    /**
+     * Mark request as reviewed by the finance ministry.
+     * @param id request id
+     */
+    public void reveiwByFinanceMinistry(final int id) {
+        repo.updateStatus(id, RequestStatus.REVIEWED_BY_FINANCE_MINISTRY);
+    }
+
+    /**
+     * Mark request as approved by the government.
+     * @param id request id
+     */
+    public void approveByGovernment(final int id) {
+        repo.updateStatus(id, RequestStatus.GOVERNMENT_APPROVED);
+    }
+
+    /**
+     * Mark request as approved by the Parliament.
+     * @param id request id
+     */
+    public void approveByParliament(final int id) {
+        repo.updateStatus(id, RequestStatus.PARLIAMENT_APPROVED);
+    }
+}
