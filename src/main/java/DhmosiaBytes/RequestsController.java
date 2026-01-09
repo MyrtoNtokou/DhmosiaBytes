@@ -5,32 +5,22 @@ import java.util.List;
 import java.util.Scanner;
 
 import ministryrequests.MinistryRequest;
+import static aggregatedata.ConsoleColors.RESET;
+import static aggregatedata.ConsoleColors.BOLD;
+import static aggregatedata.ConsoleColors.CYAN;
 
+/**
+ * Utility class that handles user interactions related to reviewing,
+ * approving, or rejecting ministry requests.
+ */
 public final class RequestsController {
-
-     /** ANSI reset code to clear all formatting. */
-    private static final String RESET = "\u001B[0m";
-    /** ANSI bold text modifier. */
-    private static final String BOLD = "\u001B[1m";
-
-    /**
-     * Helper: Generate ANSI escape codes for RGB.
-     * @param r red component
-     * @param g green component
-     * @param b blue component
-     * @return ANSI escape code fro RGB
-     */
-    private static String rgb(final int r, final int g, final int b) {
-        return "\u001B[38;2;" + r + ";" + g + ";" + b + "m";
-    }
-
-    /** Cyan for ID. */
-    private static final String CYAN = rgb(0, 200, 255);
 
     /** Code for option 2: rejected. */
     private static final int REJECT = 2;
 
-    /** Code for option 3 for Prime Minister */
+    /** Min choice of ministries. */
+    private static final int MIN_CHOICE_PRIME_MINISTER = 1;
+    /** Max choice of ministries. */
     private static final int MAX_CHOICE_PRIME_MINISTER = 3;
 
     /** Constructor. */
@@ -40,6 +30,7 @@ public final class RequestsController {
      * Asks user to enter the code of the request to be completed or rejected.
      *
      * @param input the Scanner for user input
+     * @param pendingReqs list with pending requests
      * @return the user's choice
      */
     public static int chooseRequest(final Scanner input,
@@ -110,6 +101,13 @@ public final class RequestsController {
         return choice;
     }
 
+    /**
+     * Displays the Prime Minister / Parliament menu
+     * and reads the user's choice.
+     *
+     * @param input the Scanner used for user input
+     * @return the selected option (0–3)
+     */
     public static int primeMinisterAndParlMenu(final Scanner input) {
         int choice;
         while (true) {
@@ -125,7 +123,8 @@ public final class RequestsController {
                 if (choice == 0) {
                     break;
                 }
-                if (choice < 1 && choice > MAX_CHOICE_PRIME_MINISTER) {
+                if (choice < MIN_CHOICE_PRIME_MINISTER
+                        || choice > MAX_CHOICE_PRIME_MINISTER) {
                     System.out.println("Μη έγκυρος κωδικός.");
                 }
             } catch (InputMismatchException e) {
@@ -136,6 +135,14 @@ public final class RequestsController {
         return choice;
     }
 
+    /**
+     * Asks the user to select the ID of a request to review.
+     * Returns 0 if the list is empty or the user chooses to exit.
+     *
+     * @param input the Scanner used for user input
+     * @param financeMinistry the list of requests awaiting review
+     * @return the selected request ID or 0 to exit
+     */
     public static int chooseEdit(final Scanner input,
             final List<MinistryRequest> financeMinistry) {
 
@@ -168,6 +175,13 @@ public final class RequestsController {
         }
     }
 
+    /**
+     * Asks the Prime Minister to approve or reject a specific request.
+     *
+     * @param input the Scanner used for user input
+     * @param code the ID of the request being evaluated
+     * @return 1 for approval, 2 for rejection, or 0 to exit
+     */
     public static int completeOrRejectPrimMinist(final Scanner input,
             final int code) {
         boolean valid = false;
@@ -197,6 +211,15 @@ public final class RequestsController {
         return choice;
     }
 
+    /**
+     * Asks the Parliament to select a government‑approved request
+     * for final evaluation. Returns 0 if the list is empty or the
+     * user chooses to exit.
+     *
+     * @param input the Scanner used for user input
+     * @param govApproved the list of government‑approved requests
+     * @return the selected request ID or 0 to exit
+     */
     public static int chooseEditParl(final Scanner input,
             final List<MinistryRequest> govApproved) {
 

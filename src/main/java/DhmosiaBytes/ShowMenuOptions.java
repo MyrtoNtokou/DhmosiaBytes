@@ -29,6 +29,12 @@ public final class ShowMenuOptions {
      */
     private ShowMenuOptions() { }
 
+    /** Code for option 0. */
+    private static final int CODE_FOR_OPTION_0 = 0;
+    /** Code for option 1. */
+    private static final int CODE_FOR_OPTION_1 = 1;
+    /** Code for option 2. */
+    private static final int CODE_FOR_OPTION_2 = 2;
     /** Code for option 3. */
     private static final int CODE_FOR_OPTION_3 = 3;
 
@@ -138,22 +144,22 @@ public final class ShowMenuOptions {
                 int code = RequestsController
                         .primeMinisterAndParlMenu(input);
                 switch (code) {
-                    case 0 -> {
+                    case CODE_FOR_OPTION_0 -> {
                         break;
                     }
-                    case 1 -> {
+                    case CODE_FOR_OPTION_1 -> {
                         MinistryRequestService reqService =
                                 new MinistryRequestService();
-                        List<MinistryRequest> finalized_changes =
+                        List<MinistryRequest> finalizedChanges =
                             reqService
                             .getByStatusAndType(RequestStatus
                             .PARLIAMENT_APPROVED,
                             null);
                         MinistryRequestPrinter
-                                .printRequests(finalized_changes);
+                                .printRequests(finalizedChanges);
                     }
-                    case 2 -> showComparedBudgets();
-                    case 3 -> {
+                    case CODE_FOR_OPTION_2 -> showComparedBudgets();
+                    case CODE_FOR_OPTION_3 -> {
                         MinistryRequestService reqService =
                                 new MinistryRequestService();
                         List<MinistryRequest> financeMinistry =
@@ -176,29 +182,31 @@ public final class ShowMenuOptions {
                             reqService.markRejected(choice);
                         }
                     }
+                    default -> {
+                        // no action needed
+                    }
                 }
-
             }
             case PARLIAMENT -> {
                 int code = RequestsController
                         .primeMinisterAndParlMenu(input);
                 switch (code) {
-                    case 0 -> {
+                    case CODE_FOR_OPTION_0 -> {
                         break;
                     }
-                    case 1 -> {
+                    case CODE_FOR_OPTION_1 -> {
                         MinistryRequestService reqService =
                                 new MinistryRequestService();
-                        List<MinistryRequest> finalized_changes =
+                        List<MinistryRequest> finalizedChanges =
                             reqService
                             .getByStatusAndType(RequestStatus
                             .PARLIAMENT_APPROVED,
                             null);
                         MinistryRequestPrinter
-                                .printRequests(finalized_changes);
+                                .printRequests(finalizedChanges);
                     }
-                    case 2 -> showComparedBudgets();
-                    case 3 -> {
+                    case CODE_FOR_OPTION_2 -> showComparedBudgets();
+                    case CODE_FOR_OPTION_3 -> {
                         MinistryRequestService reqService =
                                 new MinistryRequestService();
                         List<MinistryRequest> govApproved =
@@ -219,6 +227,9 @@ public final class ShowMenuOptions {
                         } else if (complOrRej == REJECTED) {
                             reqService.markRejected(choice);
                         }
+                    }
+                    default -> {
+                        // no action needed
                     }
                 }
             }
@@ -269,6 +280,7 @@ public final class ShowMenuOptions {
      * by selecting 0.
      *
      * @param input the scanner for user's input
+     * @param currentRole Login role
      */
     public static void editBudget(final Scanner input,
             final Role currentRole) {
@@ -322,7 +334,7 @@ public final class ShowMenuOptions {
                         new MinistryRequestService();
                     List<MinistryRequest> pendingReqs =
                         reqService.getPendingByType(RequestType.BOTH);
-                    
+
                     while (true) {
                         MinistryRequestPrinter.printRequests(pendingReqs);
                         int code = RequestsController.chooseRequest(input,

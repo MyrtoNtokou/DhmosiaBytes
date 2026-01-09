@@ -125,6 +125,7 @@ public class CutLists {
      * @param scanner    Scanner for reading user input
      * @param ministries List of ministries to choose from
      * @param initialBudget Budget object to edit
+     * @param currentRole Role of login
      * @return the code of the selected ministry, or 0 to go back
      */
     public int selectMinistry(final Scanner scanner,
