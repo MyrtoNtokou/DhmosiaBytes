@@ -58,6 +58,9 @@ public final class Main {
         }
     }
 
+    /** Color format for logo. */
+    private static final String FORM = BLUE + BOLD;
+
     /**
      * Main method to execute the application.
      *
@@ -65,15 +68,15 @@ public final class Main {
      */
     public static void main(final String[] args) {
 
-        System.out.println(BLUE + BOLD + "  ____  _   _ ____   ____ _____ _____   "
+        System.out.println(FORM + "  ____  _   _ ____   ____ _____ _____   "
         + "      _          _      ");
-        System.out.println(BLUE + BOLD + " | __ )| | | |  _ \\ / ___| ____|_   _|  "
+        System.out.println(FORM + " | __ )| | | |  _ \\ / ___| ____|_   _|  "
         + "    _| |_      _| |_    ");
-        System.out.println(BLUE + BOLD + " |  _ \\| | | | | | | |  _|  _|   | |    "
+        System.out.println(FORM + " |  _ \\| | | | | | | |  _|  _|   | |    "
         + "   |_   _|    |_   _|   ");
-        System.out.println(BLUE + BOLD + " | |_) | |_| | |_| | |_| | |___  | |    "
+        System.out.println(FORM + " | |_) | |_| | |_| | |_| | |___  | |    "
         + "     |_|        |_|     ");
-        System.out.println(BLUE + BOLD + " |____/ \\___/|____/ \\____|_____| |_|    "
+        System.out.println(FORM + " |____/ \\___/|____/ \\____|_____| |_|    "
         + "                        " + RESET);
         System.out.println();
 
