@@ -1,6 +1,9 @@
 package dhmosiabytes;
 
 import java.util.Scanner;
+import static aggregatedata.ConsoleColors.RESET;
+import static aggregatedata.ConsoleColors.BLUE;
+import static aggregatedata.ConsoleColors.BOLD;
 
 /**
  * Main class to start the application for user management.
@@ -55,12 +58,27 @@ public final class Main {
         }
     }
 
+    /** Color format for logo. */
+    private static final String FORM = BLUE + BOLD;
+
     /**
      * Main method to execute the application.
      *
      * @param args command line arguments
      */
     public static void main(final String[] args) {
+
+        System.out.println(FORM + "  ____  _   _ ____   ____ _____ _____   "
+        + "      _          _      ");
+        System.out.println(FORM + " | __ )| | | |  _ \\ / ___| ____|_   _|  "
+        + "    _| |_      _| |_    ");
+        System.out.println(FORM + " |  _ \\| | | | | | | |  _|  _|   | |    "
+        + "   |_   _|    |_   _|   ");
+        System.out.println(FORM + " | |_) | |_| | |_| | |_| | |___  | |    "
+        + "     |_|        |_|     ");
+        System.out.println(FORM + " |____/ \\___/|____/ \\____|_____| |_|    "
+        + "                        " + RESET);
+        System.out.println();
 
         Scanner input = new Scanner(System.in, "UTF-8");
         LoginService log = new LoginService();
