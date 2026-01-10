@@ -271,22 +271,9 @@ public final class RequestsController {
                     + "για αξιολόγηση.");
             return;
         }
-        MinistryRequestPrinter.printRequests(requests);
+        RequestPrinter.printRequests(requests);
 
         while (true) {
-<<<<<<< Updated upstream
-=======
-            List<MinistryRequest> requests =
-                    reqService.getByStatusAndType(statusToCheck, null);
-
-            if (requests.isEmpty()) {
-                System.out.println("Δεν υπάρχουν άλλες τροποποιήσεις "
-                        + "για αξιολόγηση.");
-                break;
-            }
-
-            RequestPrinter.printRequests(requests);
->>>>>>> Stashed changes
             int id = RequestsController.chooseEdit(input, requests);
             if (id == 0) {
                 return;
