@@ -141,107 +141,67 @@ public final class ShowMenuOptions {
     final Scanner input) {
         switch (currentRole) {
             case PRIME_MINISTER -> {
-                int code = RequestsController
-                        .primeMinisterAndParlMenu(input);
-                switch (code) {
-                    case CODE_FOR_OPTION_0 -> {
-                        break;
+                MinistryRequestService reqService =
+                        new MinistryRequestService();
+                while (true) {
+                    int code = RequestsController
+                            .primeMinisterAndParlMenu(input);
+                    if (code == 0) {
+                        return;
                     }
-                    case CODE_FOR_OPTION_1 -> {
-                        MinistryRequestService reqService =
-                                new MinistryRequestService();
-                        List<MinistryRequest> finalizedChanges =
-                            reqService
-                            .getByStatusAndType(RequestStatus
-                            .PARLIAMENT_APPROVED,
-                            null);
-                        MinistryRequestPrinter
-                                .printRequests(finalizedChanges);
-                    }
-                    case CODE_FOR_OPTION_2 -> showComparedBudgets();
-                    case CODE_FOR_OPTION_3 -> {
-                        MinistryRequestService reqService =
-                                new MinistryRequestService();
-                        while (true) {
-                            List<MinistryRequest> financeMinistry =
-                                    reqService
-                                    .getByStatusAndType(RequestStatus
-                                    .REVIEWED_BY_FINANCE_MINISTRY, null);
-                            if (financeMinistry.isEmpty()) {
-                                System.out.println("Δεν υπάρχουν άλλες "
-                                        + "τροποποίησεις για αξιολόγηση.");
-                                break;
-                            }
-                            MinistryRequestPrinter
-                                    .printRequests(financeMinistry);
-                            int choice = RequestsController.chooseEdit(input,
-                                    financeMinistry);
-                            if (choice == 0) {
-                                break;
-                            }
-                            int complOrRej = RequestsController
-                                    .completeOrRejectPrimMinist(input);
-                            if (complOrRej == 1) {
-                                reqService.approveByGovernment(choice);
-                            } else if (complOrRej == REJECTED) {
-                                reqService.markRejected(choice);
-                            }
+                    switch (code) {
+                        case CODE_FOR_OPTION_0 -> {
+                            break;
                         }
-                    }
-                    default -> {
-                        // no action needed
+                        case CODE_FOR_OPTION_1 -> {
+                            MinistryRequestPrinter.printRequests(
+                                new MinistryRequestService()
+                                .getByStatusAndType(RequestStatus
+                                        .PARLIAMENT_APPROVED, null)
+                            );
+                        }
+                        case CODE_FOR_OPTION_2 -> showComparedBudgets();
+                        case CODE_FOR_OPTION_3 -> {
+                            RequestsController.evaluateRequests(input,
+                                    reqService,
+                                    RequestStatus.REVIEWED_BY_FINANCE_MINISTRY,
+                                    false);
+                        }
+                        default -> {
+                            // no action needed
+                        }
                     }
                 }
             }
             case PARLIAMENT -> {
-                int code = RequestsController
-                        .primeMinisterAndParlMenu(input);
-                switch (code) {
-                    case CODE_FOR_OPTION_0 -> {
-                        break;
+                MinistryRequestService reqService =
+                        new MinistryRequestService();
+                while (true) {
+                    int code = RequestsController
+                            .primeMinisterAndParlMenu(input);
+                    if (code == 0) {
+                        return;
                     }
-                    case CODE_FOR_OPTION_1 -> {
-                        MinistryRequestService reqService =
-                                new MinistryRequestService();
-                        List<MinistryRequest> finalizedChanges =
-                            reqService
-                            .getByStatusAndType(RequestStatus
-                            .PARLIAMENT_APPROVED,
-                            null);
-                        MinistryRequestPrinter
-                                .printRequests(finalizedChanges);
-                    }
-                    case CODE_FOR_OPTION_2 -> showComparedBudgets();
-                    case CODE_FOR_OPTION_3 -> {
-                        MinistryRequestService reqService =
-                                new MinistryRequestService();
-                        while (true) {
-                            List<MinistryRequest> govApproved =
-                                    reqService
-                                    .getByStatusAndType(RequestStatus
-                                    .GOVERNMENT_APPROVED, null);
-                            if (govApproved.isEmpty()) {
-                                System.out.println("Δεν υπάρχουν άλλες "
-                                        + "τροποποίησεις για αξιολόγηση.");
-                                break;
-                            }
-                            MinistryRequestPrinter.printRequests(govApproved);
-                            int id = RequestsController.chooseEdit(input,
-                                    govApproved);
-                            if (id == 0) {
-                                break;
-                            }
-                            int complOrRej = RequestsController
-                                    .completeOrRejectPrimMinist(input);
-                            if (complOrRej == 1) {
-                                reqService.approveByParliament(id);
-                            } else if (complOrRej == REJECTED) {
-                                reqService.markRejected(id);
-                            }
+                    switch (code) {
+                        case CODE_FOR_OPTION_0 -> {
+                            break;
                         }
-                    }
-                    default -> {
-                        // no action needed
+                        case CODE_FOR_OPTION_1 -> {
+                            MinistryRequestPrinter.printRequests(
+                                    new MinistryRequestService()
+                                    .getByStatusAndType(RequestStatus
+                                    .PARLIAMENT_APPROVED, null)
+                            );
+                        }
+                        case CODE_FOR_OPTION_2 -> showComparedBudgets();
+                        case CODE_FOR_OPTION_3 -> {
+                            RequestsController.evaluateRequests(input,
+                                    reqService,
+                                    RequestStatus.GOVERNMENT_APPROVED, true);
+                        }
+                        default -> {
+                            // no action needed
+                        }
                     }
                 }
             }
