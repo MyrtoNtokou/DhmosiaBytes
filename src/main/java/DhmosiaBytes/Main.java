@@ -1,6 +1,9 @@
 package dhmosiabytes;
 
 import java.util.Scanner;
+import static aggregatedata.ConsoleColors.RESET;
+import static aggregatedata.ConsoleColors.BLUE;
+import static aggregatedata.ConsoleColors.BOLD;
 
 /**
  * Main class to start the application for user management.
@@ -62,20 +65,16 @@ public final class Main {
      */
     public static void main(final String[] args) {
 
-        // ANSI Bold Blue
-        String b = "\u001B[1;34m";
-        String r = "\u001B[0m";
-
-        System.out.println(b + "  ____  _   _ ____   ____ _____ _____   "
+        System.out.println(BLUE + BOLD + "  ____  _   _ ____   ____ _____ _____   "
         + "      _          _      ");
-        System.out.println(b + " | __ )| | | |  _ \\ / ___| ____|_   _|  "
+        System.out.println(BLUE + BOLD + " | __ )| | | |  _ \\ / ___| ____|_   _|  "
         + "    _| |_      _| |_    ");
-        System.out.println(b + " |  _ \\| | | | | | | |  _|  _|   | |    "
+        System.out.println(BLUE + BOLD + " |  _ \\| | | | | | | |  _|  _|   | |    "
         + "   |_   _|    |_   _|   ");
-        System.out.println(b + " | |_) | |_| | |_| | |_| | |___  | |    "
+        System.out.println(BLUE + BOLD + " | |_) | |_| | |_| | |_| | |___  | |    "
         + "     |_|        |_|     ");
-        System.out.println(b + " |____/ \\___/|____/ \\____|_____| |_|    "
-        + "                        " + r);
+        System.out.println(BLUE + BOLD + " |____/ \\___/|____/ \\____|_____| |_|    "
+        + "                        " + RESET);
         System.out.println();
 
         Scanner input = new Scanner(System.in, "UTF-8");

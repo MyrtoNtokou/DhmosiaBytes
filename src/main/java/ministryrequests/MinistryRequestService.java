@@ -72,8 +72,8 @@ public class MinistryRequestService {
      */
     public void markCompleted(final int id) {
         repo.updateStatus(id, RequestStatus.COMPLETED);
-        System.out.println("Η αλλαγή με κωδικό " + id
-                            + "έχει αξιολογηθεί θετικά.");
+        System.out.println("Η αλλαγή με id " + id
+                            + " έχει αξιολογηθεί θετικά.");
     }
 
     /**
@@ -82,7 +82,7 @@ public class MinistryRequestService {
      */
     public void markRejected(final int id) {
         repo.updateStatus(id, RequestStatus.REJECTED);
-        System.out.println("Το αίτημα με " + id + "απορρίφθηκε.");
+        System.out.println("Το αίτημα με " + id + " απορρίφθηκε.");
     }
 
     /**
@@ -111,8 +111,8 @@ public class MinistryRequestService {
      */
     public void reveiwByFinanceMinistry(final int id) {
         repo.updateStatus(id, RequestStatus.REVIEWED_BY_FINANCE_MINISTRY);
-        System.out.println("Η αλλαγή με κωδικό " + id
-        + "υποβλήθηκε για έγκριση από την κυβέρνηση.");
+        System.out.println("Η αλλαγή με id " + id
+        + " υποβλήθηκε για έγκριση από την κυβέρνηση.");
     }
 
     /**
@@ -121,8 +121,8 @@ public class MinistryRequestService {
      */
     public void approveByGovernment(final int id) {
         repo.updateStatus(id, RequestStatus.GOVERNMENT_APPROVED);
-        System.out.println("Η αλλαγή με κωδικό " + id
-        + "υποβλήθηκε για τελική έγκριση από το κοινοβούλιο.");
+        System.out.println("Η αλλαγή με id " + id
+        + " υποβλήθηκε για τελική έγκριση από το κοινοβούλιο.");
     }
 
     /**
@@ -131,7 +131,7 @@ public class MinistryRequestService {
      */
     public void approveByParliament(final int id) {
         repo.updateStatus(id, RequestStatus.PARLIAMENT_APPROVED);
-        System.out.println("Η αλλαγή με κωδικό " + id
-                            + "καταχωρήθηκε επιτυχώς.");
+        System.out.println("Η αλλαγή με id " + id
+                            + " καταχωρήθηκε επιτυχώς.");
     }
 }
