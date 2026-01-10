@@ -1,71 +1,64 @@
 /**
- * Package containing classes for managing ministry budget change requests.
+ * The {@code dhmosiabytes} package contains all core classes and enums
+ * for managing the public budget application.
  *
- * <p>
- * The {@code ministryrequests} package provides functionality for submitting,
- * storing, processing and reviewing budget change requests submitted by
- * individual ministries. Each request represents a proposed modification
- * to the national budget.
- * </p>
+ * <p>The package covers the following functionalities:</p>
  *
- * <h2>Main responsibilities</h2>
  * <ul>
- *   <li>
- *     Submission and validation of ministry budget change requests
- *   </li>
- *   <li>
- *     Support for different request types, including:
- *     <ul>
- *       <li>Regular budget (Taktikos)</li>
- *       <li>Public investment budget (Ependyseis)</li>
- *       <li>Combined budget changes</li>
- *     </ul>
- *   </li>
- *   <li>
- *     Parsing and extraction of budget change data from text-based sources
- *   </li>
- *   <li>
- *     Persistent storage of requests using a file-based repository
- *   </li>
- *   <li>
- *     Tracking of request lifecycle through multiple approval stages
- *   </li>
- *   <li>
- *     Detection and prevention of duplicate requests
- *   </li>
- *   <li>
- *     Formatted and colorized console output for review and auditing
- *   </li>
+ *   <li>User and role management:</li>
+ *   <ul>
+ *     <li>{@link dhmosiabytes.User} - represents a user with username,
+ *     password, and role.</li>
+ *     <li>{@link dhmosiabytes.UserDatabase} - singleton for storing,
+ *     retrieving, and managing users with JSON persistence.</li>
+ *     <li>{@link dhmosiabytes.Role} - enum defining user types
+ *     (Prime Minister, Parliament, Finance Ministry, Other Ministries)
+ *     and their access rights.</li>
+ *   </ul>
+ *
+ *   <li>Menus and user interaction:</li>
+ *   <ul>
+ *     <li>{@link dhmosiabytes.MenuOptions} - enum for main menu options of the application.</li>
+ *     <li>{@link dhmosiabytes.ShowMenuOptions} - main class displaying the menu
+ *     and executing actions according to the user's role.</li>
+ *     <li>{@link dhmosiabytes.ShowEditMenuOptions} - submenu for editing
+ *     budget entries (income/expenses, budget type).</li>
+ *     <li>{@link dhmosiabytes.RequestsController} - helper class for
+ *     evaluating, approving, or rejecting ministry requests.</li>
+ *     <li>{@link dhmosiabytes.NotCorrectPassword} - exception for invalid passwords.</li>
+ *   </ul>
+ *
+ *   <li>Options and data types:</li>
+ *   <ul>
+ *     <li>{@link dhmosiabytes.MinistryOptions} - enum containing all ministries
+ *     and decentralized administrations, each with a code and description.</li>
+ *     <li>{@link dhmosiabytes.RevenueOrExpense} - enum for budget type: income or expenses.</li>
+ *   </ul>
+ *
+ *   <li>Comparison and charts support:</li>
+ *   <ul>
+ *     <li>{@link dhmosiabytes.ShowMenuOptions} calls:
+ *       <ul>
+ *         <li>{@link budgetlogic.BudgetDiffPrinter} for budget comparisons.</li>
+ *         <li>{@link budgetcomparison.ComparisonController} for multi-year or general comparisons.</li>
+ *         <li>{@link dhmosiabytes.Graphs} for chart display.</li>
+ *       </ul>
+ *     </li>
+ *   </ul>
+ *
+ * <p>The package structure focuses on:</p>
+ * <ul>
+ *   <li>Users and roles</li>
+ *   <li>Application menus and options (role-based access)</li>
+ *   <li>Budget and ministry request management</li>
+ *   <li>Data comparison and presentation</li>
  * </ul>
  *
- * <h2>Package structure</h2>
+ * <p>The package interacts with other packages:</p>
  * <ul>
- *   <li>
- *     <b>Domain model classes</b>:
- *     {@link ministryrequests.MinistryRequest},
- *     {@link ministryrequests.RequestType},
- *     {@link ministryrequests.RequestStatus}
- *   </li>
- *   <li>
- *     <b>Service and repository classes</b>:
- *     {@link ministryrequests.MinistryRequestService},
- *     {@link ministryrequests.MinistryRequestRepository}
- *   </li>
- *   <li>
- *     <b>Parsing and utility classes</b>:
- *     {@link ministryrequests.BudgetRequestLoader},
- *     {@link ministryrequests.BudgetRequestParser},
- *     {@link ministryrequests.DiffColorizer},
- *     {@link ministryrequests.MinistryRequestPrinter}
- *   </li>
+ *   <li>{@code budgetlogic} - for loading, assembling, and printing budgets</li>
+ *   <li>{@code budgetreader} - for reading budget files and displaying data</li>
+ *   <li>{@code ministryrequests} - for managing and displaying ministry requests</li>
  * </ul>
- *
- * <p>
- * This package depends on the {@code budgetreader} package for ministry
- * identification and raw budget data. It focuses exclusively on request
- * management and does not directly apply changes to the budget datasets.
- * </p>
- *
- * @version 1.0
  */
-package ministryrequests;
+package dhmosiabytes;
