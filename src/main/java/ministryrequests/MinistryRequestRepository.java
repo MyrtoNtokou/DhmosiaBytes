@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class MinistryRequestRepository {
 
-    /** Requeste file name. */
+    /** Ministry request file name. */
     private static final String FILE = "ministryrequests.txt";
 
     /** Length of the "Id:" prefix in the stored file. */

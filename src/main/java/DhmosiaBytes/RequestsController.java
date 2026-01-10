@@ -8,7 +8,7 @@ import static aggregatedata.ConsoleColors.BOLD;
 import static aggregatedata.ConsoleColors.CYAN;
 import static aggregatedata.ConsoleColors.RESET;
 import ministryrequests.MinistryRequest;
-import ministryrequests.MinistryRequestPrinter;
+import ministryrequests.RequestPrinter;
 import ministryrequests.MinistryRequestService;
 import ministryrequests.RequestStatus;
 
@@ -271,7 +271,7 @@ public final class RequestsController {
                     + "για αξιολόγηση.");
             return;
         }
-        MinistryRequestPrinter.printRequests(requests);
+        RequestPrinter.printRequests(requests);
 
         while (true) {
             int id = RequestsController.chooseEdit(input, requests);

@@ -13,7 +13,7 @@ import budgetreader.Eggrafi;
 import budgetreader.ReadBudget;
 import budgetreader.Ypourgeio;
 import ministryrequests.MinistryRequest;
-import ministryrequests.MinistryRequestPrinter;
+import ministryrequests.RequestPrinter;
 import ministryrequests.MinistryRequestService;
 import ministryrequests.RequestStatus;
 import ministryrequests.RequestType;
@@ -154,7 +154,7 @@ public final class ShowMenuOptions {
                             break;
                         }
                         case CODE_FOR_OPTION_1 -> {
-                            MinistryRequestPrinter.printRequests(
+                            RequestPrinter.printRequests(
                                 new MinistryRequestService()
                                 .getByStatusAndType(RequestStatus
                                         .PARLIAMENT_APPROVED, null)
@@ -187,7 +187,7 @@ public final class ShowMenuOptions {
                             break;
                         }
                         case CODE_FOR_OPTION_1 -> {
-                            MinistryRequestPrinter.printRequests(
+                            RequestPrinter.printRequests(
                                     new MinistryRequestService()
                                     .getByStatusAndType(RequestStatus
                                     .PARLIAMENT_APPROVED, null)
@@ -309,7 +309,7 @@ public final class ShowMenuOptions {
                         List<MinistryRequest> pendingReqs =
                                 reqService.getPendingByType(RequestType.BOTH);
 
-                        MinistryRequestPrinter.printRequests(pendingReqs);
+                        RequestPrinter.printRequests(pendingReqs);
                         int code = RequestsController.chooseRequest(input,
                                 pendingReqs);
                         if (code == 0) {
