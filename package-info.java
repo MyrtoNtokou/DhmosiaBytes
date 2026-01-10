@@ -1,64 +1,53 @@
 /**
- * The {@code dhmosiabytes} package contains all core classes and enums
- * for managing the public budget application.
+ * The {@code budgetlogic} package provides classes for managing budget data.
  *
- * <p>The package covers the following functionalities:</p>
+ * <p>This package contains the core classes for processing, saving, and validating 
+ * budget data, both at the general table level (revenues/expenses) and at the ministry level.
+ *
+ * <h2>Main Classes and Responsibilities</h2>
  *
  * <ul>
- *   <li>User and role management:</li>
- *   <ul>
- *     <li>{@link dhmosiabytes.User} - represents a user with username,
- *     password, and role.</li>
- *     <li>{@link dhmosiabytes.UserDatabase} - singleton for storing,
- *     retrieving, and managing users with JSON persistence.</li>
- *     <li>{@link dhmosiabytes.Role} - enum defining user types
- *     (Prime Minister, Parliament, Finance Ministry, Other Ministries)
- *     and their access rights.</li>
- *   </ul>
- *
- *   <li>Menus and user interaction:</li>
- *   <ul>
- *     <li>{@link dhmosiabytes.MenuOptions} - enum for main menu options of the application.</li>
- *     <li>{@link dhmosiabytes.ShowMenuOptions} - main class displaying the menu
- *     and executing actions according to the user's role.</li>
- *     <li>{@link dhmosiabytes.ShowEditMenuOptions} - submenu for editing
- *     budget entries (income/expenses, budget type).</li>
- *     <li>{@link dhmosiabytes.RequestsController} - helper class for
- *     evaluating, approving, or rejecting ministry requests.</li>
- *     <li>{@link dhmosiabytes.NotCorrectPassword} - exception for invalid passwords.</li>
- *   </ul>
- *
- *   <li>Options and data types:</li>
- *   <ul>
- *     <li>{@link dhmosiabytes.MinistryOptions} - enum containing all ministries
- *     and decentralized administrations, each with a code and description.</li>
- *     <li>{@link dhmosiabytes.RevenueOrExpense} - enum for budget type: income or expenses.</li>
- *   </ul>
- *
- *   <li>Comparison and charts support:</li>
- *   <ul>
- *     <li>{@link dhmosiabytes.ShowMenuOptions} calls:
+ *   <li>{@link budgetlogic.BudgetLoader} – loads budget data from CSV files.
+ *       Supports:
  *       <ul>
- *         <li>{@link budgetlogic.BudgetDiffPrinter} for budget comparisons.</li>
- *         <li>{@link budgetcomparison.ComparisonController} for multi-year or general comparisons.</li>
- *         <li>{@link dhmosiabytes.Graphs} for chart display.</li>
+ *         <li>General records ({@link budgetreader.Eggrafi})</li>
+ *         <li>Ministries ({@link budgetlogic.Ministry}, {@link budgetreader.Ypourgeio})</li>
  *       </ul>
- *     </li>
- *   </ul>
+ *   </li>
  *
- * <p>The package structure focuses on:</p>
- * <ul>
- *   <li>Users and roles</li>
- *   <li>Application menus and options (role-based access)</li>
- *   <li>Budget and ministry request management</li>
- *   <li>Data comparison and presentation</li>
+ *   <li>{@link budgetlogic.BudgetSave} – saves changes to CSV files using 
+ *       {@link budgetlogic.BudgetWriter}.</li>
+ *
+ *   <li>{@link budgetlogic.BudgetWriter} – writes budget data to CSV files 
+ *       for general records and ministries.</li>
+ *
+ *   <li>{@link budgetlogic.BudgetService} – core service for managing budget logic.
+ *       Provides:
+ *       <ul>
+ *         <li>Updating amounts in general records or ministries</li>
+ *         <li>Recomputing total/aggregate amounts</li>
+ *         <li>Propagating differences to expenses using mappings or ratios</li>
+ *         <li>Validating totals and consistency</li>
+ *       </ul>
+ *   </li>
+ *
+ *   <li>{@link budgetlogic.Ministry} – ministry model with regular budget (taktikos),
+ *       public investment budget (PDE), total amount, and allocation by category.</li>
  * </ul>
  *
- * <p>The package interacts with other packages:</p>
- * <ul>
- *   <li>{@code budgetlogic} - for loading, assembling, and printing budgets</li>
- *   <li>{@code budgetreader} - for reading budget files and displaying data</li>
- *   <li>{@code ministryrequests} - for managing and displaying ministry requests</li>
- * </ul>
+ * <h2>Data Flow</h2>
+ *
+ * <pre>
+ * CSV files → {@link budgetlogic.BudgetLoader} → {@link budgetlogic.Budget}
+ *                ↓
+ *           {@link budgetlogic.BudgetService} → updates / validation
+ *                ↓
+ *           {@link budgetlogic.BudgetSave} → {@link budgetlogic.BudgetWriter} → CSV
+ * </pre>
+ *
+ * <p>All amounts are stored as {@link java.math.BigDecimal} for precision,
+ * and aggregate totals are rounded to 2 decimal places using standard rules.
+ *
+ * @since 1.0
  */
-package dhmosiabytes;
+package budgetlogic;
