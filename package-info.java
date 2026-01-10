@@ -1,43 +1,48 @@
 /**
- * The {@code budgetreader} package provides classes for reading and displaying budget data.
+ * The {@code budgetcomparison} package provides classes for comparing budget data across years.
  *
- * <p>This package contains utility and model classes to load, parse, and show
- * both general and ministry-specific budget data from CSV files.</p>
+ * <p>This package contains utility, controller, and service classes to compare
+ * both general and ministry-specific budget data and display percentage changes.</p>
  *
  * <h2>Main Classes and Responsibilities</h2>
  *
  * <ul>
- *   <li>{@link budgetreader.ReadBudget} – reads budget CSV files and converts each row into
- *       {@link budgetreader.Eggrafi} or {@link budgetreader.Ypourgeio} objects.
- *       Supports:
+ *   <li>{@link budgetcomparison.BudgetFileResolver} – utility class for resolving
+ *       file names for general or ministry budget CSV files based on a given year.</li>
+ *
+ *   <li>{@link budgetcomparison.ComparisonController} – handles user interaction,
+ *       prompts for years and budget codes, and triggers budget comparisons
+ *       using {@link budgetcomparison.ComparisonService}.</li>
+ *
+ *   <li>{@link budgetcomparison.ComparisonService} – service class that performs
+ *       the actual comparison of budget entries between two years. Supports:
  *       <ul>
- *         <li>General budget (Eggrafi) CSVs</li>
- *         <li>Ministry budget (Ypourgeio) CSVs</li>
- *         <li>Cropped ministry CSVs (only code and total budget)</li>
+ *         <li>General budget entries via {@link budgetreader.Eggrafi}</li>
+ *         <li>Ministry budget entries via {@link budgetreader.Ypourgeio}</li>
+ *         <li>Percentage change calculation and formatted console output</li>
  *       </ul>
  *   </li>
  *
- *   <li>{@link budgetreader.DisplayBudget} – utility class to display budget lists
- *       on the console, formatted for readability.</li>
- *
- *   <li>{@link budgetreader.Eggrafi} – model for a general budget record
- *       containing code, description, and amount.</li>
- *
- *   <li>{@link budgetreader.Ypourgeio} – model for a ministry budget record
- *       with code, name, regular budget, public investment budget, total, and allocations.</li>
+ *   <li>{@link budgetcomparison.ComparisonResult} – model representing the result
+ *       of a budget comparison, including code, description, base year, comparison year,
+ *       and percentage change.</li>
  * </ul>
  *
  * <h2>Data Flow</h2>
  *
  * <pre>
- * CSV files → {@link budgetreader.ReadBudget} → List of {@link Eggrafi} / {@link Ypourgeio}
- *                ↓
- *           {@link budgetreader.DisplayBudget} → printed output to console
+ * CSV files → {@link budgetcomparison.BudgetFileResolver} → resolved file names
+ *      ↓
+ * {@link budgetreader.ReadBudget} → List of {@link budgetreader.Eggrafi} / {@link budgetreader.Ypourgeio}
+ *      ↓
+ * {@link budgetcomparison.ComparisonService} → {@link budgetcomparison.ComparisonResult}
+ *      ↓
+ * {@link budgetcomparison.ComparisonController} → printed output to console
  * </pre>
  *
- * <p>All monetary amounts are stored as {@link java.math.BigDecimal} for precision.
- * Thousands separators are removed and decimal points normalized during CSV parsing.</p>
+ * <p>Percentage changes are calculated as {@link java.math.BigDecimal} with
+ * rounding to 2 decimal places to ensure precision.</p>
  *
  * @since 1.0
  */
-package budgetreader;
+package budgetcomparison;
