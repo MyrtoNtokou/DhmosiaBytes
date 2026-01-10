@@ -1,12 +1,11 @@
 package budgetcharts;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import java.awt.GraphicsEnvironment;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,19 +34,6 @@ public class TestMoreCharts {
             assertNotNull(mockEggrafes, "Mock data δεν πρέπει να είναι null");
         } catch (Exception e) {
             throw new AssertionError("pieChartEsodaExoda threw an exception: " + e.getMessage());
-        }
-    }
-
-    @Test
-    void testPieChartElleimma_DisplaySuccess() {
-        Assumptions.assumeFalse(GraphicsEnvironment.isHeadless(),
-                "Παράλειψη test γιατί το περιβάλλον δεν υποστηρίζει GUI");
-
-        try {
-            MoreCharts.pieChartElleimma(mockEggrafes);
-            assertNotNull(mockEggrafes, "Mock data δεν πρέπει να είναι null");
-        } catch (Exception e) {
-            throw new AssertionError("pieChartElleimma threw an exception: " + e.getMessage());
         }
     }
 

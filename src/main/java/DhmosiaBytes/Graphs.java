@@ -15,7 +15,7 @@ import budgetreader.Ypourgeio;
  */
 public class Graphs {
     /** The maximum valid option number. */
-    private static final int MAX_CODE = 9;
+    private static final int MAX_CODE = 8;
 
     /** The minimum valid option number. */
     private static final int MIN_CODE = 1;
@@ -23,29 +23,26 @@ public class Graphs {
     /** Numerical code for pie chart of revenues and expenditures. */
     private static final int PIE_ESODA_EXODA = 1;
 
-    /** Numerical code for pie chart of deficit. */
-    private static final int PIE_ELLEIMMA = 2;
-
     /** Numerical code for chart of revenue. */
-    private static final int CHART_ESODA = 3;
+    private static final int CHART_ESODA = 2;
 
     /** Numerical code for chart of expenditure. */
-    private static final int CHART_EXODA = 4;
+    private static final int CHART_EXODA = 3;
 
     /** Numerical code for chart per ministry. */
-    private static final int CHART_MINISTRY = 5;
+    private static final int CHART_MINISTRY = 4;
 
     /** Line chart index for revenues and expenses. */
-    private static final int LINE_CHART_ESODA_EXODA = 6;
+    private static final int LINE_CHART_ESODA_EXODA = 5;
 
     /** Chart index for yearly revenues. */
-    private static final int CHART_ESODA_YEAR = 7;
+    private static final int CHART_ESODA_YEAR = 6;
 
     /** Chart index for yearly expenses. */
-    private static final int CHART_EXODA_YEAR = 8;
+    private static final int CHART_EXODA_YEAR = 7;
 
     /** Chart index for yearly ministry data. */
-    private static final int CHART_MINISTRY_YEAR = 9;
+    private static final int CHART_MINISTRY_YEAR = 8;
 
     /**
      * Creates a Graph object.
@@ -65,17 +62,16 @@ public class Graphs {
 
         while (!valid) {
             System.out.println("\n1. Πίτα Συνολικών Εσόδων - Εξόδων");
-            System.out.println("2. Πίτα Χρηματοδότησης Εξόδων");
-            System.out.println("3. Ιστόγραμμα Εσόδων");
-            System.out.println("4. Ιστόγραμμα Εξόδων");
-            System.out.println("5. Ιστόγραμμα Προϋπολογισμού ανά Υπουργείο");
-            System.out.println("6. Γραμμικό διάγραμμα εσόδων εξόδων "
+            System.out.println("2. Ιστόγραμμα Εσόδων");
+            System.out.println("3. Ιστόγραμμα Εξόδων");
+            System.out.println("4. Ιστόγραμμα Προϋπολογισμού ανά Υπουργείο");
+            System.out.println("5. Γραμμικό διάγραμμα εσόδων εξόδων "
             + "για τα έτη 2020-2026");
-            System.out.println("7. Ιστόγραμμα για συγκεκριμένο έσοδο "
+            System.out.println("6. Ιστόγραμμα για συγκεκριμένο έσοδο "
             + "2020-2026");
-            System.out.println("8. Ιστόγραμμα για συγκεκριμένο έξοδο "
+            System.out.println("7. Ιστόγραμμα για συγκεκριμένο έξοδο "
             + "2020-2026 ");
-            System.out.println("9. Ιστόγραμμα ανά Υπουργείο "
+            System.out.println("8. Ιστόγραμμα ανά Υπουργείο "
             + "για τα έτη 2020-2026");
             System.out.println("0. Έξοδος");
             System.out.print("Επιλογή: ");
@@ -118,7 +114,6 @@ public class Graphs {
             code = chooseGraph(input);
             switch (code) {
                 case PIE_ESODA_EXODA -> MoreCharts.pieChartEsodaExoda(eggra);
-                case PIE_ELLEIMMA -> MoreCharts.pieChartElleimma(eggra);
                 case CHART_ESODA -> Barcharts.chartEsoda(eggra);
                 case CHART_EXODA -> Barcharts.chartExoda(eggra);
                 case CHART_MINISTRY -> Barcharts.chartMinistry(y);

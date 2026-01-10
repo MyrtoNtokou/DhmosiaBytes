@@ -1,19 +1,20 @@
 package budgetcharts;
 
+import java.awt.Color;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
+
 import org.knowm.xchart.PieChart;
 import org.knowm.xchart.PieChartBuilder;
 import org.knowm.xchart.SwingWrapper;
 import org.knowm.xchart.XYChart;
 import org.knowm.xchart.XYChartBuilder;
 
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
-
-import java.awt.Color;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.List;
 import budgetreader.Eggrafi;
 import budgetreader.ReadBudget;
 
@@ -72,55 +73,6 @@ public final class MoreCharts {
         chart.addSeries("Έξοδα", exoda);
 
         // Set colors for pie slices
-        Color[] sliceColors = new Color[] {
-            BLUE,
-            RED };
-        chart.getStyler().setSeriesColors(sliceColors);
-
-        // Display PieChart in a swing window
-        SwingWrapper<PieChart> window = new SwingWrapper<>(chart);
-        JFrame frame = window.displayChart();
-        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-
-        // bring window to front
-        frame.setAlwaysOnTop(true);
-        frame.toFront();
-        frame.requestFocus();
-        frame.setAlwaysOnTop(false);
-    }
-
-    /**
-    * Pie chart for revenue coverage of ministrys.
-    *
-    * @param eggrafes the list with revenue and ministrys
-    */
-    public static void pieChartElleimma(final List<Eggrafi> eggrafes) {
-        // Initialisation
-        BigDecimal esoda = BigDecimal.ZERO;
-        BigDecimal elleimma = BigDecimal.ZERO;
-
-        // Find and save the total ministrys and the revenue-expesnes difference
-        for (Eggrafi e : eggrafes) {
-            if (e.getPerigrafi().equalsIgnoreCase("ΕΣΟΔΑ")) {
-                esoda = e.getPoso();
-            } else if (e.getPerigrafi().equalsIgnoreCase("ΑΠΟΤΕΛΕΣΜΑ ΚΡΑΤΙΚΟΥ"
-                + "ΠΡΟΫΠΟΛΟΓΙΣΜΟΥ (ΕΣΟΔΑ - ΕΞΟΔΑ)")) {
-                elleimma = e.getPoso();
-            }
-        }
-
-        // Create PieChart
-        PieChartBuilder builder = new PieChartBuilder();
-        builder.width(CHART_WIDTH);
-        builder.height(CHART_HEIGHT);
-        builder.title("Χρηματοδότηση Εξόδων");
-        PieChart chart = builder.build();
-
-        // Add contents
-        chart.addSeries("Έσοδα", esoda);
-        chart.addSeries("Έλλειμμα", elleimma);
-
-         // Set colors for pie slices
         Color[] sliceColors = new Color[] {
             BLUE,
             RED };
