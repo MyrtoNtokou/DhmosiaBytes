@@ -4,7 +4,7 @@ Code: 1
 Name: Υπουργείο Α
 Type: TAKTIKOS
 Status: PENDING
-Time: 2026-01-10T17:23:21.500888
+Time: 2026-01-10T17:26:10.438247200
 Text:
 Τακτικός: 100 → 150 (+50)
 === END ===
@@ -14,7 +14,7 @@ Code: 2
 Name: Υπουργείο Β
 Type: EPENDYSEIS
 Status: PENDING
-Time: 2026-01-10T17:23:21.501896200
+Time: 2026-01-10T17:26:10.439256700
 Text:
 Επενδύσεις: 200 → 300 (+100)
 === END ===
