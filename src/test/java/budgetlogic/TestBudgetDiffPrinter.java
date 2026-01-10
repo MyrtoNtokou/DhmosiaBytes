@@ -11,12 +11,7 @@ import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-<<<<<<< HEAD:src/test/java/BudgetLogic/BudgetDiffPrinterTest.java
-
-class BudgetDiffPrinterTest {
-=======
 class TestBudgetDiffPrinter {
->>>>>>> ff9890e279366606d5849404dfae2646163f2376:src/test/java/budgetlogic/TestBudgetDiffPrinter.java
 
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private PrintStream originalOut;
