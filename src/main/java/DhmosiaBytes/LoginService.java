@@ -24,13 +24,13 @@ public class LoginService {
      * @return the User object if login is successful, or null if login failed
      */
     public User login(final Role role, final String username,
-    final String password) {
+            final String password) {
         User currentUser = db.findUser(username);
         if (currentUser == null) {
             return null;
         }
-        if (!currentUser.getPassword().equals(password)
-        || !currentUser.getRole().equals(role)) {
+        if (!currentUser.checkPassword(password)
+                || !currentUser.getRole().equals(role)) {
             System.out.println("Λανθασμένος κωδικός πρόσβασης.");
             System.out.println("Επιλέξτε 0 για επιστροφή πίσω "
                     + "στο προηγούμενο μενού.");

@@ -1,6 +1,7 @@
 package dhmosiabytes;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 class TestUser {
@@ -14,7 +15,9 @@ class TestUser {
         // Check getters
         assertEquals(role, user.getRole());
         assertEquals(username, user.getUsername());
-        assertEquals(password, user.getPassword());
+
+        assertTrue(user.checkPassword(password), "Ο κωδικός πρέπει να ταιριάζει με το hash");
+        assertFalse(user.checkPassword("ΛάθοςΚωδικός"), "Λάθος κωδικός πρέπει να απορρίπτεται");
     }
 
     @Test
@@ -23,7 +26,7 @@ class TestUser {
         String username = "Test";
         String password = "Test123";
         User user = new User(role, username, password);
-        String expected = "Test (Υπουργείο Οικονομικών)";
+        String expected = username + " (" + role + ")";
         assertEquals(expected, user.toString());
     }
 }

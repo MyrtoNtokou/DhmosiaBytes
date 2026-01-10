@@ -2,6 +2,8 @@ package dhmosiabytes;
 
 import java.io.Serializable;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 /**
  * Class representing a user of the application.
  * Each user has a Role, a username, and a password.
@@ -13,21 +15,34 @@ public class User implements Serializable {
     /** The username of the user. */
     private final String username;
 
-    /** The password of the user. */
-    private final String password;
+    /** Stores the BCrypt hash of the user's password. */
+    private final String passwordHash;
+
+    /** Cost factor for BCrypt. */
+    private static final int BCRYPT_COST = 12;
 
     /**
      * Creates a user with a specific role, username, and password.
      *
      * @param currentRole the role of the user
      * @param currentUsername the username of the user
-     * @param currentPassword the password of the user
+     * @param passwordPlain the password of the user
      */
     public User(final Role currentRole, final String currentUsername,
-    final String currentPassword) {
+    final String passwordPlain) {
         this.role = currentRole;
         this.username = currentUsername;
-        this.password = currentPassword;
+        this.passwordHash = hashPassword(passwordPlain);
+    }
+
+    /**
+     * Hashes a plain-text password using the BCrypt hashing algorithm.
+     *
+     * @param passwordPlain the plain-text password provided by the user
+     * @return the hashed password string to be safely stored
+     */
+    private String hashPassword(final String passwordPlain) {
+        return BCrypt.hashpw(passwordPlain, BCrypt.gensalt(BCRYPT_COST));
     }
 
     /**
@@ -48,15 +63,6 @@ public class User implements Serializable {
         return username;
     }
 
-    /**
-     * Returns the password of the user.
-     *
-     * @return the user's password
-     */
-    public String getPassword() {
-        return password;
-    }
-
    /**
      * Returns a string representation of the user, including username
      * and role.
@@ -66,5 +72,15 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return username + " (" + role + ")";
+    }
+
+    /**
+     * Verifies a plain-text password against the stored BCrypt hash.
+     *
+     * @param passwordPlain the password entered during login
+     * @return true if the password matches the stored hash, false otherwise
+     */
+    public boolean checkPassword(final String passwordPlain) {
+        return BCrypt.checkpw(passwordPlain, passwordHash);
     }
 }
