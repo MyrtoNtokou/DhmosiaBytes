@@ -217,7 +217,9 @@ public final class BudgetDiffPrinter {
     }
 
     /**
-     * Convert the compareMinistries System.out into String.
+     * Convert the compareMinistries and compareExpenses
+     * System.out into String.
+     *
      * @param before
      * @param after
      * @return String of change
@@ -231,6 +233,29 @@ public final class BudgetDiffPrinter {
         System.setOut(ps);
         compareMinistries(before, after);
         compareExpenses(before, after);
+        System.out.flush();
+        System.setOut(oldOut);
+
+        return baos.toString(StandardCharsets.UTF_8);
+    }
+
+    /**
+     * Convert the compareRevenues and compareResult
+     * System.out into String.
+     *
+     * @param before
+     * @param after
+     * @return String of change
+     */
+    public static String captureRevenuesDiff(final Budget before,
+                                            final Budget after) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream ps = new PrintStream(baos, true, StandardCharsets.UTF_8);
+        PrintStream oldOut = System.out;
+
+        System.setOut(ps);
+        compareRevenues(before, after);
+        compareResult(before, after);
         System.out.flush();
         System.setOut(oldOut);
 

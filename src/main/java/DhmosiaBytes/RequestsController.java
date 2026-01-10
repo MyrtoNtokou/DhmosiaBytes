@@ -8,7 +8,7 @@ import static aggregatedata.ConsoleColors.BOLD;
 import static aggregatedata.ConsoleColors.CYAN;
 import static aggregatedata.ConsoleColors.RESET;
 import ministryrequests.MinistryRequest;
-import ministryrequests.MinistryRequestPrinter;
+import ministryrequests.RequestPrinter;
 import ministryrequests.MinistryRequestService;
 import ministryrequests.RequestStatus;
 
@@ -274,6 +274,19 @@ public final class RequestsController {
         MinistryRequestPrinter.printRequests(requests);
 
         while (true) {
+<<<<<<< Updated upstream
+=======
+            List<MinistryRequest> requests =
+                    reqService.getByStatusAndType(statusToCheck, null);
+
+            if (requests.isEmpty()) {
+                System.out.println("Δεν υπάρχουν άλλες τροποποιήσεις "
+                        + "για αξιολόγηση.");
+                break;
+            }
+
+            RequestPrinter.printRequests(requests);
+>>>>>>> Stashed changes
             int id = RequestsController.chooseEdit(input, requests);
             if (id == 0) {
                 return;

@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 /**
  * Keep the information of all requsts.
  */
-public class MinistryRequest {
+public class MinistryRequest implements Request {
 
     /** Unique number of request. */
     private final int id;
@@ -121,5 +121,15 @@ public class MinistryRequest {
      */
     public int getHash() {
         return hash;
+    }
+
+    /**
+     * Print ministry details.
+     */
+    @Override
+    public void printDetails() {
+        System.out.println("Υπουργείο: " + ministryName
+                        + " (κωδικός " + ministryCode + ")");
+        System.out.println("Τύπος: " + type);
     }
 }

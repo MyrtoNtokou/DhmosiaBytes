@@ -15,17 +15,6 @@ public class MinistryRequestService {
                     new MinistryRequestRepository();
 
     /**
-     * Normalize text that contains the requested changes.
-     * @param text
-     * @return the normalized text
-     */
-    private String normalize(final String text) {
-        return text .replaceAll("\r\n", "\n")
-        .replaceAll("\r", "\n") .replaceAll("[ \t]+", " ")
-        .replaceAll("\n+", "\n") .trim();
-    }
-
-    /**
      * Submit a new ministry request and store it as PENDING.
      * @param ministry the ministry submitting the request
      * @param rawDiff the raw budget differences text
@@ -35,8 +24,9 @@ public class MinistryRequestService {
     public int submitRequest(final Ypourgeio ministry, final String rawDiff,
                                     final RequestType type) {
 
-        String saveVersion = formatForSaving(rawDiff);
-        String normalized = normalize(saveVersion);
+        String title = "ΑΛΛΑΓΕΣ ΣΤΟΝ ΠΡΟΫΠΟΛΟΓΙΣΜΟ ΤΩΝ ΥΠΟΥΡΓΕΙΩΝ";
+        String clean = RequestTextFormatter.formatForSaving(rawDiff, title);
+        String normalized = RequestTextFormatter.normalize(clean);
 
         MinistryRequest request = new MinistryRequest(
                 0,
@@ -49,22 +39,6 @@ public class MinistryRequestService {
 
         MinistryRequest saved = repo.saveNew(request);
         return saved.getId();
-    }
-
-    /**
-     * Format request text for file storage,
-     * removing ANSI color codes.
-     * @param rawDiff the raw request text
-     * @return cleaned text for saving
-     */
-    public String formatForSaving(final String rawDiff) {
-
-        String clean = rawDiff.replaceAll("\u001B\\[[;\\d]*m", "");
-
-        return clean.replaceAll(
-                ".*ΑΛΛΑΓΕΣ ΣΤΟΝ\\s*ΠΡΟΫΠΟΛΟΓΙΣΜΟ\\s*ΤΩΝ\\s*ΥΠΟΥΡΓΕΙΩΝ.*\\n?",
-                ""
-        );
     }
 
     /**
