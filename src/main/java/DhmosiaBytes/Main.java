@@ -1,9 +1,10 @@
 package dhmosiabytes;
 
 import java.util.Scanner;
-import static aggregatedata.ConsoleColors.RESET;
+
 import static aggregatedata.ConsoleColors.BLUE;
 import static aggregatedata.ConsoleColors.BOLD;
+import static aggregatedata.ConsoleColors.RESET;
 
 /**
  * Main class to start the application for user management.
@@ -131,6 +132,9 @@ public final class Main {
             if (choice == 1) {
                 //Register
                 String currentUsername = InputReader.enterValidUsername(input);
+                if (currentUsername == null) {
+                    continue;
+                }
 
                 if (currentRole.getThereIsOnlyOne()) {
                     boolean exists =
@@ -139,7 +143,7 @@ public final class Main {
                     if (exists) {
                         System.out.println("Υπάρχει ήδη χρήστης με τον ρόλο: "
                         + currentRole);
-                        continue; // Επιστροφή στην αρχή του loop
+                        continue;
                     }
                 }
                 if (UserDatabase.getDB().findUser(currentUsername) != null) {
@@ -148,6 +152,10 @@ public final class Main {
                 } else {
                     String currentPassword =
                     InputReader.enterValidPassword(input);
+                    if (currentPassword == null) {
+                        continue;
+                    }
+
                     User currentUser = log.register(currentRole,
                     currentUsername, currentPassword);
                     if (currentUser != null) {

@@ -153,6 +153,7 @@ public final class RequestsController {
         int choice;
         while (true) {
             if (!financeMinistry.isEmpty()) {
+                System.out.println();
                 System.out.println("Αξιολόγηση Τροποποιήσεων "
                         + "από Υπουργείο Οικονομικών");
                 System.out.println("Επιλέξτε 0 για επιστροφή στο "
@@ -263,20 +264,27 @@ public final class RequestsController {
                                      final MinistryRequestService reqService,
                                      final RequestStatus statusToCheck,
                                      final boolean approveByParliament) {
+        List<MinistryRequest> requests =
+                reqService.getByStatusAndType(statusToCheck, null);
+        if (requests.isEmpty()) {
+            System.out.println("Δεν υπάρχουν άλλες τροποποιήσεις "
+                    + "για αξιολόγηση.");
+            return;
+        }
+        MinistryRequestPrinter.printRequests(requests);
+
         while (true) {
-            List<MinistryRequest> requests =
-                    reqService.getByStatusAndType(statusToCheck, null);
-
-            if (requests.isEmpty()) {
-                System.out.println("Δεν υπάρχουν άλλες τροποποιήσεις "
-                        + "για αξιολόγηση.");
-                break;
-            }
-
-            MinistryRequestPrinter.printRequests(requests);
             int id = RequestsController.chooseEdit(input, requests);
             if (id == 0) {
                 return;
+            }
+
+            boolean valid = requests.stream().anyMatch(r -> r.getId() == id);
+            if (!valid) {
+                System.out.println("Μη έγκυρος κωδικός.");
+                System.out.println("Επιλέξτε ένα από τα εμφανιζόμενα "
+                        + "αιτήματα.");
+                continue;
             }
 
             int complOrRej = RequestsController
@@ -289,6 +297,13 @@ public final class RequestsController {
                 }
             } else if (complOrRej == REJECT) {
                 reqService.markRejected(id);
+            }
+
+            requests = reqService.getByStatusAndType(statusToCheck, null);
+            if (requests.isEmpty()) {
+                System.out.println("Δεν υπάρχουν άλλες τροποποιήσεις "
+                    + "για αξιολόγηση.");
+                return;
             }
         }
     }
