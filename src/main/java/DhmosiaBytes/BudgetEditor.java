@@ -3,13 +3,15 @@ package dhmosiabytes;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import java.nio.file.Path;
-import java.nio.file.Files;
 
+import static aggregatedata.ConsoleColors.BOLD;
+import static aggregatedata.ConsoleColors.RESET;
 import budgetlogic.Budget;
 import budgetlogic.BudgetAssembler;
 import budgetlogic.BudgetDiffPrinter;
@@ -18,13 +20,10 @@ import budgetlogic.BudgetService;
 import budgetlogic.BudgetServiceImpl;
 import budgetreader.Eggrafi;
 import budgetreader.Ypourgeio;
-import ministryrequests.MinistryRequestService;
-import ministryrequests.RequestType;
 import ministryrequests.BudgetRequestLoader;
 import ministryrequests.BudgetRequestParser;
-
-import static aggregatedata.ConsoleColors.RESET;
-import static aggregatedata.ConsoleColors.BOLD;
+import ministryrequests.MinistryRequestService;
+import ministryrequests.RequestType;
 
  /**
  * Allows editing of income and expense entries in a Budget.
@@ -256,7 +255,7 @@ public class BudgetEditor {
      * Finalize request by saving the changes.
      * @param id request id
      */
-    public void saveEdit(final int id) {
+    public static void saveEdit(final int id) throws Exception {
         MinistryRequestService reqService = new MinistryRequestService();
         reqService.approveByParliament(id);
 
@@ -268,11 +267,23 @@ public class BudgetEditor {
             BudgetRequestParser parser =
                     new BudgetRequestParser(requestBlock);
             BudgetRequestParser.ParsedResult result = parser.parse(id);
-            int ministry = result.getMinistryCode();
+            Integer ministry = result.getMinistryCode();
+            if (ministry == null) {
+                System.err.println("Σφάλμα: Δεν υπάρχει ο κωδικός Υπουργείου "
+                        + "για το αίτημα " + id);
+                return;
+            }
             String type = result.getBudgetType();
             BigDecimal newAmount = result.getMinistryNewAmount();
+            if (newAmount == null) {
+                System.err.println("Σφάλμα: Δεν υπάρχει ποσό για το Υπουργείο "
+                        + "στο αίτημα " + id);
+                return;
+            }
+
             Map<String, BigDecimal> expensePer = result
                     .getExpensePercentages();
+
             BudgetAssembler loader = new BudgetAssembler();
             Budget initialBudget = loader.loadBudget("newgeneral.csv",
                                 "newministries.csv");

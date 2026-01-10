@@ -1,5 +1,6 @@
 package dhmosiabytes;
 
+import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -8,8 +9,8 @@ import static aggregatedata.ConsoleColors.BOLD;
 import static aggregatedata.ConsoleColors.CYAN;
 import static aggregatedata.ConsoleColors.RESET;
 import ministryrequests.MinistryRequest;
-import ministryrequests.RequestPrinter;
 import ministryrequests.MinistryRequestService;
+import ministryrequests.RequestPrinter;
 import ministryrequests.RequestStatus;
 
 /**
@@ -159,7 +160,7 @@ public final class RequestsController {
                 System.out.println("Επιλέξτε 0 για επιστροφή στο "
                 + "προηγούμενο μενού.");
                 System.out.print("Επιλέξτε το " + BOLD + CYAN
-                + "ID " + RESET + "για έγκριση ή απόρριψη ");
+                + "ID " + RESET + "για έγκριση ή απόρριψη: ");
 
                 try {
                     choice = input.nextInt();
@@ -233,7 +234,7 @@ public final class RequestsController {
                 System.out.println("Επιλέξτε 0 για επιστροφή στο "
                 + "προηγούμενο μενού.");
                 System.out.print("Επιλέξτε το " + BOLD + CYAN
-                + "ID " + RESET + "για έγκριση ή απόρριψη ");
+                + "ID " + RESET + "για έγκριση ή απόρριψη: ");
 
                 try {
                     choice = input.nextInt();
@@ -291,7 +292,15 @@ public final class RequestsController {
                     .completeOrRejectPrimMinist(input);
             if (complOrRej == 1) {
                 if (approveByParliament) {
-                    reqService.approveByParliament(id);
+                    try {
+                        BudgetEditor.saveEdit(id);
+                    } catch (IOException e) {
+                        System.err.println("Σφάλμα κατά την αποθήκευση του "
+                                + "αιτήματος." + e.getMessage());
+                    } catch (Exception e) {
+                        System.err.println("Σφάλμα κατά την αποθήκευση του "
+                                + "αιτήματος." + e.getMessage());
+                    }
                 } else {
                     reqService.approveByGovernment(id);
                 }

@@ -14,6 +14,9 @@ public class BudgetRequestParser {
     /** Ιnput text of the budget request. */
     private final String rawText;
 
+    /** Code for number 5. */
+    private static final int CODE_FOR_FIVE = 5;
+
     /**
      * Constructor.
      * @param text unprocessed text of the budget request
@@ -46,18 +49,37 @@ public class BudgetRequestParser {
             }
 
             // Detect ministry code line
-            if (line.matches("^\\d+ \\| Υπουργείο.*")) {
+            if (line.matches("^\\d+ \\|.*")) {
                 ministryCode = Integer.parseInt(line.split("\\|")[0].trim());
                 continue;
             }
 
-            if (line.startsWith("Type:")) {
-                budgetType = line.split(":")[1].trim();
+            if (line.toUpperCase().startsWith("TYPE:")) {
+                budgetType = line.substring(CODE_FOR_FIVE).trim();
+                if (budgetType.isEmpty()) {
+                    System.err.println("Σφάλμα: δεν βρέθηκε ο τύπος "
+                            + "του προϋπολογισμού για το αίτημα " + requestId);
+                    budgetType = null;
+                    continue;
+                }
+            }
+
+            if (budgetType == null) {
                 continue;
             }
 
-            String searchPrefix = "TAKTIKOS".equalsIgnoreCase(budgetType)
-                                ? "Τακτικός:" : "Επενδύσεις:";
+            String searchPrefix;
+            switch (budgetType.toUpperCase()) {
+                case "TAKTIKOS" -> {
+                    searchPrefix = "Τακτικός:";
+                }
+                case "EPENDYSEIS" -> {
+                    searchPrefix = "ΠΔΕ:";
+                }
+                default -> {
+                    searchPrefix = budgetType + ":";
+                }
+            }
 
             // Extract ministry old and new amounts
             if (ministryCode != null && line.startsWith(searchPrefix)
@@ -85,10 +107,18 @@ public class BudgetRequestParser {
                     currentExpenseCode = line.split("\\|")[0].trim();
                  // Extract expense percentage
                 } else if (currentExpenseCode != null && line.contains("→")) {
+                    if (ministryOldAmount == null
+                            || ministryNewAmount == null) {
+                        System.err.println("Σφάλμα: δεν βρέθηκαν τα ποσά για "
+                                + "το αίτημα " + requestId);
+                        currentExpenseCode = null;
+                        continue;
+                    }
                     BigDecimal percentage = extractExpensePercentage(
                             line,
                             ministryOldAmount,
-                            ministryNewAmount);
+                            ministryNewAmount,
+                            requestId);
                     expensePercentages.put(currentExpenseCode, percentage);
                     currentExpenseCode = null;
                 }
@@ -122,11 +152,18 @@ public class BudgetRequestParser {
      * @param line expense line containing the difference
      * @param ministryOld previous ministry amount
      * @param ministryNew new ministry amount
+     * @param requestId selected id
      * @return percentage contribution rounded to 2 decimals
      */
     private BigDecimal extractExpensePercentage(final String line,
                                             final BigDecimal ministryOld,
-                                            final BigDecimal ministryNew) {
+                                            final BigDecimal ministryNew,
+                                            final int requestId) {
+        if (ministryOld == null || ministryNew == null) {
+            System.err.println("Σφάλμα: δεν βρέθηκαν τα ποσά για "
+                                + "το αίτημα " + requestId);
+            return BigDecimal.ZERO;
+        }
         int start = line.indexOf('(');
         int end = line.indexOf(')');
 
