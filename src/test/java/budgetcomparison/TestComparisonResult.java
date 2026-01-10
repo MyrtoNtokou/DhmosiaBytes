@@ -3,7 +3,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import java.math.BigDecimal;
 import org.junit.jupiter.api.Test;
 
-public class ComparisonResultTest {
+public class TestComparisonResult {
     
     /** Tests that ComparisonResult can be created without exceptions. */
     @Test

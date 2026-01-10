@@ -9,7 +9,7 @@ import java.io.PrintStream;
 import org.junit.jupiter.api.Test;
 
 /** Test class for ComparisonService */
-public class ComparisonServiceTest {
+public class TestComparisonService {
  
     /** 
      * Test for calculatePercentageChange method.

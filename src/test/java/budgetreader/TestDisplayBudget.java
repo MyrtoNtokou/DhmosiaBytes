@@ -11,7 +11,7 @@ import java.util.List;
 
 /** These tests capture console output using {@code System.setOut} in order to verify
  * that the formatting and displayed information are correct.*/
-public class DisplayBudgetTest {
+public class TestDisplayBudget {
 
     /**
      * Tests whether the {@code showGeneral} method prints the expected elements

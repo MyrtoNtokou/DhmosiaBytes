@@ -20,21 +20,24 @@ public final class DiffColorizer {
      * @return the formatted String
      */
     public static String colorize(final String cleanDiff) {
+        // Green for positive changes
         String colored = cleanDiff;
         colored = colored.replaceAll(
             "\\(\\+([0-9.,]+)\\)",
             "(" + GREEN + "+$1" + RESET + ")");
 
+        // Red for negative changes
         colored = colored.replaceAll(
             "\\(-([0-9.,]+)\\)",
             "(" + RED + "-$1" + RESET + ")");
 
+        // Blue for arrow values
         colored = colored.replaceAll(
                 "→\\s*([0-9.,]+)",
                 "→ " + BLUE + "$1" + RESET);
 
         colored = colored.replaceAll(
-            "^(\\s*\\d+ \\| .*)$",
+            "(?m)^(\\s*\\d+ \\| .*)$",
             BOLD + "$1" + RESET);
 
         return colored;

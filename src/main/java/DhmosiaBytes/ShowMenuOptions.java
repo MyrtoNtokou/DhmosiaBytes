@@ -344,7 +344,7 @@ public final class ShowMenuOptions {
                     System.out.print("\nΑιτήματα Άλλων Υπουργείων:");
                     MinistryRequestService reqService =
                         new MinistryRequestService();
-                    
+
                     while (true) {
                         List<MinistryRequest> pendingReqs =
                                 reqService.getPendingByType(RequestType.BOTH);
