@@ -1,4 +1,7 @@
 /**
+ * Package containing classes for charts related.
+ * to the budget data such as income, expences
+ * and expences by ministry
  * The {@code budgetcharts} package provides classes for creating and displaying
  * charts based on national budget data.
  *
@@ -40,6 +43,6 @@
  * Charts convert values to billions for readability. Categories and years are extracted
  * from budget records to populate charts.</p>
  *
- * @since 1.0
+
  */
 package budgetcharts;
