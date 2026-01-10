@@ -163,6 +163,10 @@ public final class Main {
                         System.out.println("Επιτυχής είσοδος");
                         iAmIn = true;
                     } else {
+                        String option = input.nextLine();
+                        if (option.equals("0")) {
+                            break;
+                        }
                         counter--;
                         System.out.println("Σας απομένουν " + counter
                         + " προσπάθειες.");

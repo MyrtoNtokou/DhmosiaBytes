@@ -162,24 +162,26 @@ public final class ShowMenuOptions {
                     case CODE_FOR_OPTION_3 -> {
                         MinistryRequestService reqService =
                                 new MinistryRequestService();
-                        List<MinistryRequest> financeMinistry =
-                                reqService
-                                .getByStatusAndType(RequestStatus
-                                .REVIEWED_BY_FINANCE_MINISTRY, null);
-                        MinistryRequestPrinter
-                        .printRequests(financeMinistry);
-                        int choice = RequestsController.chooseEdit(input,
-                                financeMinistry);
-                        if (choice == 0) {
-                            break;
-                        }
-                        int complOrRej = RequestsController
-                                .completeOrRejectPrimMinist(input,
-                                choice);
-                        if (complOrRej == 1) {
-                            reqService.approveByGovernment(choice);
-                        } else if (complOrRej == REJECTED) {
-                            reqService.markRejected(choice);
+                        while (true) {
+                            List<MinistryRequest> financeMinistry =
+                                    reqService
+                                    .getByStatusAndType(RequestStatus
+                                    .REVIEWED_BY_FINANCE_MINISTRY, null);
+                            MinistryRequestPrinter
+                                    .printRequests(financeMinistry);
+                            int choice = RequestsController.chooseEdit(input,
+                                    financeMinistry);
+                            if (choice == 0) {
+                                break;
+                            }
+                            int complOrRej = RequestsController
+                                    .completeOrRejectPrimMinist(input,
+                                    choice);
+                            if (complOrRej == 1) {
+                                reqService.approveByGovernment(choice);
+                            } else if (complOrRej == REJECTED) {
+                                reqService.markRejected(choice);
+                            }
                         }
                     }
                     default -> {
@@ -290,7 +292,7 @@ public final class ShowMenuOptions {
             System.out.println("1. Επεξεργασία Προϋπολογισμού");
             System.out.println("2. Ιστορικό Τροποποιήσεων Προϋπολογισμού");
             System.out.println("3. Σύγκριση Δημοσιευμένου και "
-            + "Τροποποιημένου Προϋπολογισμού");
+                    + "Τροποποιημένου Προϋπολογισμού");
             System.out.println("4. Προβολή Αιτημάτων από άλλα Υπουργεία");
             System.out.print("\nΕπιλογή: ");
             try {
@@ -332,10 +334,11 @@ public final class ShowMenuOptions {
                     System.out.print("\nΑιτήματα Άλλων Υπουργείων:");
                     MinistryRequestService reqService =
                         new MinistryRequestService();
-                    List<MinistryRequest> pendingReqs =
-                        reqService.getPendingByType(RequestType.BOTH);
-
+                    
                     while (true) {
+                        List<MinistryRequest> pendingReqs =
+                                reqService.getPendingByType(RequestType.BOTH);
+
                         MinistryRequestPrinter.printRequests(pendingReqs);
                         int code = RequestsController.chooseRequest(input,
                                 pendingReqs);

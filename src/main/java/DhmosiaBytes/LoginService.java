@@ -32,6 +32,8 @@ public class LoginService {
         if (!currentUser.getPassword().equals(password)
         || !currentUser.getRole().equals(role)) {
             System.out.println("Λανθασμένος κωδικός πρόσβασης.");
+            System.out.println("Επιλέξτε 0 για επιστροφή πίσω "
+                    + "στο προηγούμενο μενού.");
             return null;
         }
         return currentUser;
