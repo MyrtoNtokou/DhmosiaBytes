@@ -37,6 +37,9 @@ public final class UserDatabase implements Serializable {
     /** Map storing users with username as the key. */
     private Map<String, User> users;
 
+    /** File "data/users.json". */
+    private static final String USER_FILE = "data/users.json";
+
     /**
      * Private constructor to prevent external instantiation.
      */
@@ -83,7 +86,11 @@ public final class UserDatabase implements Serializable {
 
         if (!users.containsKey(newUser.getUsername())) {
             users.put(newUser.getUsername(), newUser);
-            save();
+            try {
+                save();
+            } catch (IOException e) {
+                System.out.println("Σφάλμα κατά την αποθήκευση.");
+            }
             return true;
         } else {
             return false;
@@ -114,12 +121,21 @@ public final class UserDatabase implements Serializable {
     }
 
     /**
-     * Saves all users to "users.json" in JSON format.
+     * Saves all users to USER_FILE in JSON format.
      */
-    private void save() {
+    private void save() throws IOException {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        File file = new File(USER_FILE);
+        File parent = file.getParentFile();
+        if (!parent.exists()) {
+            boolean created = parent.mkdirs();
+            if (!created) {
+                throw new IOException("Δεν μπόρεσε να δημιουργηθεί ο φάκελος: "
+                        + parent.getAbsolutePath());
+            }
+        }
         try (OutputStreamWriter writer = new OutputStreamWriter(new
-        FileOutputStream("users.json"), StandardCharsets.UTF_8)) {
+        FileOutputStream(USER_FILE), StandardCharsets.UTF_8)) {
             gson.toJson(users, writer);
         } catch (IOException e) {
             System.out.println("Σφάλμα κατά την αποθήκευση.");
@@ -127,12 +143,21 @@ public final class UserDatabase implements Serializable {
     }
 
     /**
-     * Loads all users from "users.json" if the file exists,
+     * Loads all users from USER_FILE if the file exists,
      * so they are available in the next program execution.
      */
     @SuppressWarnings("unchecked")
     private void load() throws IOException {
-        File file = new File("users.json");
+        File file = new File(USER_FILE);
+        File parent = file.getParentFile();
+        if (!parent.exists()) {
+            boolean created = parent.mkdirs();
+            if (!created) {
+                throw new IOException("Δεν μπόρεσε να δημιουργηθεί ο φάκελος: "
+                        + parent.getAbsolutePath());
+            }
+        }
+
         if (!file.exists()) {
             users = new HashMap<>();
             return;
@@ -168,7 +193,11 @@ public final class UserDatabase implements Serializable {
      */
     public void clearUsersForTest() {
         users.clear();
-        save();
+        try {
+            save();
+        } catch (IOException e) {
+            System.out.println("Σφάλμα κατά την αποθήκευση.");
+        }
     }
 
     /**
@@ -185,7 +214,11 @@ public final class UserDatabase implements Serializable {
 
         if (users.containsKey(username)) {
             users.remove(username);
-            save();
+            try {
+                save();
+            } catch (IOException e) {
+                System.out.println("Σφάλμα κατά την αποθήκευση.");
+            }
             return true;
         }
         return false;
