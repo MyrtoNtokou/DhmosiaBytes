@@ -1,10 +1,10 @@
 package dhmosiabytes;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.io.ByteArrayInputStream;
 import java.util.Scanner;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import org.junit.jupiter.api.Test;
 
 class TestInputReader {
@@ -58,4 +58,15 @@ class TestInputReader {
         // The method should keep asking until it gets a valid password
         assertEquals("Abc123", result);
     }
+
+    @Test
+        void testEnterValidUsername_ZeroForReturn() {
+            String mockInput = "0\n"; // Simulate user pressing 0 to go back
+            Scanner scanner = new Scanner(new ByteArrayInputStream(mockInput.getBytes()));
+
+            String result = InputReader.enterValidUsername(scanner);
+
+            // Expect null because 0 means return to menu
+            assertNull(result);
+        }
 }
