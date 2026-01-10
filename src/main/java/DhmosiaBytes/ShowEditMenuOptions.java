@@ -63,9 +63,11 @@ public class ShowEditMenuOptions {
      * @param scanner Scanner to read user input
      * @param selected RevenueOrExpense constant
      * indicating whether to edit income or expense
+     * @param currentRole Login role
      */
     public void editRevenueOrExpense(final Budget initialBudget,
-    final Scanner scanner, final RevenueOrExpense selected) {
+            final Scanner scanner, final RevenueOrExpense selected,
+            final Role currentRole) {
         CutLists cut = new CutLists();
         if (selected == RevenueOrExpense.INCOME) {
             List<Eggrafi> esoda = cut.cutEggrafiEsoda();
@@ -79,7 +81,8 @@ public class ShowEditMenuOptions {
             BudgetDiffPrinter.printMinistries(initialBudget);
             int code;
             do {
-                code = cut.selectMinistry(scanner, ministries, initialBudget);
+                code = cut.selectMinistry(scanner, ministries, initialBudget,
+                currentRole);
             } while (code != 0);
         }
     }

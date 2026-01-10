@@ -15,6 +15,7 @@ import budgetreader.Ypourgeio;
 import ministryrequests.MinistryRequest;
 import ministryrequests.MinistryRequestPrinter;
 import ministryrequests.MinistryRequestService;
+import ministryrequests.RequestStatus;
 import ministryrequests.RequestType;
 
 /**
@@ -28,6 +29,12 @@ public final class ShowMenuOptions {
      */
     private ShowMenuOptions() { }
 
+    /** Code for option 0. */
+    private static final int CODE_FOR_OPTION_0 = 0;
+    /** Code for option 1. */
+    private static final int CODE_FOR_OPTION_1 = 1;
+    /** Code for option 2. */
+    private static final int CODE_FOR_OPTION_2 = 2;
     /** Code for option 3. */
     private static final int CODE_FOR_OPTION_3 = 3;
 
@@ -88,6 +95,9 @@ public final class ShowMenuOptions {
                 case AGGREGATE -> {
                     AggregateMenu agg = new AggregateMenu();
                     int code = agg.typeOfBudget(input);
+                    if (code == 0) {
+                        break;
+                    }
                     agg.displayMinMax(code, input);
                 }
                 case COMPARISON -> {
@@ -130,10 +140,100 @@ public final class ShowMenuOptions {
     public static void handleAction3(final Role currentRole,
     final Scanner input) {
         switch (currentRole) {
-            case PRIME_MINISTER, PARLIAMENT -> {
-                showComparedBudgets();
+            case PRIME_MINISTER -> {
+                int code = RequestsController
+                        .primeMinisterAndParlMenu(input);
+                switch (code) {
+                    case CODE_FOR_OPTION_0 -> {
+                        break;
+                    }
+                    case CODE_FOR_OPTION_1 -> {
+                        MinistryRequestService reqService =
+                                new MinistryRequestService();
+                        List<MinistryRequest> finalizedChanges =
+                            reqService
+                            .getByStatusAndType(RequestStatus
+                            .PARLIAMENT_APPROVED,
+                            null);
+                        MinistryRequestPrinter
+                                .printRequests(finalizedChanges);
+                    }
+                    case CODE_FOR_OPTION_2 -> showComparedBudgets();
+                    case CODE_FOR_OPTION_3 -> {
+                        MinistryRequestService reqService =
+                                new MinistryRequestService();
+                        List<MinistryRequest> financeMinistry =
+                                reqService
+                                .getByStatusAndType(RequestStatus
+                                .REVIEWED_BY_FINANCE_MINISTRY, null);
+                        MinistryRequestPrinter
+                        .printRequests(financeMinistry);
+                        int choice = RequestsController.chooseEdit(input,
+                                financeMinistry);
+                        if (choice == 0) {
+                            break;
+                        }
+                        int complOrRej = RequestsController
+                                .completeOrRejectPrimMinist(input,
+                                choice);
+                        if (complOrRej == 1) {
+                            reqService.approveByGovernment(choice);
+                        } else if (complOrRej == REJECTED) {
+                            reqService.markRejected(choice);
+                        }
+                    }
+                    default -> {
+                        // no action needed
+                    }
+                }
             }
-            case FINANCE_MINISTER -> editBudget(input);
+            case PARLIAMENT -> {
+                int code = RequestsController
+                        .primeMinisterAndParlMenu(input);
+                switch (code) {
+                    case CODE_FOR_OPTION_0 -> {
+                        break;
+                    }
+                    case CODE_FOR_OPTION_1 -> {
+                        MinistryRequestService reqService =
+                                new MinistryRequestService();
+                        List<MinistryRequest> finalizedChanges =
+                            reqService
+                            .getByStatusAndType(RequestStatus
+                            .PARLIAMENT_APPROVED,
+                            null);
+                        MinistryRequestPrinter
+                                .printRequests(finalizedChanges);
+                    }
+                    case CODE_FOR_OPTION_2 -> showComparedBudgets();
+                    case CODE_FOR_OPTION_3 -> {
+                        MinistryRequestService reqService =
+                                new MinistryRequestService();
+                        List<MinistryRequest> govApproved =
+                                reqService
+                                .getByStatusAndType(RequestStatus
+                                .GOVERNMENT_APPROVED, null);
+                        MinistryRequestPrinter.printRequests(govApproved);
+                        int choice = RequestsController.chooseEdit(input,
+                                govApproved);
+                        if (choice == 0) {
+                            break;
+                        }
+                        int complOrRej = RequestsController
+                                .completeOrRejectPrimMinist(input,
+                                choice);
+                        if (complOrRej == 1) {
+                            reqService.approveByGovernment(choice);
+                        } else if (complOrRej == REJECTED) {
+                            reqService.markRejected(choice);
+                        }
+                    }
+                    default -> {
+                        // no action needed
+                    }
+                }
+            }
+            case FINANCE_MINISTER -> editBudget(input, currentRole);
             case OTHER_MINISTRY -> {
                 System.out.println();
                 System.out.println("Τα αιτήματα σας θα σταλούν στο Υπουργείο "
@@ -146,7 +246,8 @@ public final class ShowMenuOptions {
                 BudgetDiffPrinter.printMinistries(budget);
                 int code;
                 do {
-                    code = cut.selectMinistry(input, ministries, budget);
+                    code = cut.selectMinistry(input, ministries, budget,
+                    currentRole);
                 } while (code != 0);
             }
             default -> System.out.println("Σφάλμα κατά την φόρτωση "
@@ -179,14 +280,16 @@ public final class ShowMenuOptions {
      * by selecting 0.
      *
      * @param input the scanner for user's input
+     * @param currentRole Login role
      */
-    public static void editBudget(final Scanner input) {
+    public static void editBudget(final Scanner input,
+            final Role currentRole) {
         int choice;
         do {
             System.out.println("\n\n0. Έξοδος");
             System.out.println("1. Επεξεργασία Προϋπολογισμού");
             System.out.println("2. Ιστορικό Τροποποιήσεων Προϋπολογισμού");
-            System.out.println("3. Σύγκριση Τρέχοντος και "
+            System.out.println("3. Σύγκριση Δημοσιευμένου και "
             + "Τροποποιημένου Προϋπολογισμού");
             System.out.println("4. Προβολή Αιτημάτων από άλλα Υπουργεία");
             System.out.print("\nΕπιλογή: ");
@@ -219,7 +322,7 @@ public final class ShowMenuOptions {
                     RevenueOrExpense usersChoice = edit
                     .chooseRevenueOrExpense(input);
                     edit.editRevenueOrExpense(initialBudget, input,
-                    usersChoice);
+                    usersChoice, currentRole);
                 }
                 case 2 -> {
                     // μέθοδος Μυρτούς :)
@@ -231,17 +334,22 @@ public final class ShowMenuOptions {
                         new MinistryRequestService();
                     List<MinistryRequest> pendingReqs =
                         reqService.getPendingByType(RequestType.BOTH);
-                    MinistryRequestPrinter.printRequests(pendingReqs);
-                    int code = RequestsController.chooseRequest(input);
-                    if (code == 0) {
-                        break;
-                    }
-                    int complOrRej = RequestsController.completeOrReject(input,
-                        code);
-                    if (complOrRej == 1) {
-                        reqService.markCompleted(code);
-                    } else if (complOrRej == REJECTED) {
-                        reqService.markRejected(code);
+
+                    while (true) {
+                        MinistryRequestPrinter.printRequests(pendingReqs);
+                        int code = RequestsController.chooseRequest(input,
+                                pendingReqs);
+                        if (code == 0) {
+                            break;
+                        }
+                        int complOrRej = RequestsController
+                                .completeOrReject(input,
+                            code);
+                        if (complOrRej == 1) {
+                            reqService.markCompleted(code);
+                        } else if (complOrRej == REJECTED) {
+                            reqService.markRejected(code);
+                        }
                     }
                 }
                 default -> System.out.println("Μη έγκυρη επιλογή.");

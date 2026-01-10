@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.nio.file.Path;
+import java.nio.file.Files;
 
 import budgetlogic.Budget;
 import budgetlogic.BudgetAssembler;
@@ -17,6 +19,11 @@ import budgetreader.Eggrafi;
 import budgetreader.Ypourgeio;
 import ministryrequests.MinistryRequestService;
 import ministryrequests.RequestType;
+import ministryrequests.BudgetRequestLoader;
+import ministryrequests.BudgetRequestParser;
+
+import static aggregatedata.ConsoleColors.RESET;
+import static aggregatedata.ConsoleColors.BOLD;
 
  /**
  * Allows editing of income and expense entries in a Budget.
@@ -95,9 +102,10 @@ public class BudgetEditor {
      * @param code the code of the expense to be replaced
      * @param scanner the Scanner to read user input
      * @param initialBudget Budget object to edit
+     * @param currentRole Login role
      */
     public void editExpense(final int code, final Scanner scanner,
-    final Budget initialBudget) {
+    final Budget initialBudget, final Role currentRole) {
         ShowEditMenuOptions editMenu = new ShowEditMenuOptions();
         int type;
         type = editMenu.selectBudgetType(scanner);
@@ -110,17 +118,22 @@ public class BudgetEditor {
         } else {
             column = "πδε";
         }
-        BigDecimal newAmount = null;
 
-        while (newAmount == null) {
-            System.out.print("Παρακαλώ εισάγετε την \u001B[1mαύξηση\u001B[0m "
+        BigDecimal increase = null;
+        BigDecimal newAmount = null;
+        while (increase == null) {
+            System.out.print("Παρακαλώ εισάγετε την " + BOLD + "αύξηση" + RESET
             + " που θα εφαρμοστεί στο επιλεγμένο Υπουργείο: ");
             String input = scanner.nextLine();
             try {
-                newAmount = new BigDecimal(input);
+                Ypourgeio mBefore = initialBudget.getMinistries().get(code);
+                BigDecimal oldVal = column.equalsIgnoreCase("τακτικός")
+                    ? mBefore.getTaktikos() : mBefore.getEpendyseis();
+                increase = new BigDecimal(input);
+                newAmount = oldVal.add(increase);
                 if (newAmount.compareTo(BigDecimal.ZERO) < 0) {
-                System.out.println("Το ποσό δεν μπορεί να είναι αρνητικό.");
-                newAmount = null;
+                    System.out.println("Το ποσό δεν μπορεί να είναι αρνητικό.");
+                    newAmount = null;
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Μη έγκυρη τιμή.");
@@ -132,21 +145,31 @@ public class BudgetEditor {
         Map<Integer, Map<String, BigDecimal>> mapping = BudgetAssembler
                 .createMappingForMinistryChange(code, distribution);
         BudgetService serv = new BudgetService(initialBudget, mapping);
-        Budget currentBudget = serv.getBudget();
-        Budget before = new Budget(currentBudget);
         serv.changeMinistryAmount(code, column, newAmount);
         Budget after = serv.getBudget();
         Ypourgeio ministry = after.getMinistries().get(code);
-        String rawDiff = BudgetDiffPrinter.captureMinistryDiff(before, after);
+        String rawDiff = BudgetDiffPrinter
+                        .captureMinistryDiff(initialBudget, after);
         MinistryRequestService reqService = new MinistryRequestService();
 
-        BudgetDiffPrinter.printDiffMinistries(before, after);
+        BudgetDiffPrinter.printDiffMinistries(initialBudget, after);
+        int requestId;
 
         if (column.equals("τακτικός")) {
-            reqService.submitRequest(ministry, rawDiff, RequestType.TAKTIKOS);
+            requestId = reqService.submitRequest(ministry, rawDiff,
+                    RequestType.TAKTIKOS);
         } else {
-            reqService.submitRequest(ministry, rawDiff,
+            requestId = reqService.submitRequest(ministry, rawDiff,
             RequestType.EPENDYSEIS);
+        }
+
+        switch (currentRole) {
+            case FINANCE_MINISTER -> {
+                reqService.reveiwByFinanceMinistry(requestId);
+            }
+            default -> {
+                // no action needed
+            }
         }
     }
 
@@ -224,6 +247,47 @@ public class BudgetEditor {
                     System.out.println("Μη έγκυρο ποσοστό.");
                 }
             }
+        }
+    }
+
+    /**
+     * Finalize request by saving the changes.
+     * @param id request id
+     */
+    public void saveEdit(final int id) {
+        MinistryRequestService reqService = new MinistryRequestService();
+        reqService.approveByParliament(id);
+
+        try {
+            String fileContent = Files.readString(Path
+                    .of("ministryrequests.txt"));
+            String requestBlock = BudgetRequestLoader
+                .extractRequestBlock(fileContent, id);
+            BudgetRequestParser parser =
+                    new BudgetRequestParser(requestBlock);
+            BudgetRequestParser.ParsedResult result = parser.parse(id);
+            int ministry = result.getMinistryCode();
+            String type = result.getBudgetType();
+            BigDecimal newAmount = result.getMinistryNewAmount();
+            Map<String, BigDecimal> expensePer = result
+                    .getExpensePercentages();
+            BudgetAssembler loader = new BudgetAssembler();
+            Budget initialBudget = loader.loadBudget("newgeneral.csv",
+                                "newministries.csv");
+
+            Map<Integer, Map<String, BigDecimal>> mapping =
+            BudgetAssembler.createMappingForMinistryChange(ministry,
+                    expensePer);
+
+            BudgetService serv = new BudgetService(initialBudget, mapping);
+            serv.changeMinistryAmount(ministry, type, newAmount);
+            Budget finalBudget = serv.getBudget();
+
+            BudgetSave saver = new BudgetSave();
+            saver.saveGeneralChanges(finalBudget, "newgeneral.csv");
+            saver.saveMinistryChanges(finalBudget, "newministries.csv");
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
         }
     }
 }
