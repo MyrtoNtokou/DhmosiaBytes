@@ -137,10 +137,14 @@ public class BudgetRequestParser {
      * @return extracted number or zero if none found
      */
     private BigDecimal extractNumber(final String text) {
-        String cleaned = text.replaceAll("[^0-9.]", " ").trim();
-        for (String token : cleaned.split(" ")) {
-            if (!token.isBlank()) {
-                return new BigDecimal(token);
+        String cleaned = text.replaceAll("[^0-9.-]", " ").trim();
+        for (String token : cleaned.split("\\s+")) {
+            if (!token.isBlank() && !token.equals("-")) {
+                try {
+                    return new BigDecimal(token);
+                } catch (NumberFormatException e) {
+                    System.err.println("Σφάλμα");
+                }
             }
         }
         return BigDecimal.ZERO;
@@ -171,16 +175,16 @@ public class BudgetRequestParser {
             return BigDecimal.ZERO;
         }
 
-        String deltaText = line.substring(start + 1, end);
+       String deltaText = line.substring(start + 1, end);
         BigDecimal deltaExpense = extractNumber(deltaText);
-
         BigDecimal deltaMinistry = ministryNew.subtract(ministryOld);
 
         if (deltaMinistry.compareTo(BigDecimal.ZERO) == 0) {
             return BigDecimal.ZERO;
         }
 
-        return deltaExpense.divide(deltaMinistry, 2, RoundingMode.HALF_UP);
+        return deltaExpense.divide(deltaMinistry, 2,
+                RoundingMode.HALF_UP).abs();
     }
 
 

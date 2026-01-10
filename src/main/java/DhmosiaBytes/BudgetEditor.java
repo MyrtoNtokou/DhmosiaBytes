@@ -284,6 +284,8 @@ public class BudgetEditor {
             Map<String, BigDecimal> expensePer = result
                     .getExpensePercentages();
 
+            System.out.println(expensePer);
+
             BudgetAssembler loader = new BudgetAssembler();
             Budget initialBudget = loader.loadBudget("newgeneral.csv",
                                 "newministries.csv");
