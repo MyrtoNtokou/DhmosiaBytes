@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 /** Test class for BudgetFileResolver. */
-public class BudgetFileResolverTest {
+public class TestBudgetFileResolver {
 
     /** Tests that valid years return the correct file names. */
     @Test

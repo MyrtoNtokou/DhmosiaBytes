@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Tests for the Ypourgeio class.
  */
-public class YpourgeioTest {
+public class TestYpourgeio {
 
     /**
      * Tests that the constructor sets all fields correctly.

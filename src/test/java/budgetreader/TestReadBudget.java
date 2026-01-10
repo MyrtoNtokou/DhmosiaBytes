@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
  * The goal is to check that the CSV files are read
  * correctly and the returned lists are not empty.
  */
-public class ReadBudgetTest {
+public class TestReadBudget {
 
     /**
      * Tests that the general budget CSV file is loaded
@@ -41,7 +41,7 @@ public class ReadBudgetTest {
     @Test
     public void testReadGeneralBudgetFromPath() throws Exception {
         Path path = Paths.get(
-            ReadBudgetTest.class
+            TestReadBudget.class
             .getResource("/proypologismos2025.csv")
             .toURI()
         );
@@ -99,7 +99,7 @@ public class ReadBudgetTest {
     @Test
     public void testReadByMinistryFromPath() throws Exception {
         Path path = Paths.get(
-            ReadBudgetTest.class
+            TestReadBudget.class
             .getResource("/proypologismos2025anaypourgeio.csv")
             .toURI()
         );

@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
  * Tests for the Eggrafi class.
  */
 
-public class EggrafiTest {
+public class TestEggrafi {
 
         /**
      * Tests that the constructor correctly assigns the fields.
