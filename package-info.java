@@ -1,48 +1,45 @@
 /**
- * The {@code budgetcomparison} package provides classes for comparing budget data across years.
+ * The {@code budgetcharts} package provides classes for creating and displaying
+ * charts based on national budget data.
  *
- * <p>This package contains utility, controller, and service classes to compare
- * both general and ministry-specific budget data and display percentage changes.</p>
+ * <p>This package contains utility classes to generate bar charts, pie charts,
+ * and line charts for general revenues and expenses, as well as ministry-specific
+ * budget data, using the XChart library.</p>
  *
  * <h2>Main Classes and Responsibilities</h2>
  *
  * <ul>
- *   <li>{@link budgetcomparison.BudgetFileResolver} – utility class for resolving
- *       file names for general or ministry budget CSV files based on a given year.</li>
- *
- *   <li>{@link budgetcomparison.ComparisonController} – handles user interaction,
- *       prompts for years and budget codes, and triggers budget comparisons
- *       using {@link budgetcomparison.ComparisonService}.</li>
- *
- *   <li>{@link budgetcomparison.ComparisonService} – service class that performs
- *       the actual comparison of budget entries between two years. Supports:
+ *   <li>{@link budgetcharts.Barcharts} – provides static methods to create bar charts for:
  *       <ul>
- *         <li>General budget entries via {@link budgetreader.Eggrafi}</li>
- *         <li>Ministry budget entries via {@link budgetreader.Ypourgeio}</li>
- *         <li>Percentage change calculation and formatted console output</li>
+ *         <li>General revenues (Έσοδα)</li>
+ *         <li>General expenses (Έξοδα)</li>
+ *         <li>Ministry budgets</li>
+ *         <li>Yearly breakdown of revenues, expenses, and ministry budgets</li>
  *       </ul>
+ *       Charts are scaled to billions and formatted for readability.
  *   </li>
  *
- *   <li>{@link budgetcomparison.ComparisonResult} – model representing the result
- *       of a budget comparison, including code, description, base year, comparison year,
- *       and percentage change.</li>
+ *   <li>{@link budgetcharts.MoreCharts} – provides additional chart types:
+ *       <ul>
+ *         <li>Pie charts for total revenues vs. expenses</li>
+ *         <li>Pie charts for deficit coverage</li>
+ *         <li>Line charts for revenues and expenses over multiple years</li>
+ *       </ul>
+ *   </li>
  * </ul>
  *
  * <h2>Data Flow</h2>
  *
  * <pre>
- * CSV files → {@link budgetcomparison.BudgetFileResolver} → resolved file names
- *      ↓
- * {@link budgetreader.ReadBudget} → List of {@link budgetreader.Eggrafi} / {@link budgetreader.Ypourgeio}
- *      ↓
- * {@link budgetcomparison.ComparisonService} → {@link budgetcomparison.ComparisonResult}
- *      ↓
- * {@link budgetcomparison.ComparisonController} → printed output to console
+ * CSV files → {@link budgetreader.ReadBudget} → List of {@link budgetreader.Eggrafi} / {@link budgetreader.Ypourgeio}
+ *                ↓
+ *           {@link budgetcharts.Barcharts} / {@link budgetcharts.MoreCharts} → charts displayed via Swing
  * </pre>
  *
- * <p>Percentage changes are calculated as {@link java.math.BigDecimal} with
- * rounding to 2 decimal places to ensure precision.</p>
+ * <p>All monetary amounts are stored as {@link java.math.BigDecimal} for precision.
+ * Charts convert values to billions for readability. Categories and years are extracted
+ * from budget records to populate charts.</p>
  *
  * @since 1.0
  */
-package budgetcomparison;
+package budgetcharts;
