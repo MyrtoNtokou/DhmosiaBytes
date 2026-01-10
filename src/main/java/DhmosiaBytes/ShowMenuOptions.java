@@ -167,6 +167,11 @@ public final class ShowMenuOptions {
                                     reqService
                                     .getByStatusAndType(RequestStatus
                                     .REVIEWED_BY_FINANCE_MINISTRY, null);
+                            if (financeMinistry.isEmpty()) {
+                                System.out.println("Δεν υπάρχουν άλλες "
+                                        + "τροποποίησεις για αξιολόγηση.");
+                                break;
+                            }
                             MinistryRequestPrinter
                                     .printRequests(financeMinistry);
                             int choice = RequestsController.chooseEdit(input,
@@ -175,8 +180,7 @@ public final class ShowMenuOptions {
                                 break;
                             }
                             int complOrRej = RequestsController
-                                    .completeOrRejectPrimMinist(input,
-                                    choice);
+                                    .completeOrRejectPrimMinist(input);
                             if (complOrRej == 1) {
                                 reqService.approveByGovernment(choice);
                             } else if (complOrRej == REJECTED) {
@@ -211,23 +215,29 @@ public final class ShowMenuOptions {
                     case CODE_FOR_OPTION_3 -> {
                         MinistryRequestService reqService =
                                 new MinistryRequestService();
-                        List<MinistryRequest> govApproved =
-                                reqService
-                                .getByStatusAndType(RequestStatus
-                                .GOVERNMENT_APPROVED, null);
-                        MinistryRequestPrinter.printRequests(govApproved);
-                        int choice = RequestsController.chooseEdit(input,
-                                govApproved);
-                        if (choice == 0) {
-                            break;
-                        }
-                        int complOrRej = RequestsController
-                                .completeOrRejectPrimMinist(input,
-                                choice);
-                        if (complOrRej == 1) {
-                            reqService.approveByGovernment(choice);
-                        } else if (complOrRej == REJECTED) {
-                            reqService.markRejected(choice);
+                        while (true) {
+                            List<MinistryRequest> govApproved =
+                                    reqService
+                                    .getByStatusAndType(RequestStatus
+                                    .GOVERNMENT_APPROVED, null);
+                            if (govApproved.isEmpty()) {
+                                System.out.println("Δεν υπάρχουν άλλες "
+                                        + "τροποποίησεις για αξιολόγηση.");
+                                break;
+                            }
+                            MinistryRequestPrinter.printRequests(govApproved);
+                            int id = RequestsController.chooseEdit(input,
+                                    govApproved);
+                            if (id == 0) {
+                                break;
+                            }
+                            int complOrRej = RequestsController
+                                    .completeOrRejectPrimMinist(input);
+                            if (complOrRej == 1) {
+                                reqService.approveByParliament(id);
+                            } else if (complOrRej == REJECTED) {
+                                reqService.markRejected(id);
+                            }
                         }
                     }
                     default -> {
@@ -346,8 +356,7 @@ public final class ShowMenuOptions {
                             break;
                         }
                         int complOrRej = RequestsController
-                                .completeOrReject(input,
-                            code);
+                                .completeOrReject(input);
                         if (complOrRej == 1) {
                             reqService.markCompleted(code);
                         } else if (complOrRej == REJECTED) {
