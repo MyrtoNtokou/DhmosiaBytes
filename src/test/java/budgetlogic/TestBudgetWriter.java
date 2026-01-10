@@ -12,7 +12,7 @@ import java.nio.file.Path;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class BudgetWriterTest {
+public class TestBudgetWriter {
 
     @Test
     void testWriteGeneral() throws IOException {

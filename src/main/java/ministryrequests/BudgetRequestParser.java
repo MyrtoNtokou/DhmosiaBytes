@@ -37,7 +37,7 @@ public class BudgetRequestParser {
         Map<String, BigDecimal> expensePercentages = new HashMap<>();
 
         boolean inExpenseSection = false;
-        String currentExpenseCode = null; // Κρατάμε τον κωδικό (π.χ. 2,1)
+        String currentExpenseCode = null;
 
         for (String line : lines) {
             line = line.trim();

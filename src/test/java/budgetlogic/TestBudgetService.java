@@ -8,7 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import budgetreader.*;
 
-class BudgetServiceTest {
+class TestBudgetService {
 
     private Budget budget;
     private Map<Integer, Map<String, BigDecimal>> mapping;

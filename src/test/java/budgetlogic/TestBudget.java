@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.math.BigDecimal;
 import budgetreader.*;
 
-class BudgetTest {
+class TestBudget {
 
     @Test
     void testAddRevenueAndTotalRevenues() {

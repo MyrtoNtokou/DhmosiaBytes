@@ -7,7 +7,7 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
-class AllocationMappingTest {
+class TestAllocationMapping {
 
     @Test
     void testBuildReturnsNonNullAndNotEmpty() {

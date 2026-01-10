@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import budgetreader.Eggrafi;
 import budgetreader.Ypourgeio;
 
-class BudgetAssemblerTest {
+class TestBudgetAssembler {
 
     @Test
     void testSeparateAndMapGeneralRecords() throws Exception {

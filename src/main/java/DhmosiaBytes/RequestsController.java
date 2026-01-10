@@ -4,10 +4,13 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-import ministryrequests.MinistryRequest;
-import static aggregatedata.ConsoleColors.RESET;
 import static aggregatedata.ConsoleColors.BOLD;
 import static aggregatedata.ConsoleColors.CYAN;
+import static aggregatedata.ConsoleColors.RESET;
+import ministryrequests.MinistryRequest;
+import ministryrequests.MinistryRequestPrinter;
+import ministryrequests.MinistryRequestService;
+import ministryrequests.RequestStatus;
 
 /**
  * Utility class that handles user interactions related to reviewing,
@@ -70,16 +73,15 @@ public final class RequestsController {
      * Asks user if the selected request is going to be completed or rejected.
      *
      * @param input the Scanner for user input
-     * @param code the code of the selected request
      * @return the user's choice
      */
-    public static int completeOrReject(final Scanner input, final int code) {
+    public static int completeOrReject(final Scanner input) {
         boolean valid = false;
         int choice = -1;
         do {
             System.out.println();
-            System.out.println("1. Το αίτημα αξιολογήθηκε θετικά");
-            System.out.println("2. Το αίτημα απορρίθφηκε");
+            System.out.println("1. Θετική Αξιολόγηση");
+            System.out.println("2. Απόρριψη");
             System.out.println("0. Εξοδος");
             System.out.print("Επιλογή: ");
             try {
@@ -120,11 +122,10 @@ public final class RequestsController {
             try {
                 choice = input.nextInt();
                 input.nextLine();
-                if (choice == 0) {
-                    break;
-                }
-                if (choice < MIN_CHOICE_PRIME_MINISTER
-                        || choice > MAX_CHOICE_PRIME_MINISTER) {
+                if (choice == 0 || (choice >= MIN_CHOICE_PRIME_MINISTER
+                                    && choice <= MAX_CHOICE_PRIME_MINISTER)) {
+                    return choice;
+                } else {
                     System.out.println("Μη έγκυρος κωδικός.");
                 }
             } catch (InputMismatchException e) {
@@ -132,7 +133,6 @@ public final class RequestsController {
                 input.nextLine();
             }
         }
-        return choice;
     }
 
     /**
@@ -179,11 +179,9 @@ public final class RequestsController {
      * Asks the Prime Minister to approve or reject a specific request.
      *
      * @param input the Scanner used for user input
-     * @param code the ID of the request being evaluated
      * @return 1 for approval, 2 for rejection, or 0 to exit
      */
-    public static int completeOrRejectPrimMinist(final Scanner input,
-            final int code) {
+    public static int completeOrRejectPrimMinist(final Scanner input) {
         boolean valid = false;
         int choice = -1;
         do {
@@ -247,6 +245,50 @@ public final class RequestsController {
                     System.out.println("Παρακαλώ εισάγετε αριθμό.");
                     input.nextLine();
                 }
+            }
+        }
+    }
+
+    /**
+     * Allows the user to evaluate all requests with a specific status, either
+     * from the Finance Ministry or for final approval by the Parliament.
+     *
+     * @param input Scanner used to read the user's input
+     * @param reqService The service that handles ministry requests
+     * @param statusToCheck The status of the requests that need evaluation
+     * @param approveByParliament If true, approval will be done by the
+     * Parliament; otherwise, it will be done by the government
+     */
+    public static void evaluateRequests(final Scanner input,
+                                     final MinistryRequestService reqService,
+                                     final RequestStatus statusToCheck,
+                                     final boolean approveByParliament) {
+        while (true) {
+            List<MinistryRequest> requests =
+                    reqService.getByStatusAndType(statusToCheck, null);
+
+            if (requests.isEmpty()) {
+                System.out.println("Δεν υπάρχουν άλλες τροποποιήσεις "
+                        + "για αξιολόγηση.");
+                break;
+            }
+
+            MinistryRequestPrinter.printRequests(requests);
+            int id = RequestsController.chooseEdit(input, requests);
+            if (id == 0) {
+                return;
+            }
+
+            int complOrRej = RequestsController
+                    .completeOrRejectPrimMinist(input);
+            if (complOrRej == 1) {
+                if (approveByParliament) {
+                    reqService.approveByParliament(id);
+                } else {
+                    reqService.approveByGovernment(id);
+                }
+            } else if (complOrRej == REJECT) {
+                reqService.markRejected(id);
             }
         }
     }

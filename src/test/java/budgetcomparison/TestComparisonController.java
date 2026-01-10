@@ -9,7 +9,7 @@ import java.nio.charset.StandardCharsets;
 
 import org.junit.jupiter.api.Test;
 
-public class ComparisonControllerTest {
+public class TestComparisonController {
 
     /** Tests that the program exits immediately when user selects option 0. */
     @Test

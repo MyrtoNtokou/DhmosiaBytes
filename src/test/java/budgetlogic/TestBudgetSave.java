@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
-class BudgetSaveTest {
+class TestBudgetSave {
 
     private BudgetSave budgetSave;
 

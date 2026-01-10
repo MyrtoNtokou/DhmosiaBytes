@@ -24,6 +24,6 @@ public final class BudgetRequestLoader {
                 return block.trim();
             }
         }
-        return null; // δεν βρέθηκε
+        return null;
     }
 }
