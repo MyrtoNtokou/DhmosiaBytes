@@ -1,18 +1,16 @@
 package budgetlogic;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 import budgetreader.Eggrafi;
 import budgetreader.Ypourgeio;
-
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 
 class BudgetDiffPrinterTest {
 
