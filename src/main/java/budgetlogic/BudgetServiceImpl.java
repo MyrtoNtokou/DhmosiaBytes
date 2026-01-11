@@ -120,21 +120,22 @@ private static final String TOTAL_EXPENDITURE_KEYWORD = "Σύνολο εξόδω
 
         final BigDecimal nv = normalize(newValue);
         final BigDecimal oldTotal =
-            normalize(m.getSynolo() == null ? BigDecimal.ZERO
-            : m.getSynolo());
+            normalize(m.getTotalBudget() == null ? BigDecimal.ZERO
+            : m.getTotalBudget());
 
         switch (column.toLowerCase(Locale.ROOT)) {
             case "τακτικός", "regularBudget" -> m.setRegularBudget(nv);
-            case "πδε", "προϋπολογισμός δημοσίων επενδύσεων", "ependyseis" ->
-                m.setEpendyseis(nv);
+            case "πδε", "προϋπολογισμός δημοσίων επενδύσεων",
+            "publicInvestments" ->
+                m.setPublicInvestments(nv);
             default -> throw new IllegalArgumentException(
                 "Άγνωστη κατηγορία Υπουργείου: " + column);
         }
 
         reconcileMinistryParts(m);
         propagateChangeToExpenses(ministrycode, oldTotal,
-                normalize(m.getSynolo() == null ? BigDecimal.ZERO
-                : m.getSynolo()));
+                normalize(m.getTotalBudget() == null ? BigDecimal.ZERO
+                : m.getTotalBudget()));
         recomputeMinistriesAggregates();
         recomputeGeneralAggregates();
     }
@@ -215,9 +216,9 @@ private static final String TOTAL_EXPENDITURE_KEYWORD = "Σύνολο εξόδω
         for (Ministry m : ministries.values()) {
             final String name = safe(m.getName());
             if (name.startsWith(MINISTRY_PREFIX)) {
-                sumMin = sumMin.add(nonNull(m.getSynolo()));
+                sumMin = sumMin.add(nonNull(m.getTotalBudget()));
                 sumMinTakt = sumMinTakt.add(nonNull(m.getRegularBudget()));
-                sumMinPde = sumMinPde.add(nonNull(m.getEpendyseis()));
+                sumMinPde = sumMinPde.add(nonNull(m.getPublicInvestments()));
             }
         }
 
@@ -236,8 +237,8 @@ private static final String TOTAL_EXPENDITURE_KEYWORD = "Σύνολο εξόδω
 
         if (ministriesTotalRow != null) {
             ministriesTotalRow.setRegularBudget(normalize(sumMinTakt));
-            ministriesTotalRow.setEpendyseis(normalize(sumMinPde));
-            ministriesTotalRow.setSynolo(normalize(sumMin));
+            ministriesTotalRow.setPublicInvestments(normalize(sumMinPde));
+            ministriesTotalRow.setTotalBudget(normalize(sumMin));
         }
 
         BigDecimal sumDec = BigDecimal.ZERO;
@@ -247,9 +248,9 @@ private static final String TOTAL_EXPENDITURE_KEYWORD = "Σύνολο εξόδω
         for (Ministry m : ministries.values()) {
             final String name = safe(m.getName());
             if (name.startsWith(DECENTRALIZED_PREFIX)) {
-                sumDec = sumDec.add(nonNull(m.getSynolo()));
+                sumDec = sumDec.add(nonNull(m.getTotalBudget()));
                 sumDecTakt = sumDecTakt.add(nonNull(m.getRegularBudget()));
-                sumDecPde = sumDecPde.add(nonNull(m.getEpendyseis()));
+                sumDecPde = sumDecPde.add(nonNull(m.getPublicInvestments()));
             }
         }
 
@@ -268,8 +269,8 @@ private static final String TOTAL_EXPENDITURE_KEYWORD = "Σύνολο εξόδω
 
         if (decentralizedTotalRow != null) {
             decentralizedTotalRow.setRegularBudget(normalize(sumDecTakt));
-            decentralizedTotalRow.setEpendyseis(normalize(sumDecPde));
-            decentralizedTotalRow.setSynolo(normalize(sumDec));
+            decentralizedTotalRow.setPublicInvestments(normalize(sumDecPde));
+            decentralizedTotalRow.setTotalBudget(normalize(sumDec));
         }
 
         final Ministry m1 = ministries.get(1);
@@ -277,44 +278,46 @@ private static final String TOTAL_EXPENDITURE_KEYWORD = "Σύνολο εξόδω
         final Ministry m3 = ministries.get(3);
 
         BigDecimal g1 = m1 == null ? BigDecimal.ZERO
-        : nonNull(m1.getSynolo());
+        : nonNull(m1.getTotalBudget());
         BigDecimal gt1 = m1 == null ? BigDecimal.ZERO
         : nonNull(m1.getRegularBudget());
         BigDecimal gp1 = m1 == null ? BigDecimal.ZERO
-        : nonNull(m1.getEpendyseis());
+        : nonNull(m1.getPublicInvestments());
 
         BigDecimal g2 = m2 == null ? BigDecimal.ZERO
-        : nonNull(m2.getSynolo());
+        : nonNull(m2.getTotalBudget());
         BigDecimal gt2 = m2 == null ? BigDecimal.ZERO
         : nonNull(m2.getRegularBudget());
         BigDecimal gp2 = m2 == null ? BigDecimal.ZERO
-        : nonNull(m2.getEpendyseis());
+        : nonNull(m2.getPublicInvestments());
 
         BigDecimal g3 = m3 == null ? BigDecimal.ZERO
-        : nonNull(m3.getSynolo());
+        : nonNull(m3.getTotalBudget());
         BigDecimal gt3 = m3 == null ? BigDecimal.ZERO
         : nonNull(m3.getRegularBudget());
         BigDecimal gp3 = m3 == null ? BigDecimal.ZERO
-        : nonNull(m3.getEpendyseis());
+        : nonNull(m3.getPublicInvestments());
 
         BigDecimal ministriesTotal =
             nonNull(ministriesTotalRow == null ? BigDecimal.ZERO
-                : ministriesTotalRow.getSynolo());
+                : ministriesTotalRow.getTotalBudget());
         BigDecimal ministriesTakt =
             nonNull(ministriesTotalRow == null ? BigDecimal.ZERO
                 : ministriesTotalRow.getRegularBudget());
         BigDecimal ministriesPde =
             nonNull(ministriesTotalRow == null ? BigDecimal.ZERO
-                : ministriesTotalRow.getEpendyseis());
+                : ministriesTotalRow.getPublicInvestments());
 
         BigDecimal kod25 = BigDecimal.ZERO;
         BigDecimal kod25t = BigDecimal.ZERO;
         BigDecimal kod25p = BigDecimal.ZERO;
 
         if (ministries.containsKey(DEC_TOTAL_CODE)) {
-            kod25 = nonNull(ministries.get(DEC_TOTAL_CODE).getSynolo());
-            kod25t = nonNull(ministries.get(DEC_TOTAL_CODE).getRegularBudget());
-            kod25p = nonNull(ministries.get(DEC_TOTAL_CODE).getEpendyseis());
+            kod25 = nonNull(ministries.get(DEC_TOTAL_CODE).getTotalBudget());
+            kod25t = nonNull(ministries.get(DEC_TOTAL_CODE)
+                .getRegularBudget());
+            kod25p = nonNull(ministries.get(DEC_TOTAL_CODE)
+                .getPublicInvestments());
         }
 
         final BigDecimal overall = normalize(
@@ -330,9 +333,9 @@ private static final String TOTAL_EXPENDITURE_KEYWORD = "Σύνολο εξόδω
             if (safe(m.getName()).toUpperCase(Locale.ROOT)
                     .contains(TOTAL_EXPENDITURE_KEYWORD
                 .toUpperCase(Locale.ROOT))) {
-                m.setSynolo(overall);
+                m.setTotalBudget(overall);
                 m.setRegularBudget(overallT);
-                m.setEpendyseis(overallP);
+                m.setPublicInvestments(overallP);
                 updated = true;
                 break;
             }
@@ -340,9 +343,9 @@ private static final String TOTAL_EXPENDITURE_KEYWORD = "Σύνολο εξόδω
 
         if (!updated && ministries.containsKey(SYN_TOTAL_CODE)) {
             final Ministry r = ministries.get(SYN_TOTAL_CODE);
-            r.setSynolo(overall);
+            r.setTotalBudget(overall);
             r.setRegularBudget(overallT);
-            r.setEpendyseis(overallP);
+            r.setPublicInvestments(overallP);
         }
     }
 
@@ -420,31 +423,32 @@ private static final String TOTAL_EXPENDITURE_KEYWORD = "Σύνολο εξόδω
     }
 
     /**
-     * Ensures {@code synolo = regularBudget + pde}.
+     * Ensures {@code totalBudget = regularBudget + pde}.
      *
      * @param m ministry to reconcile
      */
     private void reconcileMinistryParts(final Ministry m) {
         final BigDecimal takt = nonNull(m.getRegularBudget());
-        final BigDecimal pde = nonNull(m.getEpendyseis());
+        final BigDecimal pde = nonNull(m.getPublicInvestments());
         final BigDecimal sum = takt.add(pde);
 
-        if (m.getSynolo() == null || m.getSynolo().compareTo(sum) != 0) {
-            m.setSynolo(normalize(sum));
+        if (m.getTotalBudget() == null
+            || m.getTotalBudget().compareTo(sum) != 0) {
+            m.setTotalBudget(normalize(sum));
         }
     }
 
     /**
      * Validates that for every ministry:
-     * {@code synolo == regularBudget + pde}.
+     * {@code totalBudget == regularBudget + pde}.
      *
      * @return true if consistent
      */
     public boolean validateMinistries() {
         for (Ministry m : budget.getMinistries().values()) {
             final BigDecimal takt = nonNull(m.getRegularBudget());
-            final BigDecimal pde = nonNull(m.getEpendyseis());
-            final BigDecimal syn = nonNull(m.getSynolo());
+            final BigDecimal pde = nonNull(m.getPublicInvestments());
+            final BigDecimal syn = nonNull(m.getTotalBudget());
 
             if (takt.add(pde)
                     .setScale(2, RoundingMode.HALF_EVEN)

@@ -104,7 +104,7 @@ class TestBudgetDiffPrinter {
         assertTrue(captured.contains("Ministry A"));
         assertTrue(captured.contains("1000 →")); // old regularBudget
         assertTrue(captured.contains("1100"));    // new regularBudget
-        assertTrue(captured.contains("1300"));    // new Synolo
+        assertTrue(captured.contains("1300"));    // new TotalBudget
     }
 
     @Test
@@ -147,7 +147,7 @@ class TestBudgetDiffPrinter {
         String output = outContent.toString();
         assertTrue(output.contains("Ministry A"), "Output should contain Ministry A");
         assertTrue(output.contains("1000"), "Output should contain regularBudget value");
-        assertTrue(output.contains("200"), "Output should contain Ependyseis value");
-        assertTrue(output.contains("1200"), "Output should contain Synolo value");
+        assertTrue(output.contains("200"), "Output should contain PublicInvestments value");
+        assertTrue(output.contains("1200"), "Output should contain TotalBudget value");
     }
 }

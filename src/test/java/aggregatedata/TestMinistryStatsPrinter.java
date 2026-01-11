@@ -22,11 +22,11 @@ class TestMinistryStatsPrinter {
         List<Ministry> maxRegularBudget = new ArrayList<>();
         maxRegularBudget.add(new Ministry(5, "Ministry A", new BigDecimal("100"), new BigDecimal("50"), new BigDecimal("150")));
 
-        List<Ministry> maxEpendyseis = new ArrayList<>();
-        maxEpendyseis.add(new Ministry(10, "Ministry B", new BigDecimal("200"), new BigDecimal("100"), new BigDecimal("300")));
+        List<Ministry> maxPublicInvestments = new ArrayList<>();
+        maxPublicInvestments.add(new Ministry(10, "Ministry B", new BigDecimal("200"), new BigDecimal("100"), new BigDecimal("300")));
 
-        List<Ministry> maxSynolo = new ArrayList<>();
-        maxSynolo.add(new Ministry(15, "Ministry C", new BigDecimal("50"), new BigDecimal("50"), new BigDecimal("100")));
+        List<Ministry> maxTotalBudget = new ArrayList<>();
+        maxTotalBudget.add(new Ministry(15, "Ministry C", new BigDecimal("50"), new BigDecimal("50"), new BigDecimal("100")));
 
         List<BigDecimal> taktPercent = new ArrayList<>();
         taktPercent.add(new BigDecimal("100.00"));
@@ -34,16 +34,16 @@ class TestMinistryStatsPrinter {
         List<BigDecimal> ependPercent = new ArrayList<>();
         ependPercent.add(new BigDecimal("100.00"));
 
-        List<BigDecimal> synoloPercent = new ArrayList<>();
-        synoloPercent.add(new BigDecimal("100.00"));
+        List<BigDecimal> totalBudgetPercent = new ArrayList<>();
+        totalBudgetPercent.add(new BigDecimal("100.00"));
 
         stats = new MinistryStats(
                 maxRegularBudget,
-                maxEpendyseis,
-                maxSynolo,
+                maxPublicInvestments,
+                maxTotalBudget,
                 taktPercent,
                 ependPercent,
-                synoloPercent
+                totalBudgetPercent
         );
     }
 
@@ -64,29 +64,29 @@ class TestMinistryStatsPrinter {
     }
 
     @Test
-    void testPrintEpendyseis() {
+    void testPrintPublicInvestments() {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
-        MinistryStatsPrinter.printEpendyseis(stats);
+        MinistryStatsPrinter.printPublicInvestments(stats);
 
         String output = outContent.toString();
         assertTrue(output.contains("Ministry B"), "Output should contain Ministry B");
-        assertTrue(output.contains("100"), "Output should contain the Ependyseis value");
+        assertTrue(output.contains("100"), "Output should contain the PublicInvestments value");
 
         System.setOut(System.out);
     }
 
     @Test
-    void testPrintSynolo() {
+    void testPrintTotalBudget() {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
-        MinistryStatsPrinter.printSynolo(stats);
+        MinistryStatsPrinter.printTotalBudget(stats);
 
         String output = outContent.toString();
         assertTrue(output.contains("Ministry C"), "Output should contain Ministry C");
-        assertTrue(output.contains("100"), "Output should contain the Synolo value");
+        assertTrue(output.contains("100"), "Output should contain the TotalBudget value");
 
         System.setOut(System.out);
     }

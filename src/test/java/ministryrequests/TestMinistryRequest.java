@@ -56,7 +56,7 @@ class TestMinistryRequest {
                 2,
                 200,
                 "Υπουργείο Υγείας",
-                RequestType.EPENDYSEIS,
+                RequestType.PUBLIC_INVESTMENTS,
                 RequestStatus.PENDING,
                 LocalDateTime.now(),
                 "Budget increase request"

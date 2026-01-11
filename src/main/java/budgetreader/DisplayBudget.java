@@ -44,7 +44,7 @@ public final class DisplayBudget {
         for (Ministry y : ypourg) {
             System.out.printf("%-3d | %-65s | %-25.2f | %-35.2f | %-25.2f%n",
                 y.getcode(), y.getName(), y.getRegularBudget(),
-                y.getEpendyseis(), y.getSynolo());
+                y.getPublicInvestments(), y.getTotalBudget());
         }
     }
 }

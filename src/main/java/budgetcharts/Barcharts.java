@@ -132,7 +132,7 @@ public final class Barcharts {
         List<BigDecimal> values = new ArrayList<>();
         for (Ministry m : ministries) {
             names.add(m.getName());
-            values.add(m.getSynolo().divide(BILLION));
+            values.add(m.getTotalBudget().divide(BILLION));
         }
 
         // Build the chart
@@ -275,7 +275,7 @@ public final class Barcharts {
 
             for (Ministry m : ministries) {
                 if (m.getcode() == options[x - 1].getMinistryCode()) {
-                    totalBudget = m.getSynolo();
+                    totalBudget = m.getTotalBudget();
                     break;
                 }
             }

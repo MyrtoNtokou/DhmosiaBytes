@@ -71,9 +71,9 @@ public final class BudgetWriter {
                         + ";"
                         + m.getRegularBudget().toPlainString()
                         + ";"
-                        + m.getEpendyseis().toPlainString()
+                        + m.getPublicInvestments().toPlainString()
                         + ";"
-                        + m.getSynolo().toPlainString()
+                        + m.getTotalBudget().toPlainString()
                         + System.lineSeparator()
                 );
             }

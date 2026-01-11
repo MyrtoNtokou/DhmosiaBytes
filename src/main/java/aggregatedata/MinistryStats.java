@@ -8,22 +8,22 @@ import java.util.List;
 
 /**
  * Keep max and min for ministries.
- * Based on RegularBudget, Ependyseis, Synolo.
+ * Based on RegularBudget, PublicInvestments, TotalBudget.
  */
 public final class MinistryStats {
 
     /** Max RegularBudget list initialisation. */
     private final List<Ministry> maxRegularBudget;
-    /** Max Ependyseis list initialisation. */
-    private final List<Ministry> maxEpendyseis;
-    /** Max Synolo list initialisation. */
-    private final List<Ministry> maxSynolo;
+    /** Max PublicInvestments list initialisation. */
+    private final List<Ministry> maxPublicInvestments;
+    /** Max TotalBudget list initialisation. */
+    private final List<Ministry> maxTotalBudget;
     /** Max RegularBudget percentages list initialisation. */
     private final List<BigDecimal> maxRegularBudgetPercentages;
-    /** Max Ependyseis list initialisation. */
-    private final List<BigDecimal> maxEpendyseisPercentages;
-    /** Max Synolo list initialisation. */
-    private final List<BigDecimal> maxSynoloPercentages;
+    /** Max PublicInvestments list initialisation. */
+    private final List<BigDecimal> maxPublicInvestmentsPercentages;
+    /** Max TotalBudget list initialisation. */
+    private final List<BigDecimal> maxTotalBudgetPercentages;
 
 
     /** Constructor.
@@ -31,23 +31,24 @@ public final class MinistryStats {
      * @param maxEpend
      * @param maxSyn
      * @param maxRegularBudgetPer
-     * @param maxEpendyseisPer
-     * @param maxSynoloPer
+     * @param maxPublicInvestmentsPer
+     * @param maxTotalBudgetPer
      * */
     public MinistryStats(
             final List<Ministry> maxTakt,
             final List<Ministry> maxEpend,
             final List<Ministry> maxSyn,
             final List<BigDecimal> maxRegularBudgetPer,
-            final List<BigDecimal> maxEpendyseisPer,
-            final List<BigDecimal> maxSynoloPer) {
+            final List<BigDecimal> maxPublicInvestmentsPer,
+            final List<BigDecimal> maxTotalBudgetPer) {
 
         maxRegularBudget = new ArrayList<>(maxTakt);
-        maxEpendyseis = new ArrayList<>(maxEpend);
-        maxSynolo = new ArrayList<>(maxSyn);
+        maxPublicInvestments = new ArrayList<>(maxEpend);
+        maxTotalBudget = new ArrayList<>(maxSyn);
         maxRegularBudgetPercentages = new ArrayList<>(maxRegularBudgetPer);
-        maxEpendyseisPercentages = new ArrayList<>(maxEpendyseisPer);
-        maxSynoloPercentages = new ArrayList<>(maxSynoloPer);
+        maxPublicInvestmentsPercentages = new ArrayList<>(
+            maxPublicInvestmentsPer);
+        maxTotalBudgetPercentages = new ArrayList<>(maxTotalBudgetPer);
     }
 
     /**
@@ -59,19 +60,19 @@ public final class MinistryStats {
     }
 
     /**
-     * Getter for max Ependyseis.
-     * @return max ependyseis
+     * Getter for max PublicInvestments.
+     * @return max publicInvestments
      * */
-    public List<Ministry> getMaxEpendyseis() {
-        return new ArrayList<>(maxEpendyseis);
+    public List<Ministry> getMaxPublicInvestments() {
+        return new ArrayList<>(maxPublicInvestments);
     }
 
     /**
-     * Getter for max Synolo.
-     * @return max synolo
+     * Getter for max TotalBudget.
+     * @return max totalBudget
      * */
-    public List<Ministry> getMaxSynolo() {
-        return new ArrayList<>(maxSynolo);
+    public List<Ministry> getMaxTotalBudget() {
+        return new ArrayList<>(maxTotalBudget);
     }
 
     /**
@@ -83,18 +84,18 @@ public final class MinistryStats {
     }
 
     /**
-     * Getter for max ependyseis percentages.
-     * @return max ependyseis percentages
+     * Getter for max publicInvestments percentages.
+     * @return max publicInvestments percentages
      * */
-    public List<BigDecimal> getMaxEpendyseisPercentages() {
-        return new ArrayList<>(maxEpendyseisPercentages);
+    public List<BigDecimal> getMaxPublicInvestmentsPercentages() {
+        return new ArrayList<>(maxPublicInvestmentsPercentages);
     }
 
      /**
-     * Getter for max synolo percentages.
-     * @return max synolo percentages
+     * Getter for max totalBudget percentages.
+     * @return max totalBudget percentages
      * */
-    public List<BigDecimal> getMaxSynoloPercentages() {
-        return new ArrayList<>(maxSynoloPercentages);
+    public List<BigDecimal> getMaxTotalBudgetPercentages() {
+        return new ArrayList<>(maxTotalBudgetPercentages);
     }
 }

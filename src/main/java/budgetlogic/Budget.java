@@ -77,8 +77,8 @@ public final class Budget {
                     m.getcode(),
                     m.getName(),
                     m.getRegularBudget(),
-                    m.getEpendyseis(),
-                    m.getSynolo());
+                    m.getPublicInvestments(),
+                    m.getTotalBudget());
 
             for (Map.Entry<String, BigDecimal> e
                 : m.getAllocation().entrySet()) {

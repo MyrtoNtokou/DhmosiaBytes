@@ -36,23 +36,23 @@ class TestMinistryAnalyzer {
 
         // Each list should have at most 3 elements
         assertTrue(stats.getMaxRegularBudget().size() <= 3);
-        assertTrue(stats.getMaxEpendyseis().size() <= 3);
-        assertTrue(stats.getMaxSynolo().size() <= 3);
+        assertTrue(stats.getMaxPublicInvestments().size() <= 3);
+        assertTrue(stats.getMaxTotalBudget().size() <= 3);
 
         // Max RegularBudget should be Ministry B (200), C (150), A (100)
         assertEquals("Ministry B", stats.getMaxRegularBudget().get(0).getName());
         assertEquals("Ministry C", stats.getMaxRegularBudget().get(1).getName());
         assertEquals("Ministry A", stats.getMaxRegularBudget().get(2).getName());
 
-        // Max Ependyseis should be Ministry C (150), B (100), A (50)
-        assertEquals("Ministry C", stats.getMaxEpendyseis().get(0).getName());
-        assertEquals("Ministry B", stats.getMaxEpendyseis().get(1).getName());
-        assertEquals("Ministry A", stats.getMaxEpendyseis().get(2).getName());
+        // Max PublicInvestments should be Ministry C (150), B (100), A (50)
+        assertEquals("Ministry C", stats.getMaxPublicInvestments().get(0).getName());
+        assertEquals("Ministry B", stats.getMaxPublicInvestments().get(1).getName());
+        assertEquals("Ministry A", stats.getMaxPublicInvestments().get(2).getName());
 
-        // Max Synolo should be Ministry B (300), C (300), A (150)
-        assertEquals("Ministry B", stats.getMaxSynolo().get(0).getName());
-        assertEquals("Ministry C", stats.getMaxSynolo().get(1).getName());
-        assertEquals("Ministry A", stats.getMaxSynolo().get(2).getName());
+        // Max TotalBudget should be Ministry B (300), C (300), A (150)
+        assertEquals("Ministry B", stats.getMaxTotalBudget().get(0).getName());
+        assertEquals("Ministry C", stats.getMaxTotalBudget().get(1).getName());
+        assertEquals("Ministry A", stats.getMaxTotalBudget().get(2).getName());
 
         // Check percentages (sum of regularBudget = 100+200+150+50=500)
         List<BigDecimal> RegularBudgetPercent = stats.getMaxRegularBudgetPercentages();
@@ -60,11 +60,11 @@ class TestMinistryAnalyzer {
         assertEquals(new BigDecimal("30.00"), RegularBudgetPercent.get(1).setScale(2));
         assertEquals(new BigDecimal("20.00"), RegularBudgetPercent.get(2).setScale(2));
 
-        // Ependyseis sum = 50+100+150+50=350
-        List<BigDecimal> ependyseisPercent = stats.getMaxEpendyseisPercentages();
-        assertEquals(new BigDecimal("42.86"), ependyseisPercent.get(0).setScale(2, BigDecimal.ROUND_HALF_UP));
-        assertEquals(new BigDecimal("28.57"), ependyseisPercent.get(1).setScale(2, BigDecimal.ROUND_HALF_UP));
-        assertEquals(new BigDecimal("14.29"), ependyseisPercent.get(2).setScale(2, BigDecimal.ROUND_HALF_UP));
+        // PublicInvestments sum = 50+100+150+50=350
+        List<BigDecimal> publicInvestmentsPercent = stats.getMaxPublicInvestmentsPercentages();
+        assertEquals(new BigDecimal("42.86"), publicInvestmentsPercent.get(0).setScale(2, BigDecimal.ROUND_HALF_UP));
+        assertEquals(new BigDecimal("28.57"), publicInvestmentsPercent.get(1).setScale(2, BigDecimal.ROUND_HALF_UP));
+        assertEquals(new BigDecimal("14.29"), publicInvestmentsPercent.get(2).setScale(2, BigDecimal.ROUND_HALF_UP));
     }
 
     @Test
@@ -74,20 +74,20 @@ class TestMinistryAnalyzer {
         // Ministries X and Y should not appear in any max lists
         stats.getMaxRegularBudget().forEach(y -> assertFalse(y.getName().equals("Ministry X")));
         stats.getMaxRegularBudget().forEach(y -> assertFalse(y.getName().equals("Ministry Y")));
-        stats.getMaxEpendyseis().forEach(y -> assertFalse(y.getName().equals("Ministry X")));
-        stats.getMaxEpendyseis().forEach(y -> assertFalse(y.getName().equals("Ministry Y")));
-        stats.getMaxSynolo().forEach(y -> assertFalse(y.getName().equals("Ministry X")));
-        stats.getMaxSynolo().forEach(y -> assertFalse(y.getName().equals("Ministry Y")));
+        stats.getMaxPublicInvestments().forEach(y -> assertFalse(y.getName().equals("Ministry X")));
+        stats.getMaxPublicInvestments().forEach(y -> assertFalse(y.getName().equals("Ministry Y")));
+        stats.getMaxTotalBudget().forEach(y -> assertFalse(y.getName().equals("Ministry X")));
+        stats.getMaxTotalBudget().forEach(y -> assertFalse(y.getName().equals("Ministry Y")));
     }
 
     @Test
     void testEmptyList() {
         MinistryStats stats = MinistryAnalyzer.analyze(new ArrayList<>());
         assertTrue(stats.getMaxRegularBudget().isEmpty());
-        assertTrue(stats.getMaxEpendyseis().isEmpty());
-        assertTrue(stats.getMaxSynolo().isEmpty());
+        assertTrue(stats.getMaxPublicInvestments().isEmpty());
+        assertTrue(stats.getMaxTotalBudget().isEmpty());
         assertTrue(stats.getMaxRegularBudgetPercentages().isEmpty());
-        assertTrue(stats.getMaxEpendyseisPercentages().isEmpty());
-        assertTrue(stats.getMaxSynoloPercentages().isEmpty());
+        assertTrue(stats.getMaxPublicInvestmentsPercentages().isEmpty());
+        assertTrue(stats.getMaxTotalBudgetPercentages().isEmpty());
     }
 }

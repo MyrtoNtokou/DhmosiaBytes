@@ -17,7 +17,7 @@
  *     Support for different request types, including:
  *     <ul>
  *       <li>Regular budget (RegularBudget)</li>
- *       <li>Public investment budget (Ependyseis)</li>
+ *       <li>Public investment budget (PublicInvestments)</li>
  *       <li>Combined budget changes</li>
  *     </ul>
  *   </li>

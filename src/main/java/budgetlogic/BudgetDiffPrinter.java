@@ -184,8 +184,9 @@ public final class BudgetDiffPrinter {
 
             boolean changed =
                 oldM.getRegularBudget().compareTo(newM.getRegularBudget()) != 0
-                || oldM.getEpendyseis().compareTo(newM.getEpendyseis()) != 0
-                || oldM.getSynolo().compareTo(newM.getSynolo()) != 0;
+                || oldM.getPublicInvestments().compareTo(
+                    newM.getPublicInvestments()) != 0
+                || oldM.getTotalBudget().compareTo(newM.getTotalBudget()) != 0;
 
             if (changed) {
                 System.out.println("\n" + BOLD + k + " | "
@@ -200,19 +201,22 @@ public final class BudgetDiffPrinter {
                                 newM.getRegularBudget()));
                 }
 
-                if (oldM.getEpendyseis()
-                        .compareTo(newM.getEpendyseis()) != 0) {
-                    System.out.println("ΠΔΕ: " + oldM.getEpendyseis()
-                                + " → " + BLUE + newM.getEpendyseis() + RESET
-                                + formatDiff(oldM.getEpendyseis(),
-                                            newM.getEpendyseis()));
+                if (oldM.getPublicInvestments()
+                        .compareTo(newM.getPublicInvestments()) != 0) {
+                    System.out.println("ΠΔΕ: " + oldM.getPublicInvestments()
+                                + " → " + BLUE + newM.getPublicInvestments()
+                                + RESET
+                                + formatDiff(oldM.getPublicInvestments(),
+                                            newM.getPublicInvestments()));
                 }
 
-                if (oldM.getSynolo().compareTo(newM.getSynolo()) != 0) {
-                    System.out.println("Σύνολο: " + oldM.getSynolo()
-                                    + " → " + BLUE + newM.getSynolo() + RESET
-                                    + formatDiff(oldM.getSynolo(),
-                                                newM.getSynolo()));
+                if (oldM.getTotalBudget().compareTo(
+                    newM.getTotalBudget()) != 0) {
+                    System.out.println("Σύνολο: " + oldM.getTotalBudget()
+                                    + " → " + BLUE + newM.getTotalBudget()
+                                    + RESET
+                                    + formatDiff(oldM.getTotalBudget(),
+                                                newM.getTotalBudget()));
                 }
             }
         }
@@ -348,8 +352,8 @@ public final class BudgetDiffPrinter {
                     code,
                     y.getName(),
                     y.getRegularBudget().toString(),
-                    y.getEpendyseis().toString(),
-                    y.getSynolo().toString());
+                    y.getPublicInvestments().toString(),
+                    y.getTotalBudget().toString());
         }
     }
 
@@ -444,20 +448,21 @@ public final class BudgetDiffPrinter {
             String tBefore = oldM.getRegularBudget().toString();
             String tAfter = newM.getRegularBudget().toString();
 
-            String pBefore = oldM.getEpendyseis().toString();
-            String pAfter = newM.getEpendyseis().toString();
+            String pBefore = oldM.getPublicInvestments().toString();
+            String pAfter = newM.getPublicInvestments().toString();
 
-            String sBefore = oldM.getSynolo().toString();
-            String sAfter = newM.getSynolo().toString();
+            String sBefore = oldM.getTotalBudget().toString();
+            String sAfter = newM.getTotalBudget().toString();
 
             if (oldM.getRegularBudget().compareTo(
                 newM.getRegularBudget()) != 0) {
                 tAfter = BOLD + BLUE + tAfter + RESET;
             }
-            if (oldM.getEpendyseis().compareTo(newM.getEpendyseis()) != 0) {
+            if (oldM.getPublicInvestments().compareTo(
+                newM.getPublicInvestments()) != 0) {
                 pAfter = BOLD + BLUE + pAfter + RESET;
             }
-            if (oldM.getSynolo().compareTo(newM.getSynolo()) != 0) {
+            if (oldM.getTotalBudget().compareTo(newM.getTotalBudget()) != 0) {
                 sAfter = BOLD + BLUE + sAfter + RESET;
             }
 
@@ -465,7 +470,8 @@ public final class BudgetDiffPrinter {
                 "%-5s | %-65s | %-17s  %-17s  %-20s | %-17s  %-17s  %-17s%n",
                 code,
                 oldM.getName(),
-                oldM.getRegularBudget(), oldM.getEpendyseis(), oldM.getSynolo(),
+                oldM.getRegularBudget(), oldM.getPublicInvestments(),
+                oldM.getTotalBudget(),
                 padRight(tAfter, DISPLAY_AMMOUNT_WIDTH),
                 padRight(pAfter, DISPLAY_AMMOUNT_WIDTH),
                 padRight(sAfter, DISPLAY_AMMOUNT_WIDTH));

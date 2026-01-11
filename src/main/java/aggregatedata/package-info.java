@@ -14,7 +14,7 @@
  *     Analysis of budget allocations per ministry, including:
  *     <ul>
  *       <li>Regular budget (RegularBudget)</li>
- *       <li>Public investments (Ependyseis)</li>
+ *       <li>Public investments (PublicInvestments)</li>
  *       <li>Total expenditures</li>
  *     </ul>
  *   </li>

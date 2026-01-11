@@ -76,10 +76,10 @@ class TestBudgetAssembler {
         // Check the ministry objects
         Ministry yp1 = map.get(1);
         assertEquals("Υπουργείο Α", yp1.getName());
-        assertEquals(BigDecimal.valueOf(1200), yp1.getSynolo());
+        assertEquals(BigDecimal.valueOf(1200), yp1.getTotalBudget());
 
         Ministry yp2 = map.get(2);
         assertEquals("Υπουργείο Β", yp2.getName());
-        assertEquals(BigDecimal.valueOf(1800), yp2.getSynolo());
+        assertEquals(BigDecimal.valueOf(1800), yp2.getTotalBudget());
     }
 }

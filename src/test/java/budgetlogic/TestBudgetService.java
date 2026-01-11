@@ -68,14 +68,14 @@ class TestBudgetService {
         Ministry min = budget.getMinistries().get(10);
 
         assertEquals(bd(80), min.getRegularBudget());
-        assertEquals(bd(40), min.getEpendyseis());
-        assertEquals(bd(120), min.getSynolo());
+        assertEquals(bd(40), min.getPublicInvestments());
+        assertEquals(bd(120), min.getTotalBudget());
 
         // ministries total row should also update:
         Ministry total = budget.getMinistries().get(4);
         assertEquals(bd(80), total.getRegularBudget());
-        assertEquals(bd(40), total.getEpendyseis());
-        assertEquals(bd(120), total.getSynolo());
+        assertEquals(bd(40), total.getPublicInvestments());
+        assertEquals(bd(120), total.getTotalBudget());
     }
 
     @Test
@@ -102,7 +102,7 @@ class TestBudgetService {
 
     @Test
     void testValidateMinistriesFailsWhenInconsistent() {
-        budget.getMinistries().get(10).setSynolo(bd(999)); // break consistency
+        budget.getMinistries().get(10).setTotalBudget(bd(999)); // break consistency
         BudgetService service = new BudgetServiceImpl(budget, mapping);
         assertFalse(service.validateMinistries());
     }

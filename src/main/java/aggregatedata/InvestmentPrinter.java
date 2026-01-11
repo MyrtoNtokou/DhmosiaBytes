@@ -43,8 +43,8 @@ public final class InvestmentPrinter {
             System.out.printf("%-5d | %-55s | %-15s | %-15s | %-15s%n",
                     y.getcode(),
                     y.getName(),
-                    y.getEpendyseis().toPlainString(),
-                    y.getSynolo().toPlainString(),
+                    y.getPublicInvestments().toPlainString(),
+                    y.getTotalBudget().toPlainString(),
                     BLUE + ir.getPercentage().toPlainString() + "%" + RESET);
         }
     }

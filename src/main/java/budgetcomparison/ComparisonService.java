@@ -88,8 +88,8 @@ public class ComparisonService {
 
         // Calculate percentage change
         ComparisonResult result = calculatePercentageChange(
-            y1.get().getSynolo(),
-            y2.get().getSynolo(),
+            y1.get().getTotalBudget(),
+            y2.get().getTotalBudget(),
             code,
             y1.get().getName(),
             year1,

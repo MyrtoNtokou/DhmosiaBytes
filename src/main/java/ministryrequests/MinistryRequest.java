@@ -13,7 +13,7 @@ public class MinistryRequest implements Request {
     private final int ministryCode;
     /** Ministry name. */
     private final String ministryName;
-    /** REGULARBUDGET / EPENDYSEIS / BOTH. */
+    /** REGULARBUDGET / PUBLIC_INVESTMENTS / BOTH. */
     private final RequestType type;
     /** PENDING / COMPLETED / REJECTED. */
     private RequestStatus status;

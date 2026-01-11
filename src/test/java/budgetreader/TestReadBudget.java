@@ -114,7 +114,7 @@ public class TestReadBudget {
 
         Ministry y = result.get(0);
         assertNotNull(y.getName());
-        assertNotNull(y.getSynolo());
+        assertNotNull(y.getTotalBudget());
     }
     
     /**
@@ -130,7 +130,7 @@ public class TestReadBudget {
 
         assertNotNull(y);
         assertNotNull(y.getName());
-        assertNotNull(y.getSynolo());
+        assertNotNull(y.getTotalBudget());
     }
     /**
      * Tests that the ministry CSV file is loaded properly
@@ -177,7 +177,7 @@ public class TestReadBudget {
         Ministry y = result.get(0);
 
         assertNotNull(y.getName());
-        assertNotNull(y.getSynolo());
+        assertNotNull(y.getTotalBudget());
     }
 
     /**

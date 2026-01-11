@@ -20,10 +20,10 @@ public class Ministry {
     private BigDecimal regularBudget;
 
     /** Public investment budget amount. */
-    private BigDecimal ependyseis;
+    private BigDecimal publicInvestments;
 
     /** Total ministry budget amount. */
-    private BigDecimal synolo;
+    private BigDecimal totalBudget;
 
     /**
      * Constructs a new {@code Ministry} instance with the given attributes.
@@ -31,20 +31,20 @@ public class Ministry {
      * @param codeValue is the code of Ministry
      * @param nameValue is the name of the Ministry
      * @param regularBudgetValue is the amount of Ministry's General Budget
-     * @param ependyseisValue is the amount of Ministry's investments
-     * @param synoloValue is the total amount of Ministry's Budget
+     * @param publicInvestmentsValue is the amount of Ministry's investments
+     * @param totalBudgetValue is the total amount of Ministry's Budget
      */
     public Ministry(final int codeValue,
                     final String nameValue,
                     final BigDecimal regularBudgetValue,
-                    final BigDecimal ependyseisValue,
-                    final BigDecimal synoloValue) {
+                    final BigDecimal publicInvestmentsValue,
+                    final BigDecimal totalBudgetValue) {
 
         code = codeValue;
         name = nameValue;
         regularBudget = regularBudgetValue;
-        ependyseis = ependyseisValue;
-        synolo = synoloValue;
+        publicInvestments = publicInvestmentsValue;
+        totalBudget = totalBudgetValue;
         this.allocation = new LinkedHashMap<>();
     }
 
@@ -92,8 +92,8 @@ public class Ministry {
      *
      * @return investments budget
      */
-    public BigDecimal getEpendyseis() {
-        return ependyseis;
+    public BigDecimal getPublicInvestments() {
+        return publicInvestments;
     }
 
     /**
@@ -101,8 +101,8 @@ public class Ministry {
      *
      * @return total budget
      */
-    public BigDecimal getSynolo() {
-        return synolo;
+    public BigDecimal getTotalBudget() {
+        return totalBudget;
     }
 
     /** method that sets new value to code variable.
@@ -124,22 +124,22 @@ public class Ministry {
     */
     public void setRegularBudget(final BigDecimal regularBudgetNew) {
         regularBudget = regularBudgetNew;
-        recalcSynolo();
+        recalcTotalBudget();
     }
 
-    /** method that sets new value to ependyseis variable.
-     * @param ependyseisNew to set.
+    /** method that sets new value to publicInvestments variable.
+     * @param publicInvestmentsNew to set.
      */
-    public void setEpendyseis(final BigDecimal ependyseisNew) {
-        ependyseis = ependyseisNew;
-        recalcSynolo();
+    public void setPublicInvestments(final BigDecimal publicInvestmentsNew) {
+        publicInvestments = publicInvestmentsNew;
+        recalcTotalBudget();
     }
 
-    /** method that sets new value to synolo variable.
-     * @param synoloNew to set.
+    /** method that sets new value to totalBudget variable.
+     * @param totalBudgetNew to set.
      */
-    public void setSynolo(final BigDecimal synoloNew) {
-        synolo = synoloNew;
+    public void setTotalBudget(final BigDecimal totalBudgetNew) {
+        totalBudget = totalBudgetNew;
     }
 
     /**
@@ -151,8 +151,8 @@ public class Ministry {
     public String toString() {
         return code + " | " + name
                + " | " + regularBudget
-               + " | " + ependyseis
-               + " | " + synolo;
+               + " | " + publicInvestments
+               + " | " + totalBudget;
     }
 
     /**
@@ -168,14 +168,14 @@ public class Ministry {
     /**
      * Recalculates the total budget based on regularBudget and pde.
      */
-    private void recalcSynolo() {
+    private void recalcTotalBudget() {
         if (regularBudget == null) {
             regularBudget = BigDecimal.ZERO;
         }
-        if (ependyseis == null) {
-            ependyseis = BigDecimal.ZERO;
+        if (publicInvestments == null) {
+            publicInvestments = BigDecimal.ZERO;
         }
-        this.synolo = regularBudget.add(ependyseis);
+        this.totalBudget = regularBudget.add(publicInvestments);
     }
 
 }

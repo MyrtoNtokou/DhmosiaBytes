@@ -7,7 +7,7 @@ public enum RequestType {
     /** RegularBudget ministry budget. */
     REGULARBUDGET,
     /** Investment ministry budget. */
-    EPENDYSEIS,
+    PUBLIC_INVESTMENTS,
     /** Applies to both ministry budget types. */
     BOTH
 }

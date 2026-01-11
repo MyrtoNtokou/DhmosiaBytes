@@ -98,9 +98,9 @@ public final class AggregateMenu {
 
             MinistryStatsPrinter.printRegularBudget(stats);
 
-            MinistryStatsPrinter.printEpendyseis(stats);
+            MinistryStatsPrinter.printPublicInvestments(stats);
 
-            MinistryStatsPrinter.printSynolo(stats);
+            MinistryStatsPrinter.printTotalBudget(stats);
         } else if (choice == 2) {
             List<Ministry> ypourg =
             ReadBudget.readByMinistry("proypologismos2026anaypourgeio.csv");

@@ -132,7 +132,8 @@ public class BudgetEditor {
             try {
                 Ministry mBefore = initialBudget.getMinistries().get(code);
                 BigDecimal oldVal = column.equalsIgnoreCase("τακτικός")
-                    ? mBefore.getRegularBudget() : mBefore.getEpendyseis();
+                    ? mBefore.getRegularBudget()
+                    : mBefore.getPublicInvestments();
                 increase = new BigDecimal(input);
                 newAmount = oldVal.add(increase);
                 if (newAmount.compareTo(BigDecimal.ZERO) < 0) {
@@ -165,7 +166,7 @@ public class BudgetEditor {
                     RequestType.REGULARBUDGET);
         } else {
             requestId = reqService.submitRequest(ministry, rawDiff,
-            RequestType.EPENDYSEIS);
+            RequestType.PUBLIC_INVESTMENTS);
         }
 
         switch (currentRole) {

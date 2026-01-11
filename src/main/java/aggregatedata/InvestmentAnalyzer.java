@@ -40,13 +40,14 @@ public final class InvestmentAnalyzer {
                 continue;
             }
 
-            BigDecimal synolo = y.getSynolo();
-            BigDecimal ependyseis = y.getEpendyseis();
+            BigDecimal totalBudget = y.getTotalBudget();
+            BigDecimal publicInvestments = y.getPublicInvestments();
 
             // Calculate ratio=investment/total for each ministry
             BigDecimal ratio = BigDecimal.ZERO;
-            if (synolo.compareTo(BigDecimal.ZERO) > 0) {
-                ratio = ependyseis.divide(synolo, 2, RoundingMode.HALF_UP);
+            if (totalBudget.compareTo(BigDecimal.ZERO) > 0) {
+                ratio = publicInvestments.divide(
+                    totalBudget, 2, RoundingMode.HALF_UP);
             }
 
             // Calculate percentage

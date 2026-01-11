@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 /**
  * TOP_COUNT max min on ministries for each budget category.
- * Based on regularBudget, Ependyseis, Synolo.
+ * Based on regularBudget, PublicInvestments, TotalBudget.
 * */
 public final class MinistryAnalyzer {
 
@@ -58,25 +58,25 @@ public final class MinistryAnalyzer {
         BigDecimal totalRegularBudget = ministries.stream()
                                 .map(Ministry::getRegularBudget)
                                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-        // Calculate total ependyseis
-        BigDecimal totalEpendyseis = ministries.stream()
-                                .map(Ministry::getEpendyseis)
+        // Calculate total publicInvestments
+        BigDecimal totalPublicInvestments = ministries.stream()
+                                .map(Ministry::getPublicInvestments)
                                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-        // Calculate total synolo
-        BigDecimal totalSynolo = ministries.stream()
-                                .map(Ministry::getSynolo)
+        // Calculate total totalBudget
+        BigDecimal totalTotalBudget = ministries.stream()
+                                .map(Ministry::getTotalBudget)
                                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         // Comparators for each category
         // Compare BasicRecord types based on RegularBudget
         Comparator<Ministry> byRegularBudget =
                 Comparator.comparing(Ministry::getRegularBudget);
-        // Compare BasicRecord types based on Ependyseis
-        Comparator<Ministry> byEpendyseis =
-                Comparator.comparing(Ministry::getEpendyseis);
-        // Compare BasicRecord types based on Synolo
-        Comparator<Ministry> bySynolo =
-                Comparator.comparing(Ministry::getSynolo);
+        // Compare BasicRecord types based on PublicInvestments
+        Comparator<Ministry> byPublicInvestments =
+                Comparator.comparing(Ministry::getPublicInvestments);
+        // Compare BasicRecord types based on TotalBudget
+        Comparator<Ministry> byTotalBudget =
+                Comparator.comparing(Ministry::getTotalBudget);
 
         // Max / Min for each category/column
         List<Ministry> maxRegularBudget = ministries.stream()
@@ -84,13 +84,13 @@ public final class MinistryAnalyzer {
                 .limit(TOP_COUNT)
                 .collect(Collectors.toList());
 
-        List<Ministry> maxEpendyseis = ministries.stream()
-                .sorted(byEpendyseis.reversed())
+        List<Ministry> maxPublicInvestments = ministries.stream()
+                .sorted(byPublicInvestments.reversed())
                 .limit(TOP_COUNT)
                 .collect(Collectors.toList());
 
-        List<Ministry> maxSynolo = ministries.stream()
-                .sorted(bySynolo.reversed())
+        List<Ministry> maxTotalBudget = ministries.stream()
+                .sorted(byTotalBudget.reversed())
                 .limit(TOP_COUNT)
                 .collect(Collectors.toList());
 
@@ -100,20 +100,22 @@ public final class MinistryAnalyzer {
                         totalRegularBudget))
                         .collect(Collectors.toList());
 
-        List<BigDecimal> maxEpendyseisPercentages = maxEpendyseis.stream()
-                        .map(y -> percent(y.getEpendyseis(), totalEpendyseis))
+        List<BigDecimal> maxPublicInvestmentsPercentages =
+                        maxPublicInvestments.stream()
+                        .map(y -> percent(y.getPublicInvestments(),
+                        totalPublicInvestments))
                         .collect(Collectors.toList());
 
-        List<BigDecimal> maxSynoloPercentages = maxSynolo.stream()
-                        .map(y -> percent(y.getSynolo(), totalSynolo))
+        List<BigDecimal> maxTotalBudgetPercentages = maxTotalBudget.stream()
+                        .map(y -> percent(y.getTotalBudget(), totalTotalBudget))
                         .collect(Collectors.toList());
 
         return new MinistryStats(
                 maxRegularBudget,
-                maxEpendyseis,
-                maxSynolo,
+                maxPublicInvestments,
+                maxTotalBudget,
                 maxRegularBudgetPercentages,
-                maxEpendyseisPercentages,
-                maxSynoloPercentages);
+                maxPublicInvestmentsPercentages,
+                maxTotalBudgetPercentages);
     }
 }

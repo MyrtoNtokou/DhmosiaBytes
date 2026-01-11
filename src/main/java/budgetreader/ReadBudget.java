@@ -35,7 +35,7 @@ public final class ReadBudget {
     private static final int COLUMN_REGULARBUDGET = 2;
 
     /** CSV column index for the public investment budget value. */
-    private static final int COLUMN_EPENDYSEIS = 3;
+    private static final int COLUMN_PUBLIC_INVESTMENTS = 3;
 
     /** CSV column index for the total budget value. */
     private static final int COLUMN_SYNOLO = 4;
@@ -134,7 +134,7 @@ public final class ReadBudget {
     private static List<Ministry> readMinistryFromStream(
         final InputStream input) {
 
-        List<Ministry> ypourg = new ArrayList<>();
+        List<Ministry> ministry = new ArrayList<>();
 
         try (CSVReader reader = new CSVReaderBuilder(
             new InputStreamReader(input, StandardCharsets.UTF_8))
@@ -162,12 +162,16 @@ public final class ReadBudget {
 
                     BigDecimal regularBudget = parseNumber(
                         line[COLUMN_REGULARBUDGET]);
-                    BigDecimal ependyseis = parseNumber(
-                        line[COLUMN_EPENDYSEIS]);
-                    BigDecimal synolo = parseNumber(line[COLUMN_SYNOLO]);
+                    BigDecimal publicInvestments = parseNumber(
+                        line[COLUMN_PUBLIC_INVESTMENTS]);
+                    BigDecimal totalBudget = parseNumber(line[COLUMN_SYNOLO]);
 
-                    ypourg.add(new Ministry(
-                        code, name, regularBudget, ependyseis, synolo));
+                    ministry.add(new Ministry(
+                        code,
+                        name,
+                        regularBudget,
+                        publicInvestments,
+                        totalBudget));
 
                     } catch (NumberFormatException e) {
                         System.err.println("Προσπέραση εγγραφής: "
@@ -179,7 +183,7 @@ public final class ReadBudget {
             System.err.println(e.getMessage());
         }
 
-        return ypourg;
+        return ministry;
     }
 
     /**
@@ -260,7 +264,7 @@ public final class ReadBudget {
      * <p>
      * This method only reads the 1st column (ministry code) and the
      * 5th column (total budget) from the CSV.
-     * The other fields of {@link Ministry} (regularBudget, ependyseis)
+     * The other fields of {@link Ministry} (regularBudget, publicInvestments)
      * are set to {@code BigDecimal.ZERO}.
      * Rows with fewer columns than {@link #COLUMNS_REQUIRED}
      * or invalid numeric codes are skipped.
@@ -314,8 +318,8 @@ public final class ReadBudget {
                             ministryCode,
                             ministryName,
                             BigDecimal.ZERO, // regularBudget
-                            BigDecimal.ZERO, // ependyseis
-                            totalBudget     // synolo
+                            BigDecimal.ZERO, // publicInvestments
+                            totalBudget     // totalBudget
                         ));
 
                     } catch (NumberFormatException e) {

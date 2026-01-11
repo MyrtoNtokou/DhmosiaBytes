@@ -73,7 +73,7 @@ public class MinistryRequestParser {
                 case "REGULARBUDGET" -> {
                     searchPrefix = "Τακτικός:";
                 }
-                case "EPENDYSEIS" -> {
+                case "PUBLIC_INVESTMENTS" -> {
                     searchPrefix = "ΠΔΕ:";
                 }
                 default -> {
@@ -228,7 +228,7 @@ public class MinistryRequestParser {
 
         /**
          * Getter for budget type from request.
-         * @return regularbudget or ependyseis
+         * @return regularbudget or publicInvestments
          * */
         public String getBudgetType() {
             return budgetType;

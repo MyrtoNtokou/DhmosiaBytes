@@ -26,7 +26,7 @@ Text:
 Id: 2
 Code: 2
 Name: Βουλή των Ελλήνων
-Type: EPENDYSEIS
+Type: PUBLIC_INVESTMENTS
 Status: REJECTED
 Time: 2026-01-10T19:49:38.362320
 Text:
@@ -116,7 +116,7 @@ Text:
 Id: 6
 Code: 2
 Name: Βουλή των Ελλήνων
-Type: EPENDYSEIS
+Type: PUBLIC_INVESTMENTS
 Status: REVIEWED_BY_FINANCE_MINISTRY
 Time: 2026-01-10T23:48:31.733663300
 Text:
@@ -138,7 +138,7 @@ Text:
 Id: 7
 Code: 3
 Name: Προεδρία της Κυβέρνησης
-Type: EPENDYSEIS
+Type: PUBLIC_INVESTMENTS
 Status: PARLIAMENT_APPROVED
 Time: 2026-01-10T23:54:07.085722900
 Text:
@@ -160,7 +160,7 @@ Text:
 Id: 8
 Code: 3
 Name: Προεδρία της Κυβέρνησης
-Type: EPENDYSEIS
+Type: PUBLIC_INVESTMENTS
 Status: PARLIAMENT_APPROVED
 Time: 2026-01-11T00:02:01.090995500
 Text:
@@ -182,7 +182,7 @@ Text:
 Id: 9
 Code: 3
 Name: Προεδρία της Κυβέρνησης
-Type: EPENDYSEIS
+Type: PUBLIC_INVESTMENTS
 Status: PARLIAMENT_APPROVED
 Time: 2026-01-11T00:10:22.162459300
 Text:

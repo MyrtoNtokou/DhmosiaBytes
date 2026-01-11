@@ -24,8 +24,8 @@ public class TestMinistry {
         assertEquals(10, y.getcode());
         assertEquals("Test Ministry", y.getName());
         assertEquals(new BigDecimal("50.0"), y.getRegularBudget());
-        assertEquals(new BigDecimal("30.0"), y.getEpendyseis());
-        assertEquals(new BigDecimal("80.0"), y.getSynolo());
+        assertEquals(new BigDecimal("30.0"), y.getPublicInvestments());
+        assertEquals(new BigDecimal("80.0"), y.getTotalBudget());
     }
 
     /**
@@ -44,11 +44,11 @@ public class TestMinistry {
     }
 
     /**
-     * Tests that updating regularBudget and ependyseis
-     * correctly recalculates synolo.
+     * Tests that updating regularBudget and publicInvestments
+     * correctly recalculates totalBudget.
      */
     @Test
-    public void testRecalcSynoloAfterSetters() {
+    public void testRecalcTotalBudgetAfterSetters() {
         Ministry y = new Ministry(
             1,
             "Ministry",
@@ -57,21 +57,21 @@ public class TestMinistry {
             new BigDecimal("15"));
 
         y.setRegularBudget(new BigDecimal("20"));
-        y.setEpendyseis(new BigDecimal("30"));
+        y.setPublicInvestments(new BigDecimal("30"));
 
-        assertEquals(new BigDecimal("50"), y.getSynolo());
+        assertEquals(new BigDecimal("50"), y.getTotalBudget());
     }
 
     /**
-     * Tests that setting synolo directly works.
+     * Tests that setting totalBudget directly works.
      */
     @Test
-    public void testSetSynoloDirectly() {
+    public void testSetTotalBudgetDirectly() {
         Ministry y = new Ministry(1, "Ministry",
             BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
 
-        y.setSynolo(new BigDecimal("999"));
-        assertEquals(new BigDecimal("999"), y.getSynolo());
+        y.setTotalBudget(new BigDecimal("999"));
+        assertEquals(new BigDecimal("999"), y.getTotalBudget());
     }
     /**
      * Tests that toString returns something meaningful.

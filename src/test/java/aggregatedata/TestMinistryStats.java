@@ -14,11 +14,11 @@ import static org.junit.jupiter.api.Assertions.*;
 class TestMinistryStats {
 
     private List<Ministry> maxRegularBudget;
-    private List<Ministry> maxEpendyseis;
-    private List<Ministry> maxSynolo;
+    private List<Ministry> maxPublicInvestments;
+    private List<Ministry> maxTotalBudget;
     private List<BigDecimal> maxRegularBudgetPercentages;
-    private List<BigDecimal> maxEpendyseisPercentages;
-    private List<BigDecimal> maxSynoloPercentages;
+    private List<BigDecimal> maxPublicInvestmentsPercentages;
+    private List<BigDecimal> maxTotalBudgetPercentages;
     private MinistryStats stats;
 
     @BeforeEach
@@ -27,41 +27,41 @@ class TestMinistryStats {
         maxRegularBudget.add(new Ministry(5, "Ministry A", new BigDecimal("100"), new BigDecimal("50"), new BigDecimal("150")));
         maxRegularBudget.add(new Ministry(10, "Ministry B", new BigDecimal("200"), new BigDecimal("100"), new BigDecimal("300")));
 
-        maxEpendyseis = new ArrayList<>();
-        maxEpendyseis.add(new Ministry(15, "Ministry C", new BigDecimal("150"), new BigDecimal("150"), new BigDecimal("300")));
+        maxPublicInvestments = new ArrayList<>();
+        maxPublicInvestments.add(new Ministry(15, "Ministry C", new BigDecimal("150"), new BigDecimal("150"), new BigDecimal("300")));
 
-        maxSynolo = new ArrayList<>();
-        maxSynolo.add(new Ministry(20, "Ministry D", new BigDecimal("50"), new BigDecimal("50"), new BigDecimal("100")));
+        maxTotalBudget = new ArrayList<>();
+        maxTotalBudget.add(new Ministry(20, "Ministry D", new BigDecimal("50"), new BigDecimal("50"), new BigDecimal("100")));
 
         maxRegularBudgetPercentages = new ArrayList<>();
         maxRegularBudgetPercentages.add(new BigDecimal("33.33"));
         maxRegularBudgetPercentages.add(new BigDecimal("66.67"));
 
-        maxEpendyseisPercentages = new ArrayList<>();
-        maxEpendyseisPercentages.add(new BigDecimal("100.00"));
+        maxPublicInvestmentsPercentages = new ArrayList<>();
+        maxPublicInvestmentsPercentages.add(new BigDecimal("100.00"));
 
-        maxSynoloPercentages = new ArrayList<>();
-        maxSynoloPercentages.add(new BigDecimal("100.00"));
+        maxTotalBudgetPercentages = new ArrayList<>();
+        maxTotalBudgetPercentages.add(new BigDecimal("100.00"));
 
         stats = new MinistryStats(
                 maxRegularBudget,
-                maxEpendyseis,
-                maxSynolo,
+                maxPublicInvestments,
+                maxTotalBudget,
                 maxRegularBudgetPercentages,
-                maxEpendyseisPercentages,
-                maxSynoloPercentages
+                maxPublicInvestmentsPercentages,
+                maxTotalBudgetPercentages
         );
     }
 
     @Test
     void testGettersReturnCorrectValues() {
         assertEquals(maxRegularBudget, stats.getMaxRegularBudget());
-        assertEquals(maxEpendyseis, stats.getMaxEpendyseis());
-        assertEquals(maxSynolo, stats.getMaxSynolo());
+        assertEquals(maxPublicInvestments, stats.getMaxPublicInvestments());
+        assertEquals(maxTotalBudget, stats.getMaxTotalBudget());
 
         assertEquals(maxRegularBudgetPercentages, stats.getMaxRegularBudgetPercentages());
-        assertEquals(maxEpendyseisPercentages, stats.getMaxEpendyseisPercentages());
-        assertEquals(maxSynoloPercentages, stats.getMaxSynoloPercentages());
+        assertEquals(maxPublicInvestmentsPercentages, stats.getMaxPublicInvestmentsPercentages());
+        assertEquals(maxTotalBudgetPercentages, stats.getMaxTotalBudgetPercentages());
     }
 
     @Test
@@ -81,10 +81,10 @@ class TestMinistryStats {
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
         assertTrue(emptyStats.getMaxRegularBudget().isEmpty());
-        assertTrue(emptyStats.getMaxEpendyseis().isEmpty());
-        assertTrue(emptyStats.getMaxSynolo().isEmpty());
+        assertTrue(emptyStats.getMaxPublicInvestments().isEmpty());
+        assertTrue(emptyStats.getMaxTotalBudget().isEmpty());
         assertTrue(emptyStats.getMaxRegularBudgetPercentages().isEmpty());
-        assertTrue(emptyStats.getMaxEpendyseisPercentages().isEmpty());
-        assertTrue(emptyStats.getMaxSynoloPercentages().isEmpty());
+        assertTrue(emptyStats.getMaxPublicInvestmentsPercentages().isEmpty());
+        assertTrue(emptyStats.getMaxTotalBudgetPercentages().isEmpty());
     }
 }
