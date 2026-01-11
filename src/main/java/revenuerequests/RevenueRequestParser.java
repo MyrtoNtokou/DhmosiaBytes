@@ -1,4 +1,4 @@
-package ministryrequests;
+package revenuerequests;
 
 import java.math.BigDecimal;
 

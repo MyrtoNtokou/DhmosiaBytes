@@ -20,17 +20,17 @@ import budgetlogic.BudgetService;
 import budgetlogic.BudgetServiceImpl;
 import budgetreader.Eggrafi;
 import budgetreader.Ypourgeio;
-import ministryrequests.RequestLoader;
 import ministryrequests.MinistryRequestParser;
 import ministryrequests.MinistryRequestService;
+import ministryrequests.RequestLoader;
 import ministryrequests.RequestType;
+import revenuerequests.RevenueRequestParser;
+import revenuerequests.RevenueRequestService;
 
  /**
  * Allows editing of income and expense entries in a Budget.
  */
 public class BudgetEditor {
-    /**  BudgetService used to perform operations on the budget. */
-    private final BudgetService service;
 
     /** Maximum valid percentage. */
     private static final BigDecimal MAX_PERCENTAGE = BigDecimal.valueOf(100);
@@ -46,9 +46,7 @@ public class BudgetEditor {
      *
      * @param serv the BudgetService used to modify and validate budget data
      */
-    public BudgetEditor(final BudgetService serv) {
-        this.service = serv;
-    }
+    public BudgetEditor() { }
 
     /**
      * Edits the amount of a specific income entry in the general budget.
@@ -77,18 +75,24 @@ public class BudgetEditor {
             }
         }
 
-        Budget before = new Budget(service.getBudget());
-        this.service.changeGeneralAmount(code, newAmount);
+        BudgetAssembler assembler = new BudgetAssembler();
+        Budget initialBudget = assembler.loadBudget("newgeneral.csv",
+                "newministries.csv");
 
-        try {
-            BudgetSave saver = new BudgetSave();
-            Budget finalBudget = service.getBudget();
-            saver.saveGeneralChanges(finalBudget, "newgeneral.csv");
-            System.out.println("Η αλλαγή αποθηκεύτηκε επιτυχώς.");
-            BudgetDiffPrinter.printDiffRevenues(before, finalBudget);
-        } catch (IOException e) {
-            System.err.println("Σφάλμα κατά την αποθήκευση.");
-        }
+        Budget before = new Budget(initialBudget);
+        BudgetService serv = new BudgetServiceImpl(before, null);
+        serv.changeGeneralAmount(code, newAmount);
+        Budget after = serv.getBudget();
+
+        String capturedDiff = BudgetDiffPrinter
+                .captureRevenuesDiff(initialBudget, after);
+
+        RevenueRequestService revenueService = new RevenueRequestService();
+        String name = after.getRevenues().get(code).getPerigrafi();
+        revenueService.submitRevenueRequest(code, name,
+                capturedDiff);
+
+        BudgetDiffPrinter.printDiffRevenues(initialBudget, after);
     }
 
     /**
@@ -304,5 +308,29 @@ public class BudgetEditor {
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
+    }
+
+    public static void saveEditRevenue(final int id) throws Exception {
+        String filePath = "revenuerequests.txt";
+        String fileContent = Files.readString(Path.of(filePath));
+
+        String block = RequestLoader.extractRequestBlock(fileContent, id);
+
+        RevenueRequestParser parser = new RevenueRequestParser(block);
+        RevenueRequestParser.RevenueResult result = parser.parse();
+
+        String code = result.getCode();
+        BigDecimal newAmount = result.getAmount();
+
+        BudgetAssembler loader = new BudgetAssembler();
+        Budget initialBudget = loader.loadBudget("newgeneral.csv",
+                "newministries.csv");
+
+        BudgetService service = new BudgetServiceImpl(initialBudget, null);
+        service.changeGeneralAmount(code, newAmount);
+
+        BudgetSave saver = new BudgetSave();
+        Budget finalBudget = service.getBudget();
+        saver.saveGeneralChanges(finalBudget, "newgeneral.csv");
     }
 }

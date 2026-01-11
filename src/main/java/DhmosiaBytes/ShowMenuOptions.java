@@ -13,8 +13,8 @@ import budgetreader.Eggrafi;
 import budgetreader.ReadBudget;
 import budgetreader.Ypourgeio;
 import ministryrequests.MinistryRequest;
-import ministryrequests.RequestPrinter;
 import ministryrequests.MinistryRequestService;
+import ministryrequests.RequestPrinter;
 import ministryrequests.RequestStatus;
 import ministryrequests.RequestType;
 
@@ -141,8 +141,6 @@ public final class ShowMenuOptions {
     final Scanner input) {
         switch (currentRole) {
             case PRIME_MINISTER -> {
-                MinistryRequestService reqService =
-                        new MinistryRequestService();
                 while (true) {
                     int code = RequestsController
                             .primeMinisterAndParlMenu(input);
@@ -162,10 +160,7 @@ public final class ShowMenuOptions {
                         }
                         case CODE_FOR_OPTION_2 -> showComparedBudgets();
                         case CODE_FOR_OPTION_3 -> {
-                            RequestsController.evaluateRequests(input,
-                                    reqService,
-                                    RequestStatus.REVIEWED_BY_FINANCE_MINISTRY,
-                                    false);
+                            RequestsController.showRequests(input, false);
                         }
                         default -> {
                             // no action needed
@@ -174,8 +169,6 @@ public final class ShowMenuOptions {
                 }
             }
             case PARLIAMENT -> {
-                MinistryRequestService reqService =
-                        new MinistryRequestService();
                 while (true) {
                     int code = RequestsController
                             .primeMinisterAndParlMenu(input);
@@ -195,9 +188,7 @@ public final class ShowMenuOptions {
                         }
                         case CODE_FOR_OPTION_2 -> showComparedBudgets();
                         case CODE_FOR_OPTION_3 -> {
-                            RequestsController.evaluateRequests(input,
-                                    reqService,
-                                    RequestStatus.GOVERNMENT_APPROVED, true);
+                            RequestsController.showRequests(input, true);
                         }
                         default -> {
                             // no action needed

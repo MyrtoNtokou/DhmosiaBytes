@@ -10,8 +10,11 @@ import static aggregatedata.ConsoleColors.CYAN;
 import static aggregatedata.ConsoleColors.RESET;
 import ministryrequests.MinistryRequest;
 import ministryrequests.MinistryRequestService;
+import ministryrequests.Request;
 import ministryrequests.RequestPrinter;
 import ministryrequests.RequestStatus;
+import revenuerequests.RevenueRequest;
+import revenuerequests.RevenueRequestService;
 
 /**
  * Utility class that handles user interactions related to reviewing,
@@ -38,15 +41,15 @@ public final class RequestsController {
      * @return the user's choice
      */
     public static int chooseRequest(final Scanner input,
-            final List<MinistryRequest> pendingReqs) {
+            final List<? extends Request> requests) {
 
-        if (pendingReqs.isEmpty()) {
+        if (requests.isEmpty()) {
             return 0;
         }
 
         int choice;
         while (true) {
-            if (!pendingReqs.isEmpty()) {
+            if (!requests.isEmpty()) {
                 System.out.println("Έχετε την δυνατότητα να σημειώσετε τα "
                 + "αιτήματα που έχετε ολοκληρώσει ή απορρίψει.");
                 System.out.println("Επιλέξτε 0 για επιστροφή στο "
@@ -313,6 +316,58 @@ public final class RequestsController {
                 System.out.println("Δεν υπάρχουν άλλες τροποποιήσεις "
                     + "για αξιολόγηση.");
                 return;
+            }
+        }
+    }
+
+    public static void showRequests(final Scanner input,
+            final boolean approvedByGovernment) {
+        ShowEditMenuOptions edit = new ShowEditMenuOptions();
+        RevenueOrExpense choice = edit.chooseRevenueOrExpense(input);
+        switch (choice) {
+            case INCOME -> {
+                RevenueRequestService revenueService =
+                        new RevenueRequestService();
+                List<RevenueRequest> revReq;
+                if (approvedByGovernment) {
+                    revReq = revenueService.getByStatus(RequestStatus
+                            .GOVERNMENT_APPROVED);
+                } else {
+                    revReq =revenueService.getByStatus(RequestStatus
+                            .REVIEWED_BY_FINANCE_MINISTRY);
+                }
+                RequestPrinter.printRequests(revReq);
+                int requestId = chooseRequest(input, revReq);
+                int decision = completeOrRejectPrimMinist(input);
+                if (decision == 1) {
+                    if (approvedByGovernment) {
+                        revenueService.approveByParliament(requestId);
+                        try {
+                            BudgetEditor.saveEditRevenue(requestId);
+                        } catch (IOException e) {
+                            System.err.println("Σφάλμα κατά την αποθήκευση "
+                                    + "του αιτήματος." + e.getMessage());
+                        } catch (Exception e) {
+                            System.err.println("Σφάλμα κατά την αποθήκευση "
+                                    + "του αιτήματος." + e.getMessage());
+                        }
+                    } else {
+                        revenueService.approveByGovernment(requestId);
+                    }
+                } else {
+                    revenueService.rejectRequest(requestId);
+                }
+            }
+            case EXPENSE -> {
+                MinistryRequestService reqService =
+                        new MinistryRequestService();
+                if (approvedByGovernment) {
+                    evaluateRequests(input, reqService,
+                            RequestStatus.GOVERNMENT_APPROVED, true);
+                } else {
+                    evaluateRequests(input, reqService,
+                            RequestStatus.REVIEWED_BY_FINANCE_MINISTRY, false);
+                }
             }
         }
     }

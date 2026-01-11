@@ -95,7 +95,7 @@ Id: 5
 Code: 2
 Name: Βουλή των Ελλήνων
 Type: TAKTIKOS
-Status: PARLIAMENT_APPROVED
+Status: GOVERNMENT_APPROVED
 Time: 2026-01-10T23:40:52.318947900
 Text:
 2 | Βουλή των Ελλήνων
@@ -117,7 +117,7 @@ Id: 6
 Code: 2
 Name: Βουλή των Ελλήνων
 Type: EPENDYSEIS
-Status: PARLIAMENT_APPROVED
+Status: REVIEWED_BY_FINANCE_MINISTRY
 Time: 2026-01-10T23:48:31.733663300
 Text:
 2 | Βουλή των Ελλήνων
