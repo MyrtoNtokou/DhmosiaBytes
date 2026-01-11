@@ -2,12 +2,12 @@ package ministryrequests;
 
 /**
  * Utility class responsible for extracting a specific
- * budget request block from a larger text file.
+ * request block from a larger text file.
  */
-public final class BudgetRequestLoader {
+public final class RequestLoader {
 
     /** Constructor. */
-    private BudgetRequestLoader() { }
+    private RequestLoader() { }
 
     /**
      * Extract the text block corresponding to a given request ID.

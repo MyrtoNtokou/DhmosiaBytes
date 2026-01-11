@@ -66,7 +66,7 @@ public class RevenueRequestRepository {
             boolean inText = false;
 
             while ((line = br.readLine()) != null) {
-                if (line.equals("=== REVENUE_REQUEST ===")) {
+                if (line.equals("=== REQUEST ===")) {
                     id = null;
                     code = null;
                     name = null;
@@ -118,7 +118,7 @@ public class RevenueRequestRepository {
         try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
             new FileOutputStream(FILE, false), StandardCharsets.UTF_8))) {
             for (RevenueRequest r : requests) {
-                bw.write("=== REVENUE_REQUEST ===\n");
+                bw.write("=== REQUEST ===\n");
                 bw.write("Id: " + r.getId() + "\n");
                 bw.write("Code: " + r.getRevenueCode() + "\n");
                 bw.write("Name: " + r.getRevenueName() + "\n");

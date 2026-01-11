@@ -9,7 +9,7 @@ import java.util.Map;
  * Parse budget request text and extracts ministry-level
  * budget changes and expense-level contribution percentages.
  */
-public class BudgetRequestParser {
+public class MinistryRequestParser {
 
     /** Ιnput text of the budget request. */
     private final String rawText;
@@ -21,7 +21,7 @@ public class BudgetRequestParser {
      * Constructor.
      * @param text unprocessed text of the budget request
      */
-    public BudgetRequestParser(final String text) {
+    public MinistryRequestParser(final String text) {
         rawText = text;
     }
 
