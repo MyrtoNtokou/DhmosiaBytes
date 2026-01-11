@@ -265,7 +265,7 @@ public class BudgetEditor {
 
         try {
             Path dataDir = Paths.get("runtime-data");
-            Path filePath = dataDir.resolve("revenuerequests.txt");
+            Path filePath = dataDir.resolve("ministryrequests.txt");
             String fileContent = Files.readString(filePath,
                                 StandardCharsets.UTF_8);
             String requestBlock = RequestLoader
@@ -301,7 +301,6 @@ public class BudgetEditor {
             BudgetService serv = new BudgetServiceImpl(initialBudget, mapping);
             serv.changeMinistryAmount(ministry, type, newAmount);
             Budget finalBudget = serv.getBudget();
-
             BudgetSave saver = new BudgetSave();
             saver.saveGeneralChanges(finalBudget, "newgeneral.csv");
             saver.saveMinistryChanges(finalBudget, "newministries.csv");
