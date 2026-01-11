@@ -20,8 +20,8 @@ import budgetlogic.BudgetService;
 import budgetlogic.BudgetServiceImpl;
 import budgetreader.Eggrafi;
 import budgetreader.Ypourgeio;
-import ministryrequests.BudgetRequestLoader;
-import ministryrequests.BudgetRequestParser;
+import ministryrequests.RequestLoader;
+import ministryrequests.MinistryRequestParser;
 import ministryrequests.MinistryRequestService;
 import ministryrequests.RequestType;
 
@@ -262,11 +262,11 @@ public class BudgetEditor {
         try {
             String fileContent = Files.readString(Path
                     .of("ministryrequests.txt"));
-            String requestBlock = BudgetRequestLoader
+            String requestBlock = RequestLoader
                 .extractRequestBlock(fileContent, id);
-            BudgetRequestParser parser =
-                    new BudgetRequestParser(requestBlock);
-            BudgetRequestParser.ParsedResult result = parser.parse(id);
+            MinistryRequestParser parser =
+                    new MinistryRequestParser(requestBlock);
+            MinistryRequestParser.ParsedResult result = parser.parse(id);
             Integer ministry = result.getMinistryCode();
             if (ministry == null) {
                 System.err.println("Σφάλμα: Δεν υπάρχει ο κωδικός Υπουργείου "
