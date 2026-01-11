@@ -15,7 +15,7 @@ import org.knowm.xchart.SwingWrapper;
 import org.knowm.xchart.XYChart;
 import org.knowm.xchart.XYChartBuilder;
 
-import budgetreader.Eggrafi;
+import budgetreader.BasicRecord;
 import budgetreader.ReadBudget;
 
 /**
@@ -47,17 +47,17 @@ public final class MoreCharts {
     *
     * @param eggrafes the list with revenue and ministrys
     */
-    public static void pieChartEsodaExoda(final List<Eggrafi> eggrafes) {
+    public static void pieChartEsodaExoda(final List<BasicRecord> eggrafes) {
         // Initialisation
         BigDecimal esoda = BigDecimal.ZERO;
         BigDecimal exoda = BigDecimal.ZERO;
 
         // Find and save the totals of revenue and ministrys
-        for (Eggrafi e : eggrafes) {
-            if (e.getPerigrafi().equalsIgnoreCase("ΕΣΟΔΑ")) {
-                esoda = e.getPoso();
-            } else if (e.getPerigrafi().equalsIgnoreCase("ΕΞΟΔΑ")) {
-                exoda = e.getPoso();
+        for (BasicRecord e : eggrafes) {
+            if (e.getDescription().equalsIgnoreCase("ΕΣΟΔΑ")) {
+                esoda = e.getAmount();
+            } else if (e.getDescription().equalsIgnoreCase("ΕΞΟΔΑ")) {
+                exoda = e.getAmount();
             }
         }
 
@@ -110,18 +110,18 @@ public final class MoreCharts {
             years.add(year);
 
             String filename = "proypologismos" + year + ".csv";
-            List<Eggrafi> eggrafes = ReadBudget.readGeneralBudget(filename);
+            List<BasicRecord> eggrafes = ReadBudget.readGeneralBudget(filename);
 
             BigDecimal esoda = BigDecimal.ZERO;
             BigDecimal exoda = BigDecimal.ZERO;
 
-            for (Eggrafi e : eggrafes) {
-                String perigrafi = e.getPerigrafi().trim();
+            for (BasicRecord e : eggrafes) {
+                String description = e.getDescription().trim();
 
-                if (perigrafi.equalsIgnoreCase("ΕΣΟΔΑ")) {
-                    esoda = e.getPoso();
-                } else if (perigrafi.equalsIgnoreCase("ΕΞΟΔΑ")) {
-                    exoda = e.getPoso();
+                if (description.equalsIgnoreCase("ΕΣΟΔΑ")) {
+                    esoda = e.getAmount();
+                } else if (description.equalsIgnoreCase("ΕΞΟΔΑ")) {
+                    exoda = e.getAmount();
                 }
             }
 

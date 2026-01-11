@@ -3,7 +3,7 @@ package ministryrequests;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import budgetreader.Ypourgeio;
+import budgetreader.Ministry;
 
 /**
  * Service layer for handling ministry requests and business logic.
@@ -21,7 +21,7 @@ public class MinistryRequestService {
      * @param type the request type
      * @return the submited request id
      */
-    public int submitRequest(final Ypourgeio ministry, final String rawDiff,
+    public int submitRequest(final Ministry ministry, final String rawDiff,
                                     final RequestType type) {
 
         String title = "ΑΛΛΑΓΕΣ ΣΤΟΝ ΠΡΟΫΠΟΛΟΓΙΣΜΟ ΤΩΝ ΥΠΟΥΡΓΕΙΩΝ";
@@ -30,8 +30,8 @@ public class MinistryRequestService {
 
         MinistryRequest request = new MinistryRequest(
                 0,
-                ministry.getKodikos(),
-                ministry.getOnoma(),
+                ministry.getcode(),
+                ministry.getName(),
                 type,
                 RequestStatus.PENDING,
                 LocalDateTime.now(),

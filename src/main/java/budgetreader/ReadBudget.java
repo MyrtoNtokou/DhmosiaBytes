@@ -32,7 +32,7 @@ public final class ReadBudget {
     private static final int MIN_MINISTRY_COLUMNS = 5;
 
     /** CSV column index for the regular budget value. */
-    private static final int COLUMN_TAKTIKOS = 2;
+    private static final int COLUMN_REGULARBUDGET = 2;
 
     /** CSV column index for the public investment budget value. */
     private static final int COLUMN_EPENDYSEIS = 3;
@@ -44,15 +44,15 @@ public final class ReadBudget {
 
     /**
      * Reads general budget data from an input stream and converts
-     * each row into an {@link Eggrafi} object.
+     * each row into an {@link BasicRecord} object.
      *
      * @param input the input stream of the CSV file
-     * @return a list of Eggrafi objects
+     * @return a list of BasicRecord objects
      */
-    private static List<Eggrafi> readGeneralBudgetFromStream(
+    private static List<BasicRecord> readGeneralBudgetFromStream(
         final InputStream input) {
 
-        List<Eggrafi> eggrafes = new ArrayList<>();
+        List<BasicRecord> eggrafes = new ArrayList<>();
 
         try (CSVReader reader = new CSVReaderBuilder(
             new InputStreamReader(input, StandardCharsets.UTF_8))
@@ -63,20 +63,20 @@ public final class ReadBudget {
 
             String[] line;
 
-            /* Creates new instances Eggrafi for each line */
+            /* Creates new instances BasicRecord for each line */
             while ((line = reader.readNext()) != null) {
                 if (line.length < MIN_GENERAL_COLUMNS) {
                     continue;
                 }
 
-                String kodikos = line[0]
+                String code = line[0]
                     .replace("\uFEFF", "")
                     .replace("\u00A0", "")
                     .trim();
-                String perigrafi = line[1].trim();
-                BigDecimal poso = parseNumber(line[2].trim());
+                String description = line[1].trim();
+                BigDecimal amount = parseNumber(line[2].trim());
 
-                eggrafes.add(new Eggrafi(kodikos, perigrafi, poso));
+                eggrafes.add(new BasicRecord(code, description, amount));
             }
 
         } catch (Exception e) {
@@ -92,10 +92,10 @@ public final class ReadBudget {
     * and calls the readGeneralBudgetFromStream method.
     *
     * @param resourceName the CSV filename to load
-    * @return a list of {@link Eggrafi} objects parsed from the CSV file;
+    * @return a list of {@link BasicRecord} objects parsed from the CSV file;
     *        an empty list is returned if the resource cannot be found
     */
-        public static List<Eggrafi> readGeneralBudget(
+        public static List<BasicRecord> readGeneralBudget(
             final String resourceName) {
 
         /* Loads CSV file from classpath (resources folder) */
@@ -113,13 +113,13 @@ public final class ReadBudget {
 
     /**
     * Reads a general budget CSV file from the filesystem and converts
-    * each row into an {@link Eggrafi} object.
+    * each row into an {@link BasicRecord} object.
     *
     * @param path the path to the CSV file to be read
-    * @return a list of {@link Eggrafi} objects parsed from the file;
+    * @return a list of {@link BasicRecord} objects parsed from the file;
     *         an empty list is returned if the file cannot be read
     */
-    public static List<Eggrafi> readGeneralBudgetFromPath(
+    public static List<BasicRecord> readGeneralBudgetFromPath(
         final Path path) {
 
         try (InputStream input = new FileInputStream(path.toFile())) {
@@ -131,10 +131,10 @@ public final class ReadBudget {
     }
 
 
-    private static List<Ypourgeio> readMinistryFromStream(
+    private static List<Ministry> readMinistryFromStream(
         final InputStream input) {
 
-        List<Ypourgeio> ypourg = new ArrayList<>();
+        List<Ministry> ypourg = new ArrayList<>();
 
         try (CSVReader reader = new CSVReaderBuilder(
             new InputStreamReader(input, StandardCharsets.UTF_8))
@@ -151,22 +151,23 @@ public final class ReadBudget {
                 }
 
                 try {
-                    String kodikosStr = line[0].trim().replace(
+                    String codeStr = line[0].trim().replace(
                     "\uFEFF", "");
-                    if (!kodikosStr.matches("\\d+")) {
+                    if (!codeStr.matches("\\d+")) {
                         continue;
                     }
 
-                    int kodikos = Integer.parseInt(kodikosStr);
-                    String onoma = line[1].trim();
+                    int code = Integer.parseInt(codeStr);
+                    String name = line[1].trim();
 
-                    BigDecimal taktikos = parseNumber(line[COLUMN_TAKTIKOS]);
+                    BigDecimal regularBudget = parseNumber(
+                        line[COLUMN_REGULARBUDGET]);
                     BigDecimal ependyseis = parseNumber(
                         line[COLUMN_EPENDYSEIS]);
                     BigDecimal synolo = parseNumber(line[COLUMN_SYNOLO]);
 
-                    ypourg.add(new Ypourgeio(
-                        kodikos, onoma, taktikos, ependyseis, synolo));
+                    ypourg.add(new Ministry(
+                        code, name, regularBudget, ependyseis, synolo));
 
                     } catch (NumberFormatException e) {
                         System.err.println("Προσπέραση εγγραφής: "
@@ -183,13 +184,13 @@ public final class ReadBudget {
 
     /**
     * Reads a ministry budget CSV file from the application's resources
-    * directory and converts each row into a {@link Ypourgeio} object.
+    * directory and converts each row into a {@link Ministry} object.
     *
     * @param resourceName the name of the CSV resource file to be read
-    * @return a list of {@link Ypourgeio} objects parsed from the file;
+    * @return a list of {@link Ministry} objects parsed from the file;
     *         an empty list is returned if the resource cannot be found
     */
-    public static List<Ypourgeio> readByMinistry(final String resourceName) {
+    public static List<Ministry> readByMinistry(final String resourceName) {
 
         /* Loads  CSV file from classpath (resources folder) */
         InputStream input = ReadBudget.class.getResourceAsStream(
@@ -205,13 +206,13 @@ public final class ReadBudget {
 
     /**
     * Reads a ministry budget CSV file from the filesystem and converts
-    * each row into a {@link Ypourgeio} object.
+    * each row into a {@link Ministry} object.
     *
     * @param path the path to the CSV file to be read
-    * @return a list of {@link Ypourgeio} objects parsed from the file;
+    * @return a list of {@link Ministry} objects parsed from the file;
     *         an empty list is returned if the file cannot be read
     */
-    public static List<Ypourgeio> readByMinistryFromPath(
+    public static List<Ministry> readByMinistryFromPath(
         final Path path) {
 
         try (InputStream input = new FileInputStream(path.toFile())) {
@@ -255,11 +256,11 @@ public final class ReadBudget {
 
     /**
      * Reads a CSV file containing ministry budget data and returns a list
-     * of {@link Ypourgeio} objects.
+     * of {@link Ministry} objects.
      * <p>
      * This method only reads the 1st column (ministry code) and the
      * 5th column (total budget) from the CSV.
-     * The other fields of {@link Ypourgeio} (taktikos, ependyseis)
+     * The other fields of {@link Ministry} (regularBudget, ependyseis)
      * are set to {@code BigDecimal.ZERO}.
      * Rows with fewer columns than {@link #COLUMNS_REQUIRED}
      * or invalid numeric codes are skipped.
@@ -267,11 +268,11 @@ public final class ReadBudget {
      *
      * @param fileName the name of the CSV file to read
      * (should be in the resources folder)
-     * @return a list of {@link Ypourgeio} objects
+     * @return a list of {@link Ministry} objects
      * containing the ministry code, name, and total budget
      */
-    public static List<Ypourgeio> readCroppedByMinistry(final String fileName) {
-        List<Ypourgeio> ministriesList = new ArrayList<>();
+    public static List<Ministry> readCroppedByMinistry(final String fileName) {
+        List<Ministry> ministriesList = new ArrayList<>();
         try {
             InputStream inputStream =
             ReadBudget.class.getResourceAsStream("/" + fileName);
@@ -307,12 +308,12 @@ public final class ReadBudget {
                         BigDecimal totalBudget =
                         parseNumber(row[COLUMN_SYNOLO]);
 
-                        // Create a Ypourgeio object with empty/zero
+                        // Create a Ministry object with empty/zero
                         // values for the other fields
-                        ministriesList.add(new Ypourgeio(
+                        ministriesList.add(new Ministry(
                             ministryCode,
                             ministryName,
-                            BigDecimal.ZERO, // taktikos
+                            BigDecimal.ZERO, // regularBudget
                             BigDecimal.ZERO, // ependyseis
                             totalBudget     // synolo
                         ));

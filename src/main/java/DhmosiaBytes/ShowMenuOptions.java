@@ -9,9 +9,9 @@ import budgetlogic.Budget;
 import budgetlogic.BudgetAssembler;
 import budgetlogic.BudgetDiffPrinter;
 import budgetreader.DisplayBudget;
-import budgetreader.Eggrafi;
+import budgetreader.BasicRecord;
 import budgetreader.ReadBudget;
-import budgetreader.Ypourgeio;
+import budgetreader.Ministry;
 import ministryrequests.MinistryRequest;
 import ministryrequests.MinistryRequestService;
 import ministryrequests.RequestPrinter;
@@ -125,7 +125,7 @@ public final class ShowMenuOptions {
 
     /** Displays the national budget. */
     public static void showBudget() {
-        List<Eggrafi> g =
+        List<BasicRecord> g =
         ReadBudget.readGeneralBudget("proypologismos2026.csv");
         DisplayBudget.showGeneral(g);
     }
@@ -202,7 +202,7 @@ public final class ShowMenuOptions {
                 System.out.println("Τα αιτήματα σας θα σταλούν στο Υπουργείο "
                 + "Οικονομικών για αξιολόγηση.");
                 CutLists cut = new CutLists();
-                List<Ypourgeio> ministries = cut.cutYpourgeio();
+                List<Ministry> ministries = cut.cutMinistry();
                 BudgetAssembler loader = new BudgetAssembler();
                 Budget budget = loader.loadBudget("newgeneral.csv",
                         "newministries.csv");
@@ -322,7 +322,7 @@ public final class ShowMenuOptions {
 
     /** Shows summarized data. */
     public static void summary() {
-        List<Ypourgeio> y =
+        List<Ministry> y =
         ReadBudget.readByMinistry("proypologismos2026anaypourgeio.csv");
         DisplayBudget.showMinistry(y);
     }

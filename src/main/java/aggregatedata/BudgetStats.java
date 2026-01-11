@@ -1,6 +1,6 @@
 package aggregatedata;
 
-import budgetreader.Eggrafi;
+import budgetreader.BasicRecord;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -12,13 +12,13 @@ import java.util.ArrayList;
 public class BudgetStats {
 
     /** Max revenues list initialisation. */
-    private List<Eggrafi> maxRevenues;
+    private List<BasicRecord> maxRevenues;
     /** Min revenues list initialisation. */
-    private List<Eggrafi> minRevenues;
+    private List<BasicRecord> minRevenues;
     /** Max expenses list initialisation. */
-    private List<Eggrafi> maxExpenses;
+    private List<BasicRecord> maxExpenses;
     /** Min expenses list initialisation. */
-    private List<Eggrafi> minExpenses;
+    private List<BasicRecord> minExpenses;
     /** Max revenues percentages list initialisation. */
     private final List<BigDecimal> maxRevenuePercentages;
     /** Max expenses percentages list initialisation. */
@@ -32,10 +32,10 @@ public class BudgetStats {
      * @param maxRevPer
      * @param maxExpPer
      * */
-    public BudgetStats(final List<Eggrafi> maxRev,
-                       final List<Eggrafi> minRev,
-                       final List<Eggrafi> maxExp,
-                       final List<Eggrafi> minExp,
+    public BudgetStats(final List<BasicRecord> maxRev,
+                       final List<BasicRecord> minRev,
+                       final List<BasicRecord> maxExp,
+                       final List<BasicRecord> minExp,
                        final List<BigDecimal> maxRevPer,
                        final List<BigDecimal> maxExpPer) {
         maxRevenues = new ArrayList<>(maxRev);
@@ -50,7 +50,7 @@ public class BudgetStats {
      * Getter for max revenues.
      * @return max revenues
      * */
-    public List<Eggrafi> getMaxRevenues() {
+    public List<BasicRecord> getMaxRevenues() {
         return new ArrayList<>(maxRevenues);
     }
 
@@ -58,7 +58,7 @@ public class BudgetStats {
      * Getter for min revenues.
      * @return min revenues
      * */
-    public List<Eggrafi> getMinRevenues() {
+    public List<BasicRecord> getMinRevenues() {
         return new ArrayList<>(minRevenues);
     }
 
@@ -66,7 +66,7 @@ public class BudgetStats {
      * Getter for max expenses.
      * @return max expenses
      * */
-    public List<Eggrafi> getMaxExpenses() {
+    public List<BasicRecord> getMaxExpenses() {
         return new ArrayList<>(maxExpenses);
     }
 
@@ -74,7 +74,7 @@ public class BudgetStats {
      * Getter for min expenses.
      * @return min expenses
      * */
-    public List<Eggrafi> getMinExpenses() {
+    public List<BasicRecord> getMinExpenses() {
         return new ArrayList<>(minExpenses);
     }
 

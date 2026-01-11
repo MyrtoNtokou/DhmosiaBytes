@@ -1,6 +1,6 @@
 package aggregatedata;
 
-import budgetreader.Ypourgeio;
+import budgetreader.Ministry;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,14 +15,14 @@ import static org.junit.jupiter.api.Assertions.*;
 /** Unit tests for InvestmentPrinter */
 class TestInvestmentPrinter {
 
-    private List<Ypourgeio> ministries;
+    private List<Ministry> ministries;
     private List<InvestmentRatio> ratios;
 
     @BeforeEach
     void setUp() {
         ministries = new ArrayList<>();
-        ministries.add(new Ypourgeio(5, "Ministry A", new BigDecimal("800"), new BigDecimal("200"), new BigDecimal("1000")));
-        ministries.add(new Ypourgeio(10, "Ministry B", new BigDecimal("1000"), new BigDecimal("1000"), new BigDecimal("2000")));
+        ministries.add(new Ministry(5, "Ministry A", new BigDecimal("800"), new BigDecimal("200"), new BigDecimal("1000")));
+        ministries.add(new Ministry(10, "Ministry B", new BigDecimal("1000"), new BigDecimal("1000"), new BigDecimal("2000")));
 
         ratios = new ArrayList<>();
         ratios.add(new InvestmentRatio("Ministry A", new BigDecimal("0.20"), new BigDecimal("20.00")));

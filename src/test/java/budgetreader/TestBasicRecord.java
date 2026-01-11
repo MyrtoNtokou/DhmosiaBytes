@@ -8,21 +8,21 @@ import java.math.BigDecimal;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests for the Eggrafi class.
+ * Tests for the BasicRecord class.
  */
 
-public class TestEggrafi {
+public class TestBasicRecord {
 
         /**
      * Tests that the constructor correctly assigns the fields.
      */
     @Test
     public void testConstructorAndGetters() {
-        Eggrafi e = new Eggrafi("001", "Test entry", new BigDecimal("100.5"));
+        BasicRecord e = new BasicRecord("001", "Test entry", new BigDecimal("100.5"));
 
-        assertEquals("001", e.getKodikos());
-        assertEquals("Test entry", e.getPerigrafi());
-        assertEquals(new BigDecimal("100.5"), e.getPoso());
+        assertEquals("001", e.getCode());
+        assertEquals("Test entry", e.getDescription());
+        assertEquals(new BigDecimal("100.5"), e.getAmount());
     }
 
     /**
@@ -30,7 +30,7 @@ public class TestEggrafi {
      */
     @Test
     public void testToString() {
-        Eggrafi e = new Eggrafi(
+        BasicRecord e = new BasicRecord(
             "002",
             "Example",
             new BigDecimal(50.0));
@@ -46,18 +46,18 @@ public class TestEggrafi {
      */
     @Test
     public void testSetters() {
-        Eggrafi e = new Eggrafi(
+        BasicRecord e = new BasicRecord(
             "001",
             "Old",
             new BigDecimal("10"));
 
-        e.setKodikos("002");
-        e.setPerigrafi("New");
-        e.setPoso(new BigDecimal("20.50"));
+        e.setCode("002");
+        e.setDescription("New");
+        e.setAmount(new BigDecimal("20.50"));
 
-        assertEquals("002", e.getKodikos());
-        assertEquals("New", e.getPerigrafi());
-        assertEquals(new BigDecimal("20.50"), e.getPoso());
+        assertEquals("002", e.getCode());
+        assertEquals("New", e.getDescription());
+        assertEquals(new BigDecimal("20.50"), e.getAmount());
     }
     
     /**
@@ -65,7 +65,7 @@ public class TestEggrafi {
      */
     @Test
     public void testToStringWithDecimalAmount() {
-        Eggrafi e = new Eggrafi(
+        BasicRecord e = new BasicRecord(
             "004",
             "Decimal",
             new BigDecimal("1234.56"));

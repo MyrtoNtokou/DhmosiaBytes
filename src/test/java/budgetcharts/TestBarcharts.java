@@ -11,23 +11,23 @@ import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import budgetreader.Eggrafi;
-import budgetreader.Ypourgeio;
+import budgetreader.BasicRecord;
+import budgetreader.Ministry;
 
 public class TestBarcharts {
 
-    private List<Eggrafi> mockEggrafes;
-    private List<Ypourgeio> mockYpourgeia;
+    private List<BasicRecord> mockEggrafes;
+    private List<Ministry> mockYpourgeia;
 
     @BeforeEach
     void setUp() {
         mockEggrafes = new ArrayList<>();
-        mockEggrafes.add(new Eggrafi("1,01", "Φόροι", new BigDecimal("10000000000")));
-        mockEggrafes.add(new Eggrafi("2,01", "Μισθοί", new BigDecimal("8000000000")));
+        mockEggrafes.add(new BasicRecord("1,01", "Φόροι", new BigDecimal("10000000000")));
+        mockEggrafes.add(new BasicRecord("2,01", "Μισθοί", new BigDecimal("8000000000")));
 
         mockYpourgeia = new ArrayList<>();
         mockYpourgeia.add(
-            new Ypourgeio(
+            new Ministry(
                 1,
                 "Υπουργείο Οικονομικών",
                 new BigDecimal("10000000000"),

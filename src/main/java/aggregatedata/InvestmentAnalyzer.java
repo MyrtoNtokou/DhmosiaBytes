@@ -1,6 +1,6 @@
 package aggregatedata;
 
-import budgetreader.Ypourgeio;
+import budgetreader.Ministry;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -29,14 +29,14 @@ public final class InvestmentAnalyzer {
      * @return list with ministry, ratio and percentage
      */
     public static List<InvestmentRatio>
-            calculate(final List<Ypourgeio> ypourg) {
+            calculate(final List<Ministry> ypourg) {
 
         List<InvestmentRatio> results = new ArrayList<>();
 
-        for (Ypourgeio y : ypourg) {
+        for (Ministry y : ypourg) {
             // Keep ministries only
-            if (y.getKodikos() < FIRST_MINISTRY_CODE
-            || y.getKodikos() > LAST_MINISTRY_CODE) {
+            if (y.getcode() < FIRST_MINISTRY_CODE
+            || y.getcode() > LAST_MINISTRY_CODE) {
                 continue;
             }
 
@@ -53,7 +53,7 @@ public final class InvestmentAnalyzer {
             BigDecimal percentage = ratio.multiply(BigDecimal.valueOf(PERCENT));
 
             results.add(new InvestmentRatio(
-                    y.getOnoma(),
+                    y.getName(),
                     ratio,
                     percentage
             ));

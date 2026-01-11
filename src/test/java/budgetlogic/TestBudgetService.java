@@ -16,33 +16,33 @@ class TestBudgetService {
     @BeforeEach
     void setup() {
         // --- Create fake general table ---
-        Map<String, Eggrafi> revenues = new LinkedHashMap<>();
-        Map<String, Eggrafi> expenses = new LinkedHashMap<>();
+        Map<String, BasicRecord> revenues = new LinkedHashMap<>();
+        Map<String, BasicRecord> expenses = new LinkedHashMap<>();
 
         // HEADER ROWS
-        revenues.put("revHeader", new Eggrafi("revHeader", "ΕΣΟΔΑ", bd(0)));
-        expenses.put("expHeader", new Eggrafi("expHeader", "ΕΞΟΔΑ", bd(0)));
-        expenses.put("result", new Eggrafi("result", "ΑΠΟΤΕΛΕΣΜΑ", bd(0)));
+        revenues.put("revHeader", new BasicRecord("revHeader", "ΕΣΟΔΑ", bd(0)));
+        expenses.put("expHeader", new BasicRecord("expHeader", "ΕΞΟΔΑ", bd(0)));
+        expenses.put("result", new BasicRecord("result", "ΑΠΟΤΕΛΕΣΜΑ", bd(0)));
 
         // Example general entries
-        revenues.put("100", new Eggrafi("100", "Φόροι", bd(100)));
-        expenses.put("200", new Eggrafi("200", "Μισθοί", bd(50)));
-        expenses.put("201", new Eggrafi("201", "Προμήθειες", bd(20)));
+        revenues.put("100", new BasicRecord("100", "Φόροι", bd(100)));
+        expenses.put("200", new BasicRecord("200", "Μισθοί", bd(50)));
+        expenses.put("201", new BasicRecord("201", "Προμήθειες", bd(20)));
 
         // --- Create fake ministries table ---
-        Map<Integer, Ypourgeio> ministries = new LinkedHashMap<>();
+        Map<Integer, Ministry> ministries = new LinkedHashMap<>();
 
         // Ministry 10 (normal ministry)
-        ministries.put(10, new Ypourgeio(10, "Υπουργείο Οικονομικών",
+        ministries.put(10, new Ministry(10, "Υπουργείο Οικονομικών",
                 bd(60), bd(40), bd(100)));
 
         // Ministry total row
-        ministries.put(4, new Ypourgeio(4, "Υπουργεία Συνολικά",
+        ministries.put(4, new Ministry(4, "Υπουργεία Συνολικά",
                 bd(60), bd(40), bd(100)));
 
         // Expense entries to be updated through propagation
-        expenses.put("10A", new Eggrafi("10A", "Δαπάνη Α", bd(30)));
-        expenses.put("10B", new Eggrafi("10B", "Δαπάνη Β", bd(70)));
+        expenses.put("10A", new BasicRecord("10A", "Δαπάνη Α", bd(30)));
+        expenses.put("10B", new BasicRecord("10B", "Δαπάνη Β", bd(70)));
 
         budget = new Budget(revenues, expenses, ministries);
 
@@ -65,15 +65,15 @@ class TestBudgetService {
 
         service.changeMinistryAmount(10, "τακτικός", bd(80));
 
-        Ypourgeio min = budget.getMinistries().get(10);
+        Ministry min = budget.getMinistries().get(10);
 
-        assertEquals(bd(80), min.getTaktikos());
+        assertEquals(bd(80), min.getRegularBudget());
         assertEquals(bd(40), min.getEpendyseis());
         assertEquals(bd(120), min.getSynolo());
 
         // ministries total row should also update:
-        Ypourgeio total = budget.getMinistries().get(4);
-        assertEquals(bd(80), total.getTaktikos());
+        Ministry total = budget.getMinistries().get(4);
+        assertEquals(bd(80), total.getRegularBudget());
         assertEquals(bd(40), total.getEpendyseis());
         assertEquals(bd(120), total.getSynolo());
     }
@@ -90,8 +90,8 @@ class TestBudgetService {
         // 10A = +20 * 0.70 = +14
         // 10B = +20 * 0.30 = +6
 
-        assertEquals(bd(44), budget.getExpenses().get("10A").getPoso());
-        assertEquals(bd(76), budget.getExpenses().get("10B").getPoso());
+        assertEquals(bd(44), budget.getExpenses().get("10A").getAmount());
+        assertEquals(bd(76), budget.getExpenses().get("10B").getAmount());
     }
 
     @Test

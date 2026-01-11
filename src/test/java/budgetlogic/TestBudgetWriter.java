@@ -1,7 +1,7 @@
 package budgetlogic;
 
-import budgetreader.Eggrafi;
-import budgetreader.Ypourgeio;
+import budgetreader.BasicRecord;
+import budgetreader.Ministry;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,9 +20,9 @@ public class TestBudgetWriter {
         Path tempFile = Files.createTempFile("general-test", ".csv");
 
         // Sample data
-        List<Eggrafi> list = List.of(
-                new Eggrafi("001", "Test Description 1", new BigDecimal("123.45")),
-                new Eggrafi("002", "Test Description 2", new BigDecimal("678.90"))
+        List<BasicRecord> list = List.of(
+                new BasicRecord("001", "Test Description 1", new BigDecimal("123.45")),
+                new BasicRecord("002", "Test Description 2", new BigDecimal("678.90"))
         );
 
         // Κλήση του writer
@@ -42,12 +42,12 @@ public class TestBudgetWriter {
         // TEMP file
         Path tempFile = Files.createTempFile("ministries-test", ".csv");
 
-        List<Ypourgeio> list = List.of(
-                new Ypourgeio(10, "Υπ. Παιδείας",
+        List<Ministry> list = List.of(
+                new Ministry(10, "Υπ. Παιδείας",
                         new BigDecimal("1000"),
                         new BigDecimal("200"),
                         new BigDecimal("1200")),
-                new Ypourgeio(20, "Υπ. Υγείας",
+                new Ministry(20, "Υπ. Υγείας",
                         new BigDecimal("1500"),
                         new BigDecimal("500"),
                         new BigDecimal("2000"))

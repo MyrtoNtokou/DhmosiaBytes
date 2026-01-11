@@ -13,9 +13,9 @@ import aggregatedata.InvestmentRatio;
 import aggregatedata.MinistryAnalyzer;
 import aggregatedata.MinistryStats;
 import aggregatedata.MinistryStatsPrinter;
-import budgetreader.Eggrafi;
+import budgetreader.BasicRecord;
 import budgetreader.ReadBudget;
-import budgetreader.Ypourgeio;
+import budgetreader.Ministry;
 
 /**
  * Provides a menu for selecting and displaying budget statistics.
@@ -92,17 +92,17 @@ public final class AggregateMenu {
         } while (choice != 1 && choice != CODE_FOR_MENUS);
 
         if (choice == 1) {
-            List<Ypourgeio> y =
+            List<Ministry> y =
             ReadBudget.readByMinistry("proypologismos2026anaypourgeio.csv");
             MinistryStats stats = MinistryAnalyzer.analyze(y);
 
-            MinistryStatsPrinter.printTaktikos(stats);
+            MinistryStatsPrinter.printRegularBudget(stats);
 
             MinistryStatsPrinter.printEpendyseis(stats);
 
             MinistryStatsPrinter.printSynolo(stats);
         } else if (choice == 2) {
-            List<Ypourgeio> ypourg =
+            List<Ministry> ypourg =
             ReadBudget.readByMinistry("proypologismos2026anaypourgeio.csv");
             List<InvestmentRatio> ratios =
             InvestmentAnalyzer.calculate(ypourg);
@@ -120,7 +120,7 @@ public final class AggregateMenu {
     public void displayMinMax(final int generalOrMinistries,
     final Scanner input) {
         if (generalOrMinistries == 1) {
-            List<Eggrafi> g =
+            List<BasicRecord> g =
             ReadBudget.readGeneralBudget("proypologismos2026.csv");
             BudgetStats stats = BudgetAnalyzer.analyze(g);
 

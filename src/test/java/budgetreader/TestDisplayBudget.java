@@ -15,7 +15,7 @@ public class TestDisplayBudget {
 
     /**
      * Tests whether the {@code showGeneral} method prints the expected elements
-     * when provided with a list of {@link Eggrafi} objects.
+     * when provided with a list of {@link BasicRecord} objects.
      */
     @Test
     public void testShowGeneralOutput() {
@@ -26,9 +26,9 @@ public class TestDisplayBudget {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
-        /*Mock list with Eggrafi. */
-        List<Eggrafi> eggrafes = new ArrayList<>();
-        eggrafes.add(new Eggrafi("1", "Τεστ Έσοδο", BigDecimal.valueOf(100)));
+        /*Mock list with BasicRecord. */
+        List<BasicRecord> eggrafes = new ArrayList<>();
+        eggrafes.add(new BasicRecord("1", "Τεστ Έσοδο", BigDecimal.valueOf(100)));
 
         /*Call showGeneral method of DispayBudget. */
         DisplayBudget.showGeneral(eggrafes);
@@ -47,7 +47,7 @@ public class TestDisplayBudget {
 
     /**
      * Tests whether the {@code showMinistry} method prints the expected
-     * ministry budget information when provided with a list of {@link Ypourgeio}.
+     * ministry budget information when provided with a list of {@link Ministry}.
      */
     @Test
     public void testShowMinistryOutput() {
@@ -56,8 +56,8 @@ public class TestDisplayBudget {
         System.setOut(new PrintStream(outContent));
 
         /* Mock data. */
-        List<Ypourgeio> lista = new ArrayList<>();
-        lista.add(new Ypourgeio(1, "Υπ. Παιδείας",
+        List<Ministry> lista = new ArrayList<>();
+        lista.add(new Ministry(1, "Υπ. Παιδείας",
                 new BigDecimal(200),
                 new BigDecimal(300),
             new BigDecimal(400)));

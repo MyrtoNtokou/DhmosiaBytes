@@ -1,6 +1,6 @@
 package aggregatedata;
 
-import budgetreader.Ypourgeio;
+import budgetreader.Ministry;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 /**
  * TOP_COUNT max min on ministries for each budget category.
- * Based on Taktikos, Ependyseis, Synolo.
+ * Based on regularBudget, Ependyseis, Synolo.
 * */
 public final class MinistryAnalyzer {
 
@@ -45,58 +45,59 @@ public final class MinistryAnalyzer {
      * @param list list with ministries.
      * @return MinistryStats object
      * */
-    public static MinistryStats analyze(final List<Ypourgeio> list) {
+    public static MinistryStats analyze(final List<Ministry> list) {
 
-        List<Ypourgeio> ministries = list.stream()
+        List<Ministry> ministries = list.stream()
                 // codes between 5 and 24
-                .filter(y -> y.getKodikos() >= FIRST_MINISTRY_CODE
-                        && y.getKodikos() <= LAST_MINISTRY_CODE)
+                .filter(y -> y.getcode() >= FIRST_MINISTRY_CODE
+                        && y.getcode() <= LAST_MINISTRY_CODE)
                 // convert back to list
                 .collect(Collectors.toList());
 
-        // Calculate total taktikos
-        BigDecimal totalTaktikos = ministries.stream()
-                                .map(Ypourgeio::getTaktikos)
+        // Calculate total RegularBudget
+        BigDecimal totalRegularBudget = ministries.stream()
+                                .map(Ministry::getRegularBudget)
                                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         // Calculate total ependyseis
         BigDecimal totalEpendyseis = ministries.stream()
-                                .map(Ypourgeio::getEpendyseis)
+                                .map(Ministry::getEpendyseis)
                                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         // Calculate total synolo
         BigDecimal totalSynolo = ministries.stream()
-                                .map(Ypourgeio::getSynolo)
+                                .map(Ministry::getSynolo)
                                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         // Comparators for each category
-        // Compare Eggrafi types based on Taktikos
-        Comparator<Ypourgeio> byTaktikos =
-                Comparator.comparing(Ypourgeio::getTaktikos);
-        // Compare Eggrafi types based on Ependyseis
-        Comparator<Ypourgeio> byEpendyseis =
-                Comparator.comparing(Ypourgeio::getEpendyseis);
-        // Compare Eggrafi types based on Synolo
-        Comparator<Ypourgeio> bySynolo =
-                Comparator.comparing(Ypourgeio::getSynolo);
+        // Compare BasicRecord types based on RegularBudget
+        Comparator<Ministry> byRegularBudget =
+                Comparator.comparing(Ministry::getRegularBudget);
+        // Compare BasicRecord types based on Ependyseis
+        Comparator<Ministry> byEpendyseis =
+                Comparator.comparing(Ministry::getEpendyseis);
+        // Compare BasicRecord types based on Synolo
+        Comparator<Ministry> bySynolo =
+                Comparator.comparing(Ministry::getSynolo);
 
         // Max / Min for each category/column
-        List<Ypourgeio> maxTaktikos = ministries.stream()
-                .sorted(byTaktikos.reversed())
+        List<Ministry> maxRegularBudget = ministries.stream()
+                .sorted(byRegularBudget.reversed())
                 .limit(TOP_COUNT)
                 .collect(Collectors.toList());
 
-        List<Ypourgeio> maxEpendyseis = ministries.stream()
+        List<Ministry> maxEpendyseis = ministries.stream()
                 .sorted(byEpendyseis.reversed())
                 .limit(TOP_COUNT)
                 .collect(Collectors.toList());
 
-        List<Ypourgeio> maxSynolo = ministries.stream()
+        List<Ministry> maxSynolo = ministries.stream()
                 .sorted(bySynolo.reversed())
                 .limit(TOP_COUNT)
                 .collect(Collectors.toList());
 
         // Calculate percentages
-        List<BigDecimal> maxTaktikosPercentages = maxTaktikos.stream()
-                        .map(y -> percent(y.getTaktikos(), totalTaktikos))
+        List<BigDecimal> maxRegularBudgetPercentages = maxRegularBudget.stream()
+                        .map(y -> percent(y.getRegularBudget(),
+                        totalRegularBudget))
                         .collect(Collectors.toList());
 
         List<BigDecimal> maxEpendyseisPercentages = maxEpendyseis.stream()
@@ -108,10 +109,10 @@ public final class MinistryAnalyzer {
                         .collect(Collectors.toList());
 
         return new MinistryStats(
-                maxTaktikos,
+                maxRegularBudget,
                 maxEpendyseis,
                 maxSynolo,
-                maxTaktikosPercentages,
+                maxRegularBudgetPercentages,
                 maxEpendyseisPercentages,
                 maxSynoloPercentages);
     }

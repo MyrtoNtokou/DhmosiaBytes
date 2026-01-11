@@ -1,8 +1,8 @@
 package budgetlogic;
 
 import static org.junit.jupiter.api.Assertions.*;
-import budgetreader.Eggrafi;
-import budgetreader.Ypourgeio;
+import budgetreader.BasicRecord;
+import budgetreader.Ministry;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.math.BigDecimal;
@@ -47,19 +47,19 @@ class TestBudgetDiffPrinter {
 
     @Test
     void testCompareRevenuesPrintsChanges() {
-        Map<String, Eggrafi> revBefore = new LinkedHashMap<>();
-        Map<String, Eggrafi> revAfter = new LinkedHashMap<>();
-        Map<String, Eggrafi> expBefore = new LinkedHashMap<>();
-        Map<String, Eggrafi> expAfter = new LinkedHashMap<>();
-        Map<Integer, Ypourgeio> ministries = new LinkedHashMap<>();
+        Map<String, BasicRecord> revBefore = new LinkedHashMap<>();
+        Map<String, BasicRecord> revAfter = new LinkedHashMap<>();
+        Map<String, BasicRecord> expBefore = new LinkedHashMap<>();
+        Map<String, BasicRecord> expAfter = new LinkedHashMap<>();
+        Map<Integer, Ministry> ministries = new LinkedHashMap<>();
 
         // Add a revenue record that changes
-        revBefore.put("1", new Eggrafi("1", "Revenue 1", BigDecimal.valueOf(100)));
-        revAfter.put("1", new Eggrafi("1", "Revenue 1", BigDecimal.valueOf(150)));
+        revBefore.put("1", new BasicRecord("1", "Revenue 1", BigDecimal.valueOf(100)));
+        revAfter.put("1", new BasicRecord("1", "Revenue 1", BigDecimal.valueOf(150)));
 
         // Add a RESULT record in expenses so compareResult doesn't fail
-        expBefore.put("R", new Eggrafi("R", "ΑΠΟΤΕΛΕΣΜΑ", BigDecimal.valueOf(50)));
-        expAfter.put("R", new Eggrafi("R", "ΑΠΟΤΕΛΕΣΜΑ", BigDecimal.valueOf(50)));
+        expBefore.put("R", new BasicRecord("R", "ΑΠΟΤΕΛΕΣΜΑ", BigDecimal.valueOf(50)));
+        expAfter.put("R", new BasicRecord("R", "ΑΠΟΤΕΛΕΣΜΑ", BigDecimal.valueOf(50)));
 
         // Create Budget objects
         Budget before = new Budget(revBefore, expBefore, ministries);
@@ -78,17 +78,17 @@ class TestBudgetDiffPrinter {
 
     @Test
     void testCompareMinistriesPrintsChanges() {
-        Map<String, Eggrafi> rev = new LinkedHashMap<>();
-        Map<String, Eggrafi> exp = new LinkedHashMap<>();
-        Map<Integer, Ypourgeio> minBefore = new LinkedHashMap<>();
-        Map<Integer, Ypourgeio> minAfter = new LinkedHashMap<>();
+        Map<String, BasicRecord> rev = new LinkedHashMap<>();
+        Map<String, BasicRecord> exp = new LinkedHashMap<>();
+        Map<Integer, Ministry> minBefore = new LinkedHashMap<>();
+        Map<Integer, Ministry> minAfter = new LinkedHashMap<>();
 
-        // Create a ministry record with a change in taktikos
-        Ypourgeio oldMin = new Ypourgeio(1, "Ministry A",
+        // Create a ministry record with a change in regularBudget
+        Ministry oldMin = new Ministry(1, "Ministry A",
                                           BigDecimal.valueOf(1000),
                                           BigDecimal.valueOf(200),
                                           BigDecimal.valueOf(1200));
-        Ypourgeio newMin = new Ypourgeio(1, "Ministry A",
+        Ministry newMin = new Ministry(1, "Ministry A",
                                           BigDecimal.valueOf(1100),
                                           BigDecimal.valueOf(200),
                                           BigDecimal.valueOf(1300));
@@ -102,19 +102,19 @@ class TestBudgetDiffPrinter {
         String captured = BudgetDiffPrinter.captureMinistryDiff(before, after);
 
         assertTrue(captured.contains("Ministry A"));
-        assertTrue(captured.contains("1000 →")); // old Taktikos
-        assertTrue(captured.contains("1100"));    // new Taktikos
+        assertTrue(captured.contains("1000 →")); // old regularBudget
+        assertTrue(captured.contains("1100"));    // new regularBudget
         assertTrue(captured.contains("1300"));    // new Synolo
     }
 
     @Test
     void testPrintRevenuesAndExpenses() {
-        Map<String, Eggrafi> rev = new LinkedHashMap<>();
-        Map<String, Eggrafi> exp = new LinkedHashMap<>();
-        Map<Integer, Ypourgeio> ministries = new LinkedHashMap<>();
+        Map<String, BasicRecord> rev = new LinkedHashMap<>();
+        Map<String, BasicRecord> exp = new LinkedHashMap<>();
+        Map<Integer, Ministry> ministries = new LinkedHashMap<>();
 
-        rev.put("1", new Eggrafi("1", "Revenue 1", BigDecimal.valueOf(100)));
-        exp.put("1", new Eggrafi("1", "Expense 1", BigDecimal.valueOf(50)));
+        rev.put("1", new BasicRecord("1", "Revenue 1", BigDecimal.valueOf(100)));
+        exp.put("1", new BasicRecord("1", "Expense 1", BigDecimal.valueOf(50)));
 
         Budget budget = new Budget(rev, exp, ministries);
 
@@ -129,12 +129,12 @@ class TestBudgetDiffPrinter {
 
     @Test
     void testPrintMinistries() {
-        Map<String, Eggrafi> rev = new LinkedHashMap<>();
-        Map<String, Eggrafi> exp = new LinkedHashMap<>();
-        Map<Integer, Ypourgeio> ministries = new LinkedHashMap<>();
+        Map<String, BasicRecord> rev = new LinkedHashMap<>();
+        Map<String, BasicRecord> exp = new LinkedHashMap<>();
+        Map<Integer, Ministry> ministries = new LinkedHashMap<>();
 
         // Add one ministry
-        Ypourgeio yp = new Ypourgeio(1, "Ministry A",
+        Ministry yp = new Ministry(1, "Ministry A",
                                       BigDecimal.valueOf(1000),
                                       BigDecimal.valueOf(200),
                                       BigDecimal.valueOf(1200));
@@ -146,7 +146,7 @@ class TestBudgetDiffPrinter {
 
         String output = outContent.toString();
         assertTrue(output.contains("Ministry A"), "Output should contain Ministry A");
-        assertTrue(output.contains("1000"), "Output should contain Taktikos value");
+        assertTrue(output.contains("1000"), "Output should contain regularBudget value");
         assertTrue(output.contains("200"), "Output should contain Ependyseis value");
         assertTrue(output.contains("1200"), "Output should contain Synolo value");
     }

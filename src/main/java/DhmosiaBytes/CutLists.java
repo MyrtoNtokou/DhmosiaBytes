@@ -5,29 +5,29 @@ import java.util.List;
 import java.util.Scanner;
 
 import budgetlogic.Budget;
-import budgetreader.Eggrafi;
+import budgetreader.BasicRecord;
 import budgetreader.ReadBudget;
-import budgetreader.Ypourgeio;
+import budgetreader.Ministry;
 
 /**
- * Cuts and displays list Eggrafi and list Ypourgeio.
+ * Cuts and displays list BasicRecord and list Ministry.
  * Asks user to choose one element of the list
  * and accepts it only if it is valid.
  */
 public class CutLists {
 
      /**
-     * Displays some elements from list Eggrafi.
+     * Displays some elements from list BasicRecord.
      *
-     * @return the List<Eggrafi> containing only the revenues
+     * @return the List<BasicRecord> containing only the revenues
      */
-    public List<Eggrafi> cutEggrafiEsoda() {
-        List<Eggrafi> g =
+    public List<BasicRecord> cutBasicRecordEsoda() {
+        List<BasicRecord> g =
         ReadBudget.readGeneralBudget("proypologismos2026.csv");
 
-        List<Eggrafi> esoda = new ArrayList<>();
-        for (Eggrafi e : g) {
-            if (e.getKodikos().startsWith("1,")) {
+        List<BasicRecord> esoda = new ArrayList<>();
+        for (BasicRecord e : g) {
+            if (e.getCode().startsWith("1,")) {
                 esoda.add(e);
             }
         }
@@ -35,17 +35,17 @@ public class CutLists {
     }
 
     /**
-     * Displays the expenses from list Eggrafi.
+     * Displays the expenses from list BasicRecord.
      *
-     * @return the List<Eggrafi> containing only the expenses
+     * @return the List<BasicRecord> containing only the expenses
      */
-    public List<Eggrafi> cutEggrafiExoda() {
-        List<Eggrafi> g =
+    public List<BasicRecord> cutBasicRecordExoda() {
+        List<BasicRecord> g =
         ReadBudget.readGeneralBudget("proypologismos2026.csv");
 
-        List<Eggrafi> exoda = new ArrayList<>();
-        for (Eggrafi e : g) {
-            if (e.getKodikos().startsWith("2,")) {
+        List<BasicRecord> exoda = new ArrayList<>();
+        for (BasicRecord e : g) {
+            if (e.getCode().startsWith("2,")) {
                 exoda.add(e);
             }
         }
@@ -53,19 +53,19 @@ public class CutLists {
     }
 
      /**
-     * Displays some elements from list Ypourgeio.
+     * Displays some elements from list Ministry.
      *
-     * @return the List<Ypourgeio> containing only the ministries
+     * @return the List<Ministry> containing only the ministries
      */
-    public List<Ypourgeio> cutYpourgeio() {
-        List<Ypourgeio> y =
+    public List<Ministry> cutMinistry() {
+        List<Ministry> y =
         ReadBudget.readByMinistry("proypologismos2026anaypourgeio.csv");
 
-        List<Ypourgeio> ministries = new ArrayList<>();
-        for (Ypourgeio e : y) {
-            if (!String.valueOf(e.getKodikos()).startsWith("4")
-            && !String.valueOf(e.getKodikos()).startsWith("25")
-            && !String.valueOf(e.getKodikos()).startsWith("33")) {
+        List<Ministry> ministries = new ArrayList<>();
+        for (Ministry e : y) {
+            if (!String.valueOf(e.getcode()).startsWith("4")
+            && !String.valueOf(e.getcode()).startsWith("25")
+            && !String.valueOf(e.getcode()).startsWith("33")) {
                 ministries.add(e);
             }
         }
@@ -83,7 +83,7 @@ public class CutLists {
      * @return the code of the selected revenue, or "0" to go back
      */
     public String selectRevenue(final Scanner scanner,
-    final List<Eggrafi> esoda, final Budget initialBudget) {
+    final List<BasicRecord> esoda, final Budget initialBudget) {
         BudgetEditor editor = new BudgetEditor();
 
         String choice;
@@ -98,8 +98,8 @@ public class CutLists {
             }
 
             boolean exists = false;
-            for (Eggrafi eg : esoda) {
-                if (eg.getKodikos().equals(choice)) {
+            for (BasicRecord eg : esoda) {
+                if (eg.getCode().equals(choice)) {
                     exists = true;
                     break;
                 }
@@ -127,7 +127,7 @@ public class CutLists {
      * @return the code of the selected ministry, or 0 to go back
      */
     public int selectMinistry(final Scanner scanner,
-    final List<Ypourgeio> ministries, final Budget initialBudget,
+    final List<Ministry> ministries, final Budget initialBudget,
     final Role currentRole) {
         BudgetEditor editor = new BudgetEditor();
 
@@ -150,8 +150,8 @@ public class CutLists {
             }
 
             boolean exists = false;
-            for (Ypourgeio y : ministries) {
-                if (y.getKodikos() == choice) {
+            for (Ministry y : ministries) {
+                if (y.getcode() == choice) {
                     exists = true;
                     break;
                 }
@@ -175,10 +175,10 @@ public class CutLists {
      * @return the code of the selected revenue entry
      */
     public int selectRevenueByNumber(final Scanner scanner,
-    final List<Eggrafi> esoda) {
+    final List<BasicRecord> esoda) {
         System.out.println();
         for (int i = 0; i < esoda.size(); i++) {
-            System.out.println((i + 1) + ". " + esoda.get(i).getPerigrafi());
+            System.out.println((i + 1) + ". " + esoda.get(i).getDescription());
         }
         int choice = -1;
         while (choice < 1 || choice > esoda.size()) {
@@ -206,10 +206,10 @@ public class CutLists {
      * @return the code of the selected revenue entry
      */
     public int selectExpenseByNumber(final Scanner scanner,
-    final List<Eggrafi> exoda) {
+    final List<BasicRecord> exoda) {
         System.out.println();
         for (int i = 0; i < exoda.size(); i++) {
-            System.out.println((i + 1) + ". " + exoda.get(i).getPerigrafi());
+            System.out.println((i + 1) + ". " + exoda.get(i).getDescription());
         }
         int choice = -1;
         while (choice < 1 || choice > exoda.size()) {
@@ -237,10 +237,10 @@ public class CutLists {
      * @return the code of the selected ministry
      */
     public int selectMinistryByNumber(final Scanner scanner,
-    final List<Ypourgeio> ministry) {
+    final List<Ministry> ministry) {
         System.out.println();
         for (int i = 0; i < ministry.size(); i++) {
-            System.out.println((i + 1) + ". " + ministry.get(i).getOnoma());
+            System.out.println((i + 1) + ". " + ministry.get(i).getName());
         }
         int choice = -1;
         while (choice < 1 || choice > ministry.size()) {

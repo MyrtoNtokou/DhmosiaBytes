@@ -13,7 +13,7 @@
  *   <li>
  *     Analysis of budget allocations per ministry, including:
  *     <ul>
- *       <li>Regular budget (Taktikos)</li>
+ *       <li>Regular budget (RegularBudget)</li>
  *       <li>Public investments (Ependyseis)</li>
  *       <li>Total expenditures</li>
  *     </ul>

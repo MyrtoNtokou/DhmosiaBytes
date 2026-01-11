@@ -7,8 +7,8 @@ import java.util.*;
 
 import org.junit.jupiter.api.Test;
 
-import budgetreader.Eggrafi;
-import budgetreader.Ypourgeio;
+import budgetreader.BasicRecord;
+import budgetreader.Ministry;
 
 class TestBudgetAssembler {
 
@@ -17,17 +17,17 @@ class TestBudgetAssembler {
         BudgetAssembler assembler = new BudgetAssembler();
 
         // Mock data for general budget
-        List<Eggrafi> generalList = List.of(
-            new Eggrafi("1", "ΕΣΟΔΑ ΤΑΜΕΙΟΥ", BigDecimal.valueOf(1000)),
-            new Eggrafi("2", "ΦΟΡΟΙ", BigDecimal.valueOf(500)),
-            new Eggrafi("3", "ΕΞΟΔΑ ΔΗΜΟΣΙΑΣ ΔΙΟΙΚΗΣΗΣ", BigDecimal.valueOf(400)),
-            new Eggrafi("4", "ΜΙΣΘΟΙ", BigDecimal.valueOf(200)),
-            new Eggrafi("5", "ΑΠΟΤΕΛΕΣΜΑ", BigDecimal.valueOf(900))
+        List<BasicRecord> generalList = List.of(
+            new BasicRecord("1", "ΕΣΟΔΑ ΤΑΜΕΙΟΥ", BigDecimal.valueOf(1000)),
+            new BasicRecord("2", "ΦΟΡΟΙ", BigDecimal.valueOf(500)),
+            new BasicRecord("3", "ΕΞΟΔΑ ΔΗΜΟΣΙΑΣ ΔΙΟΙΚΗΣΗΣ", BigDecimal.valueOf(400)),
+            new BasicRecord("4", "ΜΙΣΘΟΙ", BigDecimal.valueOf(200)),
+            new BasicRecord("5", "ΑΠΟΤΕΛΕΣΜΑ", BigDecimal.valueOf(900))
         );
 
         // Maps to store separated revenues and expenses
-        Map<String, Eggrafi> revenuesMap = new LinkedHashMap<>();
-        Map<String, Eggrafi> expensesMap = new LinkedHashMap<>();
+        Map<String, BasicRecord> revenuesMap = new LinkedHashMap<>();
+        Map<String, BasicRecord> expensesMap = new LinkedHashMap<>();
 
         // Call the private method using reflection
         var method = BudgetAssembler.class
@@ -53,10 +53,10 @@ class TestBudgetAssembler {
         BudgetAssembler assembler = new BudgetAssembler();
 
         // Mock data for ministries
-        List<Ypourgeio> ministries = List.of(
-            new Ypourgeio(1, "Υπουργείο Α", BigDecimal.valueOf(1000),
+        List<Ministry> ministries = List.of(
+            new Ministry(1, "Υπουργείο Α", BigDecimal.valueOf(1000),
                            BigDecimal.valueOf(200), BigDecimal.valueOf(1200)),
-            new Ypourgeio(2, "Υπουργείο Β", BigDecimal.valueOf(1500),
+            new Ministry(2, "Υπουργείο Β", BigDecimal.valueOf(1500),
                            BigDecimal.valueOf(300), BigDecimal.valueOf(1800))
         );
 
@@ -65,7 +65,7 @@ class TestBudgetAssembler {
                 .getDeclaredMethod("mapMinistryRecords", List.class);
         method.setAccessible(true);
         @SuppressWarnings("unchecked")
-        Map<Integer, Ypourgeio> map = (Map<Integer, Ypourgeio>) method.invoke(assembler, ministries);
+        Map<Integer, Ministry> map = (Map<Integer, Ministry>) method.invoke(assembler, ministries);
 
         // Assertions for the ministry map
         assertNotNull(map);
@@ -74,12 +74,12 @@ class TestBudgetAssembler {
         assertTrue(map.containsKey(2));
 
         // Check the ministry objects
-        Ypourgeio yp1 = map.get(1);
-        assertEquals("Υπουργείο Α", yp1.getOnoma());
+        Ministry yp1 = map.get(1);
+        assertEquals("Υπουργείο Α", yp1.getName());
         assertEquals(BigDecimal.valueOf(1200), yp1.getSynolo());
 
-        Ypourgeio yp2 = map.get(2);
-        assertEquals("Υπουργείο Β", yp2.getOnoma());
+        Ministry yp2 = map.get(2);
+        assertEquals("Υπουργείο Β", yp2.getName());
         assertEquals(BigDecimal.valueOf(1800), yp2.getSynolo());
     }
 }

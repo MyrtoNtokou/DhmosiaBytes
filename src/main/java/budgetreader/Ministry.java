@@ -8,16 +8,16 @@ import java.util.Map;
  * Represents a Ministry entry containing its code, name, and associated
  * budget values (regular budget, public investment budget, and total budget).
  */
-public class Ypourgeio {
+public class Ministry {
 
     /** Ministry code. */
-    private int kodikos;
+    private int code;
 
     /** Ministry name. */
-    private String onoma;
+    private String name;
 
-    /** Regular budget amount (taktikos). */
-    private BigDecimal taktikos;
+    /** Regular budget amount (regularBudget). */
+    private BigDecimal regularBudget;
 
     /** Public investment budget amount. */
     private BigDecimal ependyseis;
@@ -26,23 +26,23 @@ public class Ypourgeio {
     private BigDecimal synolo;
 
     /**
-     * Constructs a new {@code Ypourgeio} instance with the given attributes.
+     * Constructs a new {@code Ministry} instance with the given attributes.
      *
-     * @param kodikosValue is the kodikos of Ministry
-     * @param onomaValue is the name of the Ministry
-     * @param taktikosValue is the amount of Ministry's General Budget
+     * @param codeValue is the code of Ministry
+     * @param nameValue is the name of the Ministry
+     * @param regularBudgetValue is the amount of Ministry's General Budget
      * @param ependyseisValue is the amount of Ministry's investments
      * @param synoloValue is the total amount of Ministry's Budget
      */
-    public Ypourgeio(final int kodikosValue,
-                    final String onomaValue,
-                    final BigDecimal taktikosValue,
+    public Ministry(final int codeValue,
+                    final String nameValue,
+                    final BigDecimal regularBudgetValue,
                     final BigDecimal ependyseisValue,
                     final BigDecimal synoloValue) {
 
-        kodikos = kodikosValue;
-        onoma = onomaValue;
-        taktikos = taktikosValue;
+        code = codeValue;
+        name = nameValue;
+        regularBudget = regularBudgetValue;
         ependyseis = ependyseisValue;
         synolo = synoloValue;
         this.allocation = new LinkedHashMap<>();
@@ -63,28 +63,28 @@ public class Ypourgeio {
     /**
      * Returns the ministry code.
      *
-     * @return kodikos
+     * @return code
      */
-    public int getKodikos() {
-        return kodikos;
+    public int getcode() {
+        return code;
     }
 
     /**
      * Returns the ministry name.
      *
-     * @return onoma
+     * @return name
      */
-    public String getOnoma() {
-        return onoma;
+    public String getName() {
+        return name;
     }
 
     /**
      * Returns the regular budget amount.
      *
-     * @return taktikos (General Ministry's Budget)
+     * @return regularBudget (General Ministry's Budget)
      */
-    public BigDecimal getTaktikos() {
-        return taktikos;
+    public BigDecimal getRegularBudget() {
+        return regularBudget;
     }
 
     /**
@@ -105,25 +105,25 @@ public class Ypourgeio {
         return synolo;
     }
 
-    /** method that sets new value to kodikos variable.
-     * @param kodikosNew to set.
+    /** method that sets new value to code variable.
+     * @param codeNew to set.
      */
-    public void setKodikos(final int kodikosNew) {
-        kodikos = kodikosNew;
+    public void setcode(final int codeNew) {
+        code = codeNew;
     }
 
-    /** method that sets new value to onoma variable.
-     * @param onomaNew to set.
+    /** method that sets new value to name variable.
+     * @param nameNew to set.
     */
-    public void setOnoma(final String onomaNew) {
-        onoma = onomaNew;
+    public void setName(final String nameNew) {
+        name = nameNew;
     }
 
-    /** method that sets new value to taktikos variable.
-     * @param taktikosNew to set.
+    /** method that sets new value to regularBudget variable.
+     * @param regularBudgetNew to set.
     */
-    public void setTaktikos(final BigDecimal taktikosNew) {
-        taktikos = taktikosNew;
+    public void setRegularBudget(final BigDecimal regularBudgetNew) {
+        regularBudget = regularBudgetNew;
         recalcSynolo();
     }
 
@@ -149,8 +149,8 @@ public class Ypourgeio {
      */
     @Override
     public String toString() {
-        return kodikos + " | " + onoma
-               + " | " + taktikos
+        return code + " | " + name
+               + " | " + regularBudget
                + " | " + ependyseis
                + " | " + synolo;
     }
@@ -166,16 +166,16 @@ public class Ypourgeio {
     }
 
     /**
-     * Recalculates the total budget based on taktikos and pde.
+     * Recalculates the total budget based on regularBudget and pde.
      */
     private void recalcSynolo() {
-        if (taktikos == null) {
-            taktikos = BigDecimal.ZERO;
+        if (regularBudget == null) {
+            regularBudget = BigDecimal.ZERO;
         }
         if (ependyseis == null) {
             ependyseis = BigDecimal.ZERO;
         }
-        this.synolo = taktikos.add(ependyseis);
+        this.synolo = regularBudget.add(ependyseis);
     }
 
 }

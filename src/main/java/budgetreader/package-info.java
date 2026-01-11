@@ -9,11 +9,11 @@
  *
  * <ul>
  *   <li>{@link budgetreader.ReadBudget} – reads budget CSV files and converts
- *       each row into {@link budgetreader.Eggrafi} or
- *       {@link budgetreader.Ypourgeio} objects. Supports:
+ *       each row into {@link budgetreader.BasicRecord} or
+ *       {@link budgetreader.Ministry} objects. Supports:
  *     <ul>
- *       <li>General budget (Eggrafi) CSVs</li>
- *       <li>Ministry budget (Ypourgeio) CSVs</li>
+ *       <li>General budget (BasicRecord) CSVs</li>
+ *       <li>Ministry budget (Ministry) CSVs</li>
  *       <li>Cropped ministry CSVs (only code and total budget)</li>
  *     </ul>
  *   </li>
@@ -21,10 +21,10 @@
  *   <li>{@link budgetreader.DisplayBudget} – utility class to display budget
  *       lists on the console, formatted for readability.</li>
  *
- *   <li>{@link budgetreader.Eggrafi} – model for a general budget record
+ *   <li>{@link budgetreader.BasicRecord} – model for a general budget record
  *       containing code, description, and amount.</li>
  *
- *   <li>{@link budgetreader.Ypourgeio} – model for a ministry budget record
+ *   <li>{@link budgetreader.Ministry} – model for a ministry budget record
  *       with code, name, regular budget, public investment budget, total,
  *       and allocations.</li>
  * </ul>
@@ -33,7 +33,7 @@
  *
  * <pre>
  * CSV files → {@link budgetreader.ReadBudget} →
- * List of {@link Eggrafi} / {@link Ypourgeio}
+ * List of {@link BasicRecord} / {@link Ministry}
  *        ↓
  * {@link budgetreader.DisplayBudget} → printed output to console
  * </pre>

@@ -1,6 +1,6 @@
 package aggregatedata;
 
-import budgetreader.Ypourgeio;
+import budgetreader.Ministry;
 import java.util.List;
 
 import static aggregatedata.ConsoleColors.RESET;
@@ -21,7 +21,7 @@ public final class InvestmentPrinter {
      * @param ypourg
      * @param ratios
      */
-    public static void print(final List<Ypourgeio> ypourg,
+    public static void print(final List<Ministry> ypourg,
                             final List<InvestmentRatio> ratios) {
 
         System.out.println(BOLD + CYAN + "\n=== ΔΕΙΚΤΗΣ "
@@ -33,16 +33,16 @@ public final class InvestmentPrinter {
 
         for (InvestmentRatio ir : ratios) {
 
-            // Find Ypourgeio to get code/investment/total
-            Ypourgeio y = findByName(ypourg, ir.getOnoma());
+            // Find Ministry to get code/investment/total
+            Ministry y = findByName(ypourg, ir.getName());
 
             if (y == null) {
                 continue;
             }
 
             System.out.printf("%-5d | %-55s | %-15s | %-15s | %-15s%n",
-                    y.getKodikos(),
-                    y.getOnoma(),
+                    y.getcode(),
+                    y.getName(),
                     y.getEpendyseis().toPlainString(),
                     y.getSynolo().toPlainString(),
                     BLUE + ir.getPercentage().toPlainString() + "%" + RESET);
@@ -53,12 +53,12 @@ public final class InvestmentPrinter {
      * Find ministry by name.
      * @param list
      * @param name
-     * @return Ypourgeio
+     * @return Ministry
      */
-    private static Ypourgeio findByName(final List<Ypourgeio> list,
+    private static Ministry findByName(final List<Ministry> list,
                                         final String name) {
-        for (Ypourgeio y : list) {
-            if (y.getOnoma().equals(name)) {
+        for (Ministry y : list) {
+            if (y.getName().equals(name)) {
                 return y;
             }
         }

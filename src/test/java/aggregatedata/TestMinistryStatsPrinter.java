@@ -1,6 +1,6 @@
 package aggregatedata;
 
-import budgetreader.Ypourgeio;
+import budgetreader.Ministry;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,14 +19,14 @@ class TestMinistryStatsPrinter {
 
     @BeforeEach
     void setUp() {
-        List<Ypourgeio> maxTaktikos = new ArrayList<>();
-        maxTaktikos.add(new Ypourgeio(5, "Ministry A", new BigDecimal("100"), new BigDecimal("50"), new BigDecimal("150")));
+        List<Ministry> maxRegularBudget = new ArrayList<>();
+        maxRegularBudget.add(new Ministry(5, "Ministry A", new BigDecimal("100"), new BigDecimal("50"), new BigDecimal("150")));
 
-        List<Ypourgeio> maxEpendyseis = new ArrayList<>();
-        maxEpendyseis.add(new Ypourgeio(10, "Ministry B", new BigDecimal("200"), new BigDecimal("100"), new BigDecimal("300")));
+        List<Ministry> maxEpendyseis = new ArrayList<>();
+        maxEpendyseis.add(new Ministry(10, "Ministry B", new BigDecimal("200"), new BigDecimal("100"), new BigDecimal("300")));
 
-        List<Ypourgeio> maxSynolo = new ArrayList<>();
-        maxSynolo.add(new Ypourgeio(15, "Ministry C", new BigDecimal("50"), new BigDecimal("50"), new BigDecimal("100")));
+        List<Ministry> maxSynolo = new ArrayList<>();
+        maxSynolo.add(new Ministry(15, "Ministry C", new BigDecimal("50"), new BigDecimal("50"), new BigDecimal("100")));
 
         List<BigDecimal> taktPercent = new ArrayList<>();
         taktPercent.add(new BigDecimal("100.00"));
@@ -38,7 +38,7 @@ class TestMinistryStatsPrinter {
         synoloPercent.add(new BigDecimal("100.00"));
 
         stats = new MinistryStats(
-                maxTaktikos,
+                maxRegularBudget,
                 maxEpendyseis,
                 maxSynolo,
                 taktPercent,
@@ -48,16 +48,16 @@ class TestMinistryStatsPrinter {
     }
 
     @Test
-    void testPrintTaktikos() {
+    void testPrintRegularBudget() {
         // Capture System.out
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
-        MinistryStatsPrinter.printTaktikos(stats);
+        MinistryStatsPrinter.printRegularBudget(stats);
 
         String output = outContent.toString();
         assertTrue(output.contains("Ministry A"), "Output should contain Ministry A");
-        assertTrue(output.contains("100"), "Output should contain the Taktikos value");
+        assertTrue(output.contains("100"), "Output should contain the RegularBudget value");
 
         // Restore System.out
         System.setOut(System.out);

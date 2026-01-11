@@ -10,20 +10,20 @@ public interface BudgetService {
     /**
      * Loads budget data from CSV files.
      *
-     * @param kodikos the budget code
+     * @param code the budget code
      * @param newAmount the new amount to set
      * @throws Exception if loading fails
      */
-    void changeGeneralAmount(String kodikos, BigDecimal newAmount);
+    void changeGeneralAmount(String code, BigDecimal newAmount);
 
     /**
      * Changes the amount for a specific ministry.
      *
-     * @param ministryKodikos the ministry code
+     * @param ministrycode the ministry code
      * @param column the column to change
      * @param newValue the new value to set
      */
-    void changeMinistryAmount(int ministryKodikos,
+    void changeMinistryAmount(int ministrycode,
                               String column,
                               BigDecimal newValue);
 

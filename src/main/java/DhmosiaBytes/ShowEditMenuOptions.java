@@ -6,8 +6,8 @@ import java.util.Scanner;
 
 import budgetlogic.Budget;
 import budgetlogic.BudgetDiffPrinter;
-import budgetreader.Eggrafi;
-import budgetreader.Ypourgeio;
+import budgetreader.BasicRecord;
+import budgetreader.Ministry;
 
 /**
  * Provides menus and input handling for editing budget entries.
@@ -70,14 +70,14 @@ public class ShowEditMenuOptions {
             final Role currentRole) {
         CutLists cut = new CutLists();
         if (selected == RevenueOrExpense.INCOME) {
-            List<Eggrafi> esoda = cut.cutEggrafiEsoda();
+            List<BasicRecord> esoda = cut.cutBasicRecordEsoda();
             BudgetDiffPrinter.printRevenues(initialBudget);
             String code;
             do {
                 code = cut.selectRevenue(scanner, esoda, initialBudget);
             } while (!code.equals("0"));
         } else if (selected == RevenueOrExpense.EXPENSE) {
-            List<Ypourgeio> ministries = cut.cutYpourgeio();
+            List<Ministry> ministries = cut.cutMinistry();
             BudgetDiffPrinter.printMinistries(initialBudget);
             int code;
             do {
