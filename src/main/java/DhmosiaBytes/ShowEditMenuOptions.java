@@ -39,7 +39,7 @@ public class ShowEditMenuOptions {
                 choice = scanner.nextInt();
                 scanner.nextLine();
                 if (choice == 0) {
-                    return null;
+                    break;
                 }
                 selected = RevenueOrExpense.fromCode(choice);
             } catch (InputMismatchException e) {

@@ -400,6 +400,9 @@ public final class RequestsController {
             final boolean approvedByGovernment) {
         ShowEditMenuOptions edit = new ShowEditMenuOptions();
         RevenueOrExpense choice = edit.chooseRevenueOrExpense(input);
+        if (choice == null) {
+            return;
+        }
         switch (choice) {
             case INCOME -> {
                 RevenueRequestService revenueService =

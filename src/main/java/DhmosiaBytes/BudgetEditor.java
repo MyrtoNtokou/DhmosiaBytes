@@ -3,8 +3,10 @@ package dhmosiabytes;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,8 +28,6 @@ import ministryrequests.RequestLoader;
 import ministryrequests.RequestType;
 import revenuerequests.RevenueRequestParser;
 import revenuerequests.RevenueRequestService;
-import java.nio.file.Paths;
-import java.nio.charset.StandardCharsets;
 
  /**
  * Allows editing of income and expense entries in a Budget.
@@ -321,8 +321,10 @@ public class BudgetEditor {
      *                   or saving the updated budget fails
      */
     public static void saveEditRevenue(final int id) throws Exception {
-        String filePath = "revenuerequests.txt";
-        String fileContent = Files.readString(Path.of(filePath));
+        Path dataDir = Paths.get("runtime-data");
+        Path filePath = dataDir.resolve("revenuerequests.txt");
+        String fileContent = Files.readString(filePath,
+                StandardCharsets.UTF_8);
 
         String block = RequestLoader.extractRequestBlock(fileContent, id);
 

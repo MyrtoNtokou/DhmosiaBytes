@@ -17,6 +17,8 @@ import ministryrequests.MinistryRequestService;
 import ministryrequests.RequestPrinter;
 import ministryrequests.RequestStatus;
 import ministryrequests.RequestType;
+import revenuerequests.RevenueRequest;
+import revenuerequests.RevenueRequestService;
 
 /**
  * Class that displays the application's main menu.
@@ -158,11 +160,7 @@ public final class ShowMenuOptions {
                             break;
                         }
                         case CODE_FOR_OPTION_1 -> {
-                            RequestPrinter.printRequests(
-                                new MinistryRequestService()
-                                .getByStatusAndType(RequestStatus
-                                        .PARLIAMENT_APPROVED, null)
-                            );
+                            editHistory(input);
                         }
                         case CODE_FOR_OPTION_2 -> showComparedBudgets();
                         case CODE_FOR_OPTION_3 -> {
@@ -186,11 +184,7 @@ public final class ShowMenuOptions {
                             break;
                         }
                         case CODE_FOR_OPTION_1 -> {
-                            RequestPrinter.printRequests(
-                                    new MinistryRequestService()
-                                    .getByStatusAndType(RequestStatus
-                                    .PARLIAMENT_APPROVED, null)
-                            );
+                            editHistory(input);
                         }
                         case CODE_FOR_OPTION_2 -> showComparedBudgets();
                         case CODE_FOR_OPTION_3 -> {
@@ -294,7 +288,7 @@ public final class ShowMenuOptions {
                     usersChoice, currentRole);
                 }
                 case 2 -> {
-                    // μέθοδος Μυρτούς :)
+                    editHistory(input);
                 }
                 case CODE_FOR_OPTION_3 -> showComparedBudgets();
                 case CODE_FOR_MENUS -> {
@@ -342,5 +336,40 @@ public final class ShowMenuOptions {
         List<Ministry> y =
         ReadBudget.readByMinistry("proypologismos2026anaypourgeio.csv");
         DisplayBudget.showMinistry(y);
+    }
+
+    /**
+     * Displays the modification history of the budget based on the user's
+     * selection between revenue and expense requests. The method prompts the
+     * user to choose the category and then prints all requests that have been
+     * approved by Parliament for the selected type.
+     *
+     * @param input the Scanner for user's input
+     */
+    public static void editHistory(final Scanner input) {
+        ShowEditMenuOptions edit = new ShowEditMenuOptions();
+        RevenueOrExpense revOrExp = edit.chooseRevenueOrExpense(input);
+        if (revOrExp == null) {
+            return;
+        }
+        switch (revOrExp) {
+            case INCOME -> {
+                RevenueRequestService revenueService =
+                        new RevenueRequestService();
+                List<RevenueRequest> list =
+                        revenueService.getByStatus(RequestStatus
+                                .PARLIAMENT_APPROVED);
+                RequestPrinter.printRequests(list);
+            }
+            case EXPENSE -> {
+                RequestPrinter.printRequests(new MinistryRequestService()
+                        .getByStatusAndType(RequestStatus
+                        .PARLIAMENT_APPROVED, null)
+                );
+            }
+            default -> {
+                // not needed
+            }
+        }
     }
 }
