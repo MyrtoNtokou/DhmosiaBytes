@@ -1,6 +1,5 @@
 package dhmosiabytes;
 
-import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -37,7 +36,7 @@ public final class RequestsController {
      * Asks user to enter the code of the request to be completed or rejected.
      *
      * @param input the Scanner for user input
-     * @param pendingReqs list with pending requests
+     * @param requests the list of available requests to choose from
      * @return the user's choice
      */
     public static int chooseRequest(final Scanner input,
@@ -50,6 +49,7 @@ public final class RequestsController {
         int choice;
         while (true) {
             if (!requests.isEmpty()) {
+                System.out.println();
                 System.out.println("Έχετε την δυνατότητα να σημειώσετε τα "
                 + "αιτήματα που έχετε ολοκληρώσει ή απορρίψει.");
                 System.out.println("Επιλέξτε 0 για επιστροφή στο "
@@ -264,10 +264,11 @@ public final class RequestsController {
      * @param approveByParliament If true, approval will be done by the
      * Parliament; otherwise, it will be done by the government
      */
-    public static void evaluateRequests(final Scanner input,
-                                     final MinistryRequestService reqService,
-                                     final RequestStatus statusToCheck,
-                                     final boolean approveByParliament) {
+    public static void evaluateRequests(
+            final Scanner input,
+            final MinistryRequestService reqService,
+            final RequestStatus statusToCheck,
+            final boolean approveByParliament) {
         List<MinistryRequest> requests =
                 reqService.getByStatusAndType(statusToCheck, null);
         if (requests.isEmpty()) {
@@ -297,9 +298,6 @@ public final class RequestsController {
                 if (approveByParliament) {
                     try {
                         BudgetEditor.saveEdit(id);
-                    } catch (IOException e) {
-                        System.err.println("Σφάλμα κατά την αποθήκευση του "
-                                + "αιτήματος." + e.getMessage());
                     } catch (Exception e) {
                         System.err.println("Σφάλμα κατά την αποθήκευση του "
                                 + "αιτήματος." + e.getMessage());
@@ -320,6 +318,83 @@ public final class RequestsController {
         }
     }
 
+    /**
+     * Evaluates pending revenue modification requests by displaying them,
+     * allowing the user to select a request, and approving or rejecting it.
+     *
+     * @param input the Scanner used for user interaction
+     * @param revenueService service providing access to revenue requests
+     * @param statusToCheck the request status used to filter pending items
+     * @param approvedByGovernment true if the evaluation is performed at the
+     *                             parliamentary stage, false if at the
+     *                             government review stage
+     */
+    public static void evaluateRevenueRequests(
+            final Scanner input,
+            final RevenueRequestService revenueService,
+            final RequestStatus statusToCheck,
+            final boolean approvedByGovernment) {
+
+        List<RevenueRequest> requests =
+                revenueService.getByStatus(statusToCheck);
+
+        if (requests.isEmpty()) {
+            System.out.println("Δεν υπάρχουν άλλες τροποποιήσεις "
+                    + "για αξιολόγηση.");
+            return;
+        }
+
+        RequestPrinter.printRequests(requests);
+
+        while (true) {
+            int id = chooseRequest(input, requests);
+            if (id == 0) {
+                return;
+            }
+
+            boolean valid = requests.stream().anyMatch(r -> r.getId() == id);
+            if (!valid) {
+                System.out.println("Μη έγκυρος κωδικός.");
+                System.out.println("Επιλέξτε ένα από τα εμφανιζόμενα "
+                        + "αιτήματα.");
+                continue;
+            }
+
+            int decision = completeOrRejectPrimMinist(input);
+            if (decision == 1) {
+                if (approvedByGovernment) {
+                    revenueService.approveByParliament(id);
+                    try {
+                        BudgetEditor.saveEditRevenue(id);
+                    } catch (Exception e) {
+                        System.err.println("Σφάλμα κατά την αποθήκευση του "
+                                + "αιτήματος." + e.getMessage());
+                    }
+                } else {
+                    revenueService.approveByGovernment(id);
+                }
+            } else if (decision == 2) {
+                revenueService.rejectRequest(id);
+            }
+
+            requests = revenueService.getByStatus(statusToCheck);
+            if (requests.isEmpty()) {
+                System.out.println("Δεν υπάρχουν άλλες τροποποιήσεις "
+                    + "για αξιολόγηση.");
+                return;
+            }
+        }
+    }
+
+    /**
+     * Displays and processes pending revenue or expense modification requests
+     * based on user selection and the current approval stage.
+     *
+     * @param input the Scanner used for user interaction
+     * @param approvedByGovernment true if requests should be evaluated at the
+     *                             parliamentary stage, false if at the
+     *                             government review stage
+     */
     public static void showRequests(final Scanner input,
             final boolean approvedByGovernment) {
         ShowEditMenuOptions edit = new ShowEditMenuOptions();
@@ -328,34 +403,13 @@ public final class RequestsController {
             case INCOME -> {
                 RevenueRequestService revenueService =
                         new RevenueRequestService();
-                List<RevenueRequest> revReq;
+
                 if (approvedByGovernment) {
-                    revReq = revenueService.getByStatus(RequestStatus
-                            .GOVERNMENT_APPROVED);
+                    evaluateRevenueRequests(input, revenueService,
+                            RequestStatus.GOVERNMENT_APPROVED, true);
                 } else {
-                    revReq =revenueService.getByStatus(RequestStatus
-                            .REVIEWED_BY_FINANCE_MINISTRY);
-                }
-                RequestPrinter.printRequests(revReq);
-                int requestId = chooseRequest(input, revReq);
-                int decision = completeOrRejectPrimMinist(input);
-                if (decision == 1) {
-                    if (approvedByGovernment) {
-                        revenueService.approveByParliament(requestId);
-                        try {
-                            BudgetEditor.saveEditRevenue(requestId);
-                        } catch (IOException e) {
-                            System.err.println("Σφάλμα κατά την αποθήκευση "
-                                    + "του αιτήματος." + e.getMessage());
-                        } catch (Exception e) {
-                            System.err.println("Σφάλμα κατά την αποθήκευση "
-                                    + "του αιτήματος." + e.getMessage());
-                        }
-                    } else {
-                        revenueService.approveByGovernment(requestId);
-                    }
-                } else {
-                    revenueService.rejectRequest(requestId);
+                    evaluateRevenueRequests(input, revenueService,
+                            RequestStatus.REVIEWED_BY_FINANCE_MINISTRY, false);
                 }
             }
             case EXPENSE -> {
@@ -368,6 +422,9 @@ public final class RequestsController {
                     evaluateRequests(input, reqService,
                             RequestStatus.REVIEWED_BY_FINANCE_MINISTRY, false);
                 }
+            }
+            default -> {
+                // not needed
             }
         }
     }

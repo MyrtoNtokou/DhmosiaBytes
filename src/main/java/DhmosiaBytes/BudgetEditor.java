@@ -43,8 +43,6 @@ public class BudgetEditor {
 
     /**
      * Constructs a BudgetEditor with the specified BudgetService.
-     *
-     * @param serv the BudgetService used to modify and validate budget data
      */
     public BudgetEditor() { }
 
@@ -310,6 +308,15 @@ public class BudgetEditor {
         }
     }
 
+    /**
+     * Applies a previously approved revenue modification request to the budget
+     * by reading the request data from the stored request file, updating the
+     * corresponding revenue entry, and saving the updated general budget.
+     *
+     * @param id the unique identifier of the revenue request to apply
+     * @throws Exception if reading the request file, parsing the request,
+     *                   or saving the updated budget fails
+     */
     public static void saveEditRevenue(final int id) throws Exception {
         String filePath = "revenuerequests.txt";
         String fileContent = Files.readString(Path.of(filePath));
