@@ -84,8 +84,9 @@ public final class RequestsController {
         int choice = -1;
         do {
             System.out.println();
-            System.out.println("1. Θετική Αξιολόγηση");
+            System.out.println("1. Έγκριση αυτούσιου αιτήματος");
             System.out.println("2. Απόρριψη");
+            System.out.println("3. Το αίτημα θα υποβληθεί τροποποιημένο");
             System.out.println("0. Εξοδος");
             System.out.print("Επιλογή: ");
             try {
@@ -94,7 +95,7 @@ public final class RequestsController {
                 if (choice == 0) {
                     break;
                 }
-                if (choice != 1 && choice != REJECT) {
+                if (choice < 1 || choice > MAX_CHOICE_PRIME_MINISTER) {
                     System.out.println("Μη έγκυρος κωδικός.");
                 } else {
                     valid = true;

@@ -13,7 +13,7 @@ public enum RequestStatus {
     /** Approved by Parliament. */
     PARLIAMENT_APPROVED,
     /** Finalized and applied to the csv budgets. */
-    COMPLETED,
+    MODIFIED,
     /** Rejected at any stage of the process. */
     REJECTED
 }

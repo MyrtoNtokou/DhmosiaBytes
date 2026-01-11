@@ -2,7 +2,7 @@
 Id: 1
 Code: 1,1
 Name: Φόροι
-Status: GOVERNMENT_APPROVED
+Status: PARLIAMENT_APPROVED
 Time: 2026-01-10T23:50:06.437658
 Diff:
 1 | ΕΣΟΔΑ
@@ -16,7 +16,7 @@ Diff:
 Id: 2
 Code: 1,1
 Name: Φόροι
-Status: REVIEWED_BY_FINANCE_MINISTRY
+Status: GOVERNMENT_APPROVED
 Time: 2026-01-11T20:40:06.990516
 Diff:
 1 | ΕΣΟΔΑ

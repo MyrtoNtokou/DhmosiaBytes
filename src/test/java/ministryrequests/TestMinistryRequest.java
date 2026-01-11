@@ -1,10 +1,10 @@
 package ministryrequests;
 
-import org.junit.jupiter.api.Test;
-
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import org.junit.jupiter.api.Test;
 
 /**
  * Unit tests for {@link MinistryRequest}.
@@ -64,9 +64,9 @@ class TestMinistryRequest {
 
         assertEquals(RequestStatus.PENDING, request.getStatus());
 
-        // Change status to COMPLETED
-        request.setStatus(RequestStatus.COMPLETED);
-        assertEquals(RequestStatus.COMPLETED, request.getStatus());
+        // Change status to MODIFIED
+        request.setStatus(RequestStatus.MODIFIED);
+        assertEquals(RequestStatus.MODIFIED, request.getStatus());
 
         // Change status to REJECTED
         request.setStatus(RequestStatus.REJECTED);

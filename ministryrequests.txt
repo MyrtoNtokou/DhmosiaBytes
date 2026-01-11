@@ -3,7 +3,7 @@ Id: 1
 Code: 1
 Name: Προεδρία της Δημοκρατίας
 Type: TAKTIKOS
-Status: PENDING
+Status: REVIEWED_BY_FINANCE_MINISTRY
 Time: 2026-01-10T19:48:55.797691
 Text:
 1 | Προεδρία της Δημοκρατίας
@@ -95,7 +95,7 @@ Id: 5
 Code: 2
 Name: Βουλή των Ελλήνων
 Type: TAKTIKOS
-Status: GOVERNMENT_APPROVED
+Status: PARLIAMENT_APPROVED
 Time: 2026-01-10T23:40:52.318947900
 Text:
 2 | Βουλή των Ελλήνων
@@ -161,7 +161,7 @@ Id: 8
 Code: 3
 Name: Προεδρία της Κυβέρνησης
 Type: EPENDYSEIS
-Status: GOVERNMENT_APPROVED
+Status: PARLIAMENT_APPROVED
 Time: 2026-01-11T00:02:01.090995500
 Text:
 3 | Προεδρία της Κυβέρνησης
