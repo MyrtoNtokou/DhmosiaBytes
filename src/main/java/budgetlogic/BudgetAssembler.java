@@ -1,7 +1,8 @@
 package budgetlogic;
 
-import java.math.BigDecimal;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.math.BigDecimal;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -17,6 +18,9 @@ import budgetreader.Ypourgeio;
  * Create the map with the expense percentages.
  */
 public final class BudgetAssembler {
+
+    /** Directory with modified budget csv. */
+    private static final Path DATA_DIR = Paths.get("runtime-data");
 
     /** Keyword for revenues. */
     private static final String REVENUES = "ΕΣΟΔΑ";
@@ -43,16 +47,16 @@ public final class BudgetAssembler {
 
         List<Eggrafi> generalList;
         if (generalIsModified) {
-            Path pathGeneral = Path.of(generalFile);
-            generalList = ReadBudget.readGeneralBudgetFromPath(pathGeneral);
+            Path generalPath = DATA_DIR.resolve(generalFile);
+            generalList = ReadBudget.readGeneralBudgetFromPath(generalPath);
         } else {
             generalList = ReadBudget.readGeneralBudget(generalFile);
         }
 
         List<Ypourgeio> ministriesList;
         if (ministriesIsModified) {
-            Path pathMinistries = Path.of(ministriesFile);
-            ministriesList = ReadBudget.readByMinistryFromPath(pathMinistries);
+            Path ministriesPath = DATA_DIR.resolve(ministriesFile);
+            ministriesList = ReadBudget.readByMinistryFromPath(ministriesPath);
         } else {
             ministriesList = ReadBudget.readByMinistry(ministriesFile);
         }

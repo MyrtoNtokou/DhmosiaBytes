@@ -26,6 +26,8 @@ import ministryrequests.RequestLoader;
 import ministryrequests.RequestType;
 import revenuerequests.RevenueRequestParser;
 import revenuerequests.RevenueRequestService;
+import java.nio.file.Paths;
+import java.nio.charset.StandardCharsets;
 
  /**
  * Allows editing of income and expense entries in a Budget.
@@ -262,8 +264,10 @@ public class BudgetEditor {
         reqService.approveByParliament(id);
 
         try {
-            String fileContent = Files.readString(Path
-                    .of("ministryrequests.txt"));
+            Path dataDir = Paths.get("runtime-data");
+            Path filePath = dataDir.resolve("revenuerequests.txt");
+            String fileContent = Files.readString(filePath,
+                                StandardCharsets.UTF_8);
             String requestBlock = RequestLoader
                 .extractRequestBlock(fileContent, id);
             MinistryRequestParser parser =

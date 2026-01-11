@@ -1,13 +1,14 @@
 package revenuerequests;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.Files;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.OutputStreamWriter;
+import java.io.InputStreamReader;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -23,8 +24,11 @@ import ministryrequests.RequestStatus;
  */
 public class RevenueRequestRepository {
 
+    /** Direstory with request files. */
+    private static final Path DATA_DIR = Paths.get("runtime-data");
     /** Revenue request file name. */
-    private static final String FILE = "revenuerequests.txt";
+    private static final Path FILE = DATA_DIR
+                                .resolve("revenuerequests.txt");
 
    /** Length of the "Id: " prefix in the stored file. */
     private static final int ID_PREFIX_LENGTH = 4;
@@ -37,7 +41,6 @@ public class RevenueRequestRepository {
     /** Length of the "Time: " prefix in the stored file. */
     private static final int TIME_PREFIX_LENGTH = 6;
 
-
     /**
      * Loads all revenue requests from the persistence file.
      * <p>
@@ -47,20 +50,21 @@ public class RevenueRequestRepository {
      */
     public List<RevenueRequest> loadAll() {
         List<RevenueRequest> result = new ArrayList<>();
-        File f = new File(FILE);
+        Path f = FILE;
 
-        if (!f.exists()) {
+        if (!Files.exists(f)) {
             return result;
         }
 
         try (BufferedReader br = new BufferedReader(
-            new InputStreamReader(
-                new FileInputStream(f), StandardCharsets.UTF_8))) {
+                new InputStreamReader(
+                    Files.newInputStream(f), StandardCharsets.UTF_8))) {
+
             String line;
             Integer id = null;
             String code = null;
             String name = null;
-            RequestStatus status = null; // Χρήση κοινού Enum
+            RequestStatus status = null;
             LocalDateTime time = null;
             StringBuilder text = new StringBuilder();
             boolean inText = false;
@@ -76,25 +80,23 @@ public class RevenueRequestRepository {
                     inText = false;
                 } else if (line.equals("=== END ===")) {
                     if (id != null && status != null) {
-                        result
-                        .add(
-                        new RevenueRequest(id, code, name, status, time, text
-                                                                    .toString()
-                                                                    .trim()));
+                        result.add(new RevenueRequest(
+                            id, code, name, status, time,
+                            text.toString().trim()));
                     }
                 } else if (line.startsWith("Id: ")) {
-                    id = Integer.parseInt(line.substring(ID_PREFIX_LENGTH)
-                                            .trim());
+                    id = Integer.parseInt(
+                            line.substring(ID_PREFIX_LENGTH).trim());
                 } else if (line.startsWith("Code: ")) {
                     code = line.substring(CODE_PREFIX_LENGTH).trim();
                 } else if (line.startsWith("Name: ")) {
                     name = line.substring(NAME_PREFIX_LENGTH).trim();
                 } else if (line.startsWith("Status: ")) {
-                    status = RequestStatus.valueOf(line
-                                .substring(STATUS_PREFIX_LENGTH).trim());
+                    status = RequestStatus.valueOf(
+                            line.substring(STATUS_PREFIX_LENGTH).trim());
                 } else if (line.startsWith("Time: ")) {
-                    time = LocalDateTime.parse(line
-                            .substring(TIME_PREFIX_LENGTH).trim());
+                    time = LocalDateTime.parse(
+                            line.substring(TIME_PREFIX_LENGTH).trim());
                 } else if (line.equals("Diff:")) {
                     inText = true;
                 } else if (inText) {
@@ -116,7 +118,8 @@ public class RevenueRequestRepository {
      */
     public void saveAll(final List<RevenueRequest> requests) {
         try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
-            new FileOutputStream(FILE, false), StandardCharsets.UTF_8))) {
+            new FileOutputStream(FILE.toFile(), false),
+                                StandardCharsets.UTF_8))) {
             for (RevenueRequest r : requests) {
                 bw.write("=== REQUEST ===\n");
                 bw.write("Id: " + r.getId() + "\n");
