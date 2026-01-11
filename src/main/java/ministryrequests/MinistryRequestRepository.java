@@ -1,26 +1,29 @@
 package ministryrequests;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.Files;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.InputStreamReader;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
 /**
  * Repository class responsible for storing and loading,
  * MinistryRequest objects from a text file.
  */
 public class MinistryRequestRepository {
 
+    /** Direstory with request files. */
+    private static final Path DATA_DIR = Paths.get("runtime-data");
     /** Ministry request file name. */
-    private static final String FILE = "ministryrequests.txt";
+    private static final Path FILE = DATA_DIR
+                                .resolve("ministryrequests.txt");
 
     /** Length of the "Id:" prefix in the stored file. */
     private static final int ID_PREFIX_LENGTH = 3;
@@ -41,16 +44,15 @@ public class MinistryRequestRepository {
      */
     public List<MinistryRequest> loadAll() {
         List<MinistryRequest> result = new ArrayList<>();
+        Path f = FILE;
 
-        File f = new File(FILE);
-        if (!f.exists()) {
+        if (!Files.exists(f)) {
             return result;
         }
 
         try (BufferedReader br = new BufferedReader(
-                new InputStreamReader(new FileInputStream(f),
-                                    StandardCharsets.UTF_8))) {
-
+                new InputStreamReader(
+                    Files.newInputStream(f), StandardCharsets.UTF_8))) {
             String line;
             Integer id = null;
             Integer code = null;
@@ -128,8 +130,9 @@ public class MinistryRequestRepository {
      */
     private void saveAll(final List<MinistryRequest> requests) {
         try (BufferedWriter bw = new BufferedWriter(
-                new OutputStreamWriter(new FileOutputStream(FILE, false),
-                                        StandardCharsets.UTF_8))) {
+                new OutputStreamWriter(
+                new FileOutputStream(FILE.toFile(), false),
+                StandardCharsets.UTF_8))) {
 
             for (MinistryRequest r : requests) {
                 bw.write("=== REQUEST ===\n");

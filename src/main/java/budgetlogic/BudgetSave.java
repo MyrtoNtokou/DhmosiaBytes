@@ -1,5 +1,8 @@
 package budgetlogic;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.Files;
 import budgetreader.Eggrafi;
 import budgetreader.Ypourgeio;
 
@@ -10,6 +13,9 @@ import java.util.List;
  * Save the Budget object.
  */
 public final class BudgetSave {
+
+    /** Directory with modified budget csv. */
+    private static final Path DATA_DIR = Paths.get("runtime-data");
 
     /** Keyword for result (revenues-expenses). */
     private static final String RESULT = "ΑΠΟΤΕΛΕΣΜΑ";
@@ -62,7 +68,7 @@ public final class BudgetSave {
         }
 
         List<Ypourgeio> allMinistries =
-                new java.util.ArrayList<>(finalBudget.getMinistries().values());
+            new java.util.ArrayList<>(finalBudget.getMinistries().values());
 
         return new PreparedRecords(allGeneralRecords, allMinistries);
     }
@@ -74,8 +80,10 @@ public final class BudgetSave {
      */
     public void saveGeneralChanges(final Budget finalBudget,
                                final String updatedGeneral) throws IOException {
+        Path generalPath = DATA_DIR.resolve(updatedGeneral);
+        Files.createDirectories(DATA_DIR);
         PreparedRecords records = prepareRecords(finalBudget);
-        BudgetWriter.writeGeneral(updatedGeneral, records.general());
+        BudgetWriter.writeGeneral(generalPath.toString(), records.general());
     }
 
     /**
@@ -86,7 +94,10 @@ public final class BudgetSave {
     public void saveMinistryChanges(final Budget finalBudget,
                                     final String updatedMinistries)
                                     throws IOException {
+        Path ministriesPath = DATA_DIR.resolve(updatedMinistries);
+        Files.createDirectories(DATA_DIR);
         PreparedRecords records = prepareRecords(finalBudget);
-        BudgetWriter.writeMinistries(updatedMinistries, records.ministries());
+        BudgetWriter.writeMinistries(ministriesPath.toString(),
+                                    records.ministries());
     }
 }
