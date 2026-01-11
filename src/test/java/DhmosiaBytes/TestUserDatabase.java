@@ -86,7 +86,7 @@ public class TestUserDatabase {
         UserDatabase db = UserDatabase.getDB();
         db.addUser(new TestUser("alice"));
 
-        File usersFile = new File("data/users.json");
+        File usersFile = new File("runtime-data/users.json");
         assertTrue(usersFile.exists(), "Το αρχείο users.json πρέπει να υπάρχει μετά την αποθήκευση");
 
         User loaded = db.findUser("alice");

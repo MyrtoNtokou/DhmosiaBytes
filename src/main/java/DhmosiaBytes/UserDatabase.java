@@ -38,7 +38,7 @@ public final class UserDatabase implements Serializable {
     private Map<String, User> users;
 
     /** File "data/users.json". */
-    private static final String USER_FILE = "data/users.json";
+    private static final String USER_FILE = "runtime-data/users.json";
 
     /**
      * Private constructor to prevent external instantiation.
