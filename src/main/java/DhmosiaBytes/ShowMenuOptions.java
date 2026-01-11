@@ -41,8 +41,14 @@ public final class ShowMenuOptions {
     /** Code to edit a new file. */
     private static final int CODE_FOR_MENUS = 4;
 
+    /** Code for accepting a comment. */
+    private static final int ACCEPTED = 1;
+
     /** Code for rejecting a comment. */
     private static final int REJECTED = 2;
+
+    /** Code for a comment that will be edited before submitted. */
+    private static final int WILL_BE_EDETED = 3;
 
     /**
      * Displays the menu options depending on the role's access rights.
@@ -308,10 +314,21 @@ public final class ShowMenuOptions {
                         }
                         int complOrRej = RequestsController
                                 .completeOrReject(input);
-                        if (complOrRej == 1) {
-                            reqService.markCompleted(code);
-                        } else if (complOrRej == REJECTED) {
-                            reqService.markRejected(code);
+                        switch (complOrRej) {
+                            case ACCEPTED -> {
+                                MinistryRequestService reqServ =
+                                        new MinistryRequestService();
+                                reqServ.reveiwByFinanceMinistry(code);
+                            }
+                            case REJECTED -> {
+                                reqService.markRejected(code);
+                            }
+                            case WILL_BE_EDETED -> {
+                                reqService.markModified(code);
+                            }
+                            default -> {
+                                // not needed
+                            }
                         }
                     }
                 }

@@ -1,8 +1,7 @@
 package ministryrequests;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class TestRequestStatus {
 
@@ -16,7 +15,7 @@ class TestRequestStatus {
         assertEquals(RequestStatus.REVIEWED_BY_FINANCE_MINISTRY, values[1]);
         assertEquals(RequestStatus.GOVERNMENT_APPROVED, values[2]);
         assertEquals(RequestStatus.PARLIAMENT_APPROVED, values[3]);
-        assertEquals(RequestStatus.COMPLETED, values[4]);
+        assertEquals(RequestStatus.MODIFIED, values[4]);
         assertEquals(RequestStatus.REJECTED, values[5]);
     }
 
@@ -29,6 +28,6 @@ class TestRequestStatus {
     @Test
     void toString_returnsName() {
         assertEquals("PENDING", RequestStatus.PENDING.toString());
-        assertEquals("COMPLETED", RequestStatus.COMPLETED.toString());
+        assertEquals("MODIFIED", RequestStatus.MODIFIED.toString());
     }
 }

@@ -42,13 +42,13 @@ public class MinistryRequestService {
     }
 
     /**
-     * Mark a request as completed.
+     * Mark a request as modified.
      * @param id the request id
      */
-    public void markCompleted(final int id) {
-        repo.updateStatus(id, RequestStatus.COMPLETED);
+    public void markModified(final int id) {
+        repo.updateStatus(id, RequestStatus.MODIFIED);
         System.out.println("Η αλλαγή με κωδικό " + id
-                            + " αξιολογήθηκε θετικά.");
+                            + "υποβλήθηκε τροποποιημένη.");
     }
 
     /**
