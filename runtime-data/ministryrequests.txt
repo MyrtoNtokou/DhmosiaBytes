@@ -2,7 +2,7 @@
 Id: 1
 Code: 1
 Name: Προεδρία της Δημοκρατίας
-Type: TAKTIKOS
+Type: REGULARBUDGET
 Status: PARLIAMENT_APPROVED
 Time: 2026-01-12T00:41:45.177849800
 Text:
