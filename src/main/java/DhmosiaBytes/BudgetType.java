@@ -1,5 +1,8 @@
 package dhmosiabytes;
 
+import static aggregatedata.ConsoleColors.RED;
+import static aggregatedata.ConsoleColors.RESET;
+
 /**
  * Represents the types of budgets available.
  */
@@ -56,6 +59,7 @@ public enum BudgetType {
                 return typeOpt;
             }
         }
-        throw new IllegalArgumentException("Μη έγκυρη επιλογή: " + typeCode);
+        throw new IllegalArgumentException(RED + "Μη έγκυρη επιλογή: "
+                                            + typeCode + RESET);
     }
 }

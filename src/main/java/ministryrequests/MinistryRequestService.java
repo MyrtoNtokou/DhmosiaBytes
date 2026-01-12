@@ -2,6 +2,8 @@ package ministryrequests;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import static aggregatedata.ConsoleColors.RESET;
+import static aggregatedata.ConsoleColors.BOLD;
 
 import budgetreader.Ypourgeio;
 
@@ -70,8 +72,8 @@ public class MinistryRequestService {
      */
     public void markModified(final int id) {
         repo.updateStatus(id, RequestStatus.MODIFIED);
-        System.out.println("Η αλλαγή με κωδικό " + id
-                            + "υποβλήθηκε τροποποιημένη.");
+        System.out.println(BOLD + "Η αλλαγή με κωδικό " + id
+                    + "θα υποβληθεί τροποποιημένη." + RESET);
     }
 
     /**
@@ -80,7 +82,8 @@ public class MinistryRequestService {
      */
     public void markRejected(final int id) {
         repo.updateStatus(id, RequestStatus.REJECTED);
-        System.out.println("Το αίτημα με κωδικό " + id + " απορρίφθηκε.");
+        System.out.println(BOLD + "Το αίτημα με κωδικό " + id
+                        + " απορρίφθηκε." + RESET);
     }
 
     /**
@@ -109,8 +112,8 @@ public class MinistryRequestService {
      */
     public void reveiwByFinanceMinistry(final int id) {
         repo.updateStatus(id, RequestStatus.REVIEWED_BY_FINANCE_MINISTRY);
-        System.out.println("Η αλλαγή με κωδικό " + id
-        + " υποβλήθηκε για έγκριση από την κυβέρνηση.");
+        System.out.println(BOLD + "Η αλλαγή εξόδων με κωδικό " + id
+        + " υποβλήθηκε." + RESET);
     }
 
     /**
@@ -119,8 +122,8 @@ public class MinistryRequestService {
      */
     public void approveByGovernment(final int id) {
         repo.updateStatus(id, RequestStatus.GOVERNMENT_APPROVED);
-        System.out.println("Η αλλαγή με κωδικό " + id
-        + " υποβλήθηκε για τελική έγκριση από το Κοινοβούλιο.");
+        System.out.println(BOLD + "Η αλλαγή εξόδων με κωδικό " + id
+        + " υποβλήθηκε για τελική έγκριση από το Κοινοβούλιο." + RESET);
     }
 
     /**
@@ -129,7 +132,7 @@ public class MinistryRequestService {
      */
     public void approveByParliament(final int id) {
         repo.updateStatus(id, RequestStatus.PARLIAMENT_APPROVED);
-        System.out.println("Η αλλαγή με κωδικό " + id
-                            + " καταχωρήθηκε επιτυχώς.");
+        System.out.println(BOLD + "Η αλλαγή εξόδων με κωδικό " + id
+                            + " καταχωρήθηκε επιτυχώς." + RESET);
     }
 }

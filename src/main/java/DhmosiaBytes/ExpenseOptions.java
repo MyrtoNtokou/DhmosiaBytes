@@ -1,5 +1,8 @@
 package dhmosiabytes;
 
+import static aggregatedata.ConsoleColors.RED;
+import static aggregatedata.ConsoleColors.RESET;
+
     /**
      * Enum representing expense categories.
      */
@@ -71,7 +74,7 @@ package dhmosiabytes;
                     return expenseOpt;
                 }
             }
-            throw new IllegalArgumentException("Μη έγκυρη επιλογή: "
-            + expenseCode);
+            throw new IllegalArgumentException(RED + "Μη έγκυρη επιλογή: "
+                                + expenseCode + RESET);
         }
     }

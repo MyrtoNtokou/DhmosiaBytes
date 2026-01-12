@@ -1,5 +1,8 @@
 package dhmosiabytes;
 
+import static aggregatedata.ConsoleColors.RED;
+import static aggregatedata.ConsoleColors.RESET;
+
  /**
  * Enum representing categories of income/revenues, each with a unique code
  * and a descriptive label.
@@ -94,6 +97,7 @@ public enum IncomeOptions {
                 return incomeOpt;
             }
         }
-        throw new IllegalArgumentException("Μη έγκυρη επιλογή: " + incomeCode);
+        throw new IllegalArgumentException(RED + "Μη έγκυρη επιλογή: "
+                                    + incomeCode + RESET);
     }
 }

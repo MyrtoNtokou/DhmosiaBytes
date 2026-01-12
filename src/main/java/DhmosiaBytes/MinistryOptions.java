@@ -1,5 +1,8 @@
 package dhmosiabytes;
 
+import static aggregatedata.ConsoleColors.RED;
+import static aggregatedata.ConsoleColors.RESET;
+
 /**
  * Enum representing budget ministry options, including ministries
  * and decentralized administrations, each with a numeric code and description.
@@ -145,7 +148,7 @@ public enum MinistryOptions {
                 return ministryOpt;
             }
         }
-        throw new IllegalArgumentException("Μη έγκυρη επιλογή: "
-        + ministryCode);
+        throw new IllegalArgumentException(RED + "Μη έγκυρη επιλογή: "
+        + ministryCode + RESET);
     }
 }
