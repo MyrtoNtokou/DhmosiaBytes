@@ -16,7 +16,7 @@ public class TestCutLists {
 
     @Test
     public void testCutYpourgeioFiltersCorrectly() {
-        // Δημιουργούμε λίστα Υπουργείων (Ypourgeio)
+
         List<Ypourgeio> allMinistries = new ArrayList<>();
         allMinistries.add(new Ypourgeio(1, "Υπουργείο Α", BigDecimal.TEN, BigDecimal.ZERO, BigDecimal.TEN));
         allMinistries.add(new Ypourgeio(4, "Υπουργείο Β", BigDecimal.TEN, BigDecimal.ZERO, BigDecimal.TEN));
@@ -24,7 +24,7 @@ public class TestCutLists {
         allMinistries.add(new Ypourgeio(25, "Υπουργείο Δ", BigDecimal.TEN, BigDecimal.ZERO, BigDecimal.TEN));
         allMinistries.add(new Ypourgeio(33, "Υπουργείο Ε", BigDecimal.TEN, BigDecimal.ZERO, BigDecimal.TEN));
 
-        // Αντικαθιστούμε ReadBudget.readByMinistry για test
+
         CutLists cut = new CutLists() {
             @Override
             public List<Ypourgeio> cutYpourgeio() {
@@ -40,7 +40,7 @@ public class TestCutLists {
 
         List<Ypourgeio> result = cut.cutYpourgeio();
 
-        // Έλεγχος: Μόνο υπουργεία με kodikos != 4,25,33
+
         assertEquals(2, result.size());
         assertTrue(result.stream().anyMatch(y -> y.getKodikos() == 1));
         assertTrue(result.stream().anyMatch(y -> y.getKodikos() == 10));
