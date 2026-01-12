@@ -86,4 +86,31 @@ class TestEntry {
             Entry.isValidPassword("A1b");
         });
     }
+
+    @Test
+void testUsernameMinLength() {
+    assertEquals("Abcde", Entry.isValidUsername("Abcde"));
+}
+
+@Test
+void testUsernameMaxLength() {
+    assertEquals("Abcdefghijklmn", Entry.isValidUsername("Abcdefghijklmn"));
+}
+
+
+@Test
+void testPasswordMinLength() throws NotCorrectPassword {
+    assertEquals("A1bcd", Entry.isValidPassword("A1bcd"));
+}
+
+@Test
+void testUsernameWithUnderscoresOnlyValid() {
+    assertEquals("A___B", Entry.isValidUsername("A___B"));
+}
+
+@Test
+void testPasswordWithExtraSymbols() throws NotCorrectPassword {
+    assertEquals("Ab1!@#", Entry.isValidPassword("Ab1!@#"));
+}
+
 }
