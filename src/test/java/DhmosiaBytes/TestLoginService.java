@@ -11,7 +11,6 @@ public class TestLoginService {
 
     @BeforeEach
     void setup() {
-        // Κάθε τεστ ξεκινά με καθαρή βάση
         UserDatabase.getDB().clearUsersForTest();
         service = new LoginService();
     }
