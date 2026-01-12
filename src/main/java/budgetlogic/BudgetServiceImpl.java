@@ -8,6 +8,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
+import static aggregatedata.ConsoleColors.RED;
+import static aggregatedata.ConsoleColors.RESET;
 import budgetreader.Eggrafi;
 import budgetreader.Ypourgeio;
 
@@ -93,8 +95,8 @@ private static final String TOTAL_EXPENDITURE_KEYWORD = "Σύνολο εξόδω
             target = expenses.get(kodikos);
         }
         if (target == null) {
-            throw new IllegalArgumentException("Δεν υπάρχει εγγραφή με κωδικό "
-            + kodikos);
+            throw new IllegalArgumentException(RED + "Δεν υπάρχει εγγραφή "
+                    + "με κωδικό " + kodikos + RESET);
         }
 
         target.setPoso(normalize(newAmount));
@@ -114,8 +116,8 @@ private static final String TOTAL_EXPENDITURE_KEYWORD = "Σύνολο εξόδω
 
         final Ypourgeio m = budget.getMinistries().get(ministryKodikos);
         if (m == null) {
-            throw new IllegalArgumentException("Δεν υπάρχει υπουργείο με κωδικό"
-            + ministryKodikos);
+            throw new IllegalArgumentException(RED + "Δεν υπάρχει υπουργείο "
+                    + "με κωδικό" + RESET + ministryKodikos);
         }
 
         final BigDecimal nv = normalize(newValue);
@@ -128,7 +130,7 @@ private static final String TOTAL_EXPENDITURE_KEYWORD = "Σύνολο εξόδω
             case "πδε", "προϋπολογισμός δημοσίων επενδύσεων", "ependyseis" ->
                 m.setEpendyseis(nv);
             default -> throw new IllegalArgumentException(
-                "Άγνωστη κατηγορία Υπουργείου: " + column);
+                RED + "Άγνωστη κατηγορία Υπουργείου: " + RESET + column);
         }
 
         reconcileMinistryParts(m);

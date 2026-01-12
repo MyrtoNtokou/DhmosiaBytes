@@ -1,18 +1,21 @@
 package revenuerequests;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.Files;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.OutputStreamWriter;
-import java.io.InputStreamReader;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static aggregatedata.ConsoleColors.RED;
+import static aggregatedata.ConsoleColors.RESET;
 import ministryrequests.RequestStatus;
 
 /**
@@ -122,7 +125,7 @@ public class RevenueRequestRepository {
                 }
             }
         } catch (IOException e) {
-            System.err.println("Σφάλμα: " + e.getMessage());
+            System.err.println(RED + "Σφάλμα: " + RESET + e.getMessage());
         }
         return result;
     }
@@ -149,7 +152,7 @@ public class RevenueRequestRepository {
                 bw.write("=== END ===\n");
             }
         } catch (IOException e) {
-            System.err.println("Σφάλμα: " + e.getMessage());
+            System.err.println(RED + "Σφάλμα: " + RESET + e.getMessage());
         }
     }
 }

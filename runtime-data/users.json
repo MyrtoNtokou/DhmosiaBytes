@@ -1,11 +1,7 @@
-<<<<<<< HEAD
-{}
-=======
 {
-  "finance_user_test": {
-    "role": "FINANCE_MINISTER",
-    "username": "finance_user_test",
-    "passwordHash": "$2a$12$Zjz1E87cJOjSHRkr8E8l8uWIpaD6FGHthqL74BDBVYUi/vHxTf7iy"
+  "test_1": {
+    "role": "PRIME_MINISTER",
+    "username": "test_1",
+    "passwordHash": "$2a$12$tv97fWQMneFcqJKF0o0t4u/yDcwQt7RhKxH84t6FHGhqNcVStoeFq"
   }
 }
->>>>>>> 49454d631258e06b914975b0bc801e871d208b1f

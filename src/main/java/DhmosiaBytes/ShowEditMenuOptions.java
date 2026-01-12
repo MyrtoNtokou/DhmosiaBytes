@@ -4,6 +4,8 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+import static aggregatedata.ConsoleColors.RED;
+import static aggregatedata.ConsoleColors.RESET;
 import budgetlogic.Budget;
 import budgetlogic.BudgetDiffPrinter;
 import budgetreader.Eggrafi;
@@ -46,7 +48,7 @@ public class ShowEditMenuOptions {
                 System.out.println("Παρακαλώ εισάγετε αριθμό.");
                 scanner.nextLine();
             } catch (IllegalArgumentException e) {
-                System.out.println("Μη έγκυρη επιλογή.");
+                System.out.println(RED + "Μη έγκυρη επιλογή." + RESET);
                 System.out.println("Δώστε έναν αριθμό από το 1 έως το "
                 + RevenueOrExpense.values().length);
             }

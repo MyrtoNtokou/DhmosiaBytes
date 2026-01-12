@@ -4,6 +4,8 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+import static aggregatedata.ConsoleColors.RED;
+import static aggregatedata.ConsoleColors.RESET;
 import budgetcomparison.ComparisonController;
 import budgetlogic.Budget;
 import budgetlogic.BudgetAssembler;
@@ -85,7 +87,7 @@ public final class ShowMenuOptions {
             }
 
             if (choice == null) {
-                System.out.println("Μη έγκυρη επιλογή.");
+                System.out.println(RED + "Μη έγκυρη επιλογή." + RESET);
                 System.out.println(" Δώστε έναν αριθμό από το 1 έως το "
                 + MenuOptions.values().length);
                 continue;
@@ -114,8 +116,8 @@ public final class ShowMenuOptions {
                         new ComparisonController();
                         controller.start();
                     } catch (Exception e) {
-                        System.err.println("Σφάλμα κατά την σύγκριση στοιχείων."
-                        + e.getMessage());
+                        System.err.println(RED + "Σφάλμα κατά την σύγκριση "
+                                + "στοιχείων." + e.getMessage() + RESET);
                     }
                 }
                 case GRAPHS -> {
@@ -124,8 +126,8 @@ public final class ShowMenuOptions {
                 case EXIT -> {
                     return true;
                 }
-                default -> System.out.println("Μη έγκυρη επιλογή. "
-                + "Παρακαλώ δοκιμάστε ξανά.");
+                default -> System.out.println(RED + "Μη έγκυρη επιλογή. "
+                        + RESET + "Παρακαλώ δοκιμάστε ξανά.");
             }
         } while (choice != MenuOptions.EXIT);
         return false;
@@ -213,8 +215,8 @@ public final class ShowMenuOptions {
                     currentRole);
                 } while (code != 0);
             }
-            default -> System.out.println("Σφάλμα κατά την φόρτωση "
-            + "της ενέργειας");
+            default -> System.out.println(RED + "Σφάλμα κατά την φόρτωση "
+            + "της ενέργειας" + RESET);
         }
     }
 
@@ -268,7 +270,7 @@ public final class ShowMenuOptions {
             if (choice == 0) {
                 break;
             } else if (choice < 1 || choice > CODE_FOR_MENUS) {
-                System.out.println("Μη έγκυρη επιλογή.");
+                System.out.println(RED + "Μη έγκυρη επιλογή." + RESET);
                 System.out.println("Πρέπει να επιλέξετε από το 1 έως το "
                 + CODE_FOR_MENUS + ".");
                 continue;
@@ -326,7 +328,8 @@ public final class ShowMenuOptions {
                         }
                     }
                 }
-                default -> System.out.println("Μη έγκυρη επιλογή.");
+                default -> System.out.println(RED + "Μη έγκυρη επιλογή."
+                        + RESET);
             }
         } while (true);
     }
