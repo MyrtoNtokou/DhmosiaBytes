@@ -343,25 +343,4 @@ public class BudgetEditor {
         Budget finalBudget = service.getBudget();
         saver.saveGeneralChanges(finalBudget, "newgeneral.csv");
     }
-
-    // BudgetEditor.java
-    public void editExpenseForTest(final int code, final BigDecimal increase,
-                                final String column, final Budget initialBudget,
-                                final Role currentRole) {
-        BigDecimal oldVal = column.equalsIgnoreCase("τακτικός")
-                            ? initialBudget.getMinistries().get(code).getTaktikos()
-                            : initialBudget.getMinistries().get(code).getEpendyseis();
-        BigDecimal newAmount = oldVal.add(increase);
-
-        Map<String, BigDecimal> distribution = new HashMap<>(); // άδεια για test
-        Map<Integer, Map<String, BigDecimal>> mapping = BudgetAssembler
-                .createMappingForMinistryChange(code, distribution);
-
-        Budget before = new Budget(initialBudget);
-        BudgetService serv = new BudgetServiceImpl(before, mapping);
-        serv.changeMinistryAmount(code, column, newAmount);
-
-        // ενημέρωση initialBudget για να δούμε το αποτέλεσμα
-        initialBudget.getMinistries().put(code, serv.getBudget().getMinistries().get(code));
-    }
 }

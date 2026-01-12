@@ -68,6 +68,10 @@ public class ShowEditMenuOptions {
     public void editRevenueOrExpense(final Budget initialBudget,
             final Scanner scanner, final RevenueOrExpense selected,
             final Role currentRole) {
+        if (initialBudget == null || selected == null) {
+            return;
+        }
+
         CutLists cut = new CutLists();
         if (selected == RevenueOrExpense.INCOME) {
             List<Eggrafi> esoda = cut.cutEggrafiEsoda();
