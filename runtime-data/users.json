@@ -1,7 +1,22 @@
 {
-  "finance_user_test": {
+  "test_4": {
+    "role": "OTHER_MINISTRY",
+    "username": "test_4",
+    "passwordHash": "$2a$12$UkZDzMByk.YGXTIGH3c4x.IQ/Jk0ASGv6aD92ZK7CRB0G9PDOdEpy"
+  },
+  "test_3": {
     "role": "FINANCE_MINISTER",
-    "username": "finance_user_test",
-    "passwordHash": "$2a$12$S8YeE9zgup9LPMlOeFVgUuqVLVBmUZhApIyTSnCKcH6B0lAOohEN."
+    "username": "test_3",
+    "passwordHash": "$2a$12$UD7FY3yiQlPWFlvFTR6GgumTqS4TPdq/aR0pcPN9X4dmniHYsIhAG"
+  },
+  "test_2": {
+    "role": "PARLIAMENT",
+    "username": "test_2",
+    "passwordHash": "$2a$12$LYwMRVu8YPZvpAN.PMXmPePdFZAPJ8G3CJybo7ezo1oo3Bl9JDN5u"
+  },
+  "test_1": {
+    "role": "PRIME_MINISTER",
+    "username": "test_1",
+    "passwordHash": "$2a$12$TjTmw.AYw9k69bamLYobJ.zXONz1FpuD.Ozn4RSOUJEH.Vwb1TnpW"
   }
 }
