@@ -31,14 +31,15 @@ public final class DiffColorizer {
             "\\(-([0-9.,]+)\\)",
             "(" + RED + "-$1" + RESET + ")");
 
-        // Blue for arrow values
+        // Blue for new values
         colored = colored.replaceAll(
-                "→\\s*([0-9.,]+)",
-                "→ " + BLUE + "$1" + RESET);
+            "→\\s*([-0-9.,]+)",
+            "→ " + BLUE + "$1" + RESET);
 
+        // Bold for headings
         colored = colored.replaceAll(
-            "(?m)^(\\s*\\d+ \\| .*)$",
-            BOLD + "$1" + RESET);
+        "(?m)^(\\s*[\\d,]+ \\| .*)$",
+        BOLD + "$1" + RESET);
 
         return colored;
     }
