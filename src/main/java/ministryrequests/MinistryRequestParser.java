@@ -54,8 +54,12 @@ public class MinistryRequestParser {
                 continue;
             }
 
+            if (line.contains("Σύνολο εξόδων Κρατικού Προϋπολογισμού")) {
+                continue;
+            }
+
             // Detect ministry code line
-            if (line.matches("^\\d+ \\|.*")) {
+            if (ministryCode == null && line.matches("^\\d+ \\|.*")) {
                 ministryCode = Integer.parseInt(line.split("\\|")[0].trim());
                 continue;
             }

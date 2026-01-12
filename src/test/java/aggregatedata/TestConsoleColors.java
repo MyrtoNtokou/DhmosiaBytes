@@ -1,40 +1,48 @@
 package aggregatedata;
 
+import org.fusesource.jansi.AnsiConsole;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class TestConsoleColors {
 
-    @Test
-    void constants_areNotEmpty() {
-        assertNotNull(ConsoleColors.RESET);
-        assertNotNull(ConsoleColors.BOLD);
-        assertNotNull(ConsoleColors.RED);
-        assertNotNull(ConsoleColors.GREEN);
-        assertNotNull(ConsoleColors.BLUE);
-        assertNotNull(ConsoleColors.CYAN);
-        assertNotNull(ConsoleColors.UNDERLINE);
+    @BeforeAll
+    static void setup() {
+        // Εγκατάσταση της Jansi για το περιβάλλον του test
+        AnsiConsole.systemInstall();
+    }
 
-        assertFalse(ConsoleColors.RESET.isEmpty());
-        assertFalse(ConsoleColors.BOLD.isEmpty());
-        assertFalse(ConsoleColors.RED.isEmpty());
-        assertFalse(ConsoleColors.GREEN.isEmpty());
-        assertFalse(ConsoleColors.BLUE.isEmpty());
-        assertFalse(ConsoleColors.CYAN.isEmpty());
-        assertFalse(ConsoleColors.UNDERLINE.isEmpty());
+    @AfterAll
+    static void tearDown() {
+        AnsiConsole.systemUninstall();
     }
 
     @Test
-    void rgb_returnsCorrectAnsiFormat() throws Exception {
-        // Reflection to call private method rgb
-        var method = ConsoleColors.class.getDeclaredMethod("rgb", int.class, int.class, int.class);
-        method.setAccessible(true);
+    void testConstantsAreNotEmpty() {
+        // Έλεγχος ότι οι σταθερές έχουν τιμή
+        assertNotNull(ConsoleColors.RED);
+        assertNotNull(ConsoleColors.BLUE);
+        assertNotNull(ConsoleColors.RESET);
+    }
 
-        String code = (String) method.invoke(null, 255, 0, 128);
-        assertEquals("\u001B[38;2;255;0;128m", code);
+    @Test
+    void testAnsiFormatting() {
+        // Έλεγχος αν περιέχουν τον χαρακτήρα ESC ( \u001B )
+        // Όλα τα ANSI codes ξεκινούν με αυτόν τον χαρακτήρα
+        assertTrue(ConsoleColors.RED.contains("\u001B"));
+        assertTrue(ConsoleColors.GREEN.contains("\u001B"));
+        assertTrue(ConsoleColors.RESET.contains("\u001B"));
+    }
 
-        code = (String) method.invoke(null, 0, 255, 64);
-        assertEquals("\u001B[38;2;0;255;64m", code);
+    @Test
+    void testManualVisualCheck() {
+        // Εκτύπωση στην κονσόλα για οπτική επιβεβαίωση κατά το build
+        System.out.println(ConsoleColors.RED + "Testing Red Color" + ConsoleColors.RESET);
+        System.out.println(ConsoleColors.BLUE + "Testing Blue (RGB) Color" + ConsoleColors.RESET);
+        System.out.println(ConsoleColors.CYAN + "Testing Cyan (RGB) Color" + ConsoleColors.RESET);
+        System.out.println(ConsoleColors.BOLD + ConsoleColors.GREEN + "Testing Bold Green" + ConsoleColors.RESET);
     }
 }

@@ -166,4 +166,3 @@ public final class Budget {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }
-
