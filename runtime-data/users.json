@@ -1,1 +1,11 @@
+<<<<<<< HEAD
 {}
+=======
+{
+  "finance_user_test": {
+    "role": "FINANCE_MINISTER",
+    "username": "finance_user_test",
+    "passwordHash": "$2a$12$Zjz1E87cJOjSHRkr8E8l8uWIpaD6FGHthqL74BDBVYUi/vHxTf7iy"
+  }
+}
+>>>>>>> 49454d631258e06b914975b0bc801e871d208b1f

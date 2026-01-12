@@ -2,7 +2,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>DhmosiaBytes</groupId>
-  <artifactId>budget-plus-plus</artifactId>
+  <artifactId>BudgetPlusPlus</artifactId>
   <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
   <name>budget-plus-plus</name>
@@ -19,10 +19,35 @@
     <plugins>
 
       <!-- Maven Surefire Plugin -->
+     <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-surefire-plugin</artifactId>
+      <version>3.2.5</version>
+      <configuration>
+          <redirectTestOutputToFile>true</redirectTestOutputToFile>
+      </configuration>
+    </plugin>
+
+      <!-- Maven Shade Plugin -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.1.2</version>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.5.1</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <mainClass>dhmosiabytes.BudgetPlusPlus</mainClass>
+                </transformer>
+              </transformers>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
 
       <!-- 1. Java Compiler -->
@@ -98,6 +123,26 @@
               <goal>report</goal>
             </goals>
           </execution>
+            <execution>
+              <id>check-coverage</id>
+              <goals>
+                  <goal>check</goal>
+              </goals>
+              <configuration>
+                  <rules>
+                      <rule>
+                          <element>BUNDLE</element>
+                          <limits>
+                              <limit>
+                                  <counter>LINE</counter>
+                                  <value>COVEREDRATIO</value>
+                                  <minimum>0.55</minimum>
+                              </limit>
+                          </limits>
+                      </rule>
+                  </rules>
+              </configuration>
+          </execution>
         </executions>
       </plugin>
 
@@ -121,22 +166,15 @@
       <version>5.11.0</version>
       <scope>test</scope>
     </dependency>
-
-     <!-- 3. PDFBox -->
-    <dependency>
-      <groupId>org.apache.pdfbox</groupId>
-      <artifactId>pdfbox</artifactId>
-      <version>2.0.30</version>
-    </dependency>
     
-    <!-- 4. OpenCsV -->
+    <!-- 3. OpenCsV -->
     <dependency>
       <groupId>com.opencsv</groupId>
       <artifactId>opencsv</artifactId>
       <version>5.8</version>
     </dependency>
 
-    <!-- 5. SpotBugs Annotations -->
+    <!-- 4. SpotBugs Annotations -->
     <dependency>
       <groupId>com.github.spotbugs</groupId>
       <artifactId>spotbugs-annotations</artifactId>
@@ -144,25 +182,32 @@
       <scope>compile</scope>
     </dependency>
 
-      <!-- 6. Gson library converts Java objects to JSON and back -->
+      <!-- 5. Gson library converts Java objects to JSON and back -->
     <dependency>
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
       <version>2.10.1</version>
     </dependency>
 
-     <!-- 7. XChart for Graphs -->
+     <!-- 6. XChart for Graphs -->
     <dependency>
       <groupId>org.knowm.xchart</groupId>
       <artifactId>xchart</artifactId>
       <version>3.8.8</version>
     </dependency>
 
-     <!-- 8. BCrypt library used for secure password hashing -->
+     <!-- 7. BCrypt library used for secure password hashing -->
     <dependency>
         <groupId>org.mindrot</groupId>
         <artifactId>jbcrypt</artifactId>
         <version>0.4</version>
+    </dependency>
+
+     <!-- 8. Jansi library for colors -->
+    <dependency>
+        <groupId>org.fusesource.jansi</groupId>
+        <artifactId>jansi</artifactId>
+        <version>2.4.1</version>
     </dependency>
 
   </dependencies>

@@ -5,6 +5,7 @@ import java.util.Scanner;
 import static aggregatedata.ConsoleColors.BLUE;
 import static aggregatedata.ConsoleColors.BOLD;
 import static aggregatedata.ConsoleColors.RESET;
+import org.fusesource.jansi.AnsiConsole;
 
 /**
  * Main class to start the application for user management.
@@ -68,6 +69,8 @@ public final class BudgetPlusPlus {
      * @param args command line arguments
      */
     public static void main(final String[] args) {
+
+        AnsiConsole.systemInstall();
 
         System.out.println(FORM + "  ____  _   _ ____   ____ _____ _____   "
         + "      _          _      ");

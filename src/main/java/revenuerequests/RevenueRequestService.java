@@ -12,9 +12,29 @@ import java.util.stream.Collectors;
  */
 public class RevenueRequestService {
 
-    /** RevenueRequestRepository object. */
-    private final RevenueRequestRepository repo =
-                    new RevenueRequestRepository();
+    /** The repository used for managing revenue request data. */
+    private final RevenueRequestRepository repo;
+
+    /**
+     * Constructor for dependency injection, primarily used for testing.
+     * Allows the use of a mock or fake repository to isolate business logic
+     * from data persistence.
+     *
+     * @param repository the {@link RevenueRequestRepository}
+     * to be used by this service
+     */
+    public RevenueRequestService(final RevenueRequestRepository repository) {
+        repo = repository;
+    }
+
+    /**
+     * Default constructor for the application.
+     * Initializes the service with a default instance of
+     * {@link RevenueRequestRepository}.
+     */
+    public RevenueRequestService() {
+        this.repo = new RevenueRequestRepository();
+    }
 
     /**
      * Submits a new revenue request.
