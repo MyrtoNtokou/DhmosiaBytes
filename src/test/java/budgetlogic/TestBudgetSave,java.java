@@ -1,7 +1,7 @@
 package budgetlogic;
 
-import budgetreader.Eggrafi;
-import budgetreader.Ypourgeio;
+import budgetreader.BasicRecord;
+import budgetreader.Ministry;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,10 +17,10 @@ class BudgetSaveIntegrationTest {
 
     private BudgetSave budgetSave;
     private Budget testBudget;
-    private Eggrafi revenue1;
-    private Eggrafi revenueResult;
-    private Eggrafi expense1;
-    private Ypourgeio ministry1;
+    private BasicRecord revenue1;
+    private BasicRecord revenueResult;
+    private BasicRecord expense1;
+    private Ministry ministry1;
 
     @BeforeEach
     void setUp() {
@@ -28,18 +28,18 @@ class BudgetSaveIntegrationTest {
         testBudget = new Budget();
 
         // Create revenues
-        revenue1 = new Eggrafi("rev1", "REVENUE 1", BigDecimal.valueOf(100));
-        revenueResult = new Eggrafi("rev2", "ΑΠΟΤΕΛΕΣΜΑ", BigDecimal.valueOf(50));
+        revenue1 = new BasicRecord("rev1", "REVENUE 1", BigDecimal.valueOf(100));
+        revenueResult = new BasicRecord("rev2", "ΑΠΟΤΕΛΕΣΜΑ", BigDecimal.valueOf(50));
 
         testBudget.getRevenues().put("rev1", revenue1);
         testBudget.getRevenues().put("rev2", revenueResult);
 
         // Create expense
-        expense1 = new Eggrafi("exp1", "EXPENSE 1", BigDecimal.valueOf(60));
+        expense1 = new BasicRecord("exp1", "EXPENSE 1", BigDecimal.valueOf(60));
         testBudget.getExpenses().put("exp1", expense1);
 
         // Create ministry
-        ministry1 = new Ypourgeio(1, "MINISTRY 1",
+        ministry1 = new Ministry(1, "MINISTRY 1",
                 BigDecimal.valueOf(200), BigDecimal.valueOf(150), BigDecimal.valueOf(350));
         testBudget.getMinistries().put(1, ministry1);
     }

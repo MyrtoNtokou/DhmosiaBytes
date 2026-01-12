@@ -27,11 +27,11 @@ public class TestDisplayBudget {
         System.setOut(new PrintStream(outContent));
 
         /*Mock list with BasicRecord. */
-        List<BasicRecord> eggrafes = new ArrayList<>();
-        eggrafes.add(new BasicRecord("1", "Τεστ Έσοδο", BigDecimal.valueOf(100)));
+        List<BasicRecord> basicRecords = new ArrayList<>();
+        basicRecords.add(new BasicRecord("1", "Τεστ Έσοδο", BigDecimal.valueOf(100)));
 
         /*Call showGeneral method of DispayBudget. */
-        DisplayBudget.showGeneral(eggrafes);
+        DisplayBudget.showGeneral(basicRecords);
 
         /* Execute the method under test. */
         String output = outContent.toString();

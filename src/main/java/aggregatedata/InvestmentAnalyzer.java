@@ -25,15 +25,15 @@ public final class InvestmentAnalyzer {
 
     /**
      * Calculate raw ratio and percentage for ministries.
-     * @param ypourg list with ministries
+     * @param ministry list with ministries
      * @return list with ministry, ratio and percentage
      */
     public static List<InvestmentRatio>
-            calculate(final List<Ministry> ypourg) {
+            calculate(final List<Ministry> ministry) {
 
         List<InvestmentRatio> results = new ArrayList<>();
 
-        for (Ministry y : ypourg) {
+        for (Ministry y : ministry) {
             // Keep ministries only
             if (y.getcode() < FIRST_MINISTRY_CODE
             || y.getcode() > LAST_MINISTRY_CODE) {

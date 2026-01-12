@@ -8,14 +8,14 @@ class TestBudgetType {
 
     @Test
     void testGetTypeCode() {
-        assertEquals(1, BudgetType.TAKTIKOS.getTypeCode());
+        assertEquals(1, BudgetType.REGULARBUDGET.getTypeCode());
         assertEquals(2, BudgetType.DHMOSION_EPENDYSEON.getTypeCode());
     }
 
     @Test
     void testGetTypeDescription() {
         assertEquals("Τακτικός Προυπολογισμός",
-                BudgetType.TAKTIKOS.getTypeDescription());
+                BudgetType.REGULARBUDGET.getTypeDescription());
 
         assertEquals("Προϋπολογισμός Δημοσίων Επενδύσεων",
                 BudgetType.DHMOSION_EPENDYSEON.getTypeDescription());
@@ -23,7 +23,7 @@ class TestBudgetType {
 
     @Test
     void testFromCodeValid() {
-        assertEquals(BudgetType.TAKTIKOS, BudgetType.fromCode(1));
+        assertEquals(BudgetType.REGULARBUDGET, BudgetType.fromCode(1));
         assertEquals(BudgetType.DHMOSION_EPENDYSEON, BudgetType.fromCode(2));
     }
 

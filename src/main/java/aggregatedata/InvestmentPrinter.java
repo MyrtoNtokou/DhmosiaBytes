@@ -18,10 +18,10 @@ public final class InvestmentPrinter {
 
     /**
      * Print ministry, investment, total and percentage for each ministry.
-     * @param ypourg
+     * @param ministry
      * @param ratios
      */
-    public static void print(final List<Ministry> ypourg,
+    public static void print(final List<Ministry> ministry,
                             final List<InvestmentRatio> ratios) {
 
         System.out.println(BOLD + CYAN + "\n=== ΔΕΙΚΤΗΣ "
@@ -34,7 +34,7 @@ public final class InvestmentPrinter {
         for (InvestmentRatio ir : ratios) {
 
             // Find Ministry to get code/investment/total
-            Ministry y = findByName(ypourg, ir.getName());
+            Ministry y = findByName(ministry, ir.getName());
 
             if (y == null) {
                 continue;

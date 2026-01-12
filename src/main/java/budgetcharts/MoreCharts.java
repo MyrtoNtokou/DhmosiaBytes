@@ -45,15 +45,16 @@ public final class MoreCharts {
     /**
     * Pie chart for total revenue and total ministrys.
     *
-    * @param eggrafes the list with revenue and ministrys
+    * @param basicRecords the list with revenue and ministrys
     */
-    public static void pieChartEsodaExoda(final List<BasicRecord> eggrafes) {
+    public static void pieChartEsodaExoda(
+        final List<BasicRecord> basicRecords) {
         // Initialisation
         BigDecimal esoda = BigDecimal.ZERO;
         BigDecimal exoda = BigDecimal.ZERO;
 
         // Find and save the totals of revenue and ministrys
-        for (BasicRecord e : eggrafes) {
+        for (BasicRecord e : basicRecords) {
             if (e.getDescription().equalsIgnoreCase("ΕΣΟΔΑ")) {
                 esoda = e.getAmount();
             } else if (e.getDescription().equalsIgnoreCase("ΕΞΟΔΑ")) {
@@ -110,12 +111,13 @@ public final class MoreCharts {
             years.add(year);
 
             String filename = "proypologismos" + year + ".csv";
-            List<BasicRecord> eggrafes = ReadBudget.readGeneralBudget(filename);
+            List<BasicRecord> basicRecords =
+                ReadBudget.readGeneralBudget(filename);
 
             BigDecimal esoda = BigDecimal.ZERO;
             BigDecimal exoda = BigDecimal.ZERO;
 
-            for (BasicRecord e : eggrafes) {
+            for (BasicRecord e : basicRecords) {
                 String description = e.getDescription().trim();
 
                 if (description.equalsIgnoreCase("ΕΣΟΔΑ")) {

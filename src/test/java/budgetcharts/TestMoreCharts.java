@@ -14,14 +14,14 @@ import budgetreader.BasicRecord;
 
 public class TestMoreCharts {
 
-    private List<BasicRecord> mockEggrafes;
+    private List<BasicRecord> mockBasicRecords;
 
     @BeforeEach
     void setUp() {
-        mockEggrafes = new ArrayList<>();
-        mockEggrafes.add(new BasicRecord("01", "ΕΣΟΔΑ", new BigDecimal("10000000000")));
-        mockEggrafes.add(new BasicRecord("02", "ΕΞΟΔΑ", new BigDecimal("8000000000")));
-        mockEggrafes.add(new BasicRecord("03", "ΑΠΟΤΕΛΕΣΜΑ ΚΡΑΤΙΚΟΥ ΠΡΟΫΠΟΛΟΓΙΣΜΟΥ (ΕΣΟΔΑ - ΕΞΟΔΑ)", new BigDecimal("2000000000")));
+        mockBasicRecords = new ArrayList<>();
+        mockBasicRecords.add(new BasicRecord("01", "ΕΣΟΔΑ", new BigDecimal("10000000000")));
+        mockBasicRecords.add(new BasicRecord("02", "ΕΞΟΔΑ", new BigDecimal("8000000000")));
+        mockBasicRecords.add(new BasicRecord("03", "ΑΠΟΤΕΛΕΣΜΑ ΚΡΑΤΙΚΟΥ ΠΡΟΫΠΟΛΟΓΙΣΜΟΥ (ΕΣΟΔΑ - ΕΞΟΔΑ)", new BigDecimal("2000000000")));
     }
 
     @Test
@@ -30,8 +30,8 @@ public class TestMoreCharts {
                 "Παράλειψη test γιατί το περιβάλλον δεν υποστηρίζει GUI");
 
         try {
-            MoreCharts.pieChartEsodaExoda(mockEggrafes);
-            assertNotNull(mockEggrafes, "Mock data δεν πρέπει να είναι null");
+            MoreCharts.pieChartEsodaExoda(mockBasicRecords);
+            assertNotNull(mockBasicRecords, "Mock data δεν πρέπει να είναι null");
         } catch (Exception e) {
             throw new AssertionError("pieChartEsodaExoda threw an exception: " + e.getMessage());
         }

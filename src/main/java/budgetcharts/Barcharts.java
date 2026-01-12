@@ -46,12 +46,12 @@ public final class Barcharts {
      /**
      * Creates and displays the Expense bar chart.
      *
-     * @param eggrafes List of budget records
+     * @param basicRecords List of budget records
      */
-    public static void chartEsoda(final List<BasicRecord> eggrafes) {
+    public static void chartEsoda(final List<BasicRecord> basicRecords) {
         // Filter Expense records (code starts with "1,")
         List<BasicRecord> esoda = new ArrayList<>();
-        for (BasicRecord e : eggrafes) {
+        for (BasicRecord e : basicRecords) {
             if (e.getCode().startsWith("1,")) {
                 esoda.add(e);
             }
@@ -82,12 +82,12 @@ public final class Barcharts {
     /**
      * Creates and displays the expenses bar chart.
      *
-     * @param eggrafes List of budget records
+     * @param basicRecords List of budget records
      */
-     public static void chartExoda(final List<BasicRecord> eggrafes) {
+     public static void chartExoda(final List<BasicRecord> basicRecords) {
         // Filter expense records (code starts with "2,")
         List<BasicRecord> exoda = new ArrayList<>();
-        for (BasicRecord e : eggrafes) {
+        for (BasicRecord e : basicRecords) {
             if (e.getCode().startsWith("2,")) {
                 exoda.add(e);
             }
@@ -167,11 +167,12 @@ public final class Barcharts {
             years.add(year);
 
             String filename = "proypologismos" + year + ".csv";
-            List<BasicRecord> eggrafes = ReadBudget.readGeneralBudget(filename);
+            List<BasicRecord> basicRecords =
+                ReadBudget.readGeneralBudget(filename);
 
             BigDecimal esoda = BigDecimal.ZERO;
 
-            for (BasicRecord e : eggrafes) {
+            for (BasicRecord e : basicRecords) {
                if (e.getCode().startsWith(y)) {
                 esoda = esoda.add(
                     e.getAmount());
@@ -219,11 +220,12 @@ public final class Barcharts {
             years.add(year);
 
             String filename = "proypologismos" + year + ".csv";
-            List<BasicRecord> eggrafes = ReadBudget.readGeneralBudget(filename);
+            List<BasicRecord> basicRecords =
+                ReadBudget.readGeneralBudget(filename);
 
             BigDecimal exoda = BigDecimal.ZERO;
 
-            for (BasicRecord e : eggrafes) {
+            for (BasicRecord e : basicRecords) {
                 if (e.getCode().startsWith(y)) {
                     exoda = exoda.add(e.getAmount());
                 }

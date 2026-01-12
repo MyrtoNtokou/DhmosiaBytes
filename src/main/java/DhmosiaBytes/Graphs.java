@@ -103,7 +103,7 @@ public class Graphs {
      * @param input the Scanner for user input
      */
     public void runGraphs(final Scanner input) {
-        List<BasicRecord> eggra =
+        List<BasicRecord> basicRecord =
         ReadBudget.readGeneralBudget("proypologismos2026.csv");
         List<Ministry> y =
         ReadBudget.readByMinistry("proypologismos2026anaypourgeio.csv");
@@ -113,9 +113,10 @@ public class Graphs {
         do {
             code = chooseGraph(input);
             switch (code) {
-                case PIE_ESODA_EXODA -> MoreCharts.pieChartEsodaExoda(eggra);
-                case CHART_ESODA -> Barcharts.chartEsoda(eggra);
-                case CHART_EXODA -> Barcharts.chartExoda(eggra);
+                case PIE_ESODA_EXODA -> MoreCharts
+                    .pieChartEsodaExoda(basicRecord);
+                case CHART_ESODA -> Barcharts.chartEsoda(basicRecord);
+                case CHART_EXODA -> Barcharts.chartExoda(basicRecord);
                 case CHART_MINISTRY -> Barcharts.chartMinistry(y);
                 case LINE_CHART_ESODA_EXODA -> MoreCharts
                 .lineChartEsodaExoda();

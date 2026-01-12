@@ -2,6 +2,6 @@
   "finance_user_test": {
     "role": "FINANCE_MINISTER",
     "username": "finance_user_test",
-    "passwordHash": "$2a$12$Zjz1E87cJOjSHRkr8E8l8uWIpaD6FGHthqL74BDBVYUi/vHxTf7iy"
+    "passwordHash": "$2a$12$S8YeE9zgup9LPMlOeFVgUuqVLVBmUZhApIyTSnCKcH6B0lAOohEN."
   }
 }

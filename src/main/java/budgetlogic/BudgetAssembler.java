@@ -125,8 +125,8 @@ public final class BudgetAssembler {
     private Map<Integer, Ministry> mapMinistryRecords(
                                         final List<Ministry> list) {
         Map<Integer, Ministry> map = new LinkedHashMap<>();
-        for (Ministry ypourg : list) {
-            map.put(ypourg.getcode(), ypourg);
+        for (Ministry ministry : list) {
+            map.put(ministry.getcode(), ministry);
         }
         return map;
     }

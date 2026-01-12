@@ -52,7 +52,7 @@ public final class ReadBudget {
     private static List<BasicRecord> readGeneralBudgetFromStream(
         final InputStream input) {
 
-        List<BasicRecord> eggrafes = new ArrayList<>();
+        List<BasicRecord> basicRecords = new ArrayList<>();
 
         try (CSVReader reader = new CSVReaderBuilder(
             new InputStreamReader(input, StandardCharsets.UTF_8))
@@ -76,14 +76,14 @@ public final class ReadBudget {
                 String description = line[1].trim();
                 BigDecimal amount = parseNumber(line[2].trim());
 
-                eggrafes.add(new BasicRecord(code, description, amount));
+                basicRecords.add(new BasicRecord(code, description, amount));
             }
 
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
 
-        return eggrafes;
+        return basicRecords;
         }
 
 

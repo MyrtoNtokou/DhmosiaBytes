@@ -58,7 +58,7 @@ class TestBudgetServiceImpl {
     }
 
     @Test
-    void testChangeMinistryAmountTaktikos() {
+    void testChangeMinistryAmountRegularBudget() {
         service.changeMinistryAmount(1, "τακτικός", new BigDecimal("500"));
         Ministry m = service.getBudget().getMinistries().get(1);
         assertEquals(new BigDecimal("500.00"), m.getRegularBudget());
@@ -66,7 +66,7 @@ class TestBudgetServiceImpl {
     }
 
     @Test
-    void testChangeMinistryAmountEpendyseis() {
+    void testChangeMinistryAmountPublicInvestments() {
         service.changeMinistryAmount(2, "ΠΔΕ", new BigDecimal("150"));
         Ministry m = service.getBudget().getMinistries().get(2);
         assertEquals(new BigDecimal("150.00"), m.getPublicInvestments());

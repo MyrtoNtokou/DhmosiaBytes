@@ -102,11 +102,11 @@ public final class AggregateMenu {
 
             MinistryStatsPrinter.printTotalBudget(stats);
         } else if (choice == 2) {
-            List<Ministry> ypourg =
+            List<Ministry> ministry =
             ReadBudget.readByMinistry("proypologismos2026anaypourgeio.csv");
             List<InvestmentRatio> ratios =
-            InvestmentAnalyzer.calculate(ypourg);
-            InvestmentPrinter.print(ypourg, ratios);
+            InvestmentAnalyzer.calculate(ministry);
+            InvestmentPrinter.print(ministry, ratios);
         }
     }
 
