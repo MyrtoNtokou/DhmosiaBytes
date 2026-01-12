@@ -22,7 +22,7 @@ public class MinistryRequestParser {
      * @param text unprocessed text of the budget request
      */
     public MinistryRequestParser(final String text) {
-        rawText = text;
+        this.rawText = (text != null) ? text : "";
     }
 
     /**
@@ -31,6 +31,12 @@ public class MinistryRequestParser {
      * @return ParsedResult containing ministry data and expense percentages
      */
     public ParsedResult parse(final int requestId) {
+        if (rawText == null || rawText.isEmpty()) {
+            System.err.println("Το κείμενο του αιτήματος "
+            + requestId + " είναι κενό.");
+            return new ParsedResult(null, null, null, new HashMap<>());
+        }
+
         String[] lines = rawText.split("\n");
 
         Integer ministryCode = null;
