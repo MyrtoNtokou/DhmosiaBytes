@@ -24,13 +24,31 @@ import ministryrequests.RequestStatus;
  */
 public class RevenueRequestRepository {
 
-    /** Direstory with request files. */
-    private static final Path DATA_DIR = Paths.get("runtime-data");
-    /** Revenue request file name. */
-    private static final Path FILE = DATA_DIR
-                                .resolve("revenuerequests.txt");
+    /** The path where the revenue requests data is stored. */
+    private final Path filePath;
 
-   /** Length of the "Id: " prefix in the stored file. */
+    /**
+     * Constructor for testing and custom configurations.
+     * Allows specifying a custom file path to isolate data during tests
+     * or to use different storage locations.
+     *
+     * @param customPath the {@link Path} to the file used for
+     * storing revenue requests
+     */
+    public RevenueRequestRepository(final Path customPath) {
+        this.filePath = customPath;
+    }
+
+    /**
+     * Default constructor for the application.
+     * Initializes the repository using the default system path
+     * within the "runtime-data" directory.
+     */
+    public RevenueRequestRepository() {
+        this(Paths.get("runtime-data").resolve("revenuerequests.txt"));
+    }
+
+    /** Length of the "Id: " prefix in the stored file. */
     private static final int ID_PREFIX_LENGTH = 4;
     /** Length of the "Code: " prefix in the stored file. */
     private static final int CODE_PREFIX_LENGTH = 6;
@@ -50,7 +68,7 @@ public class RevenueRequestRepository {
      */
     public List<RevenueRequest> loadAll() {
         List<RevenueRequest> result = new ArrayList<>();
-        Path f = FILE;
+        Path f = filePath;
 
         if (!Files.exists(f)) {
             return result;
@@ -118,7 +136,7 @@ public class RevenueRequestRepository {
      */
     public void saveAll(final List<RevenueRequest> requests) {
         try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
-            new FileOutputStream(FILE.toFile(), false),
+            new FileOutputStream(filePath.toFile(), false),
                                 StandardCharsets.UTF_8))) {
             for (RevenueRequest r : requests) {
                 bw.write("=== REQUEST ===\n");

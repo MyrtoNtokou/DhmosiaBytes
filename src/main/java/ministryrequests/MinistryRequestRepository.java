@@ -19,11 +19,28 @@ import java.util.List;
  */
 public class MinistryRequestRepository {
 
-    /** Direstory with request files. */
-    private static final Path DATA_DIR = Paths.get("runtime-data");
-    /** Ministry request file name. */
-    private static final Path FILE = DATA_DIR
-                                .resolve("ministryrequests.txt");
+    /** The path where the ministry requests data is stored. */
+    private final Path filePath;
+
+    /**
+     * Default constructor for the application.
+     * Initializes the repository with the default file path located in
+     * the "runtime-data" directory.
+     */
+    public MinistryRequestRepository() {
+        this(Paths.get("runtime-data").resolve("ministryrequests.txt"));
+    }
+
+    /**
+     * Constructor used primarily for testing purposes.
+     * Allows the injection of a custom file path to avoid modifying
+     * production data during unit tests.
+     *
+     * @param customPath the {@link Path} where request data should be stored
+     */
+    public MinistryRequestRepository(final Path customPath) {
+        this.filePath = customPath;
+    }
 
     /** Length of the "Id:" prefix in the stored file. */
     private static final int ID_PREFIX_LENGTH = 3;
@@ -44,7 +61,7 @@ public class MinistryRequestRepository {
      */
     public List<MinistryRequest> loadAll() {
         List<MinistryRequest> result = new ArrayList<>();
-        Path f = FILE;
+        Path f = filePath;
 
         if (!Files.exists(f)) {
             return result;
@@ -131,7 +148,7 @@ public class MinistryRequestRepository {
     private void saveAll(final List<MinistryRequest> requests) {
         try (BufferedWriter bw = new BufferedWriter(
                 new OutputStreamWriter(
-                new FileOutputStream(FILE.toFile(), false),
+                new FileOutputStream(filePath.toFile(), false),
                 StandardCharsets.UTF_8))) {
 
             for (MinistryRequest r : requests) {
