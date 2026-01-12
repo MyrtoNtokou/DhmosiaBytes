@@ -10,9 +10,32 @@ import budgetreader.Ypourgeio;
  */
 public class MinistryRequestService {
 
-    /** MinistryRequestRepository object. */
-    private final MinistryRequestRepository repo =
-                    new MinistryRequestRepository();
+    /** The repository used for handling ministry request data. */
+    private final MinistryRequestRepository repo;
+
+    /**
+     * Constructor for dependency injection, primarily used
+     * for testing purposes.
+     * Enables the injection of a mock or fake repository
+     * to verify business logic without requiring actual database
+     * or file system access.
+     *
+     * @param repository the {@link MinistryRequestRepository}
+     * to be used by this service
+     */
+    public MinistryRequestService(final MinistryRequestRepository repository) {
+        repo = repository;
+    }
+
+    /**
+     * Default constructor for the application.
+     * Initializes the service with a standard instance of
+     * {@link MinistryRequestRepository}
+     * for production use.
+     */
+    public MinistryRequestService() {
+        this.repo = new MinistryRequestRepository();
+    }
 
     /**
      * Submit a new ministry request and store it as PENDING.
