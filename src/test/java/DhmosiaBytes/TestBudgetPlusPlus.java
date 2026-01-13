@@ -56,9 +56,65 @@ class TestBudgetPlusPlus {
     }
 
     @Test
-    void testMainExitImmediately() {
+    void testMainFullAppFlow() {
+        String inputData = "1\n" +
+                        "9\n" +
+                        "1\n" +
+                        "testUser\n" + 
+                        "Password123!\n" + 
+                        "0\n";
+
         assertDoesNotThrow(() -> {
-            System.setIn(new java.io.ByteArrayInputStream("0\n".getBytes()));
+            System.setIn(new java.io.ByteArrayInputStream(inputData.getBytes()));
+            BudgetPlusPlus.main(new String[]{});
+        });
+    }
+
+    @Test
+    void testMainLoginFlow() {
+        String inputData = "2\n" + 
+                        "2\n" + 
+                        "nonExistentUser\n" + 
+                        "0\n"; 
+
+        assertDoesNotThrow(() -> {
+            System.setIn(new java.io.ByteArrayInputStream(inputData.getBytes()));
+            BudgetPlusPlus.main(new String[]{});
+        });
+    }
+
+    @Test
+    void testLoginMaxAttemptsExceeded() {
+        String inputData = "1\n2\ntestUser\nwrong1\n\nwrong2\n\nwrong3\n\n0\n"; 
+
+        assertDoesNotThrow(() -> {
+            System.setIn(new java.io.ByteArrayInputStream(inputData.getBytes()));
+            BudgetPlusPlus.main(new String[]{});
+        });
+    }
+
+    @Test
+    void testInvalidMenuChoices() {
+        String inputData = "1\n" +
+                        "abc\n" +
+                        "99\n" +
+                        "0\n";
+
+        assertDoesNotThrow(() -> {
+            System.setIn(new java.io.ByteArrayInputStream(inputData.getBytes()));
+            BudgetPlusPlus.main(new String[]{});
+        });
+    }
+
+    @Test
+    void testRegisterDuplicateRoleRestriction() {
+
+        String inputData = "1\n1\nuserA\nPass123!\n" +
+                        "1\n1\nuserB\n" +
+                        "0\n";
+
+        assertDoesNotThrow(() -> {
+            System.setIn(new java.io.ByteArrayInputStream(inputData.getBytes()));
             BudgetPlusPlus.main(new String[]{});
         });
     }
