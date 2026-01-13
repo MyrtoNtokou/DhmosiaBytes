@@ -19,7 +19,7 @@ class TestMinistryRequest {
                 1,
                 100,
                 "Υπουργείο Παιδείας",
-                RequestType.TAKTIKOS,
+                RequestType.REGULARBUDGET,
                 RequestStatus.PENDING,
                 now,
                 text
@@ -35,7 +35,7 @@ class TestMinistryRequest {
         assertEquals("Υπουργείο Παιδείας", request.getMinistryName());
 
         // Check type
-        assertEquals(RequestType.TAKTIKOS, request.getType());
+        assertEquals(RequestType.REGULARBUDGET, request.getType());
 
         // Check status
         assertEquals(RequestStatus.PENDING, request.getStatus());
@@ -56,7 +56,7 @@ class TestMinistryRequest {
                 2,
                 200,
                 "Υπουργείο Υγείας",
-                RequestType.EPENDYSEIS,
+                RequestType.PUBLIC_INVESTMENTS,
                 RequestStatus.PENDING,
                 LocalDateTime.now(),
                 "Budget increase request"
@@ -91,13 +91,13 @@ class TestMinistryRequest {
     @Test
     void differentText_resultsInDifferentHash() {
         MinistryRequest r1 = new MinistryRequest(
-                4, 400, "Υπουργείο Εσωτερικών", RequestType.TAKTIKOS,
+                4, 400, "Υπουργείο Εσωτερικών", RequestType.REGULARBUDGET,
                 RequestStatus.PENDING, LocalDateTime.now(),
                 "Text A"
         );
 
         MinistryRequest r2 = new MinistryRequest(
-                5, 400, "Υπουργείο Εσωτερικών", RequestType.TAKTIKOS,
+                5, 400, "Υπουργείο Εσωτερικών", RequestType.REGULARBUDGET,
                 RequestStatus.PENDING, LocalDateTime.now(),
                 "Text B"
         );

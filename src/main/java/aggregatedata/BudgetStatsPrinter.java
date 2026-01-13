@@ -1,6 +1,6 @@
 package aggregatedata;
 
-import budgetreader.Eggrafi;
+import budgetreader.BasicRecord;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -27,27 +27,27 @@ public final class BudgetStatsPrinter {
         System.out.println(BOLD + CYAN + "\n=== ΜΕΓΙΣΤΕΣ "
                     + "ΠΗΓΕΣ ΕΣΟΔΩΝ ===" + RESET);
 
-        List<Eggrafi> maxRev = stats.getMaxRevenues();
+        List<BasicRecord> maxRev = stats.getMaxRevenues();
         List<BigDecimal> maxRevPer = stats.getMaxRevenuePercentages();
 
         for (int i = 0; i < maxRev.size(); i++) {
-            Eggrafi e = maxRev.get(i);
+            BasicRecord e = maxRev.get(i);
             BigDecimal p = maxRevPer.get(i);
 
             System.out.printf("%-8s | %-35s | %-15s | %-10s%n",
-                e.getKodikos(),
-                e.getPerigrafi(),
-                e.getPoso(),
+                e.getCode(),
+                e.getDescription(),
+                e.getAmount(),
                 BLUE + p + "%" + RESET);
         }
         System.out.println(BOLD + CYAN + "\n=== ΕΛΑΧΙΣΤΕΣ "
                     + "ΠΗΓΕΣ ΕΣΟΔΩΝ ===" + RESET);
 
-        for (Eggrafi e : stats.getMinRevenues()) {
+        for (BasicRecord e : stats.getMinRevenues()) {
             System.out.printf("%-8s | %-35s | %-15s%n",
-                e.getKodikos(),
-                e.getPerigrafi(),
-                e.getPoso());
+                e.getCode(),
+                e.getDescription(),
+                e.getAmount());
         }
     }
 
@@ -60,27 +60,27 @@ public final class BudgetStatsPrinter {
         System.out.println(BOLD + CYAN + "\n=== ΜΕΓΙΣΤΟΙ "
                     + "ΤΟΜΕΙΣ ΕΞΟΔΩΝ ===" + RESET);
 
-        List<Eggrafi> maxExp = stats.getMaxExpenses();
+        List<BasicRecord> maxExp = stats.getMaxExpenses();
         List<BigDecimal> maxExpPer = stats.getMaxExpensePercentages();
 
         for (int i = 0; i < maxExp.size(); i++) {
-            Eggrafi e = maxExp.get(i);
+            BasicRecord e = maxExp.get(i);
             BigDecimal p = maxExpPer.get(i);
 
             System.out.printf("%-8s | %-35s | %-15s | %-10s%n",
-                e.getKodikos(),
-                e.getPerigrafi(),
-                e.getPoso(),
+                e.getCode(),
+                e.getDescription(),
+                e.getAmount(),
                 BLUE + p + "%" + RESET);
         }
         System.out.println(BOLD + CYAN + "\n=== ΕΛΑΧΙΣΤΟΙ "
                     + "ΤΟΜΕΙΣ ΕΞΟΔΩΝ ===" + RESET);
 
-        for (Eggrafi e : stats.getMinExpenses()) {
+        for (BasicRecord e : stats.getMinExpenses()) {
             System.out.printf("%-8s | %-35s | %-15s%n",
-                e.getKodikos(),
-                e.getPerigrafi(),
-                e.getPoso());
+                e.getCode(),
+                e.getDescription(),
+                e.getAmount());
         }
     }
 }

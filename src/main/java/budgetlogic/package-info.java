@@ -11,9 +11,9 @@
  *   <li>{@link budgetlogic.BudgetLoader} – loads budget data from CSV files.
  *     Supports:
  *     <ul>
- *       <li>General records ({@link budgetreader.Eggrafi})</li>
+ *       <li>General records ({@link budgetreader.BasicRecord})</li>
  *       <li>Ministries ({@link budgetlogic.Ministry},
- *           {@link budgetreader.Ypourgeio})</li>
+ *           {@link budgetreader.Ministry})</li>
  *     </ul>
  *   </li>
  *
@@ -34,7 +34,7 @@
  *   </li>
  *
  *   <li>{@link budgetlogic.Ministry} – ministry model with regular budget
- *       (taktikos), public investment budget (PDE), total amount, and
+ *       (regularBudget), public investment budget (PDE), total amount, and
  *       allocation by category.</li>
  * </ul>
  *

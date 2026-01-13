@@ -9,7 +9,7 @@ import java.math.RoundingMode;
 public class InvestmentRatio {
 
     /** Ministry. */
-    private final String onoma;
+    private final String name;
     /** Raw ratio=invenstment/total. */
     private final BigDecimal ratio;
     /** Ratio in percentage. */
@@ -24,7 +24,7 @@ public class InvestmentRatio {
     public InvestmentRatio(final String on,
                         final BigDecimal rat,
                         final BigDecimal per) {
-        onoma = on;
+        name = on;
         ratio = rat.setScale(2, RoundingMode.HALF_UP);
         percentage = per.setScale(2, RoundingMode.HALF_UP);
     }
@@ -33,8 +33,8 @@ public class InvestmentRatio {
      * Getter for ministry name.
      * @return ministry
      */
-    public String getOnoma() {
-        return onoma;
+    public String getName() {
+        return name;
     }
 
     /**

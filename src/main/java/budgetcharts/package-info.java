@@ -40,8 +40,8 @@
  *
  * <pre>
  * CSV files → {@link budgetreader.ReadBudget} →
- * List of {@link budgetreader.Eggrafi} /
- * {@link budgetreader.Ypourgeio}
+ * List of {@link budgetreader.BasicRecord} /
+ * {@link budgetreader.Ministry}
  *                ↓
  * {@link budgetcharts.Barcharts} /
  * {@link budgetcharts.MoreCharts} →

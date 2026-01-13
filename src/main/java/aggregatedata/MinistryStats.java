@@ -1,6 +1,6 @@
 package aggregatedata;
 
-import budgetreader.Ypourgeio;
+import budgetreader.Ministry;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -8,93 +8,94 @@ import java.util.List;
 
 /**
  * Keep max and min for ministries.
- * Based on Taktikos, Ependyseis, Synolo.
+ * Based on RegularBudget, PublicInvestments, TotalBudget.
  */
 public final class MinistryStats {
 
-    /** Max Taktikos list initialisation. */
-    private final List<Ypourgeio> maxTaktikos;
-    /** Max Ependyseis list initialisation. */
-    private final List<Ypourgeio> maxEpendyseis;
-    /** Max Synolo list initialisation. */
-    private final List<Ypourgeio> maxSynolo;
-    /** Max Taktikos percentages list initialisation. */
-    private final List<BigDecimal> maxTaktikosPercentages;
-    /** Max Ependyseis list initialisation. */
-    private final List<BigDecimal> maxEpendyseisPercentages;
-    /** Max Synolo list initialisation. */
-    private final List<BigDecimal> maxSynoloPercentages;
+    /** Max RegularBudget list initialisation. */
+    private final List<Ministry> maxRegularBudget;
+    /** Max PublicInvestments list initialisation. */
+    private final List<Ministry> maxPublicInvestments;
+    /** Max TotalBudget list initialisation. */
+    private final List<Ministry> maxTotalBudget;
+    /** Max RegularBudget percentages list initialisation. */
+    private final List<BigDecimal> maxRegularBudgetPercentages;
+    /** Max PublicInvestments list initialisation. */
+    private final List<BigDecimal> maxPublicInvestmentsPercentages;
+    /** Max TotalBudget list initialisation. */
+    private final List<BigDecimal> maxTotalBudgetPercentages;
 
 
     /** Constructor.
      * @param maxTakt
      * @param maxEpend
      * @param maxSyn
-     * @param maxTaktikosPer
-     * @param maxEpendyseisPer
-     * @param maxSynoloPer
+     * @param maxRegularBudgetPer
+     * @param maxPublicInvestmentsPer
+     * @param maxTotalBudgetPer
      * */
     public MinistryStats(
-            final List<Ypourgeio> maxTakt,
-            final List<Ypourgeio> maxEpend,
-            final List<Ypourgeio> maxSyn,
-            final List<BigDecimal> maxTaktikosPer,
-            final List<BigDecimal> maxEpendyseisPer,
-            final List<BigDecimal> maxSynoloPer) {
+            final List<Ministry> maxTakt,
+            final List<Ministry> maxEpend,
+            final List<Ministry> maxSyn,
+            final List<BigDecimal> maxRegularBudgetPer,
+            final List<BigDecimal> maxPublicInvestmentsPer,
+            final List<BigDecimal> maxTotalBudgetPer) {
 
-        maxTaktikos = new ArrayList<>(maxTakt);
-        maxEpendyseis = new ArrayList<>(maxEpend);
-        maxSynolo = new ArrayList<>(maxSyn);
-        maxTaktikosPercentages = new ArrayList<>(maxTaktikosPer);
-        maxEpendyseisPercentages = new ArrayList<>(maxEpendyseisPer);
-        maxSynoloPercentages = new ArrayList<>(maxSynoloPer);
+        maxRegularBudget = new ArrayList<>(maxTakt);
+        maxPublicInvestments = new ArrayList<>(maxEpend);
+        maxTotalBudget = new ArrayList<>(maxSyn);
+        maxRegularBudgetPercentages = new ArrayList<>(maxRegularBudgetPer);
+        maxPublicInvestmentsPercentages = new ArrayList<>(
+            maxPublicInvestmentsPer);
+        maxTotalBudgetPercentages = new ArrayList<>(maxTotalBudgetPer);
     }
 
     /**
-     * Getter for max Taktikos.
-     * @return max taktikos
+     * Getter for max RegularBudget.
+     * @return max RegularBudget
      * */
-    public List<Ypourgeio> getMaxTaktikos() {
-        return new ArrayList<>(maxTaktikos);
+    public List<Ministry> getMaxRegularBudget() {
+        return new ArrayList<>(maxRegularBudget);
     }
 
     /**
-     * Getter for max Ependyseis.
-     * @return max ependyseis
+     * Getter for max PublicInvestments.
+     * @return max publicInvestments
      * */
-    public List<Ypourgeio> getMaxEpendyseis() {
-        return new ArrayList<>(maxEpendyseis);
+    public List<Ministry> getMaxPublicInvestments() {
+        return new ArrayList<>(maxPublicInvestments);
     }
 
     /**
-     * Getter for max Synolo.
-     * @return max synolo
+     * Getter for max TotalBudget.
+     * @return max totalBudget
      * */
-    public List<Ypourgeio> getMaxSynolo() {
-        return new ArrayList<>(maxSynolo);
+    public List<Ministry> getMaxTotalBudget() {
+        return new ArrayList<>(maxTotalBudget);
     }
 
     /**
-     * Getter for max taktikos percentages.
-     * @return max taktikos percentages
+     * Getter for max regularBudget percentages.
+     * @return max regularBudget percentages
      * */
-    public List<BigDecimal> getMaxTaktikosPercentages() {
-        return new ArrayList<>(maxTaktikosPercentages);
+    public List<BigDecimal> getMaxRegularBudgetPercentages() {
+        return new ArrayList<>(maxRegularBudgetPercentages);
     }
 
     /**
-     * Getter for max ependyseis percentages.
-     * @return max ependyseis percentages
+     * Getter for max publicInvestments percentages.
+     * @return max publicInvestments percentages
      * */
-    public List<BigDecimal> getMaxEpendyseisPercentages() {
-        return new ArrayList<>(maxEpendyseisPercentages);
+    public List<BigDecimal> getMaxPublicInvestmentsPercentages() {
+        return new ArrayList<>(maxPublicInvestmentsPercentages);
     }
 
      /**
-     * Getter for max synolo percentages.
-     * @return max synolo percentages
+     * Getter for max totalBudget percentages.
+     * @return max totalBudget percentages
      * */
-    public List<BigDecimal> getMaxSynoloPercentages() {
-        return new ArrayList<>(maxSynoloPercentages);
+    public List<BigDecimal> getMaxTotalBudgetPercentages() {
+        return new ArrayList<>(maxTotalBudgetPercentages);
     }
 }

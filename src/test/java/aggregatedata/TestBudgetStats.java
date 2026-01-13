@@ -1,6 +1,6 @@
 package aggregatedata;
 
-import budgetreader.Eggrafi;
+import budgetreader.BasicRecord;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,18 +13,18 @@ import static org.junit.jupiter.api.Assertions.*;
 /** Unit tests for BudgetStats class */
 class TestBudgetStats {
 
-    private Eggrafi rev1, rev2, exp1, exp2;
-    private List<Eggrafi> maxRevenues, minRevenues, maxExpenses, minExpenses;
+    private BasicRecord rev1, rev2, exp1, exp2;
+    private List<BasicRecord> maxRevenues, minRevenues, maxExpenses, minExpenses;
     private List<BigDecimal> maxRevPercentages, maxExpPercentages;
     private BudgetStats budgetStats;
 
     @BeforeEach
     void setUp() {
-        // Create sample Eggrafi objects
-        rev1 = new Eggrafi("R1", "Revenue 1", new BigDecimal("1000"));
-        rev2 = new Eggrafi("R2", "Revenue 2", new BigDecimal("2000"));
-        exp1 = new Eggrafi("E1", "Expense 1", new BigDecimal("500"));
-        exp2 = new Eggrafi("E2", "Expense 2", new BigDecimal("300"));
+        // Create sample BasicRecord objects
+        rev1 = new BasicRecord("R1", "Revenue 1", new BigDecimal("1000"));
+        rev2 = new BasicRecord("R2", "Revenue 2", new BigDecimal("2000"));
+        exp1 = new BasicRecord("E1", "Expense 1", new BigDecimal("500"));
+        exp2 = new BasicRecord("E2", "Expense 2", new BigDecimal("300"));
 
         // Initialize lists
         maxRevenues = new ArrayList<>();
@@ -52,34 +52,34 @@ class TestBudgetStats {
 
     @Test
     void testGetMaxRevenues() {
-        List<Eggrafi> result = budgetStats.getMaxRevenues();
+        List<BasicRecord> result = budgetStats.getMaxRevenues();
         assertEquals(1, result.size());
-        assertEquals("R2", result.get(0).getKodikos());
+        assertEquals("R2", result.get(0).getCode());
 
         // Ensure internal list is not modifiable
-        result.add(new Eggrafi("R3", "Revenue 3", BigDecimal.ONE));
+        result.add(new BasicRecord("R3", "Revenue 3", BigDecimal.ONE));
         assertEquals(1, budgetStats.getMaxRevenues().size());
     }
 
     @Test
     void testGetMinRevenues() {
-        List<Eggrafi> result = budgetStats.getMinRevenues();
+        List<BasicRecord> result = budgetStats.getMinRevenues();
         assertEquals(1, result.size());
-        assertEquals("R1", result.get(0).getKodikos());
+        assertEquals("R1", result.get(0).getCode());
     }
 
     @Test
     void testGetMaxExpenses() {
-        List<Eggrafi> result = budgetStats.getMaxExpenses();
+        List<BasicRecord> result = budgetStats.getMaxExpenses();
         assertEquals(1, result.size());
-        assertEquals("E1", result.get(0).getKodikos());
+        assertEquals("E1", result.get(0).getCode());
     }
 
     @Test
     void testGetMinExpenses() {
-        List<Eggrafi> result = budgetStats.getMinExpenses();
+        List<BasicRecord> result = budgetStats.getMinExpenses();
         assertEquals(1, result.size());
-        assertEquals("E2", result.get(0).getKodikos());
+        assertEquals("E2", result.get(0).getCode());
     }
 
     @Test

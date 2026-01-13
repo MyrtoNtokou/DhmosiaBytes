@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import budgetreader.Eggrafi;
+import budgetreader.BasicRecord;
 import budgetreader.ReadBudget;
-import budgetreader.Ypourgeio;
+import budgetreader.Ministry;
 
 /**
  * Separate revenues and expenses.
@@ -45,7 +45,7 @@ public final class BudgetAssembler {
         boolean generalIsModified = generalFile.contains("new");
         boolean ministriesIsModified = ministriesFile.contains("new");
 
-        List<Eggrafi> generalList;
+        List<BasicRecord> generalList;
         if (generalIsModified) {
             Path generalPath = DATA_DIR.resolve(generalFile);
             generalList = ReadBudget.readGeneralBudgetFromPath(generalPath);
@@ -53,7 +53,7 @@ public final class BudgetAssembler {
             generalList = ReadBudget.readGeneralBudget(generalFile);
         }
 
-        List<Ypourgeio> ministriesList;
+        List<Ministry> ministriesList;
         if (ministriesIsModified) {
             Path ministriesPath = DATA_DIR.resolve(ministriesFile);
             ministriesList = ReadBudget.readByMinistryFromPath(ministriesPath);
@@ -62,12 +62,12 @@ public final class BudgetAssembler {
         }
 
         // Initialise revenues map and expenses map
-        Map<String, Eggrafi> revenuesMap = new LinkedHashMap<>();
-        Map<String, Eggrafi> expensesMap = new LinkedHashMap<>();
+        Map<String, BasicRecord> revenuesMap = new LinkedHashMap<>();
+        Map<String, BasicRecord> expensesMap = new LinkedHashMap<>();
 
         separateAndMapGeneralRecords(generalList, revenuesMap, expensesMap);
 
-        Map<Integer, Ypourgeio> ministriesMap =
+        Map<Integer, Ministry> ministriesMap =
                         mapMinistryRecords(ministriesList);
 
         // Final Budget object
@@ -82,37 +82,37 @@ public final class BudgetAssembler {
      * @param expensesMap map for expenses
      */
     private void separateAndMapGeneralRecords(
-            final List<Eggrafi> generalList,
-            final Map<String, Eggrafi> revenuesMap,
-            final Map<String, Eggrafi> expensesMap) {
+            final List<BasicRecord> generalList,
+            final Map<String, BasicRecord> revenuesMap,
+            final Map<String, BasicRecord> expensesMap) {
 
         // Define either revenue section or expenses setcion
         boolean inRevenuesSection = false;
         boolean inExpensesSection = false;
 
-        for (Eggrafi eggrafi : generalList) {
-            final String perigrafiUpper = eggrafi.getPerigrafi()
+        for (BasicRecord basicRecord : generalList) {
+            final String descriptionUpper = basicRecord.getDescription()
                                                  .toUpperCase(Locale.ROOT);
 
             // Put result in the expenses map
-            if (perigrafiUpper.contains(RESULT)) {
-                expensesMap.put(eggrafi.getKodikos(), eggrafi);
+            if (descriptionUpper.contains(RESULT)) {
+                expensesMap.put(basicRecord.getCode(), basicRecord);
                 continue;
             }
             // Check revenues section
-            if (perigrafiUpper.contains(REVENUES)) {
+            if (descriptionUpper.contains(REVENUES)) {
                 inRevenuesSection = true;
                 inExpensesSection = false;
             // Check expenses section
-            } else if (perigrafiUpper.contains(EXPENSES)) {
+            } else if (descriptionUpper.contains(EXPENSES)) {
                 inExpensesSection = true;
                 inRevenuesSection = false;
             }
-            // Based on the section add eggrafi contents to the correct map
+            // Based on the section add BasicRecord contents to the correct map
             if (inRevenuesSection) {
-                revenuesMap.put(eggrafi.getKodikos(), eggrafi);
+                revenuesMap.put(basicRecord.getCode(), basicRecord);
             } else if (inExpensesSection) {
-                 expensesMap.put(eggrafi.getKodikos(), eggrafi);
+                 expensesMap.put(basicRecord.getCode(), basicRecord);
             }
         }
     }
@@ -122,11 +122,11 @@ public final class BudgetAssembler {
      * @param list with all the ministries
      * @return the map version
      */
-    private Map<Integer, Ypourgeio> mapMinistryRecords(
-                                        final List<Ypourgeio> list) {
-        Map<Integer, Ypourgeio> map = new LinkedHashMap<>();
-        for (Ypourgeio ypourg : list) {
-            map.put(ypourg.getKodikos(), ypourg);
+    private Map<Integer, Ministry> mapMinistryRecords(
+                                        final List<Ministry> list) {
+        Map<Integer, Ministry> map = new LinkedHashMap<>();
+        for (Ministry ministry : list) {
+            map.put(ministry.getcode(), ministry);
         }
         return map;
     }

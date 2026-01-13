@@ -1,6 +1,6 @@
 package aggregatedata;
 
-import budgetreader.Eggrafi;
+import budgetreader.BasicRecord;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -45,64 +45,64 @@ public final class BudgetAnalyzer {
          * @param list list with revenues and expenses.
          * @return BudgetStats object
          */
-        public static BudgetStats analyze(final List<Eggrafi> list) {
+        public static BudgetStats analyze(final List<BasicRecord> list) {
 
-                List<Eggrafi> revenues = list.stream()
+                List<BasicRecord> revenues = list.stream()
                         // code that starts with 1
-                        .filter(e -> e.getKodikos().startsWith("1"))
+                        .filter(e -> e.getCode().startsWith("1"))
                         // code that starts with 1 contains comma
-                        .filter(e -> e.getKodikos().contains(","))
+                        .filter(e -> e.getCode().contains(","))
                         // convert back to list
                         .collect(Collectors.toList());
 
-                List<Eggrafi> expenses = list.stream()
-                        .filter(e -> e.getKodikos().startsWith("2"))
-                        .filter(e -> e.getKodikos().contains(","))
+                List<BasicRecord> expenses = list.stream()
+                        .filter(e -> e.getCode().startsWith("2"))
+                        .filter(e -> e.getCode().contains(","))
                         .collect(Collectors.toList());
 
                 // Calculate total revenues
                 BigDecimal totalRevenues = revenues.stream()
-                                                .map(Eggrafi::getPoso)
+                                                .map(BasicRecord::getAmount)
                                                 .reduce(BigDecimal.ZERO,
                                                         BigDecimal::add);
 
                 // Calculate total expenses
                 BigDecimal totalExpenses = expenses.stream()
-                                                .map(Eggrafi::getPoso)
+                                                .map(BasicRecord::getAmount)
                                                 .reduce(BigDecimal.ZERO,
                                                         BigDecimal::add);
 
-                // Compare Eggrafi types based on their ammount (poso)
-                Comparator<Eggrafi> byAmount = Comparator
-                                                .comparing(Eggrafi::getPoso);
+                // Compare BasicRecord types based on their ammount (amount)
+                Comparator<BasicRecord> byAmount =
+                Comparator.comparing(BasicRecord::getAmount);
 
                 // Find max and min
-                List<Eggrafi> maxRevenues = revenues.stream()
+                List<BasicRecord> maxRevenues = revenues.stream()
                         .sorted(byAmount.reversed())
                         .limit(TOP_COUNT)
                         .collect(Collectors.toList());
 
-                List<Eggrafi> minRevenues = revenues.stream()
+                List<BasicRecord> minRevenues = revenues.stream()
                         .sorted(byAmount)
                         .limit(TOP_COUNT)
                         .collect(Collectors.toList());
 
-                List<Eggrafi> maxExpenses = expenses.stream()
+                List<BasicRecord> maxExpenses = expenses.stream()
                         .sorted(byAmount.reversed())
                         .limit(TOP_COUNT)
                         .collect(Collectors.toList());
 
-                List<Eggrafi> minExpenses = expenses.stream()
+                List<BasicRecord> minExpenses = expenses.stream()
                         .sorted(byAmount)
                         .limit(TOP_COUNT)
                         .collect(Collectors.toList());
 
                 // Calculate percentages
                 List<BigDecimal> maxRevenuePercentages = maxRevenues.stream()
-                                .map(e -> percent(e.getPoso(), totalRevenues))
+                                .map(e -> percent(e.getAmount(), totalRevenues))
                                 .collect(Collectors.toList());
                 List<BigDecimal> maxExpensePercentages = maxExpenses.stream()
-                                .map(e -> percent(e.getPoso(), totalExpenses))
+                                .map(e -> percent(e.getAmount(), totalExpenses))
                                 .collect(Collectors.toList());
 
                 return new BudgetStats(maxRevenues, minRevenues,

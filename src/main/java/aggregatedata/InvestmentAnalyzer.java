@@ -1,6 +1,6 @@
 package aggregatedata;
 
-import budgetreader.Ypourgeio;
+import budgetreader.Ministry;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -25,35 +25,36 @@ public final class InvestmentAnalyzer {
 
     /**
      * Calculate raw ratio and percentage for ministries.
-     * @param ypourg list with ministries
+     * @param ministry list with ministries
      * @return list with ministry, ratio and percentage
      */
     public static List<InvestmentRatio>
-            calculate(final List<Ypourgeio> ypourg) {
+            calculate(final List<Ministry> ministry) {
 
         List<InvestmentRatio> results = new ArrayList<>();
 
-        for (Ypourgeio y : ypourg) {
+        for (Ministry y : ministry) {
             // Keep ministries only
-            if (y.getKodikos() < FIRST_MINISTRY_CODE
-            || y.getKodikos() > LAST_MINISTRY_CODE) {
+            if (y.getcode() < FIRST_MINISTRY_CODE
+            || y.getcode() > LAST_MINISTRY_CODE) {
                 continue;
             }
 
-            BigDecimal synolo = y.getSynolo();
-            BigDecimal ependyseis = y.getEpendyseis();
+            BigDecimal totalBudget = y.getTotalBudget();
+            BigDecimal publicInvestments = y.getPublicInvestments();
 
             // Calculate ratio=investment/total for each ministry
             BigDecimal ratio = BigDecimal.ZERO;
-            if (synolo.compareTo(BigDecimal.ZERO) > 0) {
-                ratio = ependyseis.divide(synolo, 2, RoundingMode.HALF_UP);
+            if (totalBudget.compareTo(BigDecimal.ZERO) > 0) {
+                ratio = publicInvestments.divide(
+                    totalBudget, 2, RoundingMode.HALF_UP);
             }
 
             // Calculate percentage
             BigDecimal percentage = ratio.multiply(BigDecimal.valueOf(PERCENT));
 
             results.add(new InvestmentRatio(
-                    y.getOnoma(),
+                    y.getName(),
                     ratio,
                     percentage
             ));

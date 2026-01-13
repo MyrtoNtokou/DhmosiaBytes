@@ -3,8 +3,8 @@ package budgetlogic;
 import java.math.BigDecimal;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import budgetreader.Eggrafi;
-import budgetreader.Ypourgeio;
+import budgetreader.BasicRecord;
+import budgetreader.Ministry;
 
 
 /**
@@ -13,13 +13,13 @@ import budgetreader.Ypourgeio;
 public final class Budget {
 
     /** Map of revenues indexed by record code. */
-    private final Map<String, Eggrafi> revenues;
+    private final Map<String, BasicRecord> revenues;
 
     /** Map of expenses indexed by record code. */
-    private final Map<String, Eggrafi> expenses;
+    private final Map<String, BasicRecord> expenses;
 
     /** Map of ministries indexed by ministry code. */
-    private final Map<Integer, Ypourgeio> ministries;
+    private final Map<Integer, Ministry> ministries;
 
     /**
      * Creates an empty budget instance.
@@ -37,9 +37,9 @@ public final class Budget {
      * @param exps the expense records
      * @param mins the ministry records
      */
-    public Budget(final Map<String, Eggrafi> revs,
-                  final Map<String, Eggrafi> exps,
-                  final Map<Integer, Ypourgeio> mins) {
+    public Budget(final Map<String, BasicRecord> revs,
+                  final Map<String, BasicRecord> exps,
+                  final Map<Integer, Ministry> mins) {
         this.revenues = new LinkedHashMap<>(revs);
         this.expenses = new LinkedHashMap<>(exps);
         this.ministries = new LinkedHashMap<>(mins);
@@ -56,29 +56,29 @@ public final class Budget {
         this.ministries = new LinkedHashMap<>();
 
         // Copy revenues.
-        for (Eggrafi r : other.revenues.values()) {
+        for (BasicRecord r : other.revenues.values()) {
             this.revenues.put(
-                    r.getKodikos(),
-                    new Eggrafi(r.getKodikos(),
-                    r.getPerigrafi(), r.getPoso()));
+                    r.getCode(),
+                    new BasicRecord(r.getCode(),
+                    r.getDescription(), r.getAmount()));
         }
 
         // Copy expenses.
-        for (Eggrafi r : other.expenses.values()) {
+        for (BasicRecord r : other.expenses.values()) {
             this.expenses.put(
-                    r.getKodikos(),
-                    new Eggrafi(r.getKodikos(),
-                    r.getPerigrafi(), r.getPoso()));
+                    r.getCode(),
+                    new BasicRecord(r.getCode(),
+                    r.getDescription(), r.getAmount()));
         }
 
         // Copy ministries.
-        for (Ypourgeio m : other.ministries.values()) {
-            Ypourgeio mc = new Ypourgeio(
-                    m.getKodikos(),
-                    m.getOnoma(),
-                    m.getTaktikos(),
-                    m.getEpendyseis(),
-                    m.getSynolo());
+        for (Ministry m : other.ministries.values()) {
+            Ministry mc = new Ministry(
+                    m.getcode(),
+                    m.getName(),
+                    m.getRegularBudget(),
+                    m.getPublicInvestments(),
+                    m.getTotalBudget());
 
             for (Map.Entry<String, BigDecimal> e
                 : m.getAllocation().entrySet()) {
@@ -86,7 +86,7 @@ public final class Budget {
                 e.getValue());
             }
 
-            this.ministries.put(m.getKodikos(), mc);
+            this.ministries.put(m.getcode(), mc);
         }
     }
 
@@ -95,8 +95,8 @@ public final class Budget {
      *
      * @param r the revenue record
      */
-    public void addRevenue(final Eggrafi r) {
-        revenues.put(r.getKodikos(), r);
+    public void addRevenue(final BasicRecord r) {
+        revenues.put(r.getCode(), r);
     }
 
     /**
@@ -104,8 +104,8 @@ public final class Budget {
      *
      * @param r the expense record
      */
-    public void addExpense(final Eggrafi r) {
-        expenses.put(r.getKodikos(), r);
+    public void addExpense(final BasicRecord r) {
+        expenses.put(r.getCode(), r);
     }
 
     /**
@@ -113,8 +113,8 @@ public final class Budget {
      *
      * @param m the ministry to add
      */
-    public void addMinistry(final Ypourgeio m) {
-        ministries.put(m.getKodikos(), m);
+    public void addMinistry(final Ministry m) {
+        ministries.put(m.getcode(), m);
     }
 
     /**
@@ -122,7 +122,7 @@ public final class Budget {
      *
      * @return a copy of the revenue records
      */
-    public Map<String, Eggrafi> getRevenues() {
+    public Map<String, BasicRecord> getRevenues() {
         return new LinkedHashMap<>(revenues);
     }
 
@@ -131,7 +131,7 @@ public final class Budget {
      *
      * @return a copy of the expense records
      */
-    public Map<String, Eggrafi> getExpenses() {
+    public Map<String, BasicRecord> getExpenses() {
         return new LinkedHashMap<>(expenses);
     }
 
@@ -140,7 +140,7 @@ public final class Budget {
      *
      * @return a copy of the ministry records
      */
-    public Map<Integer, Ypourgeio> getMinistries() {
+    public Map<Integer, Ministry> getMinistries() {
         return new LinkedHashMap<>(ministries);
     }
 
@@ -151,7 +151,7 @@ public final class Budget {
      */
     public BigDecimal totalRevenues() {
         return revenues.values().stream()
-                .map(Eggrafi::getPoso)
+                .map(BasicRecord::getAmount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
@@ -162,7 +162,7 @@ public final class Budget {
      */
     public BigDecimal totalExpenses() {
         return expenses.values().stream()
-                .map(Eggrafi::getPoso)
+                .map(BasicRecord::getAmount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }
