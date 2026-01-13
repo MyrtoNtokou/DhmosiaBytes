@@ -2,7 +2,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>DhmosiaBytes</groupId>
-  <artifactId>budget-plus-plus</artifactId>
+  <artifactId>BudgetPlusPlus</artifactId>
   <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
   <name>budget-plus-plus</name>
@@ -19,11 +19,14 @@
     <plugins>
 
       <!-- Maven Surefire Plugin -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.1.2</version>
-      </plugin>
+     <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-surefire-plugin</artifactId>
+      <version>3.2.5</version>
+      <configuration>
+          <redirectTestOutputToFile>true</redirectTestOutputToFile>
+      </configuration>
+    </plugin>
 
       <!-- Maven Shade Plugin -->
       <plugin>
@@ -39,7 +42,7 @@
             <configuration>
               <transformers>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                  <mainClass>dhmosiabytes.Main</mainClass>
+                  <mainClass>dhmosiabytes.BudgetPlusPlus</mainClass>
                 </transformer>
               </transformers>
             </configuration>
@@ -120,6 +123,26 @@
               <goal>report</goal>
             </goals>
           </execution>
+            <execution>
+              <id>check-coverage</id>
+              <goals>
+                  <goal>check</goal>
+              </goals>
+              <configuration>
+                  <rules>
+                      <rule>
+                          <element>BUNDLE</element>
+                          <limits>
+                              <limit>
+                                  <counter>LINE</counter>
+                                  <value>COVEREDRATIO</value>
+                                  <minimum>0.55</minimum>
+                              </limit>
+                          </limits>
+                      </rule>
+                  </rules>
+              </configuration>
+          </execution>
         </executions>
       </plugin>
 
@@ -180,6 +203,7 @@
         <version>0.4</version>
     </dependency>
 
+     <!-- 8. Jansi library for colors -->
     <dependency>
         <groupId>org.fusesource.jansi</groupId>
         <artifactId>jansi</artifactId>

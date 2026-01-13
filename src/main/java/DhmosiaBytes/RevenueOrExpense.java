@@ -1,5 +1,8 @@
 package dhmosiabytes;
 
+import static aggregatedata.ConsoleColors.RED;
+import static aggregatedata.ConsoleColors.RESET;
+
 /**
  * Enum representing whether a budget entry is an income or an expense,
  * each with a numeric code and description.
@@ -59,7 +62,7 @@ public enum  RevenueOrExpense {
                 return opt;
             }
         }
-        throw new IllegalArgumentException("Μη έγκυρη επιλογή: "
-        + revenueOrExpenseCode);
+        throw new IllegalArgumentException(RED + "Μη έγκυρη επιλογή: "
+        + revenueOrExpenseCode + RESET);
     }
 }

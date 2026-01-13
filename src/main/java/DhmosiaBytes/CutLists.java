@@ -8,6 +8,8 @@ import budgetlogic.Budget;
 import budgetreader.BasicRecord;
 import budgetreader.ReadBudget;
 import budgetreader.Ministry;
+import static aggregatedata.ConsoleColors.RESET;
+import static aggregatedata.ConsoleColors.RED;
 
 /**
  * Cuts and displays list BasicRecord and list Ministry.
@@ -105,8 +107,8 @@ public class CutLists {
                 }
             }
             if (!exists) {
-                System.out.println("Δεν υπάρχει επιλογή "
-                + "με αυτόν τον κωδικό.");
+                System.out.println(RED + "Δεν υπάρχει επιλογή "
+                + "με αυτόν τον κωδικό." + RESET);
             } else {
                 editor.editIncome(choice, scanner);
                 return choice;
@@ -142,7 +144,7 @@ public class CutLists {
                 System.out.println("Δώστε έναν έγκυρο αριθμό.");
                  continue;
             } catch (IllegalArgumentException e) {
-                System.out.println("Μη έγκυρη επιλογή.");
+                System.out.println(RED + "Μη έγκυρη επιλογή." + RESET);
                 continue;
             }
             if (choice == 0) {
@@ -157,8 +159,8 @@ public class CutLists {
                 }
             }
             if (!exists) {
-                System.out.println("Δεν υπάρχει επιλογή "
-                + "με αυτόν τον κωδικό.");
+                System.out.println(RED + "Δεν υπάρχει επιλογή "
+                + "με αυτόν τον κωδικό." + RESET);
             } else {
                 editor.editExpense(choice, scanner, initialBudget, currentRole);
                 return choice;
@@ -187,11 +189,11 @@ public class CutLists {
             try {
                 choice = Integer.parseInt(input);
                 if (choice < 1 || choice > esoda.size()) {
-                    System.out.println("Μη έγκυρη επιλογή. "
+                    System.out.println(RED + "Μη έγκυρη επιλογή. " + RESET
                     + "Δώστε αριθμό από 1 έως " + esoda.size());
                 }
             } catch (NumberFormatException e) {
-                System.out.println("Μη έγκυρη επιλογή.");
+                System.out.println(RED + "Μη έγκυρη επιλογή." + RESET);
             }
         }
         return choice;
@@ -218,11 +220,11 @@ public class CutLists {
             try {
                 choice = Integer.parseInt(input);
                 if (choice < 1 || choice > exoda.size()) {
-                    System.out.println("Μη έγκυρη επιλογή. "
+                    System.out.println(RED + "Μη έγκυρη επιλογή. " + RESET
                     + "Δώστε αριθμό από 1 έως " + exoda.size());
                 }
             } catch (NumberFormatException e) {
-                System.out.println("Μη έγκυρη επιλογή.");
+                System.out.println(RED + "Μη έγκυρη επιλογή." + RESET);
             }
         }
         return choice;
@@ -249,11 +251,11 @@ public class CutLists {
             try {
                 choice = Integer.parseInt(input);
                 if (choice < 1 || choice > ministry.size()) {
-                    System.out.println("Μη έγκυρη επιλογή. "
+                    System.out.println(RED + "Μη έγκυρη επιλογή. " + RESET
                     + "Δώστε αριθμό από 1 έως " + ministry.size());
                 }
             } catch (NumberFormatException e) {
-                System.out.println("Μη έγκυρη επιλογή.");
+                System.out.println(RED + "Μη έγκυρη επιλογή." + RESET);
             }
         }
         return choice;

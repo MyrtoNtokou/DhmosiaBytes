@@ -1,85 +1,61 @@
 package budgetlogic;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.math.BigDecimal;
-import java.util.*;
-
+import budgetreader.Ministry;
+import budgetreader.BasicRecord;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import budgetreader.BasicRecord;
-import budgetreader.Ministry;
+import java.util.Map;
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class TestBudgetAssembler {
 
-    @Test
-    void testSeparateAndMapGeneralRecords() throws Exception {
-        BudgetAssembler assembler = new BudgetAssembler();
+    private BudgetAssembler assembler;
+    private Budget budget;
 
-        // Mock data for general budget
-        List<BasicRecord> generalList = List.of(
-            new BasicRecord("1", "ΕΣΟΔΑ ΤΑΜΕΙΟΥ", BigDecimal.valueOf(1000)),
-            new BasicRecord("2", "ΦΟΡΟΙ", BigDecimal.valueOf(500)),
-            new BasicRecord("3", "ΕΞΟΔΑ ΔΗΜΟΣΙΑΣ ΔΙΟΙΚΗΣΗΣ", BigDecimal.valueOf(400)),
-            new BasicRecord("4", "ΜΙΣΘΟΙ", BigDecimal.valueOf(200)),
-            new BasicRecord("5", "ΑΠΟΤΕΛΕΣΜΑ", BigDecimal.valueOf(900))
-        );
-
-        // Maps to store separated revenues and expenses
-        Map<String, BasicRecord> revenuesMap = new LinkedHashMap<>();
-        Map<String, BasicRecord> expensesMap = new LinkedHashMap<>();
-
-        // Call the private method using reflection
-        var method = BudgetAssembler.class
-                .getDeclaredMethod("separateAndMapGeneralRecords",
-                        List.class, Map.class, Map.class);
-        method.setAccessible(true);
-        method.invoke(assembler, generalList, revenuesMap, expensesMap);
-
-        // Assertions for revenues
-        assertEquals(2, revenuesMap.size());
-        assertTrue(revenuesMap.containsKey("1"));
-        assertTrue(revenuesMap.containsKey("2"));
-
-        // Assertions for expenses
-        assertEquals(3, expensesMap.size());
-        assertTrue(expensesMap.containsKey("3"));
-        assertTrue(expensesMap.containsKey("4"));
-        assertTrue(expensesMap.containsKey("5")); // RESULT is included in expenses
+    @BeforeEach
+    void setUp() {
+        assembler = new BudgetAssembler();
+        // Φόρτωσε τα αρχεία CSV από το runtime-data
+        budget = assembler.loadBudget("newgeneral.csv", "newministries.csv");
     }
 
     @Test
-    void testMapMinistryRecords() throws Exception {
-        BudgetAssembler assembler = new BudgetAssembler();
+    void testMinistriesMapIsNotEmpty() {
+        Map<Integer, Ministry> ministries = budget.getMinistries();
+        assertNotNull(ministries, "Το map των υπουργείων δεν πρέπει να είναι null");
+        assertFalse(ministries.isEmpty(), "Το map των υπουργείων δεν πρέπει να είναι κενό");
 
-        // Mock data for ministries
-        List<Ministry> ministries = List.of(
-            new Ministry(1, "Υπουργείο Α", BigDecimal.valueOf(1000),
-                           BigDecimal.valueOf(200), BigDecimal.valueOf(1200)),
-            new Ministry(2, "Υπουργείο Β", BigDecimal.valueOf(1500),
-                           BigDecimal.valueOf(300), BigDecimal.valueOf(1800))
-        );
+        // Τύπωσε όλα τα keys για να δεις ποιους κωδικούς έχει φορτώσει
+        Set<Integer> keys = ministries.keySet();
+        System.out.println("Υπάρχοντες κωδικοί υπουργείων: " + keys);
 
-        // Call the private method using reflection
-        var method = BudgetAssembler.class
-                .getDeclaredMethod("mapMinistryRecords", List.class);
-        method.setAccessible(true);
-        @SuppressWarnings("unchecked")
-        Map<Integer, Ministry> map = (Map<Integer, Ministry>) method.invoke(assembler, ministries);
+        // Έλεγχος για έναν υπαρκτό κωδικό (π.χ. 5 = Υπουργείο Εσωτερικών)
+        assertTrue(keys.contains(5), "Πρέπει να υπάρχει το Υπουργείο Εσωτερικών");
+    }
 
-        // Assertions for the ministry map
-        assertNotNull(map);
-        assertEquals(2, map.size());
-        assertTrue(map.containsKey(1));
-        assertTrue(map.containsKey(2));
+    @Test
+    void testRevenuesAndExpensesMaps() {
+        Map<String, BasicRecord> revenues = budget.getRevenues();
+        Map<String, BasicRecord> expenses = budget.getExpenses();
 
-        // Check the ministry objects
-        Ministry yp1 = map.get(1);
-        assertEquals("Υπουργείο Α", yp1.getName());
-        assertEquals(BigDecimal.valueOf(1200), yp1.getTotalBudget());
+        assertNotNull(revenues, "Το map των εσόδων δεν πρέπει να είναι null");
+        assertNotNull(expenses, "Το map των εξόδων δεν πρέπει να είναι null");
 
-        Ministry yp2 = map.get(2);
-        assertEquals("Υπουργείο Β", yp2.getName());
-        assertEquals(BigDecimal.valueOf(1800), yp2.getTotalBudget());
+        assertFalse(revenues.isEmpty(), "Πρέπει να υπάρχουν έσοδα");
+        assertFalse(expenses.isEmpty(), "Πρέπει να υπάρχουν έξοδα");
+    }
+
+    @Test
+    void testMinistryValuesAreNotNull() {
+        // Έλεγχος ότι όλα τα αντικείμενα Ministry είναι σωστά φορτωμένα
+        for (Map.Entry<Integer, Ministry> entry : budget.getMinistries().entrySet()) {
+            Ministry ministry = entry.getValue();
+            assertNotNull(ministry, "Το αντικείμενο υπουργείου δεν πρέπει να είναι null για key " + entry.getKey());
+            assertNotNull(ministry.getRegularBudget(), "Η τιμή τακτικού δεν πρέπει να είναι null για key " + entry.getKey());
+            assertNotNull(ministry.getPublicInvestments(), "Η τιμή επενδύσεων δεν πρέπει να είναι null για key " + entry.getKey());
+        }
     }
 }

@@ -1,6 +1,8 @@
 package dhmosiabytes;
 
 import java.util.InputMismatchException;
+import static aggregatedata.ConsoleColors.RED;
+import static aggregatedata.ConsoleColors.RESET;
 
 /**
  * Class that validates usernames and passwords according to
@@ -28,8 +30,8 @@ public final class Entry {
     public static String isValidUsername(final String username)
     throws InputMismatchException {
         if (username.matches("\\d+")) {
-            throw new InputMismatchException("Το username δεν μπορεί "
-            + "να είναι αριθμός");
+            throw new InputMismatchException(RED + "Το username δεν μπορεί "
+            + "να είναι αριθμός" + RESET);
         }
 
         if (username.length() >= MIN_USERNAME_AND_PASSWORD
@@ -38,8 +40,8 @@ public final class Entry {
         && username.matches("[A-Za-z0-9_]+")) {
             return username;
         } else {
-            throw new InputMismatchException("Το username δεν ικανοποιεί "
-            + "τις προϋποθεσεις.");
+            throw new InputMismatchException(RED + "Το username δεν ικανοποιεί "
+            + "τις προϋποθεσεις." + RESET);
         }
     }
 
@@ -58,8 +60,8 @@ public final class Entry {
         && password.matches(".*[0-9].*")) {
             return password;
         } else {
-            throw new NotCorrectPassword("Το password δεν ικανοποιεί"
-            + "τις προϋποθέσεις.");
+            throw new NotCorrectPassword(RED + "Το password δεν ικανοποιεί"
+            + "τις προϋποθέσεις." + RESET);
         }
     }
 }

@@ -1,7 +1,9 @@
 package dhmosiabytes;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 
 public class TestMinistryOptions {
@@ -32,7 +34,7 @@ public class TestMinistryOptions {
 
     @Test
     void testAllMinistriesHaveUniqueCodes() {
-        boolean[] seen = new boolean[100]; // assume max 100 ministries
+        boolean[] seen = new boolean[100];
         for (MinistryOptions ministry : MinistryOptions.values()) {
             int code = ministry.getMinistryCode();
             assertFalse(seen[code], "Duplicate code found: " + code);

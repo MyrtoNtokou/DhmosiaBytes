@@ -17,6 +17,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import static aggregatedata.ConsoleColors.RED;
+import static aggregatedata.ConsoleColors.RESET;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
@@ -55,7 +57,6 @@ public final class UserDatabase implements Serializable {
         try {
             load();
         } catch (IOException e) {
-            System.out.println("Η βάση δεδομένων είναι κενή.");
             users = new HashMap<>();
         }
     }
@@ -89,7 +90,8 @@ public final class UserDatabase implements Serializable {
             try {
                 save();
             } catch (IOException e) {
-                System.out.println("Σφάλμα κατά την αποθήκευση.");
+                System.out.println(RED + "Σφάλμα κατά την αποθήκευση."
+                        + RESET);
             }
             return true;
         } else {
@@ -130,15 +132,15 @@ public final class UserDatabase implements Serializable {
         if (!parent.exists()) {
             boolean created = parent.mkdirs();
             if (!created) {
-                throw new IOException("Δεν μπόρεσε να δημιουργηθεί ο φάκελος: "
-                        + parent.getAbsolutePath());
+                throw new IOException(RED + "Δεν μπόρεσε να δημιουργηθεί ο "
+                        + "φάκελος: " + parent.getAbsolutePath() + RESET);
             }
         }
         try (OutputStreamWriter writer = new OutputStreamWriter(new
         FileOutputStream(USER_FILE), StandardCharsets.UTF_8)) {
             gson.toJson(users, writer);
         } catch (IOException e) {
-            System.out.println("Σφάλμα κατά την αποθήκευση.");
+            System.out.println(RED + "Σφάλμα κατά την αποθήκευση." + RESET);
         }
     }
 
@@ -153,8 +155,8 @@ public final class UserDatabase implements Serializable {
         if (!parent.exists()) {
             boolean created = parent.mkdirs();
             if (!created) {
-                throw new IOException("Δεν μπόρεσε να δημιουργηθεί ο φάκελος: "
-                        + parent.getAbsolutePath());
+                throw new IOException(RED + "Δεν μπόρεσε να δημιουργηθεί ο "
+                        + "φάκελος: " + parent.getAbsolutePath() + RESET);
             }
         }
 
@@ -196,7 +198,7 @@ public final class UserDatabase implements Serializable {
         try {
             save();
         } catch (IOException e) {
-            System.out.println("Σφάλμα κατά την αποθήκευση.");
+            System.out.println(RED + "Σφάλμα κατά την αποθήκευση." + RESET);
         }
     }
 
@@ -217,7 +219,8 @@ public final class UserDatabase implements Serializable {
             try {
                 save();
             } catch (IOException e) {
-                System.out.println("Σφάλμα κατά την αποθήκευση.");
+                System.out.println(RED + "Σφάλμα κατά την αποθήκευση."
+                        + RESET);
             }
             return true;
         }

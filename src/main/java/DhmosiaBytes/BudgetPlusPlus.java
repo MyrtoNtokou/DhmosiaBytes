@@ -10,7 +10,7 @@ import org.fusesource.jansi.AnsiConsole;
 /**
  * Main class to start the application for user management.
  */
-public final class Main {
+public final class BudgetPlusPlus {
 
     /** Minimum code value for user roles. */
     private static final int MIN_CODE = 1;
@@ -27,7 +27,7 @@ public final class Main {
     /**
      * Private constractor so no objects will be created.
      */
-    private Main() { }
+    private BudgetPlusPlus() { }
 
    /**
      * Allows the user to select their role.

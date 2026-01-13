@@ -8,6 +8,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
+import static aggregatedata.ConsoleColors.RED;
+import static aggregatedata.ConsoleColors.RESET;
 import budgetreader.BasicRecord;
 import budgetreader.Ministry;
 
@@ -93,8 +95,8 @@ private static final String TOTAL_EXPENDITURE_KEYWORD = "Σύνολο εξόδω
             target = expenses.get(code);
         }
         if (target == null) {
-            throw new IllegalArgumentException("Δεν υπάρχει εγγραφή με κωδικό "
-            + code);
+            throw new IllegalArgumentException(RED + "Δεν υπάρχει εγγραφή "
+                    + "με κωδικό " + code + RESET);
         }
 
         target.setAmount(normalize(newAmount));
@@ -129,7 +131,7 @@ private static final String TOTAL_EXPENDITURE_KEYWORD = "Σύνολο εξόδω
             "publicInvestments" ->
                 m.setPublicInvestments(nv);
             default -> throw new IllegalArgumentException(
-                "Άγνωστη κατηγορία Υπουργείου: " + column);
+                RED + "Άγνωστη κατηγορία Υπουργείου: " + RESET + column);
         }
 
         reconcileMinistryParts(m);

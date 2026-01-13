@@ -2,6 +2,8 @@ package dhmosiabytes;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import static aggregatedata.ConsoleColors.RED;
+import static aggregatedata.ConsoleColors.RESET;
 
 /**
  * Helper class for reading and validating user inputs,
@@ -40,7 +42,7 @@ public final class InputReader {
                 currentUsername = Entry.isValidUsername(currentUsername);
                 return currentUsername;
             } catch (InputMismatchException e) {
-                System.err.println("Error " + e.getMessage());
+                System.err.println(RED + "Σφάλμα: " + e.getMessage() + RESET);
                 System.out.println("Παρακαλώ δοκιμάστε άλλο username: ");
             }
         }
@@ -70,7 +72,7 @@ public final class InputReader {
                 currentPassword = Entry.isValidPassword(currentPassword);
                 return currentPassword;
             } catch (NotCorrectPassword e) {
-                System.err.println("Error: " + e.getMessage());
+                System.err.println(RED + "Σφάλμα: " + e.getMessage() + RESET);
                 System.out.println("Παρακαλώ προσπαθήστε ξανά: ");
             }
         }

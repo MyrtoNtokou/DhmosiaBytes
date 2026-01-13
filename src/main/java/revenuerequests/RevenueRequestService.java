@@ -1,10 +1,14 @@
 package revenuerequests;
 
-import ministryrequests.RequestStatus;
-import ministryrequests.RequestTextFormatter;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static aggregatedata.ConsoleColors.BOLD;
+import static aggregatedata.ConsoleColors.RED;
+import static aggregatedata.ConsoleColors.RESET;
+import ministryrequests.RequestStatus;
+import ministryrequests.RequestTextFormatter;
 
 /**
  * Service class responsible for handling business logic
@@ -12,9 +16,29 @@ import java.util.stream.Collectors;
  */
 public class RevenueRequestService {
 
-    /** RevenueRequestRepository object. */
-    private final RevenueRequestRepository repo =
-                    new RevenueRequestRepository();
+    /** The repository used for managing revenue request data. */
+    private final RevenueRequestRepository repo;
+
+    /**
+     * Constructor for dependency injection, primarily used for testing.
+     * Allows the use of a mock or fake repository to isolate business logic
+     * from data persistence.
+     *
+     * @param repository the {@link RevenueRequestRepository}
+     * to be used by this service
+     */
+    public RevenueRequestService(final RevenueRequestRepository repository) {
+        repo = repository;
+    }
+
+    /**
+     * Default constructor for the application.
+     * Initializes the service with a default instance of
+     * {@link RevenueRequestRepository}.
+     */
+    public RevenueRequestService() {
+        this.repo = new RevenueRequestRepository();
+    }
 
     /**
      * Submits a new revenue request.
@@ -63,8 +87,8 @@ public class RevenueRequestService {
      */
     public void approveByGovernment(final int id) {
         updateStatus(id, RequestStatus.GOVERNMENT_APPROVED);
-        System.out.println("Το αίτημα εσόδων με ID "
-                        + id + " εγκρίθηκε από την Κυβέρνηση.");
+        System.out.println(BOLD + "Η αλλαγή εσόδων με κωδικό " + id
+        + " υποβλήθηκε για τελική έγκριση από το Κοινοβούλιο." + RESET);
     }
 
     /**
@@ -74,8 +98,8 @@ public class RevenueRequestService {
      */
     public void approveByParliament(final int id) {
         updateStatus(id, RequestStatus.PARLIAMENT_APPROVED);
-        System.out.println("Το αίτημα εσόδων με ID "
-                        + id + " εγκρίθηκε από τη Βουλή.");
+        System.out.println(BOLD + "Η αλλαγή εσόδων με κωδικό " + id
+                            + " καταχωρήθηκε επιτυχώς." + RESET);
     }
 
     /**
@@ -85,8 +109,8 @@ public class RevenueRequestService {
      */
     public void rejectRequest(final int id) {
         updateStatus(id, RequestStatus.REJECTED);
-        System.out.println("Το αίτημα εσόδων με ID "
-                        + id + " απορρίφθηκε.");
+        System.out.println(BOLD + "Το αίτημα με κωδικό " + id
+                        + " απορρίφθηκε." + RESET);
     }
 
     /**
@@ -123,7 +147,8 @@ public class RevenueRequestService {
         if (found) {
             repo.saveAll(all);
         } else {
-            System.err.println("Δεν βρέθηκε αίτημα εσόδων με ID: " + id);
+            System.err.println(RED + "Δεν βρέθηκε αίτημα εσόδων με ID: "
+                    + id + RESET);
         }
     }
 }

@@ -16,6 +16,8 @@ import aggregatedata.MinistryStatsPrinter;
 import budgetreader.BasicRecord;
 import budgetreader.ReadBudget;
 import budgetreader.Ministry;
+import static aggregatedata.ConsoleColors.RED;
+import static aggregatedata.ConsoleColors.RESET;
 
 /**
  * Provides a menu for selecting and displaying budget statistics.
@@ -56,7 +58,7 @@ public final class AggregateMenu {
             }
 
             if (choice != 1 && choice != 2) {
-                System.out.println("Μη έγκυρη επιλογή.");
+                System.out.println(RED + "Μη έγκυρη επιλογή." + RESET);
                 System.out.println("Πρέπει να επιλέξετε 1 ή "
                 + CODE_FOR_MENUS + ".");
             }
@@ -85,7 +87,7 @@ public final class AggregateMenu {
             }
 
             if (choice != 1 && choice != 2) {
-                System.out.println("Μη έγκυρη επιλογή.");
+                System.out.println(RED + "Μη έγκυρη επιλογή." + RESET);
                 System.out.println("Πρέπει να επιλέξετε 1 ή "
                 + CODE_FOR_MENUS + ".");
             }

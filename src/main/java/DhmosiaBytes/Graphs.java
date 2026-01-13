@@ -8,6 +8,8 @@ import budgetcharts.MoreCharts;
 import budgetreader.BasicRecord;
 import budgetreader.ReadBudget;
 import budgetreader.Ministry;
+import static aggregatedata.ConsoleColors.RED;
+import static aggregatedata.ConsoleColors.RESET;
 
 /**
  * Displays a menu of graph options and
@@ -139,7 +141,8 @@ public class Graphs {
                     Barcharts.chartMinistryByYear(ministryCode);
                 }
                 case 0 -> System.out.println("Επιστροφή στο μενού επιλογών");
-                default -> System.out.println("Μη έγκυρη επιλογή.");
+                default -> System.out.println(RED + "Μη έγκυρη επιλογή."
+                                                        + RESET);
             }
         } while (code != 0);
     }

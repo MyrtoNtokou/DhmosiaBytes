@@ -2,6 +2,8 @@ package ministryrequests;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import static aggregatedata.ConsoleColors.RESET;
+import static aggregatedata.ConsoleColors.BOLD;
 
 import budgetreader.Ministry;
 
@@ -10,9 +12,32 @@ import budgetreader.Ministry;
  */
 public class MinistryRequestService {
 
-    /** MinistryRequestRepository object. */
-    private final MinistryRequestRepository repo =
-                    new MinistryRequestRepository();
+    /** The repository used for handling ministry request data. */
+    private final MinistryRequestRepository repo;
+
+    /**
+     * Constructor for dependency injection, primarily used
+     * for testing purposes.
+     * Enables the injection of a mock or fake repository
+     * to verify business logic without requiring actual database
+     * or file system access.
+     *
+     * @param repository the {@link MinistryRequestRepository}
+     * to be used by this service
+     */
+    public MinistryRequestService(final MinistryRequestRepository repository) {
+        repo = repository;
+    }
+
+    /**
+     * Default constructor for the application.
+     * Initializes the service with a standard instance of
+     * {@link MinistryRequestRepository}
+     * for production use.
+     */
+    public MinistryRequestService() {
+        this.repo = new MinistryRequestRepository();
+    }
 
     /**
      * Submit a new ministry request and store it as PENDING.
@@ -47,8 +72,8 @@ public class MinistryRequestService {
      */
     public void markModified(final int id) {
         repo.updateStatus(id, RequestStatus.MODIFIED);
-        System.out.println("Η αλλαγή με κωδικό " + id
-                            + "υποβλήθηκε τροποποιημένη.");
+        System.out.println(BOLD + "Η αλλαγή με κωδικό " + id
+                    + "θα υποβληθεί τροποποιημένη." + RESET);
     }
 
     /**
@@ -57,7 +82,8 @@ public class MinistryRequestService {
      */
     public void markRejected(final int id) {
         repo.updateStatus(id, RequestStatus.REJECTED);
-        System.out.println("Το αίτημα με κωδικό " + id + " απορρίφθηκε.");
+        System.out.println(BOLD + "Το αίτημα με κωδικό " + id
+                        + " απορρίφθηκε." + RESET);
     }
 
     /**
@@ -86,8 +112,8 @@ public class MinistryRequestService {
      */
     public void reveiwByFinanceMinistry(final int id) {
         repo.updateStatus(id, RequestStatus.REVIEWED_BY_FINANCE_MINISTRY);
-        System.out.println("Η αλλαγή με κωδικό " + id
-        + " υποβλήθηκε για έγκριση από την κυβέρνηση.");
+        System.out.println(BOLD + "Η αλλαγή εξόδων με κωδικό " + id
+        + " υποβλήθηκε." + RESET);
     }
 
     /**
@@ -96,8 +122,8 @@ public class MinistryRequestService {
      */
     public void approveByGovernment(final int id) {
         repo.updateStatus(id, RequestStatus.GOVERNMENT_APPROVED);
-        System.out.println("Η αλλαγή με κωδικό " + id
-        + " υποβλήθηκε για τελική έγκριση από το Κοινοβούλιο.");
+        System.out.println(BOLD + "Η αλλαγή εξόδων με κωδικό " + id
+        + " υποβλήθηκε για τελική έγκριση από το Κοινοβούλιο." + RESET);
     }
 
     /**
@@ -106,7 +132,7 @@ public class MinistryRequestService {
      */
     public void approveByParliament(final int id) {
         repo.updateStatus(id, RequestStatus.PARLIAMENT_APPROVED);
-        System.out.println("Η αλλαγή με κωδικό " + id
-                            + " καταχωρήθηκε επιτυχώς.");
+        System.out.println(BOLD + "Η αλλαγή εξόδων με κωδικό " + id
+                            + " καταχωρήθηκε επιτυχώς." + RESET);
     }
 }

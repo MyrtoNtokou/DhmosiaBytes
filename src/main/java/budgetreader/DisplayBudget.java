@@ -1,6 +1,9 @@
 package budgetreader;
 
 import java.util.List;
+import static aggregatedata.ConsoleColors.CYAN;
+import static aggregatedata.ConsoleColors.BOLD;
+import static aggregatedata.ConsoleColors.RESET;
 
 /**
  * Utility class for displaying budget data.
@@ -17,10 +20,11 @@ public final class DisplayBudget {
      * @param basicRecords the list of budget entries to print
      */
     public static void showGeneral(final List<BasicRecord> basicRecords) {
-        System.out.println("\n=== ΓΕΝΙΚΟΣ ΠΡΟΫΠΟΛΟΓΙΣΜΟΣ ===\n");
+        System.out.println(CYAN + BOLD
+                    + "\n=== ΓΕΝΙΚΟΣ ΠΡΟΫΠΟΛΟΓΙΣΜΟΣ ===\n" + RESET);
 
-        System.out.printf("%-6s | %-60s | %-25s%n", "Α/Α",
-        "Έσοδα (1) / Έξοδα (2)", "Ποσό");
+        System.out.printf(BOLD + "%-6s | %-60s | %-25s%n", "Α/Α",
+        "Έσοδα (1) / Έξοδα (2)", "Ποσό" + RESET);
 
         /* Print each record in the list */
         for (BasicRecord e : basicRecords) {
@@ -33,12 +37,18 @@ public final class DisplayBudget {
      *
      * @param ministry the list of budget entries to print
      */
+<<<<<<< HEAD
     public static void showMinistry(final List<Ministry> ministry) {
         System.out.println("\n=== ΚΑΤΗΓΟΡΙΟΠΟΙΗΣΗ ΣΤΟΙΧΕΙΩΝ ===\n");
+=======
+    public static void showMinistry(final List<Ypourgeio> ypourg) {
+        System.out.println(CYAN + BOLD
+            + "\n=== ΚΑΤΗΓΟΡΙΟΠΟΙΗΣΗ ΣΤΟΙΧΕΙΩΝ ===\n" + RESET);
+>>>>>>> 2568632112e55b1b710201c86813c3b07a2b83d6
 
-        System.out.printf("%-3s | %-65s | %-25s | %-35s | %-25s%n",
+        System.out.printf(BOLD + "%-3s | %-65s | %-25s | %-35s | %-25s%n",
             "Α/Α", "Υπουργείο", "Τακτικός Προϋπολογισμός",
-            "Προϋπολογισμός Δημοσίων Επενδύσεων", "Σύνολο");
+            "Προϋπολογισμός Δημοσίων Επενδύσεων", "Σύνολο" + RESET);
 
         /* Print each record in the list*/
         for (Ministry y : ministry) {

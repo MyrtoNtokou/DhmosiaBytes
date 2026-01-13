@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.Map;
+import static aggregatedata.ConsoleColors.RED;
+import static aggregatedata.ConsoleColors.RESET;
 
 /**
  * Parse budget request text and extracts ministry-level
@@ -67,8 +69,9 @@ public class MinistryRequestParser {
             if (line.toUpperCase().startsWith("TYPE:")) {
                 budgetType = line.substring(CODE_FOR_FIVE).trim();
                 if (budgetType.isEmpty()) {
-                    System.err.println("Σφάλμα: δεν βρέθηκε ο τύπος "
-                            + "του προϋπολογισμού για το αίτημα " + requestId);
+                    System.err.println(RED + "Σφάλμα: δεν βρέθηκε ο τύπος "
+                            + "του προϋπολογισμού για το αίτημα "
+                            + requestId + RESET);
                     budgetType = null;
                     continue;
                 }
@@ -119,8 +122,9 @@ public class MinistryRequestParser {
                 } else if (currentExpenseCode != null && line.contains("→")) {
                     if (ministryOldAmount == null
                             || ministryNewAmount == null) {
-                        System.err.println("Σφάλμα: δεν βρέθηκαν τα ποσά για "
-                                + "το αίτημα " + requestId);
+                        System.err.println(RED
+                                + "Σφάλμα: δεν βρέθηκαν τα ποσά για "
+                                + "το αίτημα " + requestId + RESET);
                         currentExpenseCode = null;
                         continue;
                     }
@@ -153,7 +157,7 @@ public class MinistryRequestParser {
                 try {
                     return new BigDecimal(token);
                 } catch (NumberFormatException e) {
-                    System.err.println("Σφάλμα");
+                    System.err.println(RED + "Σφάλμα" + RESET);
                 }
             }
         }
@@ -174,8 +178,8 @@ public class MinistryRequestParser {
                                             final BigDecimal ministryNew,
                                             final int requestId) {
         if (ministryOld == null || ministryNew == null) {
-            System.err.println("Σφάλμα: δεν βρέθηκαν τα ποσά για "
-                                + "το αίτημα " + requestId);
+            System.err.println(RED + "Σφάλμα: δεν βρέθηκαν τα ποσά για "
+                                + "το αίτημα " + requestId + RESET);
             return BigDecimal.ZERO;
         }
         int start = line.indexOf('(');
