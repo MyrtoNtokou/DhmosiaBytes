@@ -43,8 +43,6 @@ public class TestMoreCharts {
                 "Παράλειψη test γιατί το περιβάλλον δεν υποστηρίζει GUI");
 
         try {
-            // Προσοχή: χρειάζεται CSV files με ονόματα "proypologismos2020.csv" ... "proypologismos2026.csv"
-            // Αν δεν υπάρχουν, μπορούμε να mockάρουμε ReadBudget με Mockito
             MoreCharts.lineChartEsodaExoda();
         } catch (Exception e) {
             throw new AssertionError("lineChartEsodaExoda threw an exception: " + e.getMessage());
