@@ -85,6 +85,7 @@ private static final String TOTAL_EXPENDITURE_KEYWORD = "Σύνολο εξόδω
      * @param kodikos identifier of the record
      * @param newAmount new value to set
      */
+    @Override
     public void changeGeneralAmount(final String kodikos,
         final BigDecimal newAmount) {
         final Map<String, Eggrafi> revenues = budget.getRevenues();
@@ -110,6 +111,7 @@ private static final String TOTAL_EXPENDITURE_KEYWORD = "Σύνολο εξόδω
      * @param column either "τακτικός" or "ΠΔΕ"
      * @param newValue new value
      */
+    @Override
     public void changeMinistryAmount(final int ministryKodikos,
                                      final String column,
                                      final BigDecimal newValue) {
