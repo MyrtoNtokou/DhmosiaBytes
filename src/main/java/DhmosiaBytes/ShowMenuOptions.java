@@ -253,12 +253,12 @@ public final class ShowMenuOptions {
             final Role currentRole) {
         int choice;
         do {
-            System.out.println("1. Επεξεργασία Προϋπολογισμού");
+            System.out.println("\n1. Επεξεργασία Προϋπολογισμού");
             System.out.println("2. Ιστορικό Τροποποιήσεων Προϋπολογισμού");
             System.out.println("3. Σύγκριση Δημοσιευμένου και "
                     + "Τροποποιημένου Προϋπολογισμού");
             System.out.println("4. Προβολή Αιτημάτων από άλλα Υπουργεία");
-            System.out.println("\n\n0. Έξοδος");
+            System.out.println("0. Έξοδος");
             System.out.print("\nΕπιλογή: ");
             try {
                 choice = input.nextInt();
