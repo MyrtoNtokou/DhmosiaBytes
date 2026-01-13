@@ -110,14 +110,14 @@ private static final String TOTAL_EXPENDITURE_KEYWORD = "Σύνολο εξόδω
      * @param column either "τακτικός" or "ΠΔΕ"
      * @param newValue new value
      */
-    public void changeMinistryAmount(final int ministrycode,
+    public void changeMinistryAmount(final int ministryCode,
                                      final String column,
                                      final BigDecimal newValue) {
 
-        final Ministry m = budget.getMinistries().get(ministrycode);
+        final Ministry m = budget.getMinistries().get(ministryCode);
         if (m == null) {
             throw new IllegalArgumentException("Δεν υπάρχει υπουργείο με κωδικό"
-            + ministrycode);
+            + ministryCode);
         }
 
         final BigDecimal nv = normalize(newValue);
@@ -135,7 +135,7 @@ private static final String TOTAL_EXPENDITURE_KEYWORD = "Σύνολο εξόδω
         }
 
         reconcileMinistryParts(m);
-        propagateChangeToExpenses(ministrycode, oldTotal,
+        propagateChangeToExpenses(ministryCode, oldTotal,
                 normalize(m.getTotalBudget() == null ? BigDecimal.ZERO
                 : m.getTotalBudget()));
         recomputeMinistriesAggregates();

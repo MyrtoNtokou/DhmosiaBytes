@@ -1,6 +1,7 @@
 package dhmosiabytes;
 
 import java.util.InputMismatchException;
+
 import static aggregatedata.ConsoleColors.RED;
 import static aggregatedata.ConsoleColors.RESET;
 
@@ -40,8 +41,8 @@ public final class Entry {
         && username.matches("[A-Za-z0-9_]+")) {
             return username;
         } else {
-            throw new InputMismatchException(RED + "Το username δεν ικανοποιεί "
-            + "τις προϋποθεσεις." + RESET);
+            throw new InputMismatchException(RED
+                    + "Το username δεν ικανοποιεί τις προϋποθεσεις." + RESET);
         }
     }
 
