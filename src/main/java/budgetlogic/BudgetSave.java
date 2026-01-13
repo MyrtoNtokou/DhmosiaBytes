@@ -1,13 +1,13 @@
 package budgetlogic;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.Files;
+import java.util.List;
+
 import budgetreader.Eggrafi;
 import budgetreader.Ypourgeio;
-
-import java.io.IOException;
-import java.util.List;
 
 /**
  * Save the Budget object.
@@ -79,7 +79,7 @@ public final class BudgetSave {
      * @param updatedGeneral modified general budget csv name
      */
     public void saveGeneralChanges(final Budget finalBudget,
-                               final String updatedGeneral) throws IOException {
+                            final String updatedGeneral) throws IOException {
         Path generalPath = DATA_DIR.resolve(updatedGeneral);
         Files.createDirectories(DATA_DIR);
         PreparedRecords records = prepareRecords(finalBudget);

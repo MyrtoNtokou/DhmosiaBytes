@@ -6,7 +6,9 @@ import java.util.Scanner;
 
 import static aggregatedata.ConsoleColors.BOLD;
 import static aggregatedata.ConsoleColors.CYAN;
+import static aggregatedata.ConsoleColors.RED;
 import static aggregatedata.ConsoleColors.RESET;
+import static aggregatedata.ConsoleColors.UNDERLINE;
 import ministryrequests.MinistryRequest;
 import ministryrequests.MinistryRequestService;
 import ministryrequests.Request;
@@ -96,7 +98,7 @@ public final class RequestsController {
                     break;
                 }
                 if (choice < 1 || choice > MAX_CHOICE_PRIME_MINISTER) {
-                    System.out.println("Μη έγκυρος κωδικός.");
+                    System.out.println(RED + "Μη έγκυρος κωδικός." + RESET);
                 } else {
                     valid = true;
                 }
@@ -131,7 +133,7 @@ public final class RequestsController {
                                     && choice <= MAX_CHOICE_PRIME_MINISTER)) {
                     return choice;
                 } else {
-                    System.out.println("Μη έγκυρος κωδικός.");
+                    System.out.println(RED + "Μη έγκυρος κωδικός." + RESET);
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Παρακαλώ εισάγετε αριθμό.");
@@ -159,8 +161,9 @@ public final class RequestsController {
         while (true) {
             if (!financeMinistry.isEmpty()) {
                 System.out.println();
-                System.out.println("Αξιολόγηση Τροποποιήσεων "
-                        + "από Υπουργείο Οικονομικών");
+                System.out.println(BOLD + UNDERLINE
+                        + "Αξιολόγηση Τροποποιήσεων από Υπουργείο Οικονομικών"
+                        + RESET);
                 System.out.println("Επιλέξτε 0 για επιστροφή στο "
                 + "προηγούμενο μενού.");
                 System.out.print("Επιλέξτε το " + BOLD + CYAN
@@ -203,7 +206,7 @@ public final class RequestsController {
                     break;
                 }
                 if (choice != 1 && choice != REJECT) {
-                    System.out.println("Μη έγκυρος κωδικός.");
+                    System.out.println(RED + "Μη έγκυρος κωδικός." + RESET);
                 } else {
                     valid = true;
                 }
@@ -234,7 +237,8 @@ public final class RequestsController {
         int choice;
         while (true) {
             if (!govApproved.isEmpty()) {
-                System.out.println(" Τελική Αξιολόγηση Τροποποιήσεων");
+                System.out.println(BOLD + UNDERLINE
+                        + "Τελική Αξιολόγηση Τροποποιήσεων" + RESET);
                 System.out.println("Επιλέξτε 0 για επιστροφή στο "
                 + "προηγούμενο μενού.");
                 System.out.print("Επιλέξτε το " + BOLD + CYAN
@@ -287,7 +291,7 @@ public final class RequestsController {
 
             boolean valid = requests.stream().anyMatch(r -> r.getId() == id);
             if (!valid) {
-                System.out.println("Μη έγκυρος κωδικός.");
+                System.out.println(RED + "Μη έγκυρος κωδικός." + RESET);
                 System.out.println("Επιλέξτε ένα από τα εμφανιζόμενα "
                         + "αιτήματα.");
                 continue;
@@ -300,8 +304,8 @@ public final class RequestsController {
                     try {
                         BudgetEditor.saveEdit(id);
                     } catch (Exception e) {
-                        System.err.println("Σφάλμα κατά την αποθήκευση του "
-                                + "αιτήματος." + e.getMessage());
+                        System.err.println(RED + "Σφάλμα κατά την αποθήκευση "
+                                + "του αιτήματος." + e.getMessage() + RESET);
                     }
                 } else {
                     reqService.approveByGovernment(id);
@@ -355,7 +359,7 @@ public final class RequestsController {
 
             boolean valid = requests.stream().anyMatch(r -> r.getId() == id);
             if (!valid) {
-                System.out.println("Μη έγκυρος κωδικός.");
+                System.out.println(RED + "Μη έγκυρος κωδικός." + RESET);
                 System.out.println("Επιλέξτε ένα από τα εμφανιζόμενα "
                         + "αιτήματα.");
                 continue;
@@ -368,8 +372,8 @@ public final class RequestsController {
                     try {
                         BudgetEditor.saveEditRevenue(id);
                     } catch (Exception e) {
-                        System.err.println("Σφάλμα κατά την αποθήκευση του "
-                                + "αιτήματος." + e.getMessage());
+                        System.err.println(RED + "Σφάλμα κατά την αποθήκευση "
+                                + "του αιτήματος." + e.getMessage() + RESET);
                     }
                 } else {
                     revenueService.approveByGovernment(id);

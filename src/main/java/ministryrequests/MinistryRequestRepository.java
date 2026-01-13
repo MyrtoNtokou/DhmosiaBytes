@@ -13,6 +13,9 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import static aggregatedata.ConsoleColors.RESET;
+import static aggregatedata.ConsoleColors.RED;
+
 /**
  * Repository class responsible for storing and loading,
  * MinistryRequest objects from a text file.
@@ -133,8 +136,8 @@ public class MinistryRequestRepository {
             }
 
         } catch (IOException e) {
-            System.err.println("Σφάλμα κατά την ανάγνωση των αιτημάτων: "
-                                + e.getMessage());
+            System.err.println(RED + "Σφάλμα κατά την ανάγνωση των αιτημάτων: "
+                                + e.getMessage() + RESET);
         }
 
         return result;
@@ -165,8 +168,9 @@ public class MinistryRequestRepository {
             }
 
         } catch (IOException e) {
-            System.err.println("Σφάλμα κατά την αποθήκευση των αιτημάτων: "
-                                + e.getMessage());
+            System.err.println(RED
+            + "Σφάλμα κατά την αποθήκευση των αιτημάτων: "
+            + e.getMessage() + RESET);
         }
     }
 
@@ -219,7 +223,8 @@ public class MinistryRequestRepository {
         if (found) {
             saveAll(all);
         } else {
-            System.out.println("Δεν βρέθηκε αίτημα με Id = " + id);
+            System.out.println(RED + "Δεν βρέθηκε αίτημα με Id = "
+                                                + id + RESET);
         }
     }
 

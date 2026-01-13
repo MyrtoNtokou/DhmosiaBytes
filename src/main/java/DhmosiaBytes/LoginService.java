@@ -1,5 +1,8 @@
 package dhmosiabytes;
 
+import static aggregatedata.ConsoleColors.RED;
+import static aggregatedata.ConsoleColors.RESET;
+
 /**
  * Class that provides user login and registration services.
  * Uses UserDatabase for storing and retrieving users.
@@ -31,7 +34,7 @@ public class LoginService {
         }
         if (!currentUser.checkPassword(password)
                 || !currentUser.getRole().equals(role)) {
-            System.out.println("Λανθασμένος κωδικός πρόσβασης.");
+            System.out.println(RED + "Λανθασμένος κωδικός πρόσβασης." + RESET);
             System.out.println("Επιλέξτε 0 για επιστροφή πίσω "
                     + "στο προηγούμενο μενού.");
             return null;

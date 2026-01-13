@@ -4,6 +4,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import static aggregatedata.ConsoleColors.RED;
+import static aggregatedata.ConsoleColors.RESET;
+
 import dhmosiabytes.ShowMenuOptions;
 
 /** Controller class
@@ -76,7 +79,8 @@ public class ComparisonController {
                     if (year1 >= MIN_YEAR && year1 <= MAX_YEAR) {
                         break;
                     } else {
-                         System.out.println("Λάθος επιλογή έτους.");
+                         System.out.println(RED + "Λάθος επιλογή έτους."
+                                                + RESET);
                     }
                 } catch (InputMismatchException e) {
                     System.out.println("Παρακαλώ εισάγετε αριθμό.");
@@ -93,7 +97,8 @@ public class ComparisonController {
                     if (year2 >= MIN_YEAR && year2 <= MAX_YEAR) {
                         break;
                     } else {
-                        System.out.println("Λάθος επιλογή έτους.");
+                        System.out.println(RED + "Λάθος επιλογή έτους."
+                                                + RESET);
                     }
                 } catch (InputMismatchException e) {
                     System.out.println("Παρακαλώ εισάγετε αριθμό.");

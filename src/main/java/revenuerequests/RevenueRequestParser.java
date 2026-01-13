@@ -40,7 +40,7 @@ public class RevenueRequestParser {
             String line = lines[i].trim();
 
             // Identify the revenue line
-            if (line.matches("^\\d+,\\d+ \\|.*")) {
+            if (line.matches("^\\d+(,\\d+)*\\s*\\|.*")) {
                 revenueCode = line.split("\\|")[0].trim();
 
                 // The amount is in the immediately next line
@@ -48,9 +48,10 @@ public class RevenueRequestParser {
                     String amountLine = lines[i + 1].trim();
                     if (amountLine.contains("→")) {
                         // Take the part after the arrow "→"
-                        String rightPart = amountLine.split("→")[1].trim();
+                        String rightPart = amountLine.split("→", 2)[1].trim();
                         // Isolate the number before any parentheses
-                        newAmount = extractNumber(rightPart.split("\\(")[0]);
+                        newAmount =
+                                extractNumber(rightPart.split("\\(", 2)[0]);
                     }
                 }
                 break;

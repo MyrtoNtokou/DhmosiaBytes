@@ -8,6 +8,10 @@ import java.util.Optional;
 import budgetreader.Eggrafi;
 import budgetreader.ReadBudget;
 import budgetreader.Ypourgeio;
+import static aggregatedata.ConsoleColors.RED;
+import static aggregatedata.ConsoleColors.GREEN;
+import static aggregatedata.ConsoleColors.RESET;
+import static aggregatedata.ConsoleColors.BOLD;
 
 /** Service class
  * for performing budget comparisons. */
@@ -39,7 +43,8 @@ public class ComparisonService {
 
         // Check if entries exist in both years
         if (e1.isEmpty() || e2.isEmpty()) {
-            System.out.println("Δεν βρέθηκε η εγγραφή και στα δύο έτη.");
+            System.out.println(RED + "Δεν βρέθηκε η εγγραφή και στα δύο έτη."
+                                                + RESET);
             return;
         }
 
@@ -82,7 +87,8 @@ public class ComparisonService {
 
         // Check if entries exist in both years
         if (y1.isEmpty() || y2.isEmpty()) {
-            System.out.println("Δεν βρέθηκε υπουργείο και στα δύο έτη.");
+            System.out.println(RED + "Δεν βρέθηκε υπουργείο και στα δύο έτη."
+                                            + RESET);
             return;
         }
 
@@ -188,7 +194,8 @@ public class ComparisonService {
 
         // Determine if the amount increased or decreased
         int sign = r.getPercentageChange().signum();
-        String verb = (sign >= 0) ? "αυξήθηκε" : "μειώθηκε";
+        String verb = (sign >= 0)
+                ? GREEN + "αυξήθηκε" + RESET : RED + "μειώθηκε" + RESET;
 
         // Print formatted result
         System.out.printf(
@@ -196,7 +203,7 @@ public class ComparisonService {
                 r.getKodikos(),
                 name,
                 verb,
-                r.getPercentageChange().abs(),
+                BOLD + r.getPercentageChange().abs() + RESET,
                 year2,
                 year1
         );

@@ -2,15 +2,18 @@ package dhmosiabytes;
 
 import java.util.Scanner;
 
+import org.fusesource.jansi.AnsiConsole;
+
 import static aggregatedata.ConsoleColors.BLUE;
 import static aggregatedata.ConsoleColors.BOLD;
+import static aggregatedata.ConsoleColors.GREEN;
+import static aggregatedata.ConsoleColors.RED;
 import static aggregatedata.ConsoleColors.RESET;
-import org.fusesource.jansi.AnsiConsole;
 
 /**
  * Main class to start the application for user management.
  */
-public final class Main {
+public final class BudgetPlusPlus {
 
     /** Minimum code value for user roles. */
     private static final int MIN_CODE = 1;
@@ -27,7 +30,7 @@ public final class Main {
     /**
      * Private constractor so no objects will be created.
      */
-    private Main() { }
+    private BudgetPlusPlus() { }
 
    /**
      * Allows the user to select their role.
@@ -144,14 +147,15 @@ public final class Main {
                     UserDatabase.getDB().getUsers().values().stream()
                     .anyMatch(u -> u.getRole() == currentRole);
                     if (exists) {
-                        System.out.println("Υπάρχει ήδη χρήστης με τον ρόλο: "
-                        + currentRole);
+                        System.out.println(RED
+                        + "Υπάρχει ήδη χρήστης με τον ρόλο: "
+                        + currentRole + RESET);
                         continue;
                     }
                 }
                 if (UserDatabase.getDB().findUser(currentUsername) != null) {
-                    System.out.println("Υπάρχει ήδη λογαριασμός "
-                    + "με αυτό το username");
+                    System.out.println(RED + "Υπάρχει ήδη λογαριασμός "
+                    + "με αυτό το username" + RESET);
                 } else {
                     String currentPassword =
                     InputReader.enterValidPassword(input);
@@ -162,11 +166,12 @@ public final class Main {
                     User currentUser = log.register(currentRole,
                     currentUsername, currentPassword);
                     if (currentUser != null) {
-                        System.out.println("Επιτυχής δημιουργία λογαριασμού");
+                        System.out.println(GREEN
+                                + "Επιτυχής δημιουργία λογαριασμού" + RESET);
                         iAmIn = true;
                     } else {
-                        System.out.println("Υπάρχει ήδη λογαριασμός "
-                        + "με αυτό το username");
+                        System.out.println(RED + "Υπάρχει ήδη λογαριασμός "
+                        + "με αυτό το username" + RESET);
                     }
                 }
             } else {
@@ -175,8 +180,8 @@ public final class Main {
                 String currentUsername = input.nextLine();
 
                 if (UserDatabase.getDB().findUser(currentUsername) == null) {
-                    System.out.println("Δεν υπάρχει χρήστης"
-                    + " με αυτό το username.");
+                    System.out.println(RED + "Δεν υπάρχει χρήστης"
+                    + " με αυτό το username." + RESET);
                     continue;
                 }
 
@@ -189,7 +194,7 @@ public final class Main {
                     currentUser = log.login(currentRole, currentUsername,
                     currentPassword);
                     if (currentUser != null) {
-                        System.out.println("Επιτυχής είσοδος");
+                        System.out.println(GREEN + "Επιτυχής είσοδος" + RESET);
                         iAmIn = true;
                     } else {
                         String option = input.nextLine();

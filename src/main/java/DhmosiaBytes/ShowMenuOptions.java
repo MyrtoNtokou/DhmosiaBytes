@@ -4,6 +4,9 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+import static aggregatedata.ConsoleColors.BOLD;
+import static aggregatedata.ConsoleColors.RED;
+import static aggregatedata.ConsoleColors.RESET;
 import budgetcomparison.ComparisonController;
 import budgetlogic.Budget;
 import budgetlogic.BudgetAssembler;
@@ -85,14 +88,15 @@ public final class ShowMenuOptions {
             }
 
             if (choice == null) {
-                System.out.println("Μη έγκυρη επιλογή.");
-                System.out.println(" Δώστε έναν αριθμό από το 1 έως το "
+                System.out.println(RED + "Μη έγκυρη επιλογή." + RESET);
+                System.out.println("Δώστε έναν αριθμό από το 1 έως το "
                 + MenuOptions.values().length);
                 continue;
             }
 
             if (!currentRole.canAccess(choice)) {
-                System.out.println("Δεν έχετε πρόσβαση σε αυτήν την επιλογή.");
+                System.out.println(
+                    RED + "Δεν έχετε πρόσβαση σε αυτήν την επιλογή." + RESET);
                 continue;
             }
 
@@ -114,8 +118,8 @@ public final class ShowMenuOptions {
                         new ComparisonController();
                         controller.start();
                     } catch (Exception e) {
-                        System.err.println("Σφάλμα κατά την σύγκριση στοιχείων."
-                        + e.getMessage());
+                        System.err.println(RED + "Σφάλμα κατά την σύγκριση "
+                                + "στοιχείων." + e.getMessage() + RESET);
                     }
                 }
                 case GRAPHS -> {
@@ -124,8 +128,8 @@ public final class ShowMenuOptions {
                 case EXIT -> {
                     return true;
                 }
-                default -> System.out.println("Μη έγκυρη επιλογή. "
-                + "Παρακαλώ δοκιμάστε ξανά.");
+                default -> System.out.println(RED + "Μη έγκυρη επιλογή. "
+                        + RESET + "Παρακαλώ δοκιμάστε ξανά.");
             }
         } while (choice != MenuOptions.EXIT);
         return false;
@@ -199,8 +203,8 @@ public final class ShowMenuOptions {
             case FINANCE_MINISTER -> editBudget(input, currentRole);
             case OTHER_MINISTRY -> {
                 System.out.println();
-                System.out.println("Τα αιτήματα σας θα σταλούν στο Υπουργείο "
-                + "Οικονομικών για αξιολόγηση.");
+                System.out.println(BOLD + "Τα αιτήματα σας θα σταλούν στο "
+                    + "Υπουργείο Οικονομικών για αξιολόγηση." + RESET);
                 CutLists cut = new CutLists();
                 List<Ypourgeio> ministries = cut.cutYpourgeio();
                 BudgetAssembler loader = new BudgetAssembler();
@@ -213,8 +217,8 @@ public final class ShowMenuOptions {
                     currentRole);
                 } while (code != 0);
             }
-            default -> System.out.println("Σφάλμα κατά την φόρτωση "
-            + "της ενέργειας");
+            default -> System.out.println(RED + "Σφάλμα κατά την φόρτωση "
+            + "της ενέργειας" + RESET);
         }
     }
 
@@ -249,12 +253,12 @@ public final class ShowMenuOptions {
             final Role currentRole) {
         int choice;
         do {
-            System.out.println("\n\n0. Έξοδος");
-            System.out.println("1. Επεξεργασία Προϋπολογισμού");
+            System.out.println("\n1. Επεξεργασία Προϋπολογισμού");
             System.out.println("2. Ιστορικό Τροποποιήσεων Προϋπολογισμού");
             System.out.println("3. Σύγκριση Δημοσιευμένου και "
                     + "Τροποποιημένου Προϋπολογισμού");
             System.out.println("4. Προβολή Αιτημάτων από άλλα Υπουργεία");
+            System.out.println("0. Έξοδος");
             System.out.print("\nΕπιλογή: ");
             try {
                 choice = input.nextInt();
@@ -268,7 +272,7 @@ public final class ShowMenuOptions {
             if (choice == 0) {
                 break;
             } else if (choice < 1 || choice > CODE_FOR_MENUS) {
-                System.out.println("Μη έγκυρη επιλογή.");
+                System.out.println(RED + "Μη έγκυρη επιλογή." + RESET);
                 System.out.println("Πρέπει να επιλέξετε από το 1 έως το "
                 + CODE_FOR_MENUS + ".");
                 continue;
@@ -292,7 +296,8 @@ public final class ShowMenuOptions {
                 }
                 case CODE_FOR_OPTION_3 -> showComparedBudgets();
                 case CODE_FOR_MENUS -> {
-                    System.out.print("\nΑιτήματα Άλλων Υπουργείων:");
+                    System.out.print(BOLD + "\nΑιτήματα Άλλων Υπουργείων:"
+                            + RESET);
                     MinistryRequestService reqService =
                         new MinistryRequestService();
 
@@ -326,7 +331,8 @@ public final class ShowMenuOptions {
                         }
                     }
                 }
-                default -> System.out.println("Μη έγκυρη επιλογή.");
+                default -> System.out.println(RED + "Μη έγκυρη επιλογή."
+                        + RESET);
             }
         } while (true);
     }
