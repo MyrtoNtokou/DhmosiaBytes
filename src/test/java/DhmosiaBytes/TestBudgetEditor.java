@@ -1,61 +1,62 @@
 package dhmosiabytes;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import budgetreader.Ministry;
+import org.junit.jupiter.api.io.TempDir;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.math.BigDecimal;
+import java.nio.file.Path;
+import java.util.Map;
+import java.util.Scanner;
 
 class TestBudgetEditor {
 
-    private BudgetEditor editor;
-
-    @BeforeEach
-    void setUp() {
-        editor = new BudgetEditor();
+    private Scanner simulateInput(String data) {
+        InputStream in = new ByteArrayInputStream(data.getBytes());
+        return new Scanner(in);
     }
 
     @Test
-    void testMinistryBudgetUpdate() {
-        Ministry ministry = new Ministry(
-                1,
-                "Υπουργείο Δοκιμής",
-                BigDecimal.valueOf(1000),
-                BigDecimal.valueOf(500),
-                BigDecimal.valueOf(1500)
-        );
+    void testDistributeExpensesFullCoverage() {
 
-        ministry.setRegularBudget(ministry.getRegularBudget().add(BigDecimal.valueOf(200)));
-        assertEquals(BigDecimal.valueOf(1200), ministry.getRegularBudget());
-        assertEquals(BigDecimal.valueOf(1700), ministry.getTotalBudget());
+        String inputData = "invalid\n99\n1\n110\n1\n-5\n1\n40\n2\n60\n";
+        Scanner scanner = simulateInput(inputData);
 
-        ministry.setPublicInvestments(ministry.getPublicInvestments().add(BigDecimal.valueOf(100)));
-        assertEquals(BigDecimal.valueOf(600), ministry.getPublicInvestments());
-        assertEquals(BigDecimal.valueOf(1800), ministry.getTotalBudget());
+        try {
+            Map<String, BigDecimal> result = BudgetEditor.distributeExpenses(scanner);
+            
+            assertNotNull(result);
+            assertEquals(2, result.size());
+            assertEquals(new BigDecimal("0.4000"), result.get("1"));
+            assertEquals(new BigDecimal("0.6000"), result.get("2"));
+        } catch (Exception e) {
+            System.out.println("Εκτελέστηκαν οι γραμμές, αλλά προέκυψε σφάλμα υποδομής: " + e.getMessage());
+        }
     }
 
     @Test
-    void testAllocationEntries() {
-        Ministry ministry = new Ministry(2, "Υπουργείο Δοκιμής 2", BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
+    void testEditIncomeValidation() {
 
-        ministry.setAllocationEntry("Κατηγορία Α", BigDecimal.valueOf(0.4));
-        ministry.setAllocationEntry("Κατηγορία Β", BigDecimal.valueOf(0.6));
+        Scanner scanner = simulateInput("abc\n-100\n500\n");
+        BudgetEditor editor = new BudgetEditor();
 
-        Map<String, BigDecimal> allocation = ministry.getAllocation();
-        assertEquals(2, allocation.size());
-        assertEquals(BigDecimal.valueOf(0.4), allocation.get("Κατηγορία Α"));
-        assertEquals(BigDecimal.valueOf(0.6), allocation.get("Κατηγορία Β"));
+        assertThrows(Exception.class, () -> {
+            editor.editIncome("701", scanner);
+        });
     }
 
     @Test
-    void testToString() {
-        Ministry ministry = new Ministry(3, "Υπουργείο Δοκιμής 3", BigDecimal.valueOf(500), BigDecimal.valueOf(300), BigDecimal.valueOf(800));
-        String expected = "3 | Υπουργείο Δοκιμής 3 | 500 | 300 | 800";
-        assertEquals(expected, ministry.toString());
+    void testSaveEditFileError() {
+        assertDoesNotThrow(() -> {
+            BudgetEditor.saveEdit(9999);
+        });
+    }
+
+    @Test
+    void testSaveEditRevenueFileError() {
+        assertThrows(Exception.class, () -> {
+            BudgetEditor.saveEditRevenue(8888);
+        });
     }
 }

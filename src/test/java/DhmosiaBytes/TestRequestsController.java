@@ -3,96 +3,96 @@ package dhmosiabytes;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
+import java.io.ByteArrayInputStream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import ministryrequests.MinistryRequest;
-import ministryrequests.MinistryRequestService;
 import ministryrequests.RequestStatus;
 import ministryrequests.RequestType;
 
 class TestRequestsController {
 
-    private DummyMinistryRequestService dummyService;
-    private MinistryRequest testRequest1;
-    private MinistryRequest testRequest2;
-
-    @BeforeEach
-    void setup() {
-        dummyService = new DummyMinistryRequestService();
-
-        testRequest1 = new MinistryRequest(
-                1, 100, "Υπουργείο Α", RequestType.REGULARBUDGET,
-                RequestStatus.REVIEWED_BY_FINANCE_MINISTRY,
-                LocalDateTime.now(), "Αίτημα 1"
-        );
-
-        testRequest2 = new MinistryRequest(
-                2, 101, "Υπουργείο Β", RequestType.PUBLIC_INVESTMENTS,
-                RequestStatus.REVIEWED_BY_FINANCE_MINISTRY,
-                LocalDateTime.now(), "Αίτημα 2"
-        );
-
-        dummyService.addRequest(testRequest1);
-        dummyService.addRequest(testRequest2);
+    private Scanner createScanner(String input) {
+        return new Scanner(new ByteArrayInputStream(input.getBytes()));
     }
 
     @Test
-    void testApproveRequest() {
-        int idToApprove = testRequest1.getId();
-        dummyService.approveByGovernment(idToApprove);
-
-        MinistryRequest updated = dummyService.getRequestById(idToApprove);
-        assertNotNull(updated);
-        assertEquals(RequestStatus.GOVERNMENT_APPROVED, updated.getStatus(),
-                "Το αίτημα πρέπει να είναι πλέον GOVERNMENT_APPROVED");
+    void testChooseRequest_EmptyList() {
+        Scanner scanner = createScanner("1\n");
+        int result = RequestsController.chooseRequest(scanner, new ArrayList<>());
+        assertEquals(0, result, "Αν η λίστα είναι άδεια, πρέπει να επιστρέφει 0");
     }
 
     @Test
-    void testRejectRequest() {
-        int idToReject = testRequest2.getId();
-        dummyService.markRejected(idToReject);
+    void testChooseRequest_ValidAndInvalidInput() {
 
-        MinistryRequest updated = dummyService.getRequestById(idToReject);
-        assertNotNull(updated);
-        assertEquals(RequestStatus.REJECTED, updated.getStatus(),
-                "Το αίτημα πρέπει να είναι πλέον REJECTED");
+        String input = "abc\n5\n0\n";
+        Scanner scanner = createScanner(input);
+        
+        List<MinistryRequest> list = new ArrayList<>();
+        list.add(new MinistryRequest(5, 100, "Test", RequestType.REGULARBUDGET, 
+                 RequestStatus.PENDING, LocalDateTime.now(), "Text"));
+
+        int result = RequestsController.chooseRequest(scanner, list);
+        assertEquals(5, result);
+        
+        // Δεύτερη κλήση: θα διαβάσει το 0
+        result = RequestsController.chooseRequest(scanner, list);
+        assertEquals(0, result);
     }
 
-    static class DummyMinistryRequestService extends MinistryRequestService {
-        private final List<MinistryRequest> requests = new ArrayList<>();
+    @Test
+    void testCompleteOrReject_Flow() {
+        Scanner scanner = createScanner("9\n1\n2\n0\n");
+        
+        assertEquals(1, RequestsController.completeOrReject(scanner));
+        assertEquals(2, RequestsController.completeOrReject(scanner));
+        assertEquals(0, RequestsController.completeOrReject(scanner));
+    }
 
-        public void addRequest(MinistryRequest r) {
-            requests.add(r);
-        }
+    @Test
+    void testPrimeMinisterAndParlMenu() {
+        Scanner scanner = createScanner("5\nxyz\n1\n0\n");
+        
+        assertEquals(1, RequestsController.primeMinisterAndParlMenu(scanner));
+        assertEquals(0, RequestsController.primeMinisterAndParlMenu(scanner));
+    }
 
-        public MinistryRequest getRequestById(int id) {
-            return requests.stream().filter(r -> r.getId() == id).findFirst().orElse(null);
-        }
+    @Test
+    void testChooseEdit_EmptyAndValid() {
+        // Empty
+        assertEquals(0, RequestsController.chooseEdit(createScanner("1\n"), new ArrayList<>()));
 
-        public List<MinistryRequest> getByStatusAndType(RequestStatus status, Object type) {
-            List<MinistryRequest> result = new ArrayList<>();
-            for (MinistryRequest r : requests) {
-                if (r.getStatus() == status) {
-                    result.add(r);
-                }
-            }
-            return result;
-        }
+        // Valid
+        List<MinistryRequest> list = List.of(new MinistryRequest(10, 1, "A", 
+                RequestType.REGULARBUDGET, RequestStatus.PENDING, LocalDateTime.now(), "T"));
+        assertEquals(10, RequestsController.chooseEdit(createScanner("10\n"), list));
+    }
 
-        @Override
-        public void approveByGovernment(int id) {
-            MinistryRequest r = getRequestById(id);
-            if (r != null) r.setStatus(RequestStatus.GOVERNMENT_APPROVED);
-        }
+    @Test
+    void testCompleteOrRejectPrimMinist() {
+        Scanner scanner = createScanner("4\n1\n2\n0\n");
+        
+        assertEquals(1, RequestsController.completeOrRejectPrimMinist(scanner));
+        assertEquals(2, RequestsController.completeOrRejectPrimMinist(scanner));
+        assertEquals(0, RequestsController.completeOrRejectPrimMinist(scanner));
+    }
 
-        @Override
-        public void markRejected(int id) {
-            MinistryRequest r = getRequestById(id);
-            if (r != null) r.setStatus(RequestStatus.REJECTED);
-        }
+    @Test
+    void testChooseEditParl() {
+        List<MinistryRequest> list = List.of(new MinistryRequest(1, 1, "A", 
+                RequestType.REGULARBUDGET, RequestStatus.PENDING, LocalDateTime.now(), "T"));
+        
+        assertEquals(1, RequestsController.chooseEditParl(createScanner("1\n"), list));
+        assertEquals(0, RequestsController.chooseEditParl(createScanner("0\n"), list));
+    }
+
+    @Test
+    void testShowRequests_Exit() {
+        Scanner scanner = createScanner("0\n");
+        assertDoesNotThrow(() -> RequestsController.showRequests(scanner, false));
     }
 }
