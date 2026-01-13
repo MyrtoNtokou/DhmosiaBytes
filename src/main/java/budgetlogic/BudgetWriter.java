@@ -39,7 +39,7 @@ public final class BudgetWriter {
                         + ";"
                         + r.getDescription()
                         + ";"
-                        + r.getAmount().toPlainString()
+                        + formatForCsv(r.getAmount())
                         + System.lineSeparator()
                 );
             }
@@ -69,14 +69,32 @@ public final class BudgetWriter {
                         + ";"
                         + m.getName()
                         + ";"
-                        + m.getRegularBudget().toPlainString()
+                        + formatForCsv(m.getRegularBudget())
                         + ";"
-                        + m.getPublicInvestments().toPlainString()
+                        + formatForCsv(m.getPublicInvestments())
                         + ";"
-                        + m.getTotalBudget().toPlainString()
+                        + formatForCsv(m.getTotalBudget())
                         + System.lineSeparator()
                 );
             }
         }
+    }
+
+    /**
+     * Formats a {@link BigDecimal} value for CSV output.
+     * The value is formatted without decimal places and uses the Greek locale
+     * (dots as thousands separators).
+     *
+     * @param value the numeric value to format
+     * @return a formatted string representation of the value, or "0" if null
+     */
+    private static String formatForCsv(final java.math.BigDecimal value) {
+        if (value == null) {
+            return "0";
+        }
+        java.text.NumberFormat nf = java.text.NumberFormat
+                        .getInstance(new java.util.Locale("el", "GR"));
+        nf.setMaximumFractionDigits(0);
+        return nf.format(value);
     }
 }
