@@ -1,7 +1,0 @@
-{
-  "testUser": {
-    "role": "PRIME_MINISTER",
-    "username": "testUser",
-    "passwordHash": "$2a$12$68cF18/rO5N563ZBjbhqLeobKJb3XWLRW3ZuxBAcuoinr0dHFgdmC"
-  }
-}
