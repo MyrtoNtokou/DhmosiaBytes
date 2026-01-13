@@ -11,10 +11,10 @@ import budgetcomparison.ComparisonController;
 import budgetlogic.Budget;
 import budgetlogic.BudgetAssembler;
 import budgetlogic.BudgetDiffPrinter;
-import budgetreader.DisplayBudget;
 import budgetreader.BasicRecord;
-import budgetreader.ReadBudget;
+import budgetreader.DisplayBudget;
 import budgetreader.Ministry;
+import budgetreader.ReadBudget;
 import ministryrequests.MinistryRequest;
 import ministryrequests.MinistryRequestService;
 import ministryrequests.RequestPrinter;
@@ -202,20 +202,36 @@ public final class ShowMenuOptions {
             }
             case FINANCE_MINISTER -> editBudget(input, currentRole);
             case OTHER_MINISTRY -> {
-                System.out.println();
-                System.out.println(BOLD + "Τα αιτήματα σας θα σταλούν στο "
-                    + "Υπουργείο Οικονομικών για αξιολόγηση." + RESET);
-                CutLists cut = new CutLists();
-                List<Ministry> ministries = cut.cutMinistry();
-                BudgetAssembler loader = new BudgetAssembler();
-                Budget budget = loader.loadBudget("newgeneral.csv",
-                        "newministries.csv");
-                BudgetDiffPrinter.printMinistries(budget);
-                int code;
-                do {
-                    code = cut.selectMinistry(input, ministries, budget,
-                    currentRole);
-                } while (code != 0);
+                int choice;
+                while (true) {
+                    System.out.println("\n1. Ιστορικό Αλλαγών");
+                    System.out.println("2. Σύγκριση Δημοσιευμένου και "
+                            + "Τροποποιημένου");
+                    System.out.println("3. Υποβολή Αιτημάτων");
+                    System.out.println("0. Εξοδος");
+                    System.out.print("Επιλογή: ");
+                    try {
+                        choice = input.nextInt();
+                        input.nextLine();
+                        switch (choice) {
+                            case CODE_FOR_OPTION_0 -> {
+                                return;
+                            }
+                            case CODE_FOR_OPTION_1 -> editHistory(input);
+                            case CODE_FOR_OPTION_2 -> showComparedBudgets();
+                            case CODE_FOR_OPTION_3 -> {
+                                submitRequest(input, currentRole);
+                            }
+                            default -> {
+                                System.out.println(RED + "Μη έγκυρος κωδικός."
+                                        + RESET);
+                            }
+                        }
+                    } catch (InputMismatchException e) {
+                        System.out.println("Παρακαλώ εισάγετε αριθμό.");
+                        input.nextLine();
+                    }
+                }
             }
             default -> System.out.println(RED + "Σφάλμα κατά την φόρτωση "
             + "της ενέργειας" + RESET);
@@ -377,5 +393,29 @@ public final class ShowMenuOptions {
                 // not needed
             }
         }
+    }
+
+    /**
+     * Handles the submission of ministry budget requests.
+     *
+     * @param input the Scanner used to read user input
+     * @param currentRole the role of the currently logged-in user
+     */
+    public static void submitRequest(final Scanner input,
+            final Role currentRole) {
+        System.out.println();
+        System.out.println(BOLD + "Τα αιτήματα σας θα σταλούν στο "
+                + "Υπουργείο Οικονομικών για αξιολόγηση." + RESET);
+                CutLists cut = new CutLists();
+        List<Ministry> ministries = cut.cutMinistry();
+        BudgetAssembler loader = new BudgetAssembler();
+        Budget budget = loader.loadBudget("newgeneral.csv",
+                "newministries.csv");
+        BudgetDiffPrinter.printMinistries(budget);
+        int code;
+        do {
+            code = cut.selectMinistry(input, ministries, budget,
+                    currentRole);
+        } while (code != 0);
     }
 }
