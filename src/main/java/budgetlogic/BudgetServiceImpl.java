@@ -106,7 +106,7 @@ private static final String TOTAL_EXPENDITURE_KEYWORD = "Σύνολο εξόδω
     /**
      * Changes a ministry amount in either "τακτικός" or "ΠΔΕ".
      *
-     * @param ministrycode ministry ID
+     * @param ministryCode ministry ID
      * @param column either "τακτικός" or "ΠΔΕ"
      * @param newValue new value
      */
