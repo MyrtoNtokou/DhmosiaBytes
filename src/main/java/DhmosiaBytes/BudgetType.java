@@ -8,7 +8,7 @@ import static aggregatedata.ConsoleColors.RESET;
  */
 public enum BudgetType {
     /** Represents the regular (operational) budget. */
-    TAKTIKOS(1, "Τακτικός Προυπολογισμός"),
+    REGULARBUDGET(1, "Τακτικός Προυπολογισμός"),
 
     /** Represents the public investments budget. */
     DHMOSION_EPENDYSEON(2, "Προϋπολογισμός Δημοσίων Επενδύσεων");

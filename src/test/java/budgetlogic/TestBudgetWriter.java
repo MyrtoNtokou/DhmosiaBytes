@@ -1,7 +1,8 @@
 package budgetlogic;
 
-import budgetreader.Eggrafi;
-import budgetreader.Ypourgeio;
+import budgetreader.BasicRecord;
+import budgetreader.Ministry;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -21,9 +22,9 @@ class BudgetWriterTest {
     @Test
     void testWriteGeneralWithFormatting() throws IOException {
         Path filePath = tempDir.resolve("test_general.csv");
-        List<Eggrafi> data = List.of(
-            new Eggrafi("1", "Έσοδα", new BigDecimal("1000000.00")),
-            new Eggrafi("2", "Έξοδα", new BigDecimal("5500.50"))
+        List<BasicRecord> data = List.of(
+            new BasicRecord("1", "Έσοδα", new BigDecimal("1000000.00")),
+            new BasicRecord("2", "Έξοδα", new BigDecimal("5500.50"))
         );
 
         BudgetWriter.writeGeneral(filePath.toString(), data);
@@ -40,8 +41,8 @@ class BudgetWriterTest {
     void testWriteMinistriesWithFormatting() throws IOException {
   
         Path filePath = tempDir.resolve("test_ministries.csv");
-        List<Ypourgeio> data = List.of(
-            new Ypourgeio(1, "Υπουργείο Τεστ", 
+        List<Ministry> data = List.of(
+            new Ministry(1, "Υπουργείο Τεστ", 
                 new BigDecimal("2000000"), 
                 new BigDecimal("500000"), 
                 new BigDecimal("2500000"))

@@ -9,10 +9,10 @@ import java.math.BigDecimal;
 public class ComparisonResult {
 
     /** Budget code identifier. */
-    private final String kodikos;
+    private final String code;
 
     /** Description of the budget item. */
-    private final String perigrafi;
+    private final String description;
 
     /** The base year used for comparison. */
     private final int baseYear;
@@ -28,21 +28,21 @@ public class ComparisonResult {
     /**
      * Constructs a ComparisonResult instance.
      *
-     * @param kodikosNew the budget code
-     * @param perigrafiNew the description of the budget item
+     * @param codeNew the budget code
+     * @param descriptionNew the description of the budget item
      * @param baseYearNew the base year
      * @param compareYearNew the comparison year
      * @param percentageChangeNew the percentage change between the two years
      */
     public ComparisonResult(
-            final String kodikosNew,
-            final String perigrafiNew,
+            final String codeNew,
+            final String descriptionNew,
             final int baseYearNew,
             final int compareYearNew,
             final BigDecimal percentageChangeNew) {
 
-        this.kodikos = kodikosNew;
-        this.perigrafi = perigrafiNew;
+        this.code = codeNew;
+        this.description = descriptionNew;
         this.baseYear = baseYearNew;
         this.compareYear = compareYearNew;
         this.percentageChange = percentageChangeNew;
@@ -53,8 +53,8 @@ public class ComparisonResult {
     *
     * @return the budget code
     */
-    public String getKodikos() {
-        return kodikos;
+    public String getcode() {
+        return code;
     }
 
     /**
@@ -62,8 +62,8 @@ public class ComparisonResult {
     *
     * @return the description
     */
-    public String getPerigrafi() {
-        return perigrafi;
+    public String getdescription() {
+        return description;
     }
 
 

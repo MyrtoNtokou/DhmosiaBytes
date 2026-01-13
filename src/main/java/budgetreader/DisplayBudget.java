@@ -17,9 +17,9 @@ public final class DisplayBudget {
 
     /** Prints the General Budget List on the screen.
      *
-     * @param eggrafes the list of budget entries to print
+     * @param basicRecords the list of budget entries to print
      */
-    public static void showGeneral(final List<Eggrafi> eggrafes) {
+    public static void showGeneral(final List<BasicRecord> basicRecords) {
         System.out.println(CYAN + BOLD
                     + "\n=== ΓΕΝΙΚΟΣ ΠΡΟΫΠΟΛΟΓΙΣΜΟΣ ===\n" + RESET);
 
@@ -27,17 +27,17 @@ public final class DisplayBudget {
         "Έσοδα (1) / Έξοδα (2)", "Ποσό" + RESET);
 
         /* Print each record in the list */
-        for (Eggrafi e : eggrafes) {
+        for (BasicRecord e : basicRecords) {
             System.out.printf("%-6s | %-60s | %-25.2f%n",
-            e.getKodikos(), e.getPerigrafi(), e.getPoso());
+            e.getCode(), e.getDescription(), e.getAmount());
         }
     }
 
     /** Prints the Ministry Budget List on the screen.
      *
-     * @param ypourg the list of budget entries to print
+     * @param ministry the list of budget entries to print
      */
-    public static void showMinistry(final List<Ypourgeio> ypourg) {
+    public static void showMinistry(final List<Ministry> ministry) {
         System.out.println(CYAN + BOLD
             + "\n=== ΚΑΤΗΓΟΡΙΟΠΟΙΗΣΗ ΣΤΟΙΧΕΙΩΝ ===\n" + RESET);
 
@@ -46,10 +46,10 @@ public final class DisplayBudget {
             "Προϋπολογισμός Δημοσίων Επενδύσεων", "Σύνολο" + RESET);
 
         /* Print each record in the list*/
-        for (Ypourgeio y : ypourg) {
+        for (Ministry y : ministry) {
             System.out.printf("%-3d | %-65s | %-25.2f | %-35.2f | %-25.2f%n",
-                y.getKodikos(), y.getOnoma(), y.getTaktikos(),
-                y.getEpendyseis(), y.getSynolo());
+                y.getcode(), y.getName(), y.getRegularBudget(),
+                y.getPublicInvestments(), y.getTotalBudget());
         }
     }
 }

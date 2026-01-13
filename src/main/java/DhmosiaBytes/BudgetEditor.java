@@ -22,8 +22,8 @@ import budgetlogic.BudgetDiffPrinter;
 import budgetlogic.BudgetSave;
 import budgetlogic.BudgetService;
 import budgetlogic.BudgetServiceImpl;
-import budgetreader.Eggrafi;
-import budgetreader.Ypourgeio;
+import budgetreader.BasicRecord;
+import budgetreader.Ministry;
 import ministryrequests.MinistryRequestParser;
 import ministryrequests.MinistryRequestService;
 import ministryrequests.RequestLoader;
@@ -91,7 +91,7 @@ public class BudgetEditor {
                 .captureRevenuesDiff(initialBudget, after);
 
         RevenueRequestService revenueService = new RevenueRequestService();
-        String name = after.getRevenues().get(code).getPerigrafi();
+        String name = after.getRevenues().get(code).getDescription();
         revenueService.submitRevenueRequest(code, name,
                 capturedDiff);
 
@@ -133,9 +133,10 @@ public class BudgetEditor {
             + " που θα εφαρμοστεί στο επιλεγμένο Υπουργείο: ");
             String input = scanner.nextLine();
             try {
-                Ypourgeio mBefore = initialBudget.getMinistries().get(code);
+                Ministry mBefore = initialBudget.getMinistries().get(code);
                 BigDecimal oldVal = column.equalsIgnoreCase("τακτικός")
-                    ? mBefore.getTaktikos() : mBefore.getEpendyseis();
+                    ? mBefore.getRegularBudget()
+                    : mBefore.getPublicInvestments();
                 increase = new BigDecimal(input);
                 newAmount = oldVal.add(increase);
                 if (newAmount.compareTo(BigDecimal.ZERO) < 0) {
@@ -156,7 +157,7 @@ public class BudgetEditor {
         BudgetService serv = new BudgetServiceImpl(before, mapping);
         serv.changeMinistryAmount(code, column, newAmount);
         Budget after = serv.getBudget();
-        Ypourgeio ministry = after.getMinistries().get(code);
+        Ministry ministry = after.getMinistries().get(code);
         String rawDiff = BudgetDiffPrinter
                         .captureMinistryDiff(initialBudget, after);
         MinistryRequestService reqService = new MinistryRequestService();
@@ -166,10 +167,10 @@ public class BudgetEditor {
 
         if (column.equals("τακτικός")) {
             requestId = reqService.submitRequest(ministry, rawDiff,
-                    RequestType.TAKTIKOS);
+                    RequestType.REGULARBUDGET);
         } else {
             requestId = reqService.submitRequest(ministry, rawDiff,
-            RequestType.EPENDYSEIS);
+            RequestType.PUBLIC_INVESTMENTS);
         }
 
         switch (currentRole) {
@@ -195,7 +196,7 @@ public class BudgetEditor {
             input) {
         Map<String, BigDecimal> increases = new HashMap<>();
         CutLists cut = new CutLists();
-        List<Eggrafi> exoda = cut.cutEggrafiExoda();
+        List<BasicRecord> exoda = cut.cutBasicRecordExoda();
 
         while (true) {
             increases.clear();
@@ -210,7 +211,7 @@ public class BudgetEditor {
                 System.out.print("Επιλέξτε κωδικό εξόδου: ");
                 String code = input.nextLine().trim();
 
-                boolean exists = exoda.stream().anyMatch(e -> e.getKodikos()
+                boolean exists = exoda.stream().anyMatch(e -> e.getCode()
                         .equals(code));
 
                 if (!exists || code.equals(BANNED_CODE)) {

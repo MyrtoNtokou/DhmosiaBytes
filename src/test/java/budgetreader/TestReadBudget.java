@@ -26,7 +26,7 @@ public class TestReadBudget {
      */
     @Test
     public void testReadGeneralBudget() {
-        List<Eggrafi> result =
+        List<BasicRecord> result =
             ReadBudget.readGeneralBudget("proypologismos2025.csv");
 
         /* The list should exist */
@@ -48,16 +48,16 @@ public class TestReadBudget {
             .toURI()
         );
 
-        List<Eggrafi> result =
+        List<BasicRecord> result =
             ReadBudget.readGeneralBudgetFromPath(path);
 
         assertNotNull(result);
         assertFalse(result.isEmpty());
 
-        Eggrafi e = result.get(0);
-        assertNotNull(e.getKodikos());
-        assertNotNull(e.getPerigrafi());
-        assertNotNull(e.getPoso());
+        BasicRecord e = result.get(0);
+        assertNotNull(e.getCode());
+        assertNotNull(e.getDescription());
+        assertNotNull(e.getAmount());
     }
 
 
@@ -68,12 +68,12 @@ public class TestReadBudget {
      */
     @Test
     public void testGeneralBudgetAmountParsing() {
-        List<Eggrafi> result =
+        List<BasicRecord> result =
             ReadBudget.readGeneralBudget("proypologismos2025.csv");
 
-        Eggrafi e = result.get(0);
+        BasicRecord e = result.get(0);
 
-        assertFalse(e.getPoso().compareTo(BigDecimal.ZERO) == 0,
+        assertFalse(e.getAmount().compareTo(BigDecimal.ZERO) == 0,
             "Amount should not be zero");
 }
 
@@ -83,15 +83,15 @@ public class TestReadBudget {
      */
     @Test
     public void testReadGeneralBudgetFirstEntry() {
-        List<Eggrafi> result =
+        List<BasicRecord> result =
             ReadBudget.readGeneralBudget("proypologismos2025.csv");
 
-        Eggrafi first = result.get(0);
+        BasicRecord first = result.get(0);
 
         assertNotNull(first);
-        assertNotNull(first.getKodikos());
-        assertNotNull(first.getPerigrafi());
-        assertNotNull(first.getPoso());
+        assertNotNull(first.getCode());
+        assertNotNull(first.getDescription());
+        assertNotNull(first.getAmount());
     }
 
     /**
@@ -106,15 +106,15 @@ public class TestReadBudget {
             .toURI()
         );
 
-        List<Ypourgeio> result =
+        List<Ministry> result =
             ReadBudget.readByMinistryFromPath(path);
 
         assertNotNull(result);
         assertFalse(result.isEmpty());
 
-        Ypourgeio y = result.get(0);
-        assertNotNull(y.getOnoma());
-        assertNotNull(y.getSynolo());
+        Ministry y = result.get(0);
+        assertNotNull(y.getName());
+        assertNotNull(y.getTotalBudget());
     }
     
     /**
@@ -123,14 +123,14 @@ public class TestReadBudget {
      */
     @Test
     public void testReadByMinistryFields() {
-        List<Ypourgeio> result =
+        List<Ministry> result =
             ReadBudget.readByMinistry("proypologismos2025anaypourgeio.csv");
 
-        Ypourgeio y = result.get(0);
+        Ministry y = result.get(0);
 
         assertNotNull(y);
-        assertNotNull(y.getOnoma());
-        assertNotNull(y.getSynolo());
+        assertNotNull(y.getName());
+        assertNotNull(y.getTotalBudget());
     }
     /**
      * Tests that the ministry CSV file is loaded properly
@@ -138,7 +138,7 @@ public class TestReadBudget {
      */
     @Test
     public void testReadByMinistry() {
-        List<Ypourgeio> result =
+        List<Ministry> result =
                 ReadBudget.readByMinistry("proypologismos2025anaypourgeio.csv");
 
         /* The list should exist */
@@ -154,7 +154,7 @@ public class TestReadBudget {
      */
     @Test
     public void testReadGeneralBudgetFileNotFound() {
-        List<Eggrafi> result =
+        List<BasicRecord> result =
             ReadBudget.readGeneralBudget("does_not_exist.csv");
 
         assertNotNull(result);
@@ -167,17 +167,17 @@ public class TestReadBudget {
      */
     @Test
     public void testReadCroppedByMinistryBasic() {
-        List<Ypourgeio> result =
+        List<Ministry> result =
             ReadBudget.readCroppedByMinistry(
             "proypologismos2025anaypourgeio.csv");
 
         assertNotNull(result);
         assertFalse(result.isEmpty());
 
-        Ypourgeio y = result.get(0);
+        Ministry y = result.get(0);
 
-        assertNotNull(y.getOnoma());
-        assertNotNull(y.getSynolo());
+        assertNotNull(y.getName());
+        assertNotNull(y.getTotalBudget());
     }
 
     /**

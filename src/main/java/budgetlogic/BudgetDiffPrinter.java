@@ -6,8 +6,8 @@ import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
-import budgetreader.Eggrafi;
-import budgetreader.Ypourgeio;
+import budgetreader.BasicRecord;
+import budgetreader.Ministry;
 
 import static aggregatedata.ConsoleColors.RESET;
 import static aggregatedata.ConsoleColors.BOLD;
@@ -89,15 +89,15 @@ public final class BudgetDiffPrinter {
         + "=== ΑΛΛΑΓΕΣ ΣΤΑ ΕΣΟΔΑ ΤΟΥ ΚΡΑΤΙΚΟΥ ΠΡΟΫΠΟΛΟΓΙΣΜΟΥ ===" + RESET);
 
         // Find changes
-        for (Map.Entry<String, Eggrafi> entry : before.getRevenues()
+        for (Map.Entry<String, BasicRecord> entry : before.getRevenues()
                                                     .entrySet()) {
             String k = entry.getKey();
-            BigDecimal oldVal = entry.getValue().getPoso();
-            BigDecimal newVal = after.getRevenues().get(k).getPoso();
+            BigDecimal oldVal = entry.getValue().getAmount();
+            BigDecimal newVal = after.getRevenues().get(k).getAmount();
 
             if (oldVal.compareTo(newVal) != 0) {
                 System.out.println("\n" + BOLD + k + " | "
-                    + entry.getValue().getPerigrafi() + RESET);
+                    + entry.getValue().getDescription() + RESET);
 
                 System.out.println(oldVal
                                + " → " + BLUE + newVal + RESET
@@ -118,15 +118,15 @@ public final class BudgetDiffPrinter {
             + "=== ΑΛΛΑΓΕΣ ΣΤΑ ΕΞΟΔΑ ΤΟΥ ΚΡΑΤΙΚΟΥ ΠΡΟΫΠΟΛΟΓΙΣΜΟΥ ===" + RESET);
 
         // Find changes
-        for (Map.Entry<String, Eggrafi> entry : before.getExpenses()
+        for (Map.Entry<String, BasicRecord> entry : before.getExpenses()
                                                         .entrySet()) {
             String k = entry.getKey();
-            BigDecimal oldVal = entry.getValue().getPoso();
-            BigDecimal newVal = after.getExpenses().get(k).getPoso();
+            BigDecimal oldVal = entry.getValue().getAmount();
+            BigDecimal newVal = after.getExpenses().get(k).getAmount();
 
             if (oldVal.compareTo(newVal) != 0) {
                 System.out.println("\n" + BOLD + k + " | "
-                    + entry.getValue().getPerigrafi() + RESET);
+                    + entry.getValue().getDescription() + RESET);
 
                 System.out.println(oldVal
                             + " → " + BLUE + newVal + RESET
@@ -142,12 +142,12 @@ public final class BudgetDiffPrinter {
      */
     private static void compareResult(final Budget before,
                                     final Budget after) {
-        Eggrafi resultRecord = after.getExpenses().values().stream()
-        .filter(e -> e.getPerigrafi().toUpperCase().contains("ΑΠΟΤΕΛΕΣΜΑ"))
+        BasicRecord resultRecord = after.getExpenses().values().stream()
+        .filter(e -> e.getDescription().toUpperCase().contains("ΑΠΟΤΕΛΕΣΜΑ"))
                             .findFirst()
                             .orElse(null);
 
-        String resultCode = resultRecord.getKodikos();
+        String resultCode = resultRecord.getCode();
 
         BigDecimal oldResult = before.totalRevenues()
                                     .subtract(before.totalExpenses());
@@ -166,7 +166,7 @@ public final class BudgetDiffPrinter {
 
     /**
      * Compares the ministries section of the budget.
-     * Print only the entries whose Taktikos or ΠΔΕ have changed.
+     * Print only the entries whose RegularBudget or ΠΔΕ have changed.
      * Print affects on total.
      * @param before
      * @param after
@@ -176,41 +176,47 @@ public final class BudgetDiffPrinter {
         System.out.println("\n" + BOLD + CYAN
         + "=== ΑΛΛΑΓΕΣ ΣΤΟΝ ΠΡΟΫΠΟΛΟΓΙΣΜΟ ΤΩΝ ΥΠΟΥΡΓΕΙΩΝ ===" + RESET);
 
-        for (Map.Entry<Integer, Ypourgeio> entry : before.getMinistries()
+        for (Map.Entry<Integer, Ministry> entry : before.getMinistries()
                                                         .entrySet()) {
             Integer k = entry.getKey();
-            Ypourgeio oldM = entry.getValue();
-            Ypourgeio newM = after.getMinistries().get(k);
+            Ministry oldM = entry.getValue();
+            Ministry newM = after.getMinistries().get(k);
 
             boolean changed =
-                oldM.getTaktikos().compareTo(newM.getTaktikos()) != 0
-                || oldM.getEpendyseis().compareTo(newM.getEpendyseis()) != 0
-                || oldM.getSynolo().compareTo(newM.getSynolo()) != 0;
+                oldM.getRegularBudget().compareTo(newM.getRegularBudget()) != 0
+                || oldM.getPublicInvestments().compareTo(
+                    newM.getPublicInvestments()) != 0
+                || oldM.getTotalBudget().compareTo(newM.getTotalBudget()) != 0;
 
             if (changed) {
                 System.out.println("\n" + BOLD + k + " | "
-                                            + oldM.getOnoma() + RESET);
+                                            + oldM.getName() + RESET);
 
-                if (oldM.getTaktikos().compareTo(newM.getTaktikos()) != 0) {
-                    System.out.println("Τακτικός: " + oldM.getTaktikos()
-                                   + " → " + BLUE + newM.getTaktikos() + RESET
-                                   + formatDiff(oldM.getTaktikos(),
-                                                newM.getTaktikos()));
+                if (oldM.getRegularBudget().compareTo(
+                    newM.getRegularBudget()) != 0) {
+                        System.out.println("Τακτικός: "
+                        + oldM.getRegularBudget() + " → "
+                        + BLUE + newM.getRegularBudget()
+                        + RESET + formatDiff(oldM.getRegularBudget(),
+                                newM.getRegularBudget()));
                 }
 
-                if (oldM.getEpendyseis()
-                        .compareTo(newM.getEpendyseis()) != 0) {
-                    System.out.println("ΠΔΕ: " + oldM.getEpendyseis()
-                                + " → " + BLUE + newM.getEpendyseis() + RESET
-                                + formatDiff(oldM.getEpendyseis(),
-                                            newM.getEpendyseis()));
+                if (oldM.getPublicInvestments()
+                        .compareTo(newM.getPublicInvestments()) != 0) {
+                    System.out.println("ΠΔΕ: " + oldM.getPublicInvestments()
+                                + " → " + BLUE + newM.getPublicInvestments()
+                                + RESET
+                                + formatDiff(oldM.getPublicInvestments(),
+                                            newM.getPublicInvestments()));
                 }
 
-                if (oldM.getSynolo().compareTo(newM.getSynolo()) != 0) {
-                    System.out.println("Σύνολο: " + oldM.getSynolo()
-                                    + " → " + BLUE + newM.getSynolo() + RESET
-                                    + formatDiff(oldM.getSynolo(),
-                                                newM.getSynolo()));
+                if (oldM.getTotalBudget().compareTo(
+                    newM.getTotalBudget()) != 0) {
+                    System.out.println("Σύνολο: " + oldM.getTotalBudget()
+                                    + " → " + BLUE + newM.getTotalBudget()
+                                    + RESET
+                                    + formatDiff(oldM.getTotalBudget(),
+                                                newM.getTotalBudget()));
                 }
             }
         }
@@ -274,19 +280,19 @@ public final class BudgetDiffPrinter {
         System.out.printf(BOLD + "%-6s | %-60s | %-25s%n", "Α/Α",
         "Έσοδα", "Ποσό" + RESET);
 
-        for (Map.Entry<String, Eggrafi> entry : budget
+        for (Map.Entry<String, BasicRecord> entry : budget
                                                 .getRevenues().entrySet()) {
             String code = entry.getKey();
-            Eggrafi e = entry.getValue();
+            BasicRecord e = entry.getValue();
 
-            if (e.getPerigrafi().toUpperCase().contains("ΕΣΟΔΑ")) {
+            if (e.getDescription().toUpperCase().contains("ΕΣΟΔΑ")) {
                     continue;
             }
 
             System.out.printf("%-6s | %-60s | %-25s%n",
                     code,
-                    e.getPerigrafi(),
-                    e.getPoso().toString());
+                    e.getDescription(),
+                    e.getAmount().toString());
         }
     }
 
@@ -302,12 +308,12 @@ public final class BudgetDiffPrinter {
         System.out.printf(BOLD + "%-6s | %-60s%n", "Α/Α",
         "Έξοδα" + RESET);
 
-        for (Map.Entry<String, Eggrafi> entry : budget
+        for (Map.Entry<String, BasicRecord> entry : budget
                                                 .getExpenses().entrySet()) {
             String code = entry.getKey();
-            Eggrafi e = entry.getValue();
+            BasicRecord e = entry.getValue();
 
-            if (e.getPerigrafi().toUpperCase().contains("ΕΞΟΔΑ")) {
+            if (e.getDescription().toUpperCase().contains("ΕΞΟΔΑ")) {
                     continue;
             }
 
@@ -317,7 +323,7 @@ public final class BudgetDiffPrinter {
 
             System.out.printf("%-6s | %-60s%n",
                     code,
-                    e.getPerigrafi());
+                    e.getDescription());
         }
     }
 
@@ -333,10 +339,10 @@ public final class BudgetDiffPrinter {
         System.out.printf(BOLD + "%-5s | %-65s | %-15s | %-15s | %-15s%n",
             "A/A", "Υπουργείο", "Τακτικός", "Επενδύσεων", "Σύνολο" + RESET);
 
-        for (Map.Entry<Integer, Ypourgeio> entry : budget
+        for (Map.Entry<Integer, Ministry> entry : budget
                                                 .getMinistries().entrySet()) {
             Integer code = entry.getKey();
-            Ypourgeio y = entry.getValue();
+            Ministry y = entry.getValue();
 
             if (code == MINISTRY_TOTALS || code == TOTALS) {
                 continue;
@@ -344,10 +350,10 @@ public final class BudgetDiffPrinter {
 
             System.out.printf("%-5d | %-65s | %-15s | %-15s | %-15s%n",
                     code,
-                    y.getOnoma(),
-                    y.getTaktikos().toString(),
-                    y.getEpendyseis().toString(),
-                    y.getSynolo().toString());
+                    y.getName(),
+                    y.getRegularBudget().toString(),
+                    y.getPublicInvestments().toString(),
+                    y.getTotalBudget().toString());
         }
     }
 
@@ -364,49 +370,49 @@ public final class BudgetDiffPrinter {
          System.out.printf(BOLD + "%-6s | %-60s | %-30s | %-30s%n", "Α/Α",
         "Έσοδα (1) / Έξοδα (2)", "Τρέχον", "Τροποποιημένος" + RESET);
 
-        for (Map.Entry<String, Eggrafi> entry : before.getRevenues()
+        for (Map.Entry<String, BasicRecord> entry : before.getRevenues()
                                                     .entrySet()) {
             String code = entry.getKey();
-            Eggrafi oldE = entry.getValue();
-            Eggrafi newE = after.getRevenues().get(code);
+            BasicRecord oldE = entry.getValue();
+            BasicRecord newE = after.getRevenues().get(code);
 
-            String beforeVal = oldE.getPoso().toString();
-            String afterVal = newE.getPoso().toString();
+            String beforeVal = oldE.getAmount().toString();
+            String afterVal = newE.getAmount().toString();
 
-            boolean changed = oldE.getPoso().compareTo(newE.getPoso()) != 0;
+            boolean changed = oldE.getAmount().compareTo(newE.getAmount()) != 0;
 
             if (changed) {
                 afterVal = BOLD + BLUE + afterVal + RESET;
             }
 
-            String diff = formatDiff(oldE.getPoso(), newE.getPoso());
+            String diff = formatDiff(oldE.getAmount(), newE.getAmount());
 
             System.out.printf("%-6s | %-60s | %-30s | %-30s%n",
                     code,
-                    oldE.getPerigrafi(),
+                    oldE.getDescription(),
                     beforeVal,
                     afterVal);
         }
-        for (Map.Entry<String, Eggrafi> entry : before.getExpenses()
+        for (Map.Entry<String, BasicRecord> entry : before.getExpenses()
                                                     .entrySet()) {
             String code = entry.getKey();
-            Eggrafi oldE = entry.getValue();
-            Eggrafi newE = after.getExpenses().get(code);
+            BasicRecord oldE = entry.getValue();
+            BasicRecord newE = after.getExpenses().get(code);
 
-            String beforeVal = oldE.getPoso().toString();
-            String afterVal = newE.getPoso().toString();
+            String beforeVal = oldE.getAmount().toString();
+            String afterVal = newE.getAmount().toString();
 
-            boolean changed = oldE.getPoso().compareTo(newE.getPoso()) != 0;
+            boolean changed = oldE.getAmount().compareTo(newE.getAmount()) != 0;
 
             if (changed) {
                 afterVal = BOLD + BLUE + afterVal + RESET;
             }
 
-            String diff = formatDiff(oldE.getPoso(), newE.getPoso());
+            String diff = formatDiff(oldE.getAmount(), newE.getAmount());
 
             System.out.printf("%-6s | %-60s | %-30s | %-30s%n",
                     code,
-                    oldE.getPerigrafi(),
+                    oldE.getDescription(),
                     beforeVal,
                     afterVal);
         }
@@ -433,36 +439,39 @@ public final class BudgetDiffPrinter {
             "A/A", "Υπουργείο", "Τακτικός", "Επενδύσεων",
             "Σύνολο", "Τακτικός", "Επενδύσεων", "Σύνολο" + RESET);
 
-        for (Map.Entry<Integer, Ypourgeio> entry : before.getMinistries()
+        for (Map.Entry<Integer, Ministry> entry : before.getMinistries()
                                                         .entrySet()) {
             Integer code = entry.getKey();
-            Ypourgeio oldM = entry.getValue();
-            Ypourgeio newM = after.getMinistries().get(code);
+            Ministry oldM = entry.getValue();
+            Ministry newM = after.getMinistries().get(code);
 
-            String tBefore = oldM.getTaktikos().toString();
-            String tAfter = newM.getTaktikos().toString();
+            String tBefore = oldM.getRegularBudget().toString();
+            String tAfter = newM.getRegularBudget().toString();
 
-            String pBefore = oldM.getEpendyseis().toString();
-            String pAfter = newM.getEpendyseis().toString();
+            String pBefore = oldM.getPublicInvestments().toString();
+            String pAfter = newM.getPublicInvestments().toString();
 
-            String sBefore = oldM.getSynolo().toString();
-            String sAfter = newM.getSynolo().toString();
+            String sBefore = oldM.getTotalBudget().toString();
+            String sAfter = newM.getTotalBudget().toString();
 
-            if (oldM.getTaktikos().compareTo(newM.getTaktikos()) != 0) {
+            if (oldM.getRegularBudget().compareTo(
+                newM.getRegularBudget()) != 0) {
                 tAfter = BOLD + BLUE + tAfter + RESET;
             }
-            if (oldM.getEpendyseis().compareTo(newM.getEpendyseis()) != 0) {
+            if (oldM.getPublicInvestments().compareTo(
+                newM.getPublicInvestments()) != 0) {
                 pAfter = BOLD + BLUE + pAfter + RESET;
             }
-            if (oldM.getSynolo().compareTo(newM.getSynolo()) != 0) {
+            if (oldM.getTotalBudget().compareTo(newM.getTotalBudget()) != 0) {
                 sAfter = BOLD + BLUE + sAfter + RESET;
             }
 
             System.out.printf(
                 "%-5s | %-65s | %-17s  %-17s  %-20s | %-17s  %-17s  %-17s%n",
                 code,
-                oldM.getOnoma(),
-                oldM.getTaktikos(), oldM.getEpendyseis(), oldM.getSynolo(),
+                oldM.getName(),
+                oldM.getRegularBudget(), oldM.getPublicInvestments(),
+                oldM.getTotalBudget(),
                 padRight(tAfter, DISPLAY_AMMOUNT_WIDTH),
                 padRight(pAfter, DISPLAY_AMMOUNT_WIDTH),
                 padRight(sAfter, DISPLAY_AMMOUNT_WIDTH));

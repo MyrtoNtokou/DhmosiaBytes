@@ -1,6 +1,6 @@
 package ministryrequests;
 
-import budgetreader.Ypourgeio;
+import budgetreader.Ministry;
 import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -61,10 +61,10 @@ class TestMinistryRequestService {
         FakeRepo repo = new FakeRepo();
         MinistryRequestService service = new MinistryRequestService(repo);
 
-        Ypourgeio min = new Ypourgeio(10, "Υπουργείο Παιδείας", 
+        Ministry min = new Ministry(10, "Υπουργείο Παιδείας", 
                                      BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
 
-        int id = service.submitRequest(min, "Αύξηση κονδυλίων +1000", RequestType.TAKTIKOS);
+        int id = service.submitRequest(min, "Αύξηση κονδυλίων +1000", RequestType.REGULARBUDGET);
 
         assertEquals(1, id);
         assertEquals(1, repo.getAll().size());
@@ -72,7 +72,7 @@ class TestMinistryRequestService {
         MinistryRequest saved = repo.getAll().get(0);
         assertEquals(10, saved.getMinistryCode());
         assertEquals(RequestStatus.PENDING, saved.getStatus());
-        assertEquals(RequestType.TAKTIKOS, saved.getType());
+        assertEquals(RequestType.REGULARBUDGET, saved.getType());
     }
 
     @Test
@@ -81,7 +81,7 @@ class TestMinistryRequestService {
         MinistryRequestService service = new MinistryRequestService(repo);
 
         MinistryRequest req = new MinistryRequest(5, 20, "Υπ. Υγείας", 
-                RequestType.TAKTIKOS, RequestStatus.PENDING, LocalDateTime.now(), "text");
+                RequestType.REGULARBUDGET, RequestStatus.PENDING, LocalDateTime.now(), "text");
         repo.data.add(req);
 
         service.reveiwByFinanceMinistry(5);
@@ -100,7 +100,7 @@ class TestMinistryRequestService {
         MinistryRequestService service = new MinistryRequestService(repo);
 
         MinistryRequest req = new MinistryRequest(1, 10, "Test", 
-                RequestType.TAKTIKOS, RequestStatus.PENDING, LocalDateTime.now(), "text");
+                RequestType.REGULARBUDGET, RequestStatus.PENDING, LocalDateTime.now(), "text");
         repo.data.add(req);
 
         service.markRejected(1);

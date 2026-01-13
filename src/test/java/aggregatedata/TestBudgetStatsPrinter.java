@@ -1,6 +1,6 @@
 package aggregatedata;
 
-import budgetreader.Eggrafi;
+import budgetreader.BasicRecord;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,27 +16,27 @@ import static org.junit.jupiter.api.Assertions.*;
 class TestBudgetStatsPrinter {
 
     private BudgetStats budgetStats;
-    private Eggrafi rev1, rev2, exp1, exp2;
+    private BasicRecord rev1, rev2, exp1, exp2;
 
     @BeforeEach
     void setUp() {
-        // Create sample Eggrafi objects
-        rev1 = new Eggrafi("R1", "Revenue 1", new BigDecimal("1000"));
-        rev2 = new Eggrafi("R2", "Revenue 2", new BigDecimal("2000"));
-        exp1 = new Eggrafi("E1", "Expense 1", new BigDecimal("500"));
-        exp2 = new Eggrafi("E2", "Expense 2", new BigDecimal("300"));
+        // Create sample BasicRecord objects
+        rev1 = new BasicRecord("R1", "Revenue 1", new BigDecimal("1000"));
+        rev2 = new BasicRecord("R2", "Revenue 2", new BigDecimal("2000"));
+        exp1 = new BasicRecord("E1", "Expense 1", new BigDecimal("500"));
+        exp2 = new BasicRecord("E2", "Expense 2", new BigDecimal("300"));
 
         // Create lists
-        List<Eggrafi> maxRevenues = new ArrayList<>();
+        List<BasicRecord> maxRevenues = new ArrayList<>();
         maxRevenues.add(rev2);
 
-        List<Eggrafi> minRevenues = new ArrayList<>();
+        List<BasicRecord> minRevenues = new ArrayList<>();
         minRevenues.add(rev1);
 
-        List<Eggrafi> maxExpenses = new ArrayList<>();
+        List<BasicRecord> maxExpenses = new ArrayList<>();
         maxExpenses.add(exp1);
 
-        List<Eggrafi> minExpenses = new ArrayList<>();
+        List<BasicRecord> minExpenses = new ArrayList<>();
         minExpenses.add(exp2);
 
         List<BigDecimal> maxRevPercentages = new ArrayList<>();

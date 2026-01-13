@@ -11,7 +11,7 @@ class TestMinistryRequestParser {
     void testParseValidRequest() {
         String input = """
                 23 | Υπουργείο Οικονομικών
-                TYPE: TAKTIKOS
+                TYPE: REGULARBUDGET
                 Τακτικός: 1000.00 → 1500.00 (500.00)
                 ΑΛΛΑΓΕΣ ΣΤΑ ΕΞΟΔΑ
                 2,101 | Μισθοδοσία
@@ -26,7 +26,7 @@ class TestMinistryRequestParser {
 
         assertNotNull(result);
         assertEquals(23, result.getMinistryCode());
-        assertEquals("TAKTIKOS", result.getBudgetType());
+        assertEquals("REGULARBUDGET", result.getBudgetType());
         assertEquals(new BigDecimal("1500.00"), result.getMinistryNewAmount());
 
         Map<String, BigDecimal> percentages = result.getExpensePercentages();
@@ -40,7 +40,7 @@ class TestMinistryRequestParser {
     void testDivisionByZeroHandled() {
         String input = """
                 10 | Υπουργείο Υγείας
-                TYPE: TAKTIKOS
+                TYPE: REGULARBUDGET
                 Τακτικός: 1000.00 → 1000.00 (0.00)
                 ΑΛΛΑΓΕΣ ΣΤΑ ΕΞΟΔΑ
                 2,101 | Έξοδο

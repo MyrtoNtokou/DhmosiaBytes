@@ -106,7 +106,7 @@ public class ComparisonController {
                 }
             }
 
-            String kodikos;
+            String code;
             while (true) {
                 System.out.print("""
 
@@ -118,13 +118,13 @@ public class ComparisonController {
                     ShowMenuOptions.summary();
                 }
                 System.out.print("\nΕπιλογή κωδικού: ");
-                kodikos = sc.nextLine();
+                code = sc.nextLine();
 
                 if (type == 1) {
-                    service.compareGeneralBudgetByYear(year1, year2, kodikos);
+                    service.compareGeneralBudgetByYear(year1, year2, code);
                     break;
                 } else {
-                    service.compareMinistryBudgetByYear(year1, year2, kodikos);
+                    service.compareMinistryBudgetByYear(year1, year2, code);
                     break;
                 }
             }

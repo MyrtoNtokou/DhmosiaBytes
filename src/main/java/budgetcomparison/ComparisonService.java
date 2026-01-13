@@ -5,9 +5,9 @@ import java.math.RoundingMode;
 import java.util.List;
 import java.util.Optional;
 
-import budgetreader.Eggrafi;
+import budgetreader.BasicRecord;
 import budgetreader.ReadBudget;
-import budgetreader.Ypourgeio;
+import budgetreader.Ministry;
 import static aggregatedata.ConsoleColors.RED;
 import static aggregatedata.ConsoleColors.GREEN;
 import static aggregatedata.ConsoleColors.RESET;
@@ -22,24 +22,24 @@ public class ComparisonService {
      *
      * @param year1 the base year
      * @param year2 the comparison year
-     * @param kodikos the budget code to compare
+     * @param code the budget code to compare
      */
     public void compareGeneralBudgetByYear(
             final int year1,
             final int year2,
-            final String kodikos) {
+            final String code) {
 
         // Resolve file names based on years
         String f1 = BudgetFileResolver.generalBudgetFile(year1);
         String f2 = BudgetFileResolver.generalBudgetFile(year2);
 
         // Read budget entries from files
-        List<Eggrafi> l1 = ReadBudget.readGeneralBudget(f1);
-        List<Eggrafi> l2 = ReadBudget.readGeneralBudget(f2);
+        List<BasicRecord> l1 = ReadBudget.readGeneralBudget(f1);
+        List<BasicRecord> l2 = ReadBudget.readGeneralBudget(f2);
 
         // Find entries for the specified code
-        Optional<Eggrafi> e1 = findEggrafi(l1, kodikos);
-        Optional<Eggrafi> e2 = findEggrafi(l2, kodikos);
+        Optional<BasicRecord> e1 = findBasicRecord(l1, code);
+        Optional<BasicRecord> e2 = findBasicRecord(l2, code);
 
         // Check if entries exist in both years
         if (e1.isEmpty() || e2.isEmpty()) {
@@ -50,15 +50,15 @@ public class ComparisonService {
 
         // Calculate percentage change
         ComparisonResult result = calculatePercentageChange(
-            e1.get().getPoso(),
-            e2.get().getPoso(),
-            kodikos,
-            e1.get().getPerigrafi(),
+            e1.get().getAmount(),
+            e2.get().getAmount(),
+            code,
+            e1.get().getDescription(),
             year1,
             year2);
 
         // Print the comparison result
-        printResult(result, year1, year2, e1.get().getPerigrafi());
+        printResult(result, year1, year2, e1.get().getDescription());
     }
 
     /**
@@ -66,24 +66,24 @@ public class ComparisonService {
      *
      * @param year1 the base year
      * @param year2 the comparison year
-     * @param kodikos the budget code to compare
+     * @param code the budget code to compare
      */
     public void compareMinistryBudgetByYear(
             final int year1,
             final int year2,
-            final String kodikos) {
+            final String code) {
 
         // Resolve file names based on years
         String f1 = BudgetFileResolver.ministryBudgetFile(year1);
         String f2 = BudgetFileResolver.ministryBudgetFile(year2);
 
         // Read ministry budget entries from files
-        List<Ypourgeio> l1 = ReadBudget.readByMinistry(f1);
-        List<Ypourgeio> l2 = ReadBudget.readByMinistry(f2);
+        List<Ministry> l1 = ReadBudget.readByMinistry(f1);
+        List<Ministry> l2 = ReadBudget.readByMinistry(f2);
 
         // Find entries for the specified code
-        Optional<Ypourgeio> y1 = findYpourgeio(l1, kodikos);
-        Optional<Ypourgeio> y2 = findYpourgeio(l2, kodikos);
+        Optional<Ministry> y1 = findMinistry(l1, code);
+        Optional<Ministry> y2 = findMinistry(l2, code);
 
         // Check if entries exist in both years
         if (y1.isEmpty() || y2.isEmpty()) {
@@ -94,29 +94,29 @@ public class ComparisonService {
 
         // Calculate percentage change
         ComparisonResult result = calculatePercentageChange(
-            y1.get().getSynolo(),
-            y2.get().getSynolo(),
-            kodikos,
-            y1.get().getOnoma(),
+            y1.get().getTotalBudget(),
+            y2.get().getTotalBudget(),
+            code,
+            y1.get().getName(),
             year1,
             year2);
 
         // Print the comparison result
-        printResult(result, year1, year2, y1.get().getOnoma());
+        printResult(result, year1, year2, y1.get().getName());
     }
 
     /**
      * Finds a budget entry by code in the provided list.
      *
      * @param list the list of budget entries
-     * @param kodikos the budget code to find
+     * @param code the budget code to find
      * @return an Optional containing the found entry, or empty if not found
      */
-    private Optional<Eggrafi> findEggrafi(
-        final List<Eggrafi> list, final String kodikos) {
+    private Optional<BasicRecord> findBasicRecord(
+        final List<BasicRecord> list, final String code) {
 
         return list.stream()
-            .filter(e -> e.getKodikos().trim().equals(kodikos.trim()))
+            .filter(e -> e.getCode().trim().equals(code.trim()))
             .findFirst();
     }
 
@@ -125,14 +125,14 @@ public class ComparisonService {
      * Finds a ministry budget entry by code in the provided list.
      *
      * @param list the list of ministry budget entries
-     * @param kodikos the budget code to find
+     * @param code the budget code to find
      * @return an Optional containing the found entry, or empty if not found
      */
-    private Optional<Ypourgeio> findYpourgeio(
-        final List<Ypourgeio> list, final String kodikos) {
+    private Optional<Ministry> findMinistry(
+        final List<Ministry> list, final String code) {
 
         return list.stream()
-                .filter(y -> String.valueOf(y.getKodikos()).equals(kodikos))
+                .filter(y -> String.valueOf(y.getcode()).equals(code))
                 .findFirst();
     }
 
@@ -145,7 +145,7 @@ public class ComparisonService {
      *
      * @param base the amount in the base year
      * @param current the amount in the comparison year
-     * @param kodikos the budget code
+     * @param code the budget code
      * @param name the name or description of the budget item
      * @param baseYear the base year
      * @param compareYear the comparison year
@@ -155,7 +155,7 @@ public class ComparisonService {
     private ComparisonResult calculatePercentageChange(
         final BigDecimal base,
         final BigDecimal current,
-        final String kodikos,
+        final String code,
         final String name,
         final int baseYear,
         final int compareYear) {
@@ -163,7 +163,7 @@ public class ComparisonService {
         // Check for division by zero
         if (base.compareTo(BigDecimal.ZERO) == 0) {
             throw new IllegalArgumentException(
-            "Η βάση σύγκρισης είναι μηδέν για τον κωδικό " + kodikos + ".");
+            "Η βάση σύγκρισης είναι μηδέν για τον κωδικό " + code + ".");
         }
 
         // Calculate percentage change
@@ -175,7 +175,7 @@ public class ComparisonService {
 
         // Create and return ComparisonResult
         return new ComparisonResult(
-            kodikos, name, baseYear, compareYear, percentage);
+            code, name, baseYear, compareYear, percentage);
     }
 
     /**
@@ -200,7 +200,7 @@ public class ComparisonService {
         // Print formatted result
         System.out.printf(
                 "%s (%s) %s κατά %s%% το %d σε σχέση με το %d%n",
-                r.getKodikos(),
+                r.getcode(),
                 name,
                 verb,
                 BOLD + r.getPercentageChange().abs() + RESET,

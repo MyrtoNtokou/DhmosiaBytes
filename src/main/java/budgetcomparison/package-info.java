@@ -23,9 +23,9 @@
  *       two years. Supports:
  *       <ul>
  *         <li>General budget entries via
- *             {@link budgetreader.Eggrafi}</li>
+ *             {@link budgetreader.BasicRecord}</li>
  *         <li>Ministry budget entries via
- *             {@link budgetreader.Ypourgeio}</li>
+ *             {@link budgetreader.Ministry}</li>
  *         <li>Percentage change calculation and formatted console
  *             output</li>
  *       </ul>
@@ -44,8 +44,8 @@
  * {@link budgetcomparison.BudgetFileResolver} → resolved file names
  *      ↓
  * {@link budgetreader.ReadBudget} →
- * List of {@link budgetreader.Eggrafi} /
- * {@link budgetreader.Ypourgeio}
+ * List of {@link budgetreader.BasicRecord} /
+ * {@link budgetreader.Ministry}
  *      ↓
  * {@link budgetcomparison.ComparisonService} →
  * {@link budgetcomparison.ComparisonResult}
