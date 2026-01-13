@@ -25,13 +25,13 @@ class TestRequestsController {
         dummyService = new DummyMinistryRequestService();
 
         testRequest1 = new MinistryRequest(
-                1, 100, "Υπουργείο Α", RequestType.TAKTIKOS,
+                1, 100, "Υπουργείο Α", RequestType.REGULARBUDGET,
                 RequestStatus.REVIEWED_BY_FINANCE_MINISTRY,
                 LocalDateTime.now(), "Αίτημα 1"
         );
 
         testRequest2 = new MinistryRequest(
-                2, 101, "Υπουργείο Β", RequestType.EPENDYSEIS,
+                2, 101, "Υπουργείο Β", RequestType.PUBLIC_INVESTMENTS,
                 RequestStatus.REVIEWED_BY_FINANCE_MINISTRY,
                 LocalDateTime.now(), "Αίτημα 2"
         );
