@@ -4,6 +4,7 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+import static aggregatedata.ConsoleColors.BOLD;
 import static aggregatedata.ConsoleColors.RED;
 import static aggregatedata.ConsoleColors.RESET;
 import budgetcomparison.ComparisonController;
@@ -88,13 +89,14 @@ public final class ShowMenuOptions {
 
             if (choice == null) {
                 System.out.println(RED + "Μη έγκυρη επιλογή." + RESET);
-                System.out.println(" Δώστε έναν αριθμό από το 1 έως το "
+                System.out.println("Δώστε έναν αριθμό από το 1 έως το "
                 + MenuOptions.values().length);
                 continue;
             }
 
             if (!currentRole.canAccess(choice)) {
-                System.out.println("Δεν έχετε πρόσβαση σε αυτήν την επιλογή.");
+                System.out.println(
+                    RED + "Δεν έχετε πρόσβαση σε αυτήν την επιλογή." + RESET);
                 continue;
             }
 
@@ -201,8 +203,8 @@ public final class ShowMenuOptions {
             case FINANCE_MINISTER -> editBudget(input, currentRole);
             case OTHER_MINISTRY -> {
                 System.out.println();
-                System.out.println("Τα αιτήματα σας θα σταλούν στο Υπουργείο "
-                + "Οικονομικών για αξιολόγηση.");
+                System.out.println(BOLD + "Τα αιτήματα σας θα σταλούν στο "
+                    + "Υπουργείο Οικονομικών για αξιολόγηση." + RESET);
                 CutLists cut = new CutLists();
                 List<Ypourgeio> ministries = cut.cutYpourgeio();
                 BudgetAssembler loader = new BudgetAssembler();
@@ -251,12 +253,12 @@ public final class ShowMenuOptions {
             final Role currentRole) {
         int choice;
         do {
-            System.out.println("\n\n0. Έξοδος");
             System.out.println("1. Επεξεργασία Προϋπολογισμού");
             System.out.println("2. Ιστορικό Τροποποιήσεων Προϋπολογισμού");
             System.out.println("3. Σύγκριση Δημοσιευμένου και "
                     + "Τροποποιημένου Προϋπολογισμού");
             System.out.println("4. Προβολή Αιτημάτων από άλλα Υπουργεία");
+            System.out.println("\n\n0. Έξοδος");
             System.out.print("\nΕπιλογή: ");
             try {
                 choice = input.nextInt();
@@ -294,7 +296,8 @@ public final class ShowMenuOptions {
                 }
                 case CODE_FOR_OPTION_3 -> showComparedBudgets();
                 case CODE_FOR_MENUS -> {
-                    System.out.print("\nΑιτήματα Άλλων Υπουργείων:");
+                    System.out.print(BOLD + "\nΑιτήματα Άλλων Υπουργείων:"
+                            + RESET);
                     MinistryRequestService reqService =
                         new MinistryRequestService();
 
