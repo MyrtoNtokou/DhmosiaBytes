@@ -1,69 +1,141 @@
 package dhmosiabytes;
 
-import org.junit.jupiter.api.Test;
-
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.Scanner;
 
+import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 class TestShowMenuOptions {
 
-    @Test
-    void testShowMenuExitImmediately() {
-        // Παρέχουμε άμεσα επιλογή "EXIT"
-        Scanner input = new Scanner(MenuOptions.EXIT.getCode() + "\n");
-        boolean result = ShowMenuOptions.showMenu(Role.PRIME_MINISTER, input);
-        assertTrue(result, "Το μενού πρέπει να επιστρέψει true για άμεσο exit");
+    private final PrintStream originalOut = System.out;
+    private ByteArrayOutputStream outContent;
+
+    @BeforeEach
+    void setUp() {
+        outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+    }
+
+    @AfterEach
+    void tearDown() {
+        System.setOut(originalOut);
     }
 
     @Test
-    void testShowMenuInvalidInputThenExit() {
-        // Αρχικά μη έγκυρη είσοδος, μετά EXIT
-        Scanner input = new Scanner("abc\n" + MenuOptions.EXIT.getCode() + "\n");
-        boolean result = ShowMenuOptions.showMenu(Role.PARLIAMENT, input);
-        assertTrue(result, "Μετά από μη έγκυρη είσοδο, πρέπει να γίνει exit σωστά");
+    void testShowMenu_exitImmediately() {
+        String inputData = "0\n";
+        Scanner scanner = new Scanner(new ByteArrayInputStream(inputData.getBytes()));
+
+        boolean exit = ShowMenuOptions.showMenu(Role.PRIME_MINISTER, scanner);
+
+        assertTrue(exit);
     }
 
     @Test
-    void testShowMenuInvalidMenuCodeThenExit() {
-        // Αρχικά αριθμός εκτός μενού, μετά EXIT
-        Scanner input = new Scanner("999\n" + MenuOptions.EXIT.getCode() + "\n");
-        boolean result = ShowMenuOptions.showMenu(Role.FINANCE_MINISTER, input);
-        assertTrue(result, "Μετά από μη έγκυρη επιλογή κωδικού, πρέπει να γίνει exit σωστά");
+    void testShowMenu_invalidInput_thenExit() {
+        String inputData = "abc\n0\n";
+        Scanner scanner = new Scanner(new ByteArrayInputStream(inputData.getBytes()));
+
+        boolean exit = ShowMenuOptions.showMenu(Role.PRIME_MINISTER, scanner);
+
+        assertTrue(outContent.toString().contains("Παρακαλώ εισάγετε αριθμό"));
+        assertTrue(exit);
     }
 
     @Test
-    void testHandleAction3FinanceMinisterExitImmediately() {
-        // Επιλέγουμε άμεσα έξοδο στο υπομενού του Finance Minister
-        Scanner input = new Scanner("0\n");
-        assertDoesNotThrow(() -> ShowMenuOptions.handleAction3(Role.FINANCE_MINISTER, input));
+    void testShowMenu_invalidOptionNumber() {
+        String inputData = "99\n0\n";
+        Scanner scanner = new Scanner(new ByteArrayInputStream(inputData.getBytes()));
+
+        ShowMenuOptions.showMenu(Role.PRIME_MINISTER, scanner);
+
+        assertTrue(outContent.toString().contains("Μη έγκυρη επιλογή"));
     }
 
     @Test
-    void testEditBudgetExitImmediately() {
-        // Άμεση έξοδος από editBudget
-        Scanner input = new Scanner("0\n");
-        assertDoesNotThrow(() -> ShowMenuOptions.editBudget(input, Role.FINANCE_MINISTER));
+    void testShowMenu_otherMinistry_action3_doesNotThrow() {
+        String inputData = "3\n0\n0\n0\n";
+        Scanner scanner = new Scanner(new ByteArrayInputStream(inputData.getBytes()));
+
+        assertDoesNotThrow(() ->
+            ShowMenuOptions.showMenu(Role.OTHER_MINISTRY, scanner)
+        );
     }
 
     @Test
-    void testEditHistoryNullChoiceReturnsSafely() {
-        // Άμεση έξοδος από editHistory με μη έγκυρη επιλογή τύπου
-        Scanner input = new Scanner("0\n");
-        assertDoesNotThrow(() -> ShowMenuOptions.editHistory(input));
+    void testShowBudget_doesNotThrow() {
+        assertDoesNotThrow(ShowMenuOptions::showBudget);
     }
 
     @Test
-    void testOtherMinistryMenuExitImmediately() {
-        // Άμεση έξοδος από το OTHER_MINISTRY υπομενού
-        Scanner input = new Scanner("0\n");
-        assertDoesNotThrow(() -> ShowMenuOptions.handleAction3(Role.OTHER_MINISTRY, input));
+    void testSummary_doesNotThrow() {
+        assertDoesNotThrow(ShowMenuOptions::summary);
     }
 
     @Test
-    void testShowComparedBudgetsDoesNotThrow() {
-        // Βεβαιωνόμαστε ότι η μέθοδος σύγκρισης δεν πετάει exception
+    void testHandleAction3_primeMinister_exitImmediately() {
+        String inputData = "0\n";
+        Scanner scanner = new Scanner(new ByteArrayInputStream(inputData.getBytes()));
+
+        assertDoesNotThrow(() ->
+                ShowMenuOptions.handleAction3(Role.PRIME_MINISTER, scanner));
+    }
+
+    @Test
+    void testHandleAction3_otherMinistry_invalidThenExit() {
+        String inputData = "9\n0\n";
+        Scanner scanner = new Scanner(new ByteArrayInputStream(inputData.getBytes()));
+
+        ShowMenuOptions.handleAction3(Role.OTHER_MINISTRY, scanner);
+
+        assertTrue(outContent.toString().contains("Μη έγκυρος κωδικός"));
+    }
+
+    @Test
+    void testEditHistory_cancelImmediately() {
+        String inputData = "0\n";
+        Scanner scanner = new Scanner(new ByteArrayInputStream(inputData.getBytes()));
+
+        assertDoesNotThrow(() ->
+                ShowMenuOptions.editHistory(scanner));
+    }
+
+    @Test
+    void testShowComparedBudgets_doesNotThrow() {
         assertDoesNotThrow(ShowMenuOptions::showComparedBudgets);
+    }
+
+    @Test
+    void testEditBudget_exitImmediately() {
+        String inputData = "0\n";
+        Scanner scanner = new Scanner(new ByteArrayInputStream(inputData.getBytes()));
+
+        assertDoesNotThrow(() ->
+                ShowMenuOptions.editBudget(scanner, Role.FINANCE_MINISTER));
+    }
+
+    @Test
+    void testEditBudget_invalidInput() {
+        String inputData = "abc\n0\n";
+        Scanner scanner = new Scanner(new ByteArrayInputStream(inputData.getBytes()));
+
+        ShowMenuOptions.editBudget(scanner, Role.FINANCE_MINISTER);
+
+        assertTrue(outContent.toString().contains("Παρακαλώ εισάγετε αριθμό"));
+    }
+
+    @Test
+    void testSubmitRequest_exitImmediately() {
+        String inputData = "0\n";
+        Scanner scanner = new Scanner(new ByteArrayInputStream(inputData.getBytes()));
+
+        assertDoesNotThrow(() ->
+                ShowMenuOptions.submitRequest(scanner, Role.OTHER_MINISTRY));
     }
 }
