@@ -116,7 +116,7 @@ class TestRole {
     @Test
     void testAction3MenuLabelForOtherMinistry() {
         assertEquals(
-            "Υποβολή Αιτημάτων",
+            "Αιτήματα",
             Role.OTHER_MINISTRY.getMenuLabel(MenuOptions.ACTION_3)
         );
     }

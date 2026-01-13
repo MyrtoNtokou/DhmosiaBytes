@@ -189,7 +189,7 @@ public enum Role {
                 case FINANCE_MINISTER ->
                     "Τροποποίηση Στοιχείων Προϋπολογισμού";
                 case OTHER_MINISTRY ->
-                    "Υποβολή Αιτημάτων";
+                    "Αιτήματα";
             };
             case AGGREGATE ->
                 "Συγκεντρωτικά Στοιχεία";
