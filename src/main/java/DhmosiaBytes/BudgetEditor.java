@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 import static aggregatedata.ConsoleColors.BOLD;
+import static aggregatedata.ConsoleColors.GREEN;
 import static aggregatedata.ConsoleColors.RED;
 import static aggregatedata.ConsoleColors.RESET;
 import budgetlogic.Budget;
@@ -68,8 +69,8 @@ public class BudgetEditor {
             try {
                 newAmount = new BigDecimal(input);
                 if (newAmount.compareTo(BigDecimal.ZERO) < 0) {
-                System.out.println(RED
-                    + "Το ποσό δεν μπορεί να είναι αρνητικό." + RESET);
+                System.out.println(
+                    RED + "Το ποσό δεν μπορεί να είναι αρνητικό." + RESET);
                 newAmount = null;
                 }
             } catch (NumberFormatException e) {
@@ -214,7 +215,8 @@ public class BudgetEditor {
 
                 if (!exists || code.equals(BANNED_CODE)) {
                     System.out.println(RED
-                    + "Δεν υπάρχει επιλογή με αυτόν τον " + "κωδικό." + RESET);
+                    + "Δεν υπάρχει επιλογή με τον κωδικό " + code + "."
+                    + RESET);
                     continue;
                 }
 
@@ -250,7 +252,8 @@ public class BudgetEditor {
                         increases.clear();
                         break;
                     } else if (currentSum.compareTo(BigDecimal.ONE) == 0) {
-                        System.out.println("Η κατανομή ολοκληρώθηκε.");
+                        System.out.println(GREEN + "Η κατανομή ολοκληρώθηκε."
+                                + RESET);
                         return increases;
                     }
                 } catch (NumberFormatException e) {

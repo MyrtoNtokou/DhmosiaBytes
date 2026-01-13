@@ -422,7 +422,7 @@ public final class BudgetDiffPrinter {
         System.out.println("\n" + BOLD + CYAN
             + "=== ΣΥΓΚΡΙΣΗ ΥΠΟΥΡΓΕΙΩΝ ===\n" + RESET);
 
-        System.out.printf("%-96s %-48s %-20s %-44s%n",
+        System.out.printf("%-96s %-47s %-20s %-44s%n",
                     " ",
                     UNDERLINE + BOLD + "Τρέχον" + RESET,
                     " | ",
