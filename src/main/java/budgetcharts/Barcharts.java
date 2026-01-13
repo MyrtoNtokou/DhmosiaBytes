@@ -305,7 +305,13 @@ public final class Barcharts {
     private static void configureAndShowChart(
         final CategoryChart chart, final String seriesName,
         final List<?> xData, final List<? extends Number> yData) {
-        //Stilling
+
+        if (xData == null || yData == null
+            || xData.isEmpty() || yData.isEmpty()) {
+        System.out.println("No data to display for chart: " + seriesName);
+        return;
+    }
+        //Stylling
         chart.getStyler().setLegendVisible(false);
         chart.getStyler().setToolTipsEnabled(true);
         chart.getStyler().setXAxisLabelRotation(X_AXIS_LABEL_ROTATION);

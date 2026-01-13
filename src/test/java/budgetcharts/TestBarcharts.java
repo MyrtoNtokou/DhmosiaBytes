@@ -1,6 +1,6 @@
 package budgetcharts;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.awt.GraphicsEnvironment;
 import java.math.BigDecimal;
@@ -16,51 +16,94 @@ import budgetreader.Ministry;
 
 public class TestBarcharts {
 
-    private List<BasicRecord> mockBasicRecords;
+    private List<BasicRecord> mockRecords;
     private List<Ministry> mockMinistries;
 
     @BeforeEach
     void setUp() {
-        mockBasicRecords = new ArrayList<>();
-        mockBasicRecords.add(new BasicRecord("1,01", "Φόροι", new BigDecimal("10000000000")));
-        mockBasicRecords.add(new BasicRecord("2,01", "Μισθοί", new BigDecimal("8000000000")));
+        mockRecords = new ArrayList<>();
+        mockRecords.add(new BasicRecord("1,01", "Φόροι", new BigDecimal("10000000000")));
+        mockRecords.add(new BasicRecord("2,01", "Μισθοί", new BigDecimal("8000000000")));
 
         mockMinistries = new ArrayList<>();
-        mockMinistries.add(
-            new Ministry(
-                1,
-                "Υπουργείο Οικονομικών",
-                new BigDecimal("10000000000"),
-                new BigDecimal("5000000000"),
-                new BigDecimal("15000000000")
-            )
-        );
+        mockMinistries.add(new Ministry(
+            1,
+            "Υπουργείο Οικονομικών",
+            new BigDecimal("10000000000"),
+            new BigDecimal("5000000000"),
+            new BigDecimal("15000000000")
+        ));
     }
 
     @Test
-    void testChartEsoda_DisplaySuccess() {
-        Assumptions.assumeFalse(GraphicsEnvironment.isHeadless(),
-                "Παράλειψη test σε headless περιβάλλον");
-
-        Barcharts.chartEsoda(mockBasicRecords);
-        assertNotNull(mockBasicRecords);
+    void chartEsoda_ShouldDisplayWithoutException() {
+        Assumptions.assumeFalse(GraphicsEnvironment.isHeadless());
+        assertDoesNotThrow(() -> Barcharts.chartEsoda(mockRecords));
     }
 
     @Test
-    void testChartExoda_DisplaySuccess() {
-        Assumptions.assumeFalse(GraphicsEnvironment.isHeadless(),
-                "Παράλειψη test σε headless περιβάλλον");
-
-        Barcharts.chartExoda(mockBasicRecords);
-        assertNotNull(mockBasicRecords);
+    void chartExoda_ShouldDisplayWithoutException() {
+        Assumptions.assumeFalse(GraphicsEnvironment.isHeadless());
+        assertDoesNotThrow(() -> Barcharts.chartExoda(mockRecords));
     }
 
     @Test
-    void testChartMinistry_DisplaySuccess() {
-        Assumptions.assumeFalse(GraphicsEnvironment.isHeadless(),
-                "Παράλειψη test σε headless περιβάλλον");
+    void chartMinistry_ShouldDisplayWithoutException() {
+        Assumptions.assumeFalse(GraphicsEnvironment.isHeadless());
+        assertDoesNotThrow(() -> Barcharts.chartMinistry(mockMinistries));
+    }
 
-        Barcharts.chartMinistry(mockMinistries);
-        assertNotNull(mockMinistries);
+    @Test
+    void chartEsoda_WithEmptyList_ShouldNotFail() {
+        Assumptions.assumeFalse(GraphicsEnvironment.isHeadless());
+        assertDoesNotThrow(() -> Barcharts.chartEsoda(new ArrayList<>()));
+    }
+
+    @Test
+    void chartExoda_WithEmptyList_ShouldNotFail() {
+        Assumptions.assumeFalse(GraphicsEnvironment.isHeadless());
+        assertDoesNotThrow(() -> Barcharts.chartExoda(new ArrayList<>()));
+    }
+
+    @Test
+    void chartMinistry_WithEmptyList_ShouldNotFail() {
+        Assumptions.assumeFalse(GraphicsEnvironment.isHeadless());
+        assertDoesNotThrow(() -> Barcharts.chartMinistry(new ArrayList<>()));
+    }
+
+    @Test
+    void chartEsodaByYear_ValidIndex_ShouldNotFail() {
+        Assumptions.assumeFalse(GraphicsEnvironment.isHeadless());
+        assertDoesNotThrow(() -> Barcharts.chartEsodaByYear(1));
+    }
+
+    @Test
+    void chartExodaByYear_ValidIndex_ShouldNotFail() {
+        Assumptions.assumeFalse(GraphicsEnvironment.isHeadless());
+        assertDoesNotThrow(() -> Barcharts.chartExodaByYear(1));
+    }
+
+    @Test
+    void chartMinistryByYear_ValidIndex_ShouldNotFail() {
+        Assumptions.assumeFalse(GraphicsEnvironment.isHeadless());
+        assertDoesNotThrow(() -> Barcharts.chartMinistryByYear(1));
+    }
+
+    @Test
+    void chartEsodaByYear_InvalidIndex_ShouldThrowException() {
+        assertThrows(IndexOutOfBoundsException.class,
+            () -> Barcharts.chartEsodaByYear(0));
+    }
+
+    @Test
+    void chartExodaByYear_InvalidIndex_ShouldThrowException() {
+        assertThrows(IndexOutOfBoundsException.class,
+            () -> Barcharts.chartExodaByYear(999));
+    }
+
+    @Test
+    void chartMinistryByYear_InvalidIndex_ShouldThrowException() {
+        assertThrows(IndexOutOfBoundsException.class,
+            () -> Barcharts.chartMinistryByYear(-1));
     }
 }
