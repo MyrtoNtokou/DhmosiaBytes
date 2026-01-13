@@ -6,7 +6,6 @@ import java.util.Scanner;
 
 import static aggregatedata.ConsoleColors.RED;
 import static aggregatedata.ConsoleColors.RESET;
-
 import dhmosiabytes.ShowMenuOptions;
 
 /** Controller class
@@ -41,10 +40,11 @@ public class ComparisonController {
      */
     public void start() {
 
+        OuterLoop:
         while (true) {
             System.out.println("\nΕπιλέξτε τι θέλετε να συγκρίνετε:");
-            System.out.println("1. Εγγραφές (έσοδα/έξοδα)");
-            System.out.println("2. Υπουργεία");
+            System.out.println("1. Γενικός Προϋπολογισμός");
+            System.out.println("2. Προϋπολογισμός Υπουργείων");
             System.out.println("0. Έξοδος");
 
             int type;
@@ -70,16 +70,21 @@ public class ComparisonController {
 
             System.out.println("\nΕπιλέξτε έτη από το " + MIN_YEAR
             + " έως το " + MAX_YEAR + ".");
+            System.out.println("Επιλέξτε 0 για επιστροφή στο "
+                    + "προηγούμενο μενού");
             int year1;
             while (true) {
                 try {
                     System.out.print("\nΕπιλογή πρώτου έτους: ");
                     year1 = sc.nextInt();
                     sc.nextLine();
+                    if (year1 == 0) {
+                        continue OuterLoop;
+                    }
                     if (year1 >= MIN_YEAR && year1 <= MAX_YEAR) {
                         break;
                     } else {
-                         System.out.println(RED + "Λάθος επιλογή έτους."
+                        System.out.println(RED + "Λάθος επιλογή έτους."
                                                 + RESET);
                     }
                 } catch (InputMismatchException e) {
@@ -94,6 +99,9 @@ public class ComparisonController {
                     System.out.print("\nΕπιλογή δεύτερου έτους: ");
                     year2 = sc.nextInt();
                     sc.nextLine();
+                    if (year2 == 0) {
+                        continue OuterLoop;
+                    }
                     if (year2 >= MIN_YEAR && year2 <= MAX_YEAR) {
                         break;
                     } else {
@@ -108,10 +116,10 @@ public class ComparisonController {
 
             String code;
             while (true) {
-                System.out.print("""
-
-                Επιλέξτε τον κωδικό του στοιχείου που θέλετε να συγκρίνετε.
-                """);
+                System.out.print("Επιλέξτε τον κωδικό του στοιχείου που "
+                        + "θέλετε να συγκρίνετε.");
+                System.out.println("Επιλέξτε 0 για επιστροφή στο "
+                        + "προηγούμενο μενού");
                 if (type == 1) {
                     ShowMenuOptions.showBudget();
                 } else if (type == 2) {
@@ -119,6 +127,9 @@ public class ComparisonController {
                 }
                 System.out.print("\nΕπιλογή κωδικού: ");
                 code = sc.nextLine();
+                if (code.equals("0")) {
+                    continue OuterLoop;
+                }
 
                 if (type == 1) {
                     service.compareGeneralBudgetByYear(year1, year2, code);

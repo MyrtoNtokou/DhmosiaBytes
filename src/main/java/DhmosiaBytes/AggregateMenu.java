@@ -7,6 +7,8 @@ import java.util.Scanner;
 import aggregatedata.BudgetAnalyzer;
 import aggregatedata.BudgetStats;
 import aggregatedata.BudgetStatsPrinter;
+import static aggregatedata.ConsoleColors.RED;
+import static aggregatedata.ConsoleColors.RESET;
 import aggregatedata.InvestmentAnalyzer;
 import aggregatedata.InvestmentPrinter;
 import aggregatedata.InvestmentRatio;
@@ -14,10 +16,8 @@ import aggregatedata.MinistryAnalyzer;
 import aggregatedata.MinistryStats;
 import aggregatedata.MinistryStatsPrinter;
 import budgetreader.BasicRecord;
-import budgetreader.ReadBudget;
 import budgetreader.Ministry;
-import static aggregatedata.ConsoleColors.RED;
-import static aggregatedata.ConsoleColors.RESET;
+import budgetreader.ReadBudget;
 
 /**
  * Provides a menu for selecting and displaying budget statistics.
@@ -38,8 +38,8 @@ public final class AggregateMenu {
         int choice = 0;
         do {
             System.out.println();
-            System.out.println("1. Γενικός προϋπολογισμός");
-            System.out.println("2. Προϋπολογισμός υπουργείων");
+            System.out.println("1. Γενικός Προϋπολογισμός");
+            System.out.println("2. Προϋπολογισμός Υπουργείων");
             System.out.println("0. Έξοδος");
             System.out.print("Επιλέξτε το αρχείο για το οποίο θέλετε να δείτε "
             + "συγκεντρωτικά στοιχεία: ");
@@ -75,7 +75,7 @@ public final class AggregateMenu {
     public void budgetOrIndices(final Scanner input) {
         int choice = 0;
         do {
-            System.out.println("1. Προϋπολογισμός");
+            System.out.println("1. Ανάλυση Μέγιστων Δαπανών");
             System.out.println("2. Δείκτες Λόγου Επενδύσεων");
             System.out.print("Επιλογή: ");
             try {

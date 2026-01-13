@@ -8,7 +8,6 @@ import static aggregatedata.ConsoleColors.BOLD;
 import static aggregatedata.ConsoleColors.CYAN;
 import static aggregatedata.ConsoleColors.RED;
 import static aggregatedata.ConsoleColors.RESET;
-import static aggregatedata.ConsoleColors.UNDERLINE;
 import ministryrequests.MinistryRequest;
 import ministryrequests.MinistryRequestService;
 import ministryrequests.Request;
@@ -161,7 +160,7 @@ public final class RequestsController {
         while (true) {
             if (!financeMinistry.isEmpty()) {
                 System.out.println();
-                System.out.println(BOLD + UNDERLINE
+                System.out.println(BOLD
                         + "Αξιολόγηση Τροποποιήσεων από Υπουργείο Οικονομικών"
                         + RESET);
                 System.out.println("Επιλέξτε 0 για επιστροφή στο "
@@ -237,7 +236,7 @@ public final class RequestsController {
         int choice;
         while (true) {
             if (!govApproved.isEmpty()) {
-                System.out.println(BOLD + UNDERLINE
+                System.out.println(BOLD
                         + "Τελική Αξιολόγηση Τροποποιήσεων" + RESET);
                 System.out.println("Επιλέξτε 0 για επιστροφή στο "
                 + "προηγούμενο μενού.");
