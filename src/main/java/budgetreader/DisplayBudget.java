@@ -37,14 +37,9 @@ public final class DisplayBudget {
      *
      * @param ministry the list of budget entries to print
      */
-<<<<<<< HEAD
     public static void showMinistry(final List<Ministry> ministry) {
-        System.out.println("\n=== ΚΑΤΗΓΟΡΙΟΠΟΙΗΣΗ ΣΤΟΙΧΕΙΩΝ ===\n");
-=======
-    public static void showMinistry(final List<Ypourgeio> ypourg) {
         System.out.println(CYAN + BOLD
             + "\n=== ΚΑΤΗΓΟΡΙΟΠΟΙΗΣΗ ΣΤΟΙΧΕΙΩΝ ===\n" + RESET);
->>>>>>> 2568632112e55b1b710201c86813c3b07a2b83d6
 
         System.out.printf(BOLD + "%-3s | %-65s | %-25s | %-35s | %-25s%n",
             "Α/Α", "Υπουργείο", "Τακτικός Προϋπολογισμός",
