@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.Map;
+
 import static aggregatedata.ConsoleColors.RED;
 import static aggregatedata.ConsoleColors.RESET;
 
@@ -34,8 +35,8 @@ public class MinistryRequestParser {
      */
     public ParsedResult parse(final int requestId) {
         if (rawText == null || rawText.isEmpty()) {
-            System.err.println("Το κείμενο του αιτήματος "
-            + requestId + " είναι κενό.");
+            System.err.println(RED + "Το κείμενο του αιτήματος "
+            + requestId + " είναι κενό." + RESET);
             return new ParsedResult(null, null, null, new HashMap<>());
         }
 
