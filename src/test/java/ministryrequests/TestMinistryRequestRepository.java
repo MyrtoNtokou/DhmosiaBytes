@@ -25,7 +25,7 @@ class TestMinistryRequestRepository {
     void testSaveNewAndLoadAll() {
         MinistryRequest request = new MinistryRequest(
                 0, 23, "Υπουργείο Οικονομικών", 
-                RequestType.TAKTIKOS, RequestStatus.PENDING, 
+                RequestType.REGULARBUDGET, RequestStatus.PENDING, 
                 LocalDateTime.now(), "Δοκιμαστικό κείμενο αλλαγής"
         );
 
@@ -40,7 +40,7 @@ class TestMinistryRequestRepository {
 
     @Test
     void testUpdateStatus() {
-        MinistryRequest request = new MinistryRequest(0, 10, "Υπουργείο", RequestType.TAKTIKOS, RequestStatus.PENDING, LocalDateTime.now(), "Text");
+        MinistryRequest request = new MinistryRequest(0, 10, "Υπουργείο", RequestType.REGULARBUDGET, RequestStatus.PENDING, LocalDateTime.now(), "Text");
         MinistryRequest saved = repository.saveNew(request);
 
         repository.updateStatus(saved.getId(), RequestStatus.GOVERNMENT_APPROVED);
@@ -51,8 +51,8 @@ class TestMinistryRequestRepository {
 
     @Test
     void testFindByStatusAndType() {
-        repository.saveNew(new MinistryRequest(0, 1, "M1", RequestType.TAKTIKOS, RequestStatus.PENDING, LocalDateTime.now(), "T1"));
-        repository.saveNew(new MinistryRequest(0, 2, "M2", RequestType.EPENDYSEIS, RequestStatus.REJECTED, LocalDateTime.now(), "T2"));
+        repository.saveNew(new MinistryRequest(0, 1, "M1", RequestType.REGULARBUDGET, RequestStatus.PENDING, LocalDateTime.now(), "T1"));
+        repository.saveNew(new MinistryRequest(0, 2, "M2", RequestType.PUBLIC_INVESTMENTS, RequestStatus.REJECTED, LocalDateTime.now(), "T2"));
 
         List<MinistryRequest> pendingOnly = repository.findByStatusAndType(RequestStatus.PENDING, null);
         assertEquals(1, pendingOnly.size());

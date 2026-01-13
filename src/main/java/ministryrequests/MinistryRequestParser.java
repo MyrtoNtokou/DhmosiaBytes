@@ -83,10 +83,10 @@ public class MinistryRequestParser {
 
             String searchPrefix;
             switch (budgetType.toUpperCase()) {
-                case "TAKTIKOS" -> {
+                case "REGULARBUDGET" -> {
                     searchPrefix = "Τακτικός:";
                 }
-                case "EPENDYSEIS" -> {
+                case "PUBLIC_INVESTMENTS" -> {
                     searchPrefix = "ΠΔΕ:";
                 }
                 default -> {
@@ -242,7 +242,7 @@ public class MinistryRequestParser {
 
         /**
          * Getter for budget type from request.
-         * @return taktikos or ependyseis
+         * @return regularbudget or publicInvestments
          * */
         public String getBudgetType() {
             return budgetType;

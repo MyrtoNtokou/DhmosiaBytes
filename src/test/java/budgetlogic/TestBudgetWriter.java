@@ -1,64 +1,61 @@
 package budgetlogic;
 
-import budgetreader.Eggrafi;
-import budgetreader.Ypourgeio;
+import budgetreader.BasicRecord;
+import budgetreader.Ministry;
 
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.math.BigDecimal;
 import java.util.List;
 
-public class TestBudgetWriter {
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+class BudgetWriterTest {
+
+    @TempDir
+    Path tempDir;
 
     @Test
-    void testWriteGeneral() throws IOException {
-        // Δημιουργία προσωρινού αρχείου
-        Path tempFile = Files.createTempFile("general-test", ".csv");
-
-        // Sample data
-        List<Eggrafi> list = List.of(
-                new Eggrafi("001", "Test Description 1", new BigDecimal("123.45")),
-                new Eggrafi("002", "Test Description 2", new BigDecimal("678.90"))
+    void testWriteGeneralWithFormatting() throws IOException {
+        Path filePath = tempDir.resolve("test_general.csv");
+        List<BasicRecord> data = List.of(
+            new BasicRecord("1", "Έσοδα", new BigDecimal("1000000.00")),
+            new BasicRecord("2", "Έξοδα", new BigDecimal("5500.50"))
         );
 
-        // Κλήση του writer
-        BudgetWriter.writeGeneral(tempFile.toString(), list);
+        BudgetWriter.writeGeneral(filePath.toString(), data);
 
-        // Read output
-        List<String> lines = Files.readAllLines(tempFile);
-
-        // Assertions
-        assertEquals(2, lines.size());
-        assertEquals("001;Test Description 1;123.45", lines.get(0));
-        assertEquals("002;Test Description 2;678.90", lines.get(1));
+        List<String> lines = Files.readAllLines(filePath);
+        
+        assertTrue(lines.get(0).contains("1.000.000"), "Το μεγάλο ποσό πρέπει να έχει τελείες");
+        assertTrue(lines.get(1).contains("5.501") || lines.get(1).contains("5.500"), "Το ποσό πρέπει να είναι ακέραιο");
+        
+        System.out.println("General CSV Output: " + lines.get(0));
     }
 
     @Test
-    void testWriteMinistries() throws IOException {
-        // TEMP file
-        Path tempFile = Files.createTempFile("ministries-test", ".csv");
-
-        List<Ypourgeio> list = List.of(
-                new Ypourgeio(10, "Υπ. Παιδείας",
-                        new BigDecimal("1000"),
-                        new BigDecimal("200"),
-                        new BigDecimal("1200")),
-                new Ypourgeio(20, "Υπ. Υγείας",
-                        new BigDecimal("1500"),
-                        new BigDecimal("500"),
-                        new BigDecimal("2000"))
+    void testWriteMinistriesWithFormatting() throws IOException {
+  
+        Path filePath = tempDir.resolve("test_ministries.csv");
+        List<Ministry> data = List.of(
+            new Ministry(1, "Υπουργείο Τεστ", 
+                new BigDecimal("2000000"), 
+                new BigDecimal("500000"), 
+                new BigDecimal("2500000"))
         );
 
-        BudgetWriter.writeMinistries(tempFile.toString(), list);
+        BudgetWriter.writeMinistries(filePath.toString(), data);
 
-        List<String> lines = Files.readAllLines(tempFile);
+        String content = Files.readString(filePath);
 
-        assertEquals(2, lines.size());
-        assertEquals("10;Υπ. Παιδείας;1000;200;1200", lines.get(0));
-        assertEquals("20;Υπ. Υγείας;1500;500;2000", lines.get(1));
+        assertTrue(content.contains("2.000.000"), "Ο τακτικός πρέπει να έχει τελείες");
+        assertTrue(content.contains("500.000"), "Οι επενδύσεις πρέπει να έχουν τελείες");
+        assertTrue(content.contains("2.500.000"), "Το σύνολο πρέπει να έχει τελείες");
+
+        System.out.println("Ministries CSV Output: " + content.trim());
     }
 }

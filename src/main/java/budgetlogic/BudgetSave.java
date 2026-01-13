@@ -6,8 +6,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import budgetreader.Eggrafi;
-import budgetreader.Ypourgeio;
+import budgetreader.BasicRecord;
+import budgetreader.Ministry;
 
 /**
  * Save the Budget object.
@@ -24,12 +24,12 @@ public final class BudgetSave {
     public BudgetSave() { }
 
     /**
-     * Record that returns Eggrafi list and Ypourgeio list.
+     * Record that returns BasicRecord list and Ministry list.
      * @param general
      * @param ministries
      */
-    private record PreparedRecords(List<Eggrafi> general,
-                                List<Ypourgeio> ministries) { }
+    private record PreparedRecords(List<BasicRecord> general,
+                                List<Ministry> ministries) { }
 
     /**
      * Create PreparedRecords from Budget object.
@@ -38,25 +38,25 @@ public final class BudgetSave {
      */
     private PreparedRecords prepareRecords(final Budget finalBudget) {
 
-        List<Eggrafi> allGeneralRecords = new java.util.ArrayList<>();
-        Eggrafi resultRecord = null;
+        List<BasicRecord> allGeneralRecords = new java.util.ArrayList<>();
+        BasicRecord resultRecord = null;
 
         // Save result
-        for (Eggrafi r : finalBudget.getRevenues().values()) {
-            if (r.getPerigrafi().toUpperCase().contains(RESULT)) {
+        for (BasicRecord r : finalBudget.getRevenues().values()) {
+            if (r.getDescription().toUpperCase().contains(RESULT)) {
                 resultRecord = r;
             }
         }
 
         // Add all revenues to list
-        for (Eggrafi r : finalBudget.getRevenues().values()) {
+        for (BasicRecord r : finalBudget.getRevenues().values()) {
             if (r != resultRecord) {
                 allGeneralRecords.add(r);
             }
         }
 
         // Add all expenses to list
-        for (Eggrafi r : finalBudget.getExpenses().values()) {
+        for (BasicRecord r : finalBudget.getExpenses().values()) {
             if (r != resultRecord) {
                 allGeneralRecords.add(r);
             }
@@ -67,7 +67,7 @@ public final class BudgetSave {
             allGeneralRecords.add(resultRecord);
         }
 
-        List<Ypourgeio> allMinistries =
+        List<Ministry> allMinistries =
             new java.util.ArrayList<>(finalBudget.getMinistries().values());
 
         return new PreparedRecords(allGeneralRecords, allMinistries);

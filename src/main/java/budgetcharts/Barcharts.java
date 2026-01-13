@@ -9,8 +9,8 @@ import java.math.RoundingMode;
 import org.knowm.xchart.CategoryChart;
 import org.knowm.xchart.CategoryChartBuilder;
 import org.knowm.xchart.SwingWrapper;
-import budgetreader.Eggrafi;
-import budgetreader.Ypourgeio;
+import budgetreader.BasicRecord;
+import budgetreader.Ministry;
 import budgetreader.ReadBudget;
 import dhmosiabytes.IncomeOptions;
 import dhmosiabytes.MinistryOptions;
@@ -46,13 +46,13 @@ public final class Barcharts {
      /**
      * Creates and displays the Expense bar chart.
      *
-     * @param eggrafes List of budget records
+     * @param basicRecords List of budget records
      */
-    public static void chartEsoda(final List<Eggrafi> eggrafes) {
+    public static void chartEsoda(final List<BasicRecord> basicRecords) {
         // Filter Expense records (code starts with "1,")
-        List<Eggrafi> esoda = new ArrayList<>();
-        for (Eggrafi e : eggrafes) {
-            if (e.getKodikos().startsWith("1,")) {
+        List<BasicRecord> esoda = new ArrayList<>();
+        for (BasicRecord e : basicRecords) {
+            if (e.getCode().startsWith("1,")) {
                 esoda.add(e);
             }
         }
@@ -61,9 +61,9 @@ public final class Barcharts {
         List<String> categories = new ArrayList<>();
         List<BigDecimal> values = new ArrayList<>();
 
-        for (Eggrafi e : esoda) {
-            categories.add(e.getPerigrafi());
-            values.add(e.getPoso().divide(BILLION));
+        for (BasicRecord e : esoda) {
+            categories.add(e.getDescription());
+            values.add(e.getAmount().divide(BILLION));
         }
 
         // Build the chart
@@ -82,13 +82,13 @@ public final class Barcharts {
     /**
      * Creates and displays the expenses bar chart.
      *
-     * @param eggrafes List of budget records
+     * @param basicRecords List of budget records
      */
-     public static void chartExoda(final List<Eggrafi> eggrafes) {
+     public static void chartExoda(final List<BasicRecord> basicRecords) {
         // Filter expense records (code starts with "2,")
-        List<Eggrafi> exoda = new ArrayList<>();
-        for (Eggrafi e : eggrafes) {
-            if (e.getKodikos().startsWith("2,")) {
+        List<BasicRecord> exoda = new ArrayList<>();
+        for (BasicRecord e : basicRecords) {
+            if (e.getCode().startsWith("2,")) {
                 exoda.add(e);
             }
         }
@@ -96,9 +96,9 @@ public final class Barcharts {
         // Prepare data for the chart
         List<String> categories = new ArrayList<>();
         List<BigDecimal> values = new ArrayList<>();
-        for (Eggrafi e : exoda) {
-            categories.add(e.getPerigrafi());
-            values.add(e.getPoso().divide(BILLION));
+        for (BasicRecord e : exoda) {
+            categories.add(e.getDescription());
+            values.add(e.getAmount().divide(BILLION));
         }
 
         // Build the chart
@@ -116,13 +116,13 @@ public final class Barcharts {
     /**
      * Creates and displays a bar chart for ministries showing their budget.
      *
-     * @param ministry List of Ypourgeio objects containing ministry data
+     * @param ministry List of Ministry objects containing ministry data
      */
-    public static void chartMinistry(final List<Ypourgeio> ministry) {
+    public static void chartMinistry(final List<Ministry> ministry) {
         // Filter only ministries (exclude other entries)
-        List<Ypourgeio> ministries = new ArrayList<>();
-        for (Ypourgeio m: ministry) {
-            if (m.getOnoma().contains("Υπουργείο")) {
+        List<Ministry> ministries = new ArrayList<>();
+        for (Ministry m: ministry) {
+            if (m.getName().contains("Υπουργείο")) {
                 ministries.add(m);
             }
         }
@@ -130,9 +130,9 @@ public final class Barcharts {
         // Prepare data for the chart
         List<String> names = new ArrayList<>();
         List<BigDecimal> values = new ArrayList<>();
-        for (Ypourgeio m : ministries) {
-            names.add(m.getOnoma());
-            values.add(m.getSynolo().divide(BILLION));
+        for (Ministry m : ministries) {
+            names.add(m.getName());
+            values.add(m.getTotalBudget().divide(BILLION));
         }
 
         // Build the chart
@@ -167,14 +167,15 @@ public final class Barcharts {
             years.add(year);
 
             String filename = "proypologismos" + year + ".csv";
-            List<Eggrafi> eggrafes = ReadBudget.readGeneralBudget(filename);
+            List<BasicRecord> basicRecords =
+                ReadBudget.readGeneralBudget(filename);
 
             BigDecimal esoda = BigDecimal.ZERO;
 
-            for (Eggrafi e : eggrafes) {
-               if (e.getKodikos().startsWith(y)) {
+            for (BasicRecord e : basicRecords) {
+               if (e.getCode().startsWith(y)) {
                 esoda = esoda.add(
-                    e.getPoso());
+                    e.getAmount());
              }
             }
             BigDecimal scaledEsoda = esoda.divide(
@@ -219,13 +220,14 @@ public final class Barcharts {
             years.add(year);
 
             String filename = "proypologismos" + year + ".csv";
-            List<Eggrafi> eggrafes = ReadBudget.readGeneralBudget(filename);
+            List<BasicRecord> basicRecords =
+                ReadBudget.readGeneralBudget(filename);
 
             BigDecimal exoda = BigDecimal.ZERO;
 
-            for (Eggrafi e : eggrafes) {
-                if (e.getKodikos().startsWith(y)) {
-                    exoda = exoda.add(e.getPoso());
+            for (BasicRecord e : basicRecords) {
+                if (e.getCode().startsWith(y)) {
+                    exoda = exoda.add(e.getAmount());
                 }
             }
 
@@ -268,14 +270,14 @@ public final class Barcharts {
 
             String filename = "proypologismos" + year + "anaypourgeio.csv";
 
-            List<Ypourgeio> ministries =
+            List<Ministry> ministries =
                 ReadBudget.readCroppedByMinistry(filename);
 
             BigDecimal totalBudget = BigDecimal.ZERO;
 
-            for (Ypourgeio m : ministries) {
-                if (m.getKodikos() == options[x - 1].getMinistryCode()) {
-                    totalBudget = m.getSynolo();
+            for (Ministry m : ministries) {
+                if (m.getcode() == options[x - 1].getMinistryCode()) {
+                    totalBudget = m.getTotalBudget();
                     break;
                 }
             }

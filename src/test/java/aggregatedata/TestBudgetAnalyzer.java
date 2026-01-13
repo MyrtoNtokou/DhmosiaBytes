@@ -1,6 +1,6 @@
 package aggregatedata;
 
-import budgetreader.Eggrafi;
+import budgetreader.BasicRecord;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -13,18 +13,18 @@ class TestBudgetAnalyzer {
 
     @Test
     void testAnalyze() {
-        // Create sample Eggrafi records
-        Eggrafi rev1 = new Eggrafi("1,001", "Revenue 1", new BigDecimal("100.00"));
-        Eggrafi rev2 = new Eggrafi("1,002", "Revenue 2", new BigDecimal("200.00"));
-        Eggrafi rev3 = new Eggrafi("1,003", "Revenue 3", new BigDecimal("50.00"));
-        Eggrafi rev4 = new Eggrafi("1,004", "Revenue 4", new BigDecimal("300.00"));
+        // Create sample BasicRecord records
+        BasicRecord rev1 = new BasicRecord("1,001", "Revenue 1", new BigDecimal("100.00"));
+        BasicRecord rev2 = new BasicRecord("1,002", "Revenue 2", new BigDecimal("200.00"));
+        BasicRecord rev3 = new BasicRecord("1,003", "Revenue 3", new BigDecimal("50.00"));
+        BasicRecord rev4 = new BasicRecord("1,004", "Revenue 4", new BigDecimal("300.00"));
 
-        Eggrafi exp1 = new Eggrafi("2,001", "Expense 1", new BigDecimal("80.00"));
-        Eggrafi exp2 = new Eggrafi("2,002", "Expense 2", new BigDecimal("150.00"));
-        Eggrafi exp3 = new Eggrafi("2,003", "Expense 3", new BigDecimal("120.00"));
-        Eggrafi exp4 = new Eggrafi("2,004", "Expense 4", new BigDecimal("50.00"));
+        BasicRecord exp1 = new BasicRecord("2,001", "Expense 1", new BigDecimal("80.00"));
+        BasicRecord exp2 = new BasicRecord("2,002", "Expense 2", new BigDecimal("150.00"));
+        BasicRecord exp3 = new BasicRecord("2,003", "Expense 3", new BigDecimal("120.00"));
+        BasicRecord exp4 = new BasicRecord("2,004", "Expense 4", new BigDecimal("50.00"));
 
-        List<Eggrafi> allRecords = Arrays.asList(rev1, rev2, rev3, rev4, exp1, exp2, exp3, exp4);
+        List<BasicRecord> allRecords = Arrays.asList(rev1, rev2, rev3, rev4, exp1, exp2, exp3, exp4);
 
         // Execute analysis
         BudgetStats stats = BudgetAnalyzer.analyze(allRecords);

@@ -11,23 +11,23 @@ import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import budgetreader.Eggrafi;
-import budgetreader.Ypourgeio;
+import budgetreader.BasicRecord;
+import budgetreader.Ministry;
 
 public class TestBarcharts {
 
-    private List<Eggrafi> mockEggrafes;
-    private List<Ypourgeio> mockYpourgeia;
+    private List<BasicRecord> mockBasicRecords;
+    private List<Ministry> mockMinistries;
 
     @BeforeEach
     void setUp() {
-        mockEggrafes = new ArrayList<>();
-        mockEggrafes.add(new Eggrafi("1,01", "Φόροι", new BigDecimal("10000000000")));
-        mockEggrafes.add(new Eggrafi("2,01", "Μισθοί", new BigDecimal("8000000000")));
+        mockBasicRecords = new ArrayList<>();
+        mockBasicRecords.add(new BasicRecord("1,01", "Φόροι", new BigDecimal("10000000000")));
+        mockBasicRecords.add(new BasicRecord("2,01", "Μισθοί", new BigDecimal("8000000000")));
 
-        mockYpourgeia = new ArrayList<>();
-        mockYpourgeia.add(
-            new Ypourgeio(
+        mockMinistries = new ArrayList<>();
+        mockMinistries.add(
+            new Ministry(
                 1,
                 "Υπουργείο Οικονομικών",
                 new BigDecimal("10000000000"),
@@ -42,8 +42,8 @@ public class TestBarcharts {
         Assumptions.assumeFalse(GraphicsEnvironment.isHeadless(),
                 "Παράλειψη test σε headless περιβάλλον");
 
-        Barcharts.chartEsoda(mockEggrafes);
-        assertNotNull(mockEggrafes);
+        Barcharts.chartEsoda(mockBasicRecords);
+        assertNotNull(mockBasicRecords);
     }
 
     @Test
@@ -51,8 +51,8 @@ public class TestBarcharts {
         Assumptions.assumeFalse(GraphicsEnvironment.isHeadless(),
                 "Παράλειψη test σε headless περιβάλλον");
 
-        Barcharts.chartExoda(mockEggrafes);
-        assertNotNull(mockEggrafes);
+        Barcharts.chartExoda(mockBasicRecords);
+        assertNotNull(mockBasicRecords);
     }
 
     @Test
@@ -60,7 +60,7 @@ public class TestBarcharts {
         Assumptions.assumeFalse(GraphicsEnvironment.isHeadless(),
                 "Παράλειψη test σε headless περιβάλλον");
 
-        Barcharts.chartMinistry(mockYpourgeia);
-        assertNotNull(mockYpourgeia);
+        Barcharts.chartMinistry(mockMinistries);
+        assertNotNull(mockMinistries);
     }
 }

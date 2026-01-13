@@ -6,8 +6,8 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import budgetreader.Eggrafi;
-import budgetreader.Ypourgeio;
+import budgetreader.BasicRecord;
+import budgetreader.Ministry;
 
 /**
  * Writes budget data to CSV files.
@@ -25,7 +25,7 @@ public final class BudgetWriter {
      */
     public static void writeGeneral(
             final String path,
-            final List<Eggrafi> list
+            final List<BasicRecord> list
     ) throws IOException {
 
         try (Writer writer = new OutputStreamWriter(
@@ -33,13 +33,13 @@ public final class BudgetWriter {
                 StandardCharsets.UTF_8
         )) {
 
-            for (final Eggrafi r : list) {
+            for (final BasicRecord r : list) {
                 writer.write(
-                        r.getKodikos()
+                        r.getCode()
                         + ";"
-                        + r.getPerigrafi()
+                        + r.getDescription()
                         + ";"
-                        + r.getPoso().toPlainString()
+                        + formatForCsv(r.getAmount())
                         + System.lineSeparator()
                 );
             }
@@ -55,7 +55,7 @@ public final class BudgetWriter {
      */
     public static void writeMinistries(
             final String path,
-            final List<Ypourgeio> list
+            final List<Ministry> list
     ) throws IOException {
 
         try (Writer writer = new OutputStreamWriter(
@@ -63,20 +63,38 @@ public final class BudgetWriter {
                 StandardCharsets.UTF_8
         )) {
 
-            for (final Ypourgeio m : list) {
+            for (final Ministry m : list) {
                 writer.write(
-                        m.getKodikos()
+                        m.getcode()
                         + ";"
-                        + m.getOnoma()
+                        + m.getName()
                         + ";"
-                        + m.getTaktikos().toPlainString()
+                        + formatForCsv(m.getRegularBudget())
                         + ";"
-                        + m.getEpendyseis().toPlainString()
+                        + formatForCsv(m.getPublicInvestments())
                         + ";"
-                        + m.getSynolo().toPlainString()
+                        + formatForCsv(m.getTotalBudget())
                         + System.lineSeparator()
                 );
             }
         }
+    }
+
+    /**
+     * Formats a {@link BigDecimal} value for CSV output.
+     * The value is formatted without decimal places and uses the Greek locale
+     * (dots as thousands separators).
+     *
+     * @param value the numeric value to format
+     * @return a formatted string representation of the value, or "0" if null
+     */
+    private static String formatForCsv(final java.math.BigDecimal value) {
+        if (value == null) {
+            return "0";
+        }
+        java.text.NumberFormat nf = java.text.NumberFormat
+                        .getInstance(new java.util.Locale("el", "GR"));
+        nf.setMaximumFractionDigits(0);
+        return nf.format(value);
     }
 }

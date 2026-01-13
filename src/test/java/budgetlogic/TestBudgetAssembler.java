@@ -1,7 +1,7 @@
 package budgetlogic;
 
-import budgetreader.Ypourgeio;
-import budgetreader.Eggrafi;
+import budgetreader.Ministry;
+import budgetreader.BasicRecord;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -24,7 +24,7 @@ class TestBudgetAssembler {
 
     @Test
     void testMinistriesMapIsNotEmpty() {
-        Map<Integer, Ypourgeio> ministries = budget.getMinistries();
+        Map<Integer, Ministry> ministries = budget.getMinistries();
         assertNotNull(ministries, "Το map των υπουργείων δεν πρέπει να είναι null");
         assertFalse(ministries.isEmpty(), "Το map των υπουργείων δεν πρέπει να είναι κενό");
 
@@ -38,8 +38,8 @@ class TestBudgetAssembler {
 
     @Test
     void testRevenuesAndExpensesMaps() {
-        Map<String, Eggrafi> revenues = budget.getRevenues();
-        Map<String, Eggrafi> expenses = budget.getExpenses();
+        Map<String, BasicRecord> revenues = budget.getRevenues();
+        Map<String, BasicRecord> expenses = budget.getExpenses();
 
         assertNotNull(revenues, "Το map των εσόδων δεν πρέπει να είναι null");
         assertNotNull(expenses, "Το map των εξόδων δεν πρέπει να είναι null");
@@ -50,12 +50,12 @@ class TestBudgetAssembler {
 
     @Test
     void testMinistryValuesAreNotNull() {
-        // Έλεγχος ότι όλα τα αντικείμενα Ypourgeio είναι σωστά φορτωμένα
-        for (Map.Entry<Integer, Ypourgeio> entry : budget.getMinistries().entrySet()) {
-            Ypourgeio ministry = entry.getValue();
+        // Έλεγχος ότι όλα τα αντικείμενα Ministry είναι σωστά φορτωμένα
+        for (Map.Entry<Integer, Ministry> entry : budget.getMinistries().entrySet()) {
+            Ministry ministry = entry.getValue();
             assertNotNull(ministry, "Το αντικείμενο υπουργείου δεν πρέπει να είναι null για key " + entry.getKey());
-            assertNotNull(ministry.getTaktikos(), "Η τιμή τακτικού δεν πρέπει να είναι null για key " + entry.getKey());
-            assertNotNull(ministry.getEpendyseis(), "Η τιμή επενδύσεων δεν πρέπει να είναι null για key " + entry.getKey());
+            assertNotNull(ministry.getRegularBudget(), "Η τιμή τακτικού δεν πρέπει να είναι null για key " + entry.getKey());
+            assertNotNull(ministry.getPublicInvestments(), "Η τιμή επενδύσεων δεν πρέπει να είναι null για key " + entry.getKey());
         }
     }
 }

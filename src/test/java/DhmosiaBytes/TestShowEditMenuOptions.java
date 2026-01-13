@@ -8,15 +8,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
 import budgetlogic.Budget;
-import budgetreader.Eggrafi;
-import budgetreader.Ypourgeio;
+import budgetreader.BasicRecord;
+import budgetreader.Ministry;
 
 class TestShowEditMenuOptions {
 
     @Test
     void testEditRevenueOrExpenseIncomeExitImmediately() {
         Budget budget = new Budget();
-        budget.addRevenue(new Eggrafi("R1", "Dummy Income", BigDecimal.valueOf(1000)));
+        budget.addRevenue(new BasicRecord("R1", "Dummy Income", BigDecimal.valueOf(1000)));
 
         String input = "0\n";
         Scanner scanner = new Scanner(new ByteArrayInputStream(input.getBytes()));
@@ -30,7 +30,7 @@ class TestShowEditMenuOptions {
     @Test
     void testEditRevenueOrExpenseExpenseExitImmediately() {
         Budget budget = new Budget();
-        budget.addMinistry(new Ypourgeio(
+        budget.addMinistry(new Ministry(
                 1, "Dummy Ministry",
                 BigDecimal.valueOf(1000),
                 BigDecimal.valueOf(500),
