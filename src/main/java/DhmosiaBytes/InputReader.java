@@ -56,7 +56,6 @@ public final class InputReader {
      *
      * @param input Scanner object for reading user input
      * @return the valid password
-     * @throws NotCorrectPassword if the password does not meet the rules
      */
     public static String enterValidPassword(final Scanner input) {
         System.out.println(BOLD + UNDERLINE + "\nΔημιουργία ισχυρού password"

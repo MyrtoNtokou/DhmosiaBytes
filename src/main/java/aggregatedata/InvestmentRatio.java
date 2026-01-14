@@ -16,10 +16,11 @@ public class InvestmentRatio {
     private final BigDecimal percentage;
 
     /**
-     * Constructor.
-     * @param on
-     * @param rat
-     * @param per
+     * Constructor for InvestmentRatio.
+     *
+     * @param on The name of the ministry.
+     * @param rat The calculated raw ratio of investment to total budget.
+     * @param per The investment ratio expressed as a percentage.
      */
     public InvestmentRatio(final String on,
                         final BigDecimal rat,

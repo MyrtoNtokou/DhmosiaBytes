@@ -134,8 +134,10 @@ public final class BudgetAssembler {
     /**
      * Create the map that will be used in budget service,
      * when executing a change.
-     * @param ministryCode
-     * @param distribution
+     *
+     * @param ministryCode The unique identification code of the ministry.
+     * @param distribution A map containing expense codes and
+     * their assigned percentages.
      * @return map with ministry code, and value a map with expense codes,
      * and their percentages
      */
@@ -152,7 +154,9 @@ public final class BudgetAssembler {
 
     /**
      * Check if the given percentages sum equals 1.
-     * @param distribution
+     *
+     * @param distribution The map of expense percentages
+     * to be validated.
      */
     private static void validateDistribution(
                 final Map<String, BigDecimal> distribution) {

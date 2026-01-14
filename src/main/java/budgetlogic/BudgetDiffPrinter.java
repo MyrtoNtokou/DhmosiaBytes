@@ -37,8 +37,9 @@ public final class BudgetDiffPrinter {
     /**
      * Print formatted difference report for revenues.
      * Between two budget objects.
-     * @param before
-     * @param after
+     *
+     * @param before The budget state before changes.
+     * @param after The budget state after changes.
      */
     public static void printDiffRevenues(final Budget before,
                                         final Budget after) {
@@ -49,8 +50,9 @@ public final class BudgetDiffPrinter {
     /**
      * Print formatted difference report for ministries.
      * Between two budget objects.
-     * @param before
-     * @param after
+     *
+     * @param before The initial budget data.
+     * @param after The updated budget data.
      */
     public static void printDiffMinistries(final Budget before,
                                         final Budget after) {
@@ -61,8 +63,9 @@ public final class BudgetDiffPrinter {
     /**
      * Calculate difference between the old and the new value.
      * Format the difference.
-     * @param oldVal
-     * @param newVal
+     *
+     * @param oldVal Old value
+     * @param newVal New value
      * @return difference formatted
      */
     private static String formatDiff(final BigDecimal oldVal,
@@ -81,8 +84,9 @@ public final class BudgetDiffPrinter {
     /**
      * Compare the revenues section of the general budget.
      * Print only the entries whose amounts have changed.
-     * @param before
-     * @param after
+     *
+     * @param before The initial budget data.
+     * @param after The updated budget data.
      */
     private static void compareRevenues(final Budget before,
                                     final Budget after) {
@@ -110,8 +114,9 @@ public final class BudgetDiffPrinter {
     /**
      * Compare the expenses section of the general budget.
      * Print only the entries whose amounts have changed.
-     * @param before
-     * @param after
+     *
+     * @param before The original budget object.
+     * @param after The modified budget object.
      */
     public static void compareExpenses(final Budget before,
                                     final Budget after) {
@@ -138,8 +143,9 @@ public final class BudgetDiffPrinter {
 
     /**
      * Compare and print the change od the result of the general budget.
-     * @param before
-     * @param after
+     *
+     * @param before The initial budget data.
+     * @param after The updated budget data.
      */
     private static void compareResult(final Budget before,
                                     final Budget after) {
@@ -166,11 +172,11 @@ public final class BudgetDiffPrinter {
     }
 
     /**
-     * Compares the ministries section of the budget.
-     * Print only the entries whose RegularBudget or ΠΔΕ have changed.
-     * Print affects on total.
-     * @param before
-     * @param after
+     * Convert the compareMinistries and compareExpenses
+     * System.out into String.
+     *
+     * @param before The initial budget data.
+     * @param after The updated budget data.
      */
     private static void compareMinistries(final Budget before,
                                         final Budget after) {
@@ -227,8 +233,8 @@ public final class BudgetDiffPrinter {
      * Convert the compareMinistries and compareExpenses
      * System.out into String.
      *
-     * @param before
-     * @param after
+     * @param before The initial budget data.
+     * @param after The updated budget data.
      * @return String of change
      */
     public static String captureMinistryDiff(final Budget before,
@@ -250,8 +256,8 @@ public final class BudgetDiffPrinter {
      * Convert the compareRevenues and compareResult
      * System.out into String.
      *
-     * @param before
-     * @param after
+     * @param before The initial budget data.
+     * @param after The updated budget data.
      * @return String of change
      */
     public static String captureRevenuesDiff(final Budget before,
@@ -271,6 +277,7 @@ public final class BudgetDiffPrinter {
 
     /**
      * Print all revenues in aligned table format.
+     *
      * @param budget the budget to print
      */
     public static void printRevenues(final Budget budget) {
@@ -299,6 +306,7 @@ public final class BudgetDiffPrinter {
 
     /**
      * Print all expenses in aligned table format.
+     *
      * @param budget the budget to print
      */
     public static void printExpenses(final Budget budget) {
@@ -330,6 +338,7 @@ public final class BudgetDiffPrinter {
 
     /**
      * Print all ministries in aligned table format.
+     *
      * @param budget the budget to print
      */
     public static void printMinistries(final Budget budget) {
@@ -361,8 +370,9 @@ public final class BudgetDiffPrinter {
 
     /**
      * Print current and modified general budget side by side.
-     * @param before
-     * @param after
+     *
+     * @param before The budget object representing the current state.
+     * @param after The budget object representing the modified state.
      */
     public static void compareGeneralSideBySide(final Budget before,
                                                 final Budget after) {
@@ -421,9 +431,10 @@ public final class BudgetDiffPrinter {
     }
 
     /**
-     * Print current and modified ministries budget side by side.
-     * @param before
-     * @param after
+     * Print current and modified general budget side by side.
+     *
+     * @param before The budget object representing the current state.
+     * @param after The budget object representing the modified state.
      */
     public static void compareMinistriesSideBySide(final Budget before,
                                                 final Budget after) {
@@ -482,6 +493,7 @@ public final class BudgetDiffPrinter {
 
     /**
      * Pad a string with spaces to the right.
+     *
      * @param s string that might contain ANSI format
      * @param n the target display width
      * @return the string followed by the correct number of visual spaces

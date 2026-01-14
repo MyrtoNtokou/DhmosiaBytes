@@ -25,13 +25,15 @@ public class BudgetStats {
     private final List<BigDecimal> maxExpensePercentages;
 
     /** Constructor.
-     * @param maxRev
-     * @param minRev
-     * @param maxExp
-     * @param minExp
-     * @param maxRevPer
-     * @param maxExpPer
-     * */
+     * @param maxRev List of records with the maximum revenue values.
+     * @param minRev List of records with the minimum revenue values.
+     * @param maxExp List of records with the maximum expense values.
+     * @param minExp List of records with the minimum expense values.
+     * @param maxRevPer List of percentages corresponding
+     * to the maximum revenues.
+     * @param maxExpPer List of percentages corresponding
+     * to the maximum expenses.
+     */
     public BudgetStats(final List<BasicRecord> maxRev,
                        final List<BasicRecord> minRev,
                        final List<BasicRecord> maxExp,

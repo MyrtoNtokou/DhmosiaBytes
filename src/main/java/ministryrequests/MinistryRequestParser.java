@@ -231,11 +231,13 @@ public class MinistryRequestParser {
         private final Map<String, BigDecimal> expensePercentages;
 
         /**
-         * Constructor.
-         * @param code
-         * @param type
-         * @param newAmount
-         * @param expensePer
+         * Constructor for ParsedResult.
+         *
+         * @param code The unique identification code of the ministry.
+         * @param type The category of the budget (e.g., REGULARBUDGET).
+         * @param newAmount The updated total budget amount for the ministry.
+         * @param expensePer A map containing expense codes and
+         * their percentage contribution.
          */
         public ParsedResult(final Integer code,
                             final String type,

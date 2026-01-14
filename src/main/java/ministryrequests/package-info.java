@@ -53,10 +53,10 @@
  *   </li>
  *   <li>
  *     <b>Parsing and utility classes</b>:
- *     {@link ministryrequests.BudgetRequestLoader},
- *     {@link ministryrequests.BudgetRequestParser},
+ *     {@link ministryrequests.RequestLoader},
+ *     {@link ministryrequests.MinistryRequestParser},
  *     {@link ministryrequests.DiffColorizer},
- *     {@link ministryrequests.MinistryRequestPrinter}
+ *     {@link ministryrequests.RequestPrinter}
  *   </li>
  * </ul>
  *

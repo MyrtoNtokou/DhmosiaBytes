@@ -15,9 +15,11 @@ public final class DiffColorizer {
     private DiffColorizer() { }
 
     /**
-     * Format with ASNI the String that contains the changes of the request.
-     * @param cleanDiff
-     * @return the formatted String
+     * Format with ANSI the String that contains the changes of the request.
+     *
+     * @param cleanDiff The raw string containing the
+     * differences to be colorized.
+     * @return the formatted String with ANSI color codes.
      */
     public static String colorize(final String cleanDiff) {
         // Green for positive changes

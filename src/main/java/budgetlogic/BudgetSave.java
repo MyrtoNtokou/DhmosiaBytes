@@ -25,8 +25,9 @@ public final class BudgetSave {
 
     /**
      * Record that returns BasicRecord list and Ministry list.
-     * @param general
-     * @param ministries
+     *
+     * @param general List of general budget basic records.
+     * @param ministries List of ministry objects.
      */
     private record PreparedRecords(List<BasicRecord> general,
                                 List<Ministry> ministries) { }
@@ -75,8 +76,11 @@ public final class BudgetSave {
 
     /**
      * Save the changes in the modified general csv.
+     *
      * @param finalBudget object budget after changes
      * @param updatedGeneral modified general budget csv name
+     * @throws IOException If an I/O error occurs writing
+     * to the file or creating the directory.
      */
     public void saveGeneralChanges(final Budget finalBudget,
                             final String updatedGeneral) throws IOException {
@@ -88,8 +92,11 @@ public final class BudgetSave {
 
     /**
      * Save the changes in the modified ministries csv.
+     *
      * @param finalBudget object budget after changes
      * @param updatedMinistries modified ministries csv name
+     * @throws IOException If an I/O error occurs writing
+     * to the file or creating the directory.
      */
     public void saveMinistryChanges(final Budget finalBudget,
                                     final String updatedMinistries)

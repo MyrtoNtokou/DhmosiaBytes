@@ -26,14 +26,19 @@ public final class MinistryStats {
     private final List<BigDecimal> maxTotalBudgetPercentages;
 
 
-    /** Constructor.
-     * @param maxTakt
-     * @param maxEpend
-     * @param maxSyn
-     * @param maxRegularBudgetPer
-     * @param maxPublicInvestmentsPer
-     * @param maxTotalBudgetPer
-     * */
+    /** * Constructor for MinistryStats.
+     *
+     * @param maxTakt List of ministries with the maximum regular budget.
+     * @param maxEpend List of ministries with the maximum
+     * public investment budget.
+     * @param maxSyn List of ministries with the maximum total budget.
+     * @param maxRegularBudgetPer List of maximum percentages
+     * for the regular budget.
+     * @param maxPublicInvestmentsPer List of maximum percentages
+     * for public investments.
+     * @param maxTotalBudgetPer List of maximum percentages for the
+     * total budget.
+     */
     public MinistryStats(
             final List<Ministry> maxTakt,
             final List<Ministry> maxEpend,

@@ -25,14 +25,17 @@ public class MinistryRequest implements Request {
     private final int hash;
 
     /**
-     * Constructor.
-     * @param identification
-     * @param minCode
-     * @param minName
-     * @param ty
-     * @param s
-     * @param stamp
-     * @param t
+     * Constructor for MinistryRequest.
+     *
+     * @param identification The unique ID of the request.
+     * @param minCode The unique code of the ministry.
+     * @param minName The official name of the ministry.
+     * @param ty The type of request (REGULARBUDGET,
+     * PUBLIC_INVESTMENTS, or BOTH).
+     * @param s The current status of the request (PENDING, COMPLETED,
+     * or REJECTED).
+     * @param stamp The date and time when the request was submitted.
+     * @param t The raw text containing the requested budget changes.
      */
     public MinistryRequest(final int identification,
                            final int minCode,
@@ -93,7 +96,7 @@ public class MinistryRequest implements Request {
 
     /**
      * Setter for status.
-     * @param s
+     * @param s status
      */
     public void setStatus(final RequestStatus s) {
         status = s;

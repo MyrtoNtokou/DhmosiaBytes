@@ -18,8 +18,9 @@ public final class InvestmentPrinter {
 
     /**
      * Print ministry, investment, total and percentage for each ministry.
-     * @param ministry
-     * @param ratios
+     *
+     * @param ministry List of all ministries to retrieve details from.
+     * @param ratios List of calculated investment ratios to be printed.
      */
     public static void print(final List<Ministry> ministry,
                             final List<InvestmentRatio> ratios) {
@@ -51,9 +52,10 @@ public final class InvestmentPrinter {
 
     /**
      * Find ministry by name.
-     * @param list
-     * @param name
-     * @return Ministry
+     *
+     * @param list The list of ministries to search through.
+     * @param name The name of the ministry to find.
+     * @return Ministry object if found, otherwise null.
      */
     private static Ministry findByName(final List<Ministry> list,
                                         final String name) {

@@ -8,12 +8,11 @@
  * <h2>Main Classes and Responsibilities</h2>
  *
  * <ul>
- *   <li>{@link budgetlogic.BudgetLoader} – loads budget data from CSV files.
+ *   <li>{@link budgetreader.ReadBudget} – loads budget data from CSV files.
  *     Supports:
  *     <ul>
  *       <li>General records ({@link budgetreader.BasicRecord})</li>
- *       <li>Ministries ({@link budgetlogic.Ministry},
- *           {@link budgetreader.Ministry})</li>
+ *       <li>Ministries ({@link budgetreader.Ministry}
  *     </ul>
  *   </li>
  *
@@ -33,7 +32,7 @@
  *     </ul>
  *   </li>
  *
- *   <li>{@link budgetlogic.Ministry} – ministry model with regular budget
+ *   <li>{@link budgetreader.Ministry} – ministry model with regular budget
  *       (regularBudget), public investment budget (PDE), total amount, and
  *       allocation by category.</li>
  * </ul>
@@ -41,7 +40,7 @@
  * <h2>Data Flow</h2>
  *
  * <pre>
- * CSV files → {@link budgetlogic.BudgetLoader} →
+ * CSV files → {@link budgetreader.ReadBudget} →
  * {@link budgetlogic.Budget}
  *        ↓
  * {@link budgetlogic.BudgetService} → updates / validation

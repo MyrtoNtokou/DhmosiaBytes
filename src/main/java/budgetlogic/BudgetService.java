@@ -12,7 +12,6 @@ public interface BudgetService {
      *
      * @param code the budget code
      * @param newAmount the new amount to set
-     * @throws Exception if loading fails
      */
     void changeGeneralAmount(String code, BigDecimal newAmount);
 
