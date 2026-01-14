@@ -13,7 +13,6 @@ import java.util.Map;
 import java.util.Scanner;
 
 import static aggregatedata.ConsoleColors.BOLD;
-import static aggregatedata.ConsoleColors.GREEN;
 import static aggregatedata.ConsoleColors.RED;
 import static aggregatedata.ConsoleColors.RESET;
 import budgetlogic.Budget;
@@ -69,11 +68,13 @@ public class BudgetEditor {
             try {
                 newAmount = new BigDecimal(input);
                 if (newAmount.compareTo(BigDecimal.ZERO) < 0) {
-                System.out.println(
-                    RED + "Το ποσό δεν μπορεί να είναι αρνητικό." + RESET);
+                System.out.println("Το ποσό δεν μπορεί να είναι αρνητικό.");
+                System.out.println(RED
+                    + "Το ποσό δεν μπορεί να είναι αρνητικό." + RESET);
                 newAmount = null;
                 }
             } catch (NumberFormatException e) {
+                System.out.println("Μη έγκυρη τιμή.");
                 System.out.println(RED + "Μη έγκυρη τιμή." + RESET);
             }
         }
@@ -135,16 +136,18 @@ public class BudgetEditor {
             try {
                 Ministry mBefore = initialBudget.getMinistries().get(code);
                 BigDecimal oldVal = column.equalsIgnoreCase("τακτικός")
-                    ? mBefore.getRegularBudget()
-                    : mBefore.getPublicInvestments();
+                    ? mBefore.getRegularBudget() : mBefore
+                            .getPublicInvestments();
                 increase = new BigDecimal(input);
                 newAmount = oldVal.add(increase);
-                if (increase.compareTo(BigDecimal.ZERO) < 0) {
+                if (newAmount.compareTo(BigDecimal.ZERO) < 0) {
+                    System.out.println("Το ποσό δεν μπορεί να είναι αρνητικό.");
                     System.out.println(RED
                     + "Το ποσό δεν μπορεί να είναι αρνητικό." + RESET);
-                    increase = null;
+                    newAmount = null;
                 }
             } catch (NumberFormatException e) {
+                System.out.println("Μη έγκυρη τιμή.");
                 System.out.println(RED + "Μη έγκυρη τιμή." + RESET);
             }
         }
@@ -215,13 +218,16 @@ public class BudgetEditor {
                         .equals(code));
 
                 if (!exists || code.equals(BANNED_CODE)) {
+                    System.out.println("Δεν υπάρχει επιλογή με αυτόν τον "
+                    + "κωδικό.");
                     System.out.println(RED
-                    + "Δεν υπάρχει επιλογή με τον κωδικό " + code + "."
-                    + RESET);
+                    + "Δεν υπάρχει επιλογή με αυτόν τον " + "κωδικό." + RESET);
                     continue;
                 }
 
                 if (increases.containsKey(code)) {
+                    System.out.println("Προσοχή: Ο κωδικός έχει ήδη δηλωθεί. "
+                    + "Η τιμή θα αντικατασταθεί.");
                     System.out.println(RED
                     + "Προσοχή: Ο κωδικός έχει ήδη δηλωθεί. "
                     + "Η τιμή θα αντικατασταθεί." + RESET);
@@ -234,6 +240,8 @@ public class BudgetEditor {
                     BigDecimal percentage = new BigDecimal(input.nextLine());
                     if (percentage.compareTo(BigDecimal.ZERO) < 0
                     || percentage.compareTo(MAX_PERCENTAGE) > 0) {
+                        System.out.println("Το ποσοστό πρέπει να είναι μεταξύ "
+                        + "0 " + "και " + MAX_PERCENTAGE + ".");
                         System.out.println(RED
                         + "Το ποσοστό πρέπει να είναι μεταξύ "
                         + "0 " + "και " + MAX_PERCENTAGE + "." + RESET);
@@ -247,17 +255,19 @@ public class BudgetEditor {
                             .reduce(BigDecimal.ZERO, BigDecimal::add);
 
                     if (currentSum.compareTo(BigDecimal.ONE) > 0) {
+                        System.out.println("Σφάλμα: Το συνολικό ποσοστό "
+                                + "κατανομής ξεπέρασε το 100%.");
                         System.out.println(RED + "Σφάλμα: Το συνολικό ποσοστό "
                                 + "κατανομής ξεπέρασε το 100%." + RESET);
                         System.out.println("Ξεκινήστε από την αρχή.");
                         increases.clear();
                         break;
                     } else if (currentSum.compareTo(BigDecimal.ONE) == 0) {
-                        System.out.println(GREEN + "Η κατανομή ολοκληρώθηκε."
-                                + RESET);
+                        System.out.println("Η κατανομή ολοκληρώθηκε.");
                         return increases;
                     }
                 } catch (NumberFormatException e) {
+                    System.out.println("Μη έγκυρο ποσοστό.");
                     System.out.println(RED + "Μη έγκυρο ποσοστό." + RESET);
                 }
             }
@@ -284,6 +294,8 @@ public class BudgetEditor {
             MinistryRequestParser.ParsedResult result = parser.parse(id);
             Integer ministry = result.getMinistryCode();
             if (ministry == null) {
+                System.err.println("Σφάλμα: Δεν υπάρχει ο κωδικός Υπουργείου "
+                        + "για το αίτημα " + id);
                 System.err.println(RED
                 + "Σφάλμα: Δεν υπάρχει ο κωδικός Υπουργείου "
                         + "για το αίτημα " + id + RESET);
@@ -292,6 +304,8 @@ public class BudgetEditor {
             String type = result.getBudgetType();
             BigDecimal newAmount = result.getMinistryNewAmount();
             if (newAmount == null) {
+                System.err.println("Σφάλμα: Δεν υπάρχει ποσό για το Υπουργείο "
+                        + "στο αίτημα " + id);
                 System.err.println(RED
                 + "Σφάλμα: Δεν υπάρχει ποσό για το Υπουργείο "
                         + "στο αίτημα " + id + RESET);

@@ -126,12 +126,12 @@ private static final String TOTAL_EXPENDITURE_KEYWORD = "Σύνολο εξόδω
             : m.getTotalBudget());
 
         switch (column.toLowerCase(Locale.ROOT)) {
-            case "τακτικός", "regularBudget" -> m.setRegularBudget(nv);
+            case "τακτικός", "regularbudget" -> m.setRegularBudget(nv);
             case "πδε", "προϋπολογισμός δημοσίων επενδύσεων",
-            "publicInvestments" ->
+            "publicinvestments" ->
                 m.setPublicInvestments(nv);
             default -> throw new IllegalArgumentException(
-                RED + "Άγνωστη κατηγορία Υπουργείου: " + RESET + column);
+                RED + "Άγνωστη κατηγορία Υπουργείου: " + column + RESET);
         }
 
         reconcileMinistryParts(m);
