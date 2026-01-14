@@ -5,6 +5,7 @@ import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.Map;
 
+import java.util.Set;
 import static aggregatedata.ConsoleColors.RED;
 import static aggregatedata.ConsoleColors.RESET;
 
@@ -19,6 +20,10 @@ public class MinistryRequestParser {
 
     /** Code for number 5. */
     private static final int CODE_FOR_FIVE = 5;
+
+    /** Lines to ignore. */
+    private static final Set<Integer> IGNORED_MINISTRY_CODES =
+        Set.of(4, 25, 33);
 
     /**
      * Constructor.
@@ -62,8 +67,17 @@ public class MinistryRequestParser {
             }
 
             // Detect ministry code line
-            if (ministryCode == null && line.matches("^\\d+ \\|.*")) {
-                ministryCode = Integer.parseInt(line.split("\\|")[0].trim());
+            if (line.matches("^\\d+ \\|.*")) {
+                int candidate =
+                    Integer.parseInt(line.split("\\|")[0].trim());
+
+                if (IGNORED_MINISTRY_CODES.contains(candidate)) {
+                    continue; // ⬅️ ΑΓΝΟΗΣΕ & ΣΥΝΕΧΙΣΕ
+                }
+
+                if (ministryCode == null) {
+                    ministryCode = candidate;
+                }
                 continue;
             }
 

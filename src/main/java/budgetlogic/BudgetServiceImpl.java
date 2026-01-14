@@ -138,7 +138,6 @@ private static final String TOTAL_EXPENDITURE_KEYWORD = "Σύνολο εξόδω
         propagateChangeToExpenses(ministryCode, oldTotal,
                 normalize(m.getTotalBudget() == null ? BigDecimal.ZERO
                 : m.getTotalBudget()));
-        recomputeMinistriesAggregates();
         recomputeGeneralAggregates();
     }
 

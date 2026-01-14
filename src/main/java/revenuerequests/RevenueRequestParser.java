@@ -40,7 +40,7 @@ public class RevenueRequestParser {
             String line = lines[i].trim();
 
             // Identify the revenue line
-            if (line.matches("^\\d+(,\\d+)*\\s*\\|.*")) {
+            if (line.matches("^\\d+(,\\d+)+\\s*\\|.*")) {
                 revenueCode = line.split("\\|")[0].trim();
 
                 // The amount is in the immediately next line
