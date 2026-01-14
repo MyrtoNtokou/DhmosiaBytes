@@ -1,0 +1,47 @@
+name: Deploy Reports to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # Ή το όνομα του δικού σου βασικού branch
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17' # Βάλε την έκδοση που χρησιμοποιείς
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Generate Reports with Maven
+        run: mvn clean compile test javadoc:javadoc project-info-reports:dependencies jacoco:report
+
+      - name: Prepare Site Folder
+        run: |
+          mkdir -p public
+          cp -r target/site/apidocs public/docs       # Javadoc
+          cp -r target/site/jacoco public/coverage   # JaCoCo
+          cp target/site/dependencies.html public/    # Dependencies report
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './public'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
