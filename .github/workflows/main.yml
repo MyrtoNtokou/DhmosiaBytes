@@ -32,13 +32,25 @@ jobs:
 
       - name: Prepare reports folder
         run: |
-          mkdir -p public-site
-          cp -r target/site/jacoco public-site/coverage
-          cp -r target/site/apidocs public-site/docs
-          # Αν θέλεις το dependency report σε HTML, χρησιμοποίησε την εντολή που είπαμε πριν
-          mvn project-info-reports:dependencies
-          cp target/site/dependencies.html public-site/ || true
-
+          mkdir -p public-site/docs
+          mkdir -p public-site/coverage
+          
+          if [ -d "target/site/apidocs" ]; then
+            cp -r target/site/apidocs/* public-site/docs/
+          else
+            echo "Warning: Javadoc not found at target/site/apidocs"
+          fi
+          
+          if [ -d "target/site/jacoco" ]; then
+            cp -r target/site/jacoco/* public-site/coverage/
+          else
+            echo "Warning: JaCoCo report not found"
+          fi
+          
+          if [ -f "target/site/dependencies.html" ]; then
+            cp target/site/dependencies.html public-site/
+          fi
+          
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
