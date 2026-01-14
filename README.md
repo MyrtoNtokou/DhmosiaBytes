@@ -1,5 +1,13 @@
 # DhmosiaBytes
 
+
+🇬🇷 🇬🇧
+
+![License](https://img.shields.io/badge/License-MIT-blue)
+![Build](https://github.com/myrtontokou/DhmosiaBytes/actions/workflows/main.yml/badge.svg)  
+![Coverage](https://img.shields.io/badge/Coverage-70%25-brightgreen)
+
+
 ## Ελληνικά
 
 ### Περιγραφή
@@ -14,30 +22,36 @@
 Για να εκτελέσετε την εφαρμογή, κατεβάστε το επισυναπτόμενο αρχείο .zip και ακολουθήστε τα βήματα:
 1.	Αποσυμπίεση: Εξάγετε όλα τα περιεχόμενα σε EΝΑΝ φάκελο.
 2.	Runtime Data: Βεβαιωθείτε ότι ο φάκελος runtime-data παραμένει στον ίδιο κατάλογο με το αρχείο .jar.
-3.	Εντολή Run: Ανοίξτε το τερματικό σας και αφού μπείτε στο φάκελο που βρίσκονται τα παραπάνω εκτελέστε την παρακάτω εντολή:  java -jar BudgetPlusPlus.jar
+3.	Εντολή Run: Ανοίξτε το τερματικό σας και αφού μπείτε στο φάκελο που βρίσκονται τα παραπάνω εκτελέστε την παρακάτω εντολή:
+   'java -jar BudgetPlusPlus.jar'
+
 ! Τοποθετήστε το .zip σε φάκελο που δεν είναι Read-only.
 
 Εναλλακτικά χρησιμοποιώντας το αποθετήριο:
 
-Προαπαιτούμενο: Java JDK 17+    &  Maven Apache 3x
+Προαπαιτούμενο: Java JDK 17+   &  Maven Apache 3x
 1.	Ανοίγετε το τερματικό 
-2.	Κάνετε clone το αποθετήριο εκτελώντας την παρακάτω εντολή από το CLI: 
-git clone https://github.com/MyrtoNtokou/DhmosiaBytes.git
-3.	Μεταβείτε στον φάκελο: cd DhmosiaBytes
-4.	Μεταγλώττιση με την εντολή: mvn clean package
-5.	Εκτέλεση με την εντολή: java -jar target/BudgetPlusPlus.jar
+2.	Κάνετε clone το αποθετήριο εκτελώντας την παρακάτω εντολή από το CLI:
+'git clone https://github.com/MyrtoNtokou/DhmosiaBytes.git'
+4.	Μεταβείτε στον φάκελο: cd DhmosiaBytes
+5.	Μεταγλώττιση με την εντολή: mvn clean package
+6.	Εκτέλεση με την εντολή:
+'java -jar target/BudgetPlusPlus.jar'
 
 ### 2. Οδηγίες Χρήσης
 
 Ο χρήστης μπαίνοντας στην εφαρμογή επιλέγει την ιδιότητα του (Κυβέρνηση, Κοινοβούλιο, Υπουργείο Οικονομικών, Άλλο Υπουργείο). Στη συνέχεια, έχει την δυνατότητα να συνδεθεί σε έναν λογαριασμό, είτε να δημιουργήσει έναν νέο, σύμφωνα με συγκεκριμένους κανόνες. Στους τρεις πρώτους ρόλους, για λόγους ασφαλείας μπορεί να δημιουργηθεί αποκλειστικά ένας λογαριασμός.
 
-Μετά την επιτυχή σύνδεση, ο χρήστης συναντά το βασικό μενού της εφαρμογής. Η πρώτη επιλογή «1. Εμφάνιση Δημοσιευμένου Κρατικού Προϋπολογισμού» εμφανίζει τον Γενικό Προϋπολογισμό* με τα έσοδα και τα έξοδα. Η επιλογή «2. Εμφάνιση Δημοσιευμένου Προϋπολογισμού Υπουργείων»** εμφανίζει τα έξοδα της Προεδρίας της Δημοκρατίας, της Βουλής των Ελλήνων, της Προεδρίας της Κυβέρνησης, των Υπουργείων και των Αποκεντρωμένων Διοικήσεων. Η επιλογή 3 διαφέρει ανάλογα τον ρόλο του χρήστη.
+Μετά την επιτυχή σύνδεση, ο χρήστης συναντά το βασικό μενού της εφαρμογής. Η πρώτη επιλογή «1. Εμφάνιση Δημοσιευμένου Κρατικού Προϋπολογισμού» εμφανίζει τον Γενικό Προϋπολογισμό με τα έσοδα και τα έξοδα. Η επιλογή «2. Εμφάνιση Δημοσιευμένου Προϋπολογισμού Υπουργείων» εμφανίζει τα έξοδα της Προεδρίας της Δημοκρατίας, της Βουλής των Ελλήνων, της Προεδρίας της Κυβέρνησης, των Υπουργείων και των Αποκεντρωμένων Διοικήσεων. Η επιλογή 3 διαφέρει ανάλογα τον ρόλο του χρήστη.
 
-    * Γενικός Προϋπολογισμός: Άρθρο 1 - Κρατικού Προϋπολογισμού
-    ** Προϋπολογισμός Υπουργείων: Άρθρο 2 - Κρατικού Προϋπολογισμού
+> Γενικός Προϋπολογισμός: Άρθρο 1 - Κρατικού Προϋπολογισμού
+
+> Προϋπολογισμός Υπουργείων: Άρθρο 2 - Κρατικού Προϋπολογισμού
 
 Τα Άλλα Υπουργεία επιλέγοντας «3. Αιτήματα», μπορούν να δουν «1. Ιστορικό Αλλαγών», όπου φαίνονται οι καταχωρημένες αλλαγές ανά κατηγορία («1. Έσοδα Προϋπολογισμού» / «2. Έξοδα Προϋπολογισμού (ανά Υπουργείο) ). Ακόμη, βλέπουν «2. Σύγκριση Δημοσιευμένου και Τροποποιημένου Προϋπολογισμού», όπου σημειώνονται οι διαφορές μεταξύ των προϋπολογισμών αυτών. Και «3. Υποβολή Αιτημάτων» όπου μπορούν να υποβάλλουν αιτήματα σχετικά με τις ανάγκες τους. Αυτό γίνεται εισάγοντας τον κωδικό του υπουργείου (Α/Α), το είδος του προϋπολογισμού («1. Τακτικός Προϋπολογισμός» / «2. Προϋπολογισμός Δημοσίων Επενδύσεων») και την επιθυμητή αύξηση. Στην συνέχεια γίνεται κατανομή της αύξησης με βάση τις κατηγορίες των εξόδων. Συγκεκριμένα, πρέπει να εισαχθεί ο κωδικός του εξόδου (Α/Α) και το ποσοστό (1-100) μέχρι τα επιμέρους ποσοστά να αθροίζουν στο 100%.
 Ο Υπουργός Οικονομικών με την επιλογή «3. Τροποποίηση Στοιχείων Προϋπολογισμού» μπορεί να επιλέξει ανάμεσα σε: 
+
+> Τροποποιημένος Προϋπολογισμός: Προκύπτει από τις τροποποιήσεις που γίνονται εντός της εφαρμογής
 
 «1. Επεξεργασία Προϋπολογισμού», όπου γίνονται αλλαγές είτε στα έσοδα με την εισαγωγή του κωδικού του εσόδου (Α/Α) και του νέου ποσού είτε στα έξοδα με τον ίδιο τρόπο με το Άλλο Υπουργείο. Και τα δύο είδη αλλαγών λαμβάνουν την κατάσταση «REVIEWED_BY_FINANCE_MINISTRY» και υποβάλλονται για περαιτέρω έγκριση. 
 
@@ -83,13 +97,21 @@ git clone https://github.com/MyrtoNtokou/DhmosiaBytes.git
 Το αποθετήριο είναι οργανωμένο για ένα Java project με βάση την δομή του Maven:
 
 •	.github/workflows: Περιέχει τις ρυθμίσεις για το CI/CD pipeline (GitHub Actions), όπως το αυτοματοποιημένο build και το upload στο GitHub Pages.
+
 •	diagrams/: αποθήκευση του UML της εφαρμογής για αξιοποίηση στο README.md
+
 •	src/: Ο κύριος φάκελος με τον πηγαίο κώδικα της εφαρμογής (Source Code).
+
 •	runtime-data/: Φάκελος που περιλαμβάνει δεδομένα που χρησιμοποιούνται κατά την εκτέλεση του προγράμματος.
+
 •	pom.xml: Το βασικό αρχείο ρυθμίσεων του Maven, που περιέχει τις εξαρτήσεις και τους κανόνες του project.
+
 •	dependency-reduced-pom.xml: Βοηθητικό από το Maven Shade plugin κατά το build.
+
 •	.gitignore: Ορίζει ποια αρχεία και φάκελοι δεν να ανεβαίνουν στο αποθετήριο.
+
 •	LICENSE: Η άδεια χρήσης του λογισμικού (MIT License).
+
 •	README.md: Το αρχείο με τις γενικές πληροφορίες και τις οδηγίες χρήσης του έργου.
 
 ### 7. Σχεδιασμός & Αρχιτεκτονική 
@@ -110,11 +132,11 @@ git clone https://github.com/MyrtoNtokou/DhmosiaBytes.git
 
 •	JavaDoc: Τεχνική Τεκμηρίωση όλου του κώδικα
 
-https://myrtontokou.github.io/DhmosiaBytes/docs/index.html
+[📖 Τεκμηρίωση Javadoc](https://myrtontokou.github.io/DhmosiaBytes/docs/index.html)
 
 •	JaCoCo: Reports κάλυψης κώδικα
 
-https://myrtontokou.github.io/DhmosiaBytes/coverage/index.html
+[📖 Κάλυψη Javadoc](https://myrtontokou.github.io/DhmosiaBytes/coverage/index.html)
 
 ### 10. Προτροπές & Απαντήσεις ΠΤΝ
 
@@ -127,18 +149,18 @@ https://myrtontokou.github.io/DhmosiaBytes/coverage/index.html
 
 •	Βιβλιοθήκες Τρίτων:
 Για την ανάπτυξη της εφαρμογής, χρησιμοποιούνται οι παρακάτω βιβλιοθήκες ανοιχτού κώδικα οι οποίες φαίνονται με όλες τις εξαρτήσεις, τις εκδόσεις τους και τις αντίστοιχες άδειες χρήσης τους εδώ: 
-https://myrtontokou.github.io/DhmosiaBytes/dependencies.html
+[📖 Άδειες Χρήσης](https://myrtontokou.github.io/DhmosiaBytes/dependencies.html)
 
 
-Συγκεντρωτικά οι Τεχνικές Πληροφορίες μέσω GitHub Pages:
-https://myrtontokou.github.io/DhmosiaBytes/
+** Συγκεντρωτικά οι Τεχνικές Πληροφορίες: **
+[📖 GitHub Pages](https://myrtontokou.github.io/DhmosiaBytes/)
 
 
 ## English
 
 Description
 
-This project was developed by the "Dhmosia Bytes" team as part of a semester group project titled "Prime Minister for a Day: National Budget Overview and Editing System." The Budget++ application, which runs via the command line, offers a management system for National Budget modification requests and a wide range of statistics.
+This project was developed by the "Dhmosia Bytes" team as part of a semester group project titled "Prime Minister for a Day: National Budget Overview and Editing System." The **Budget++** application, which runs via the command line, offers a management system for National Budget modification requests and a wide range of statistics.
 
 ### 1. Requirements & Compilation – Execution Instructions
 
@@ -147,16 +169,21 @@ Follow the instructions below from the "Releases" column of the repository:
 1. Prerequisite: Java JDK 17+ To run the application, download the attached .zip file and follow these steps:
 2. Unzip: Extract all contents into ONE folder.
 3. Runtime Data: Ensure the «runtime-data» folder remains in the same directory as the .jar file.
-4. Run Command: Open your terminal, navigate to the folder containing the above files, and execute the following command: java -jar BudgetPlusPlus.jar ! Place the .zip in a folder that is not Read-only.
+4. Run Command: Open your terminal, navigate to the folder containing the above files, and execute the following command:
+'java -jar BudgetPlusPlus.jar'
+
+! Place the .zip in a folder that is not Read-only.
 
 Alternatively, using the repository:
+
 1. Prerequisites: Java JDK 17+ & Maven Apache 3x
 2. Open the terminal.
 3. Clone the repository by executing the following command from the CLI:
-git clone https://github.com/MyrtoNtokou/DhmosiaBytes.git
+'git clone https://github.com/MyrtoNtokou/DhmosiaBytes.git'
 4. Navigate to the folder: cd DhmosiaBytes
 5. Compile with the command: mvn clean package
-6. Execute with the command: java -jar target/BudgetPlusPlus.jar
+6. Execute with the command:
+'java -jar target/BudgetPlusPlus.jar'
 
 ### 2. Instructions for Use
 
@@ -164,10 +191,13 @@ Upon entering the application, the user selects their role («Κυβέρνηση
 
 After a successful login, the user encounters the application's main menu. The first option «1. Εμφάνιση Δημοσιευμένου Κρατικού Προϋπολογισμού» displays the General Budget* with revenues and expenses. Option «2. Εμφάνιση Δημοσιευμένου Προϋπολογισμού Υπουργείων»** displays the expenses of the Presidency of the Republic, the Hellenic Parliament, the Presidency of the Government, Ministries, and Decentralized Administrations. Option 3 varies depending on the user's role.
 
-    * General Budget: Article 1 - National Budget
-    ** Ministry Budget: Article 2 - National Budget
+> General Budget: Article 1 - National Budget
+
+> Ministry Budget: Article 2 - National Budget
 
 By selecting «3. Αιτήματα», Other Ministries («Άλλα Υπουργεία») can view «1. Ιστορικό Αλλαγών», which shows registered changes per category («1. Έσοδα Προϋπολογισμού» / «2. Έξοδα Προϋπολογισμού (ανά Υπουργείο)»). They can also see «2. Σύγκριση Δημοσιευμένου και Τροποποιημένου Προϋπολογισμού», which highlights differences between these budgets, and «3. Υποβολή Αιτημάτων» where they can submit requests regarding their needs. This is done by entering the ministry code (A/A), the type of budget («1. Τακτικός Προϋπολογισμός» / «2. Προϋπολογισμός Δημοσίων Επενδύσεων»), and the desired increase. Subsequently, the increase is distributed based on expense categories. Specifically, the expense code (A/A) and the percentage (1-100) must be entered until the individual percentages add up to 100%.
+
+> Modified Budget: Results from the modifications made within the application
 
 The Minister of Finance («Υπουργός Οικονομικών»), with the option «3. Τροποποίηση Στοιχείων Προϋπολογισμού», can choose between:
 
@@ -214,17 +244,29 @@ The use of CSV files for processing and storing data via the «BudgetEditor» an
 ### 6. Repository Structure
 
 The repository is organized for a Java project based on the Maven structure:
-.github/workflows: Contains settings for the CI/CD pipeline (GitHub Actions).
-diagrams/: Storage of the application's UML for use in README.md.
-src/: The main folder with the application's source code.
-runtime-data/: Folder containing data used during program execution.
-pom.xml: The basic Maven configuration file.
-dependency-reduced-pom.xml: Auxiliary file from the Maven Shade plugin.
-.gitignore: Defines files and folders not to be uploaded.
-LICENSE: The software license (MIT License).
-README.md: The file with general information and usage instructions.
+
+•	.github/workflows: Contains settings for the CI/CD pipeline (GitHub Actions).
+
+•	diagrams/: Storage of the application's UML for use in README.md.
+
+•	src/: The main folder with the application's source code.
+
+•	runtime-data/: Folder containing data used during program execution.
+
+•	pom.xml: The basic Maven configuration file.
+
+•	dependency-reduced-pom.xml: Auxiliary file from the Maven Shade plugin.
+
+•	.gitignore: Defines files and folders not to be uploaded.
+
+•	LICENSE: The software license (MIT License).
+
+•	README.md: The file with general information and usage instructions.
+
 
 ### 7. Design & Architecture
+
+![UML Class Diagram](diagrams/uml.png)
 
 The application design follows Object-Oriented Programming principles. Specifically, three interfaces are used («Serializable», «BudgetService», and «Request») for managing users, budget changes (both revenue and ministry-related expenses), and request management between institutional roles. Additionally, the «Exception» class is extended to handle incorrect password entries with limited attempts. To ensure account integrity—since the functions each role can perform differ—the «Singleton» pattern is utilized to create exclusively one account for the Ministry of Finance, the Government, and the Parliament.
 
@@ -237,10 +279,12 @@ Main Algorithms: Data transformation is performed via CSV parsing algorithms. An
 ### 9. Technical Documentation
 
 JavaDoc: 
-Technical Documentation of the entire code https://myrtontokou.github.io/DhmosiaBytes/docs/index.html
+Technical Documentation of the entire code:
+[📖 JavaDoc Report ](https://myrtontokou.github.io/DhmosiaBytes/docs/index.html)
 
 JaCoCo: 
-Code coverage reports https://myrtontokou.github.io/DhmosiaBytes/coverage/index.html
+Code coverage reports:
+[📖 JaCoCo Coverage ](https://myrtontokou.github.io/DhmosiaBytes/coverage/index.html)
 
 ### 10. AI Prompts & Responses
 
@@ -252,7 +296,8 @@ Project License:
 This software is provided under the MIT License.
 
 Third-Party Libraries: 
-A full list of open-source libraries, dependencies, and their licenses can be found here: https://myrtontokou.github.io/DhmosiaBytes/dependencies.html
+A full list of open-source libraries, dependencies, and their licenses can be found here:
+[📖 Licenses ](https://myrtontokou.github.io/DhmosiaBytes/dependencies.html)
 
 Summary Technical Information via GitHub Pages: 
-https://myrtontokou.github.io/DhmosiaBytes/
+[📖 GitHub Pages](https://myrtontokou.github.io/DhmosiaBytes/)
