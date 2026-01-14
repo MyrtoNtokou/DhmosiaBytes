@@ -25,6 +25,9 @@ import budgetreader.ReadBudget;
  */
 public final class AggregateMenu {
 
+    /** Constractor. */
+    public AggregateMenu() { }
+
     /** Code to edit a new file. */
     private static final int CODE_FOR_MENUS = 2;
 

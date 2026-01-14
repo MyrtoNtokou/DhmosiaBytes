@@ -267,6 +267,7 @@ public class BudgetEditor {
     /**
      * Finalize request by saving the changes.
      * @param id request id
+     * @throws Exception if any I/O error occurs or parsing fails
      */
     public static void saveEdit(final int id) throws Exception {
         MinistryRequestService reqService = new MinistryRequestService();

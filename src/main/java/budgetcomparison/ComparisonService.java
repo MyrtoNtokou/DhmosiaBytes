@@ -5,17 +5,20 @@ import java.math.RoundingMode;
 import java.util.List;
 import java.util.Optional;
 
-import budgetreader.BasicRecord;
-import budgetreader.ReadBudget;
-import budgetreader.Ministry;
-import static aggregatedata.ConsoleColors.RED;
-import static aggregatedata.ConsoleColors.GREEN;
-import static aggregatedata.ConsoleColors.RESET;
 import static aggregatedata.ConsoleColors.BOLD;
+import static aggregatedata.ConsoleColors.GREEN;
+import static aggregatedata.ConsoleColors.RED;
+import static aggregatedata.ConsoleColors.RESET;
+import budgetreader.BasicRecord;
+import budgetreader.Ministry;
+import budgetreader.ReadBudget;
 
 /** Service class
  * for performing budget comparisons. */
 public class ComparisonService {
+
+    /** Constractor. */
+    ComparisonService() { }
 
     /**
      * Compares general budget entries between two years for a specific code.

@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import static aggregatedata.ConsoleColors.RED;
+import static aggregatedata.ConsoleColors.RESET;
 import budgetlogic.Budget;
 import budgetreader.BasicRecord;
-import budgetreader.ReadBudget;
 import budgetreader.Ministry;
-import static aggregatedata.ConsoleColors.RESET;
-import static aggregatedata.ConsoleColors.RED;
+import budgetreader.ReadBudget;
 
 /**
  * Cuts and displays list BasicRecord and list Ministry.
@@ -18,10 +18,13 @@ import static aggregatedata.ConsoleColors.RED;
  */
 public class CutLists {
 
+    /** Constractor. */
+    CutLists() { }
+
      /**
      * Displays some elements from list BasicRecord.
      *
-     * @return the List<BasicRecord> containing only the revenues
+     * @return the list containing only the revenues
      */
     public List<BasicRecord> cutBasicRecordEsoda() {
         List<BasicRecord> g =
@@ -39,7 +42,7 @@ public class CutLists {
     /**
      * Displays the expenses from list BasicRecord.
      *
-     * @return the List<BasicRecord> containing only the expenses
+     * @return the list containing only the expenses
      */
     public List<BasicRecord> cutBasicRecordExoda() {
         List<BasicRecord> g =
@@ -57,7 +60,7 @@ public class CutLists {
      /**
      * Displays some elements from list Ministry.
      *
-     * @return the List<Ministry> containing only the ministries
+     * @return the list containing only the ministries
      */
     public List<Ministry> cutMinistry() {
         List<Ministry> y =
