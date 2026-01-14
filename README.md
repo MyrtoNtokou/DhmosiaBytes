@@ -130,11 +130,11 @@
 
 ### 9. Τεχνική Τεκμηρίωση
 
-•	JavaDoc: Τεχνική Τεκμηρίωση όλου του κώδικα
+Τεχνική Τεκμηρίωση όλου του κώδικα
 
 [📖 Τεκμηρίωση Javadoc](https://myrtontokou.github.io/DhmosiaBytes/docs/index.html)
 
-•	JaCoCo: Reports κάλυψης κώδικα
+Reports κάλυψης κώδικα
 
 [📖 Κάλυψη Javadoc](https://myrtontokou.github.io/DhmosiaBytes/coverage/index.html)
 
@@ -152,7 +152,7 @@
 [📖 Άδειες Χρήσης](https://myrtontokou.github.io/DhmosiaBytes/dependencies.html)
 
 
-** Συγκεντρωτικά οι Τεχνικές Πληροφορίες: **
+Συγκεντρωτικά οι Τεχνικές Πληροφορίες:
 [📖 GitHub Pages](https://myrtontokou.github.io/DhmosiaBytes/)
 
 
@@ -278,11 +278,9 @@ Main Algorithms: Data transformation is performed via CSV parsing algorithms. An
 
 ### 9. Technical Documentation
 
-JavaDoc: 
 Technical Documentation of the entire code:
 [📖 JavaDoc Report ](https://myrtontokou.github.io/DhmosiaBytes/docs/index.html)
-
-JaCoCo: 
+ 
 Code coverage reports:
 [📖 JaCoCo Coverage ](https://myrtontokou.github.io/DhmosiaBytes/coverage/index.html)
 
@@ -299,5 +297,5 @@ Third-Party Libraries:
 A full list of open-source libraries, dependencies, and their licenses can be found here:
 [📖 Licenses ](https://myrtontokou.github.io/DhmosiaBytes/dependencies.html)
 
-Summary Technical Information via GitHub Pages: 
+Summary Technical Information: 
 [📖 GitHub Pages](https://myrtontokou.github.io/DhmosiaBytes/)
