@@ -1,0 +1,68 @@
+name: Deploy Reports to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Generate Reports with Maven
+        run: |
+          # 1. Εκτέλεση tests και παραγωγή JaCoCo
+          mvn clean verify -DskipTests=false 
+          # 2. Παραγωγή Javadoc (το pom.xml σου πρέπει να έχει <doclint>none</doclint>)
+          mvn javadoc:javadoc || echo "Javadoc had warnings but continuing..."
+          # 3. Παραγωγή του report για τις άδειες και βιβλιοθήκες
+          mvn project-info-reports:dependencies
+
+      - name: Prepare Site Folder
+        run: |
+          mkdir -p public/docs
+          mkdir -p public/coverage
+          
+          # Αντιγραφή JaCoCo αν υπάρχει
+          [ -d target/site/jacoco ] && cp -r target/site/jacoco/* public/coverage/ || echo "No JaCoCo found"
+          
+          # Αντιγραφή Javadoc αν υπάρχει
+          [ -d target/site/apidocs ] && cp -r target/site/apidocs/* public/docs/ || echo "No Javadoc found"
+          
+          # Αντιγραφή Dependencies - ΕΔΩ ΕΙΝΑΙ ΤΟ LINK ΣΟΥ
+          [ -f target/site/dependencies.html ] && cp target/site/dependencies.html public/ || echo "No dependencies.html found"
+          
+          # Δημιουργία κεντρικής σελίδας Menu για αποφυγή του 404
+          echo "<html><body style='font-family:sans-serif; padding:40px;'> \
+                <h1>Project Quality Reports</h1> <hr> <ul> \
+                <li><a href='docs/index.html'> Javadoc (Documentation)</a></li> \
+                <li><a href='coverage/index.html'> JaCoCo (Test Coverage)</a></li> \
+                <li><a href='dependencies.html'> Dependencies & Licenses</a></li> \
+                </ul></body></html>" > public/index.html
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './public'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

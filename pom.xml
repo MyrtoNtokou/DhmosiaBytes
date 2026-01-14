@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
@@ -9,26 +10,86 @@
   <url>http://maven.apache.org</url>
 
   <properties>
-    <!-- 1. Project encoding -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <!-- 2. Encoding for maven reports -->
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <maven.compiler.release>17</maven.compiler.release>
   </properties>
 
   <build>
     <plugins>
 
-      <!-- Maven Surefire Plugin -->
-     <plugin>
-      <groupId>org.apache.maven.plugins</groupId>
-      <artifactId>maven-surefire-plugin</artifactId>
-      <version>3.2.5</version>
-      <configuration>
-          <redirectTestOutputToFile>true</redirectTestOutputToFile>
-      </configuration>
-    </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.11.0</version>
+        <configuration>
+          <release>17</release>
+          <encoding>UTF-8</encoding>
+        </configuration>
+      </plugin>
 
-      <!-- Maven Shade Plugin -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.2.5</version>
+        <configuration>
+          <redirectTestOutputToFile>true</redirectTestOutputToFile>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.6.3</version>
+        <configuration>
+          <show>private</show>
+          <doclint>none</doclint>
+          <failOnError>false</failOnError>
+          <encoding>UTF-8</encoding>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.8.10</version>
+        <executions>
+          <execution>
+            <id>prepare-agent</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>report</id>
+            <phase>test</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>check-coverage</id>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <rule>
+                  <element>BUNDLE</element>
+                  <limits>
+                    <limit>
+                      <counter>LINE</counter>
+                      <value>COVEREDRATIO</value>
+                      <minimum>0.55</minimum>
+                    </limit>
+                  </limits>
+                </rule>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
@@ -50,30 +111,12 @@
         </executions>
       </plugin>
 
-      <!-- 1. Java Compiler -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.11.0</version>
-        <configuration>
-          <release>17</release>
-        <!-- Compiler Encoding -->
-          <encoding>UTF-8</encoding>
-        </configuration>
-      </plugin>
-
-      <!-- 2. SpotBugs -->
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>4.9.8.1</version>
-        <configuration>
-          <!-- Encoding -->
-          <encoding>UTF-8</encoding>
-        </configuration>
+        <version>4.8.3.1</version>
         <executions>
           <execution>
-            <!-- Execute on verify -->
             <phase>verify</phase>
             <goals>
               <goal>check</goal>
@@ -82,7 +125,6 @@
         </executions>
       </plugin>
 
-      <!-- 3. CheckStyle -->
       <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-checkstyle-plugin</artifactId>
@@ -101,115 +143,69 @@
               </execution>
           </executions>
       </plugin>
-      
-      <!-- 4. JaCoCo -->
-      <plugin>
-        <groupId>org.jacoco</groupId>
-        <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.10</version>
-        <executions>
-          <!-- Prepare before tests -->
-          <execution>
-            <id>prepare-agent</id>
-            <goals>
-              <goal>prepare-agent</goal>
-            </goals>
-          </execution>
-          <!-- Report after tests -->
-          <execution>
-            <id>report</id>
-            <phase>test</phase>
-            <goals>
-              <goal>report</goal>
-            </goals>
-          </execution>
-            <execution>
-              <id>check-coverage</id>
-              <goals>
-                  <goal>check</goal>
-              </goals>
-              <configuration>
-                  <rules>
-                      <rule>
-                          <element>BUNDLE</element>
-                          <limits>
-                              <limit>
-                                  <counter>LINE</counter>
-                                  <value>COVEREDRATIO</value>
-                                  <minimum>0.55</minimum>
-                              </limit>
-                          </limits>
-                      </rule>
-                  </rules>
-              </configuration>
-          </execution>
-        </executions>
-      </plugin>
 
     </plugins>
   </build>
 
   <dependencies>
-
-    <!-- 1. Junit -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
       <version>5.9.3</version>
       <scope>test</scope>
     </dependency>
-
-    <!-- 2. Mockito -->
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
       <version>5.11.0</version>
       <scope>test</scope>
     </dependency>
-    
-    <!-- 3. OpenCsV -->
     <dependency>
       <groupId>com.opencsv</groupId>
       <artifactId>opencsv</artifactId>
       <version>5.8</version>
     </dependency>
-
-    <!-- 4. SpotBugs Annotations -->
     <dependency>
       <groupId>com.github.spotbugs</groupId>
       <artifactId>spotbugs-annotations</artifactId>
       <version>4.8.3</version>
       <scope>compile</scope>
     </dependency>
-
-      <!-- 5. Gson library converts Java objects to JSON and back -->
     <dependency>
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
       <version>2.10.1</version>
     </dependency>
-
-     <!-- 6. XChart for Graphs -->
     <dependency>
       <groupId>org.knowm.xchart</groupId>
       <artifactId>xchart</artifactId>
       <version>3.8.8</version>
     </dependency>
-
-     <!-- 7. BCrypt library used for secure password hashing -->
     <dependency>
         <groupId>org.mindrot</groupId>
         <artifactId>jbcrypt</artifactId>
         <version>0.4</version>
     </dependency>
-
-     <!-- 8. Jansi library for colors -->
     <dependency>
         <groupId>org.fusesource.jansi</groupId>
         <artifactId>jansi</artifactId>
         <version>2.4.1</version>
     </dependency>
-
   </dependencies>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>3.5.0</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.6.3</version>
+      </plugin>
+    </plugins>
+  </reporting>
 
 </project>
