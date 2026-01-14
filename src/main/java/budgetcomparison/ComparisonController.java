@@ -116,15 +116,15 @@ public class ComparisonController {
 
             String code;
             while (true) {
-                System.out.print("Επιλέξτε τον κωδικό του στοιχείου που "
-                        + "θέλετε να συγκρίνετε.");
-                System.out.println("Επιλέξτε 0 για επιστροφή στο "
-                        + "προηγούμενο μενού");
                 if (type == 1) {
                     ShowMenuOptions.showBudget();
                 } else if (type == 2) {
                     ShowMenuOptions.summary();
                 }
+                System.out.print("Επιλέξτε τον κωδικό του στοιχείου που "
+                        + "θέλετε να συγκρίνετε.");
+                System.out.println("Επιλέξτε 0 για επιστροφή στο "
+                        + "προηγούμενο μενού");
                 System.out.print("\nΕπιλογή κωδικού: ");
                 code = sc.nextLine();
                 if (code.equals("0")) {

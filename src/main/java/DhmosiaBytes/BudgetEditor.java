@@ -140,11 +140,10 @@ public class BudgetEditor {
                             .getPublicInvestments();
                 increase = new BigDecimal(input);
                 newAmount = oldVal.add(increase);
-                if (newAmount.compareTo(BigDecimal.ZERO) < 0) {
-                    System.out.println("Το ποσό δεν μπορεί να είναι αρνητικό.");
+                if (increase.compareTo(BigDecimal.ZERO) < 0) {
                     System.out.println(RED
                     + "Το ποσό δεν μπορεί να είναι αρνητικό." + RESET);
-                    newAmount = null;
+                    increase = null;
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Μη έγκυρη τιμή.");

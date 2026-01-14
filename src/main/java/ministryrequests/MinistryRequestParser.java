@@ -117,7 +117,7 @@ public class MinistryRequestParser {
                 }
 
                 // Detect expense code
-                if (line.matches("^2,\\d+ \\|.*")) {
+                if (line.matches("^2[\\d,]+ \\|.*")) {
                     currentExpenseCode = line.split("\\|")[0].trim();
                  // Extract expense percentage
                 } else if (currentExpenseCode != null && line.contains("→")) {

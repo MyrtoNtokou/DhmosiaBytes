@@ -6,16 +6,15 @@ import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
+import static aggregatedata.ConsoleColors.BLUE;
+import static aggregatedata.ConsoleColors.BOLD;
+import static aggregatedata.ConsoleColors.CYAN;
+import static aggregatedata.ConsoleColors.GREEN;
+import static aggregatedata.ConsoleColors.RED;
+import static aggregatedata.ConsoleColors.RESET;
+import static aggregatedata.ConsoleColors.UNDERLINE;
 import budgetreader.BasicRecord;
 import budgetreader.Ministry;
-
-import static aggregatedata.ConsoleColors.RESET;
-import static aggregatedata.ConsoleColors.BOLD;
-import static aggregatedata.ConsoleColors.BLUE;
-import static aggregatedata.ConsoleColors.RED;
-import static aggregatedata.ConsoleColors.GREEN;
-import static aggregatedata.ConsoleColors.CYAN;
-import static aggregatedata.ConsoleColors.UNDERLINE;
 
 /**
  * Print general and ministries budget after changes.
@@ -32,6 +31,8 @@ public final class BudgetDiffPrinter {
     private static final int TOTALS = 33;
     /** Target display width for budget ammounts. */
     private static final int DISPLAY_AMMOUNT_WIDTH = 17;
+    /** Target display width for municipalies total ammount. */
+    private static final int MUNICIPALITIES = 25;
 
     /**
      * Print formatted difference report for revenues.
@@ -344,7 +345,8 @@ public final class BudgetDiffPrinter {
             Integer code = entry.getKey();
             Ministry y = entry.getValue();
 
-            if (code == MINISTRY_TOTALS || code == TOTALS) {
+            if (code == MINISTRY_TOTALS || code == TOTALS
+                    || code == MUNICIPALITIES) {
                 continue;
             }
 

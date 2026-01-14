@@ -2,9 +2,9 @@ package ministryrequests;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import static aggregatedata.ConsoleColors.RESET;
-import static aggregatedata.ConsoleColors.BOLD;
 
+import static aggregatedata.ConsoleColors.BOLD;
+import static aggregatedata.ConsoleColors.RESET;
 import budgetreader.Ministry;
 
 /**
@@ -73,7 +73,7 @@ public class MinistryRequestService {
     public void markModified(final int id) {
         repo.updateStatus(id, RequestStatus.MODIFIED);
         System.out.println(BOLD + "Η αλλαγή με κωδικό " + id
-                    + "θα υποβληθεί τροποποιημένη." + RESET);
+                    + " θα υποβληθεί τροποποιημένη." + RESET);
     }
 
     /**
